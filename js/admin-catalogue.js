@@ -75,15 +75,14 @@ async function setPublication(published){
   if(published){
    const book=books.find(b=>b.id===current);
    if(!book?.title||!book?.category||!book?.subcategory){msg('Titre, genre et sous-genre obligatoires avant publication.');return;}
-   if(!book.pdf_path){msg('Aucun PDF hébergé : ajoute son chemin réel pour activer lecture et téléchargement. La sélection locale ne suffit pas.');return;}
-   if(!(/^(pdf\/|livres\/).+\.pdf$/i.test(book.pdf_path)||/^https:\/\/potierbiblio-com\.github\.io\/Lecture-Entre-Les-Lignes\/(pdf|livres)\/.+\.pdf$/i.test(book.pdf_path))){msg('Le chemin du PDF doit pointer vers un fichier PDF du site GitHub Pages.');return;}
-   if(!confirm('Publier la fiche ? Le PDF doit déjà être hébergé légalement sur le site.'))return;
+   if(book.pdf_path && !(/^(pdf\/|livres\/).+\.pdf$/i.test(book.pdf_path)||/^https:\/\/potierbiblio-com\.github\.io\/Lecture-Entre-Les-Lignes\/(pdf|livres)\/.+\.pdf$/i.test(book.pdf_path))){msg('Le chemin PDF doit correspondre à un fichier PDF du site GitHub Pages, ou laisse ce champ vide pour publier la fiche seule.');return;}
+   if(!confirm(book.pdf_path?'Publier la fiche ? Vérifie que le PDF est réellement accessible et que sa diffusion est autorisée.':'Publier la fiche SANS PDF ? Le livre sera présenté dans le catalogue, mais la lecture et le téléchargement seront indisponibles.'))return;
   }
   await setDoc(doc(db,'books',current),{published},{merge:true});
   const book=books.find(b=>b.id===current);if(book)book.published=published;
   $('book-editor').elements.published.checked=published;
   publicationState(published);
-  msg(published?'Fiche publiée dans Firestore. Vérifie sa visibilité publique : '+location.origin+location.pathname.replace('admin-catalogue.html','livre.html')+'?id=firebase-'+current:'Livre repassé en brouillon dans Firestore.');
+  msg(published?'Fiche publiée dans Firestore'+(books.find(b=>b.id===current)?.pdf_path?' avec chemin PDF renseigné. ': ' sans PDF : lecture et téléchargement indisponibles. ')+'Vérifie sa visibilité publique : +location.origin+location.pathname.replace('admin-catalogue.html','livre.html')+'?id=firebase-'+current:'Livre repassé en brouillon dans Firestore.');
  }catch(err){showError(err);}
 }
 $('publish-book').onclick=()=>setPublication(true);
