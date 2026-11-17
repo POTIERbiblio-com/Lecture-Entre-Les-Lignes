@@ -1,2 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&display=swap');
 .page-accueil #cover-title,.page-accueil #cover-title span,.page-accueil #cover-title i{font-family:'DynaPuff',system-ui,sans-serif!important;font-style:normal!important;font-weight:600!important;letter-spacing:-.035em!important;line-height:1.12!important;text-transform:none!important;transform:none!important;white-space:normal!important}.page-accueil #cover-title span{display:inline!important;font-size:inherit!important;color:inherit!important}.page-accueil .cover-lettering #cover-title{font-size:clamp(3.2rem,7.8vw,7.4rem)!important;overflow-wrap:normal!important}@media(max-width:600px){.page-accueil .cover-lettering #cover-title{font-size:clamp(2.8rem,11vw,5rem)!important}}
+
+/* Titre d'accueil : lettres rebondies, sans italique, taille d'origine */
+.page-accueil .cover-lettering h1#cover-title{font-family:'DynaPuff',system-ui,sans-serif!important;font-style:normal!important;font-weight:700!important;line-height:1.08!important;letter-spacing:-.045em!important;animation:ell-title-appear 900ms cubic-bezier(.2,1.4,.4,1) both!important}
+.page-accueil .cover-lettering h1#cover-title span{font-family:inherit!important;font-weight:inherit!important;font-style:normal!important;display:inline-block!important;animation:ell-title-bob 5s ease-in-out 1s infinite!important;transform-origin:center bottom}
+@keyframes ell-title-appear{from{opacity:0;transform:translateY(22px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes ell-title-bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.025)}}
+@media(prefers-reduced-motion:reduce){.page-accueil .cover-lettering h1#cover-title,.page-accueil .cover-lettering h1#cover-title span{animation:none!important}}
