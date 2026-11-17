@@ -1,3 +1,6 @@
+const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null;
+async function ellConnect(){if(!ell){const m=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');ell=m.createClient(ELL_URL,ELL_KEY);}return ell;}
+function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};for(const b of state.books){b.position='';b.pdfPage=1;}}
 const GENRES={"fiction": ["Fiction", ["Roman contemporain", "Imaginaire", "Suspense", "Amour et relations", "Histoire et aventure", "BD et manga", "Poésie et théâtre", "Contes et nouvelles", "Horreur"]], "savoirs": ["Savoirs", ["Sciences", "Psychologie", "Philosophie", "Histoire", "Économie et politique", "Management et entrepreneuriat", "Informatique et numérique"]], "arts": ["Arts", ["Musique", "Cinéma", "Architecture", "Peinture et photographie"]], "vie-et-societe": ["Vie et société", ["Biographies", "Témoignages", "Vie pratique", "Sociologie", "Finances personnelles", "Développement personnel"]], "spiritualites": ["Spiritualités et religions", ["Religions", "Spiritualités", "Mythes", "Ésotérisme"]], "jeunesse": ["Jeunesse et pédagogie", ["Albums", "Romans jeunesse", "Documentaires", "Apprentissage"]]};
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3104,55 +3107,23 @@ function readPendingCarnet() {
   });
 }
 
-function syncCarnet(payload) {
-  const body = JSON.stringify(payload);
-  const send = async () => {
-    if (body === lastSyncedCarnet && remoteVersion !== null) return;
-    const pending = {payload, version: remoteVersion};
-    if (remoteVersion !== null || !await (db ? readPendingCarnet() : null)) await writeLocalState(pending);
-    else await writeLocalState();
-    if (remoteVersion === null) throw Error('Copie conservée sur cet appareil. Le carnet en ligne est indisponible.');
-    const response = await fetch('/api/carnet', {
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json', 'If-Match': String(remoteVersion), 'X-Carnet-User': service.user},
-      body,
-    });
-    if (!response.ok) throw Error(response.status === 409
-      ? 'Ce carnet a été modifié ailleurs. Une copie de tes changements est conservée ici. Tu peux l’exporter dans Sauvegardes.'
-      : 'Copie conservée sur cet appareil. La synchronisation est en attente.');
-    const result = await response.json();
-    remoteVersion = result.version;
-    lastSyncedCarnet = body;
-    await writeLocalState(null);
-    showCarnetWarning('');
-  };
-  pendingWrites += 1;
-  autosaveQueue = autosaveQueue.catch(() => {}).then(send).finally(()=>{pendingWrites-=1;});
-  return autosaveQueue;
+function syncCarnet(){
+ pendingWrites++;autosaveQueue=autosaveQueue.catch(()=>{}).then(async()=>{
+ const {error}=await ell.from('user_carnets').upsert({user_id:ellUser.id,data:personalCarnet(),updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;showCarnetWarning('');
+ }).finally(()=>pendingWrites--);return autosaveQueue;
 }
-
-async function save() {
-  if (!db && !service?.user) throw Error('La sauvegarde sur cet appareil est indisponible.');
-  if (service?.user) {
-    try { await syncCarnet(personalCarnet()); }
-    catch(error) { showCarnetWarning(error.message); throw error; }
-  } else {
-    await writeLocalState();
-  }
-  message(service?.user ? 'Enregistré dans ton espace.' : 'Enregistré sur cet appareil.');
+async function save(){
+ if(ellUser){try{await syncCarnet();}catch(e){showCarnetWarning(e.message);throw e;}}
+ else await writeLocalState();
+ message(ellUser?'Enregistré dans ton compte.':'Enregistré sur cet appareil.');
 }
-
-async function connectService() {
-  if (location.protocol==='file:' || typeof previewAsset==='function') return null;
-  try {
-    const response=await fetch('/api/session',{headers:{Accept:'application/json'}});
-    if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return null;
-    service=await response.json();
-    adminEnabled=!!service.admin;
-    return service;
-  } catch { return null; }
+async function connectService(){
+ if(location.protocol==='file:')return null;
+ try{await ellConnect();const {data:{user}}=await ell.auth.getUser();ellUser=user;
+ if(user){await ell.rpc('claim_library_admin');const {data}=await ell.from('admins').select('user_id').eq('user_id',user.id).maybeSingle();adminEnabled=!!data;}else adminEnabled=false;
+ service={user:user?.id||null,admin:adminEnabled};return service;
+ }catch(e){console.error(e);return null;}
 }
-
 function restoreCarnet(data) {
   Object.assign(state, data);
   for (const book of state.books) {
@@ -3162,105 +3133,34 @@ function restoreCarnet(data) {
   }
 }
 
-async function loadServiceState() {
-  if (!service) return;
-  const catalog = await fetch('/api/catalogue').then(r=>r.json()).catch(()=>null);
-  if (Array.isArray(catalog?.books)) {
-    const positions = personalCarnet().positions;
-    state.books = catalog.books;
-    for (const book of state.books) Object.assign(book, positions[book.id] || {});
-  }
-  if (!service.user) return;
-  const pending = db ? await readPendingCarnet() : null;
-  const response = await fetch('/api/carnet', {headers: {'X-Carnet-User': service.user}});
-  if (!response.ok) throw Error('Le carnet en ligne est indisponible.');
-  const remote = await response.json();
-  if (remote.data) {
-    restoreCarnet(remote.data);
-    lastSyncedCarnet = JSON.stringify(personalCarnet());
-  }
-  if (pending && pending.version !== null && pending.version !== remote.version) {
-    if (JSON.stringify(pending.payload) === JSON.stringify(remote.data)) {
-      remoteVersion = remote.version;
-      await writeLocalState(null);
-      return;
-    }
-    restoreCarnet(pending.payload);
-    throw Error('Ce carnet a été modifié ailleurs. La copie affichée contient tes changements sur cet appareil. Tu peux l’exporter dans Sauvegardes.');
-  }
-  remoteVersion = remote.version;
-  if (pending) {
-    restoreCarnet(pending.payload);
-    await syncCarnet(personalCarnet());
-  }
+async function loadServiceState(){
+ if(!ell)return;
+ const last=localStorage.getItem('ell_account');
+ if(ellUser){
+ const {data,error}=await ell.from('user_carnets').select('data').eq('user_id',ellUser.id).maybeSingle();if(error)throw error;
+ ellClear();if(data?.data)restoreCarnet(data.data);localStorage.setItem('ell_account',ellUser.id);
+ }else if(last){ellClear();await writeLocalState();localStorage.removeItem('ell_account');}
+}
+function lockCatalog(){
+ document.querySelectorAll('a[href*="ajouter-livre.html"],[data-admin-only]').forEach(x=>x.hidden=!adminEnabled);
+ if($('book-form')){$('book-form').hidden=!adminEnabled;if($('book-access'))$('book-access').hidden=adminEnabled;}
+ if($('admin-access'))$('admin-access').innerHTML=adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'<p>Réservé au compte administrateur. <a href="mon-espace.html">Se connecter</a></p>';
+}
+function showAccount(){
+ const box=$('account-status');if(!box)return;
+ if(!ell){box.textContent='Connexion momentanément indisponible.';return;}
+ if(ellUser){
+ box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>. Tes carnets sont liés à ton compte.</p>'+(adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';
+ $('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});await ell.auth.signOut();ellClear();await writeLocalState();localStorage.removeItem('ell_account');location.reload();};return;
+ }
+ box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-google">Continuer avec Google</button><p id="ell-result" role="status"></p>';
+ const cred=()=>({email:$('ell-mail').value.trim(),password:$('ell-pass').value}),msg=x=>$('ell-result').textContent=x;
+ $('ell-form').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.signInWithPassword(cred());if(error)msg(error.message);else location.reload();};
+ $('ell-create').onclick=async()=>{const {error}=await ell.auth.signUp({...cred(),options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Vérifie ton e-mail pour confirmer ton inscription.');};
+ $('ell-google').onclick=async()=>{const {error}=await ell.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)msg(error.message);};
 }
 
-function lockCatalog() {
-  document.querySelectorAll('a[href*="ajouter-livre.html"],[data-admin-only]').forEach(el=>{el.hidden=!adminEnabled;});
-  if ($('book-form')) {
-    $('book-form').hidden = !adminEnabled;
-    if ($('book-access')) $('book-access').hidden = adminEnabled;
-  }
-  const access = $('admin-access');
-  if (!access) return;
-  if (!service) {
-    access.textContent='L’atelier du catalogue s’ouvre sur le site en ligne.';
-    return;
-  }
-  if (adminEnabled) {
-    access.innerHTML='<p>L’atelier administrateur est ouvert.</p><button id="admin-lock" type="button">Fermer l’atelier</button><p id="admin-status" role="status"></p>';
-    $('admin-lock').onclick=async()=> {
-      try {
-        const response=await fetch('/api/atelier/fermer',{method:'POST'});
-        if (!response.ok) throw Error();
-        location.reload();
-      } catch { $('admin-status').textContent='L’atelier ne peut pas être fermé pour le moment.'; }
-    };
-    return;
-  }
-  if (!service.user) {
-    access.innerHTML='<a class="btn" href="/signin-with-chatgpt?return_to=/admin.html" target="_top">Me connecter</a>';
-    return;
-  }
-  if (!service.canUnlock) {
-    access.textContent='L’atelier est réservé au compte administrateur.';
-    return;
-  }
-  access.innerHTML='<form id="admin-unlock-form"><label for="admin-key">Mot de passe de l’atelier</label><input type="password" id="admin-key" autocomplete="current-password" required><button type="submit">Ouvrir l’atelier</button><p id="admin-status" role="status"></p></form>';
-  $('admin-unlock-form').onsubmit=async event=> {
-    event.preventDefault();
-    const password=$('admin-key').value;
-    $('admin-key').value='';
-    try {
-      const r=await fetch('/api/atelier/ouvrir',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
-      if (r.ok) location.reload();
-      else $('admin-status').textContent=r.status===429?'Patiente avant une nouvelle tentative.':'Accès refusé.';
-    } catch { $('admin-status').textContent='L’atelier est momentanément indisponible.'; }
-  };
-}
-
-function showAccount() {
-  const box = $('account-status');
-  if (!box) return;
-  if (!service) {
-    box.textContent = 'Tes traces sont conservées sur cet appareil. Pour les retrouver sur un autre appareil, utilise ton compte sur le site en ligne.';
-    return;
-  }
-  if (!service.user) {
-    const returnTo = encodeURIComponent(location.pathname + location.search);
-    box.innerHTML='<p>Retrouve tes fiches, tes surlignages et tes journaux sur tous tes appareils.</p><a class="btn" href="/signin-with-chatgpt?return_to='+returnTo+'" target="_top">Se connecter ou créer un compte</a>';
-    return;
-  }
-  box.innerHTML='<p>Carnet associé à ton compte</p><a class="btn secondary" href="/signout-with-chatgpt?return_to=/mon-espace.html" target="_top">Me déconnecter</a>';
-  box.querySelector('a').onclick = async event => {
-    event.preventDefault();
-    const target = event.currentTarget.href;
-    await autosaveQueue.catch(()=>{});
-    location.href = target;
-  };
-}
-
-async function storeCatalogBook(book){if(!adminEnabled||!service)throw Error('Accès administrateur requis.');const r=await fetch('/api/catalogue/'+encodeURIComponent(book.id),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(book)});if(!r.ok)throw Error('La modification du catalogue n’a pas été enregistrée.');const result=await r.json();Object.assign(book,result.book);}
+async function storeCatalogBook(book){throw Error('Utilise la page Administration du catalogue.');}
 
 async function startBookReader(book) {
  const host = $('reader-content');
