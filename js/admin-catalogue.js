@@ -7,6 +7,23 @@ const app=getApps().length?getApp():initializeApp(config);
 const auth=getAuth(app),db=getFirestore(app);
 const $=id=>document.getElementById(id);
 const msg=t=>{$('admin-msg').textContent=t;};
+const GENRES={
+ 'Fiction':['Roman contemporain','Imaginaire','Suspense','Amour et relations','Histoire et aventure','BD et manga','Poésie et théâtre','Contes et nouvelles','Horreur'],
+ 'Savoirs':['Sciences','Psychologie','Philosophie','Histoire','Économie et politique','Management et entrepreneuriat','Informatique et numérique'],
+ 'Arts':['Musique','Cinéma','Architecture','Peinture et photographie'],
+ 'Vie et société':['Biographies','Témoignages','Vie pratique','Sociologie','Finances personnelles','Développement personnel'],
+ 'Spiritualités et religions':['Religions','Spiritualités','Mythes','Ésotérisme'],
+ 'Jeunesse et pédagogie':['Albums','Romans jeunesse','Documentaires','Apprentissage']
+};
+const genreSelect=$('category-select'),subSelect=$('subcategory-select');
+for(const name of Object.keys(GENRES))genreSelect.add(new Option(name,name));
+function refreshSubgenres(value=''){
+ subSelect.replaceChildren(new Option('Choisir un sous-genre existant',''));
+ for(const name of GENRES[genreSelect.value]||[])subSelect.add(new Option(name,name));
+ if(value&&GENRES[genreSelect.value]?.includes(value))subSelect.value=value;
+}
+genreSelect.addEventListener('change',()=>refreshSubgenres());
+function publicationState(published){$('publication-status').textContent=published?'Publié dans Firestore · visibilité publique à vérifier':'Brouillon · Non publié';$('publish-book').disabled=!current||!!published;$('unpublish-book').disabled=!current||!published;}
 let books=[],chapters=[],current=null,chapter=null,ready=false;
 const fields=form=>Object.fromEntries(new FormData(form).entries());
 function showError(e){console.error('Catalogue Firebase:',e);msg('Impossible d’enregistrer : '+(e?.message||'erreur inconnue'));}
@@ -17,7 +34,7 @@ function bookForm(b={}){
   if(e.type==='checkbox')e.checked=!!b[e.name];
   else e.value=e.name==='review_links'?(b.review_links||[]).join('\n'):(b[e.name]??'');
  }
- loadChapters().catch(showError);
+ refreshSubgenres(b.subcategory||'');publicationState(!!b.published);loadChapters().catch(showError);
 }
 function chapterForm(c={}){chapter=c.id||null;for(const e of $('chapter-form').elements)if(e.name)e.value=c[e.name]??'';}
 async function loadBooks(){
@@ -43,14 +60,27 @@ $('book-editor').onsubmit=async e=>{
  try{
   const v=fields(e.target);
   v.publication_year=v.publication_year?Number(v.publication_year):null;
-  v.published=e.target.elements.published.checked;
+  v.published=!!(current&&books.find(b=>b.id===current)?.published);
   v.review_links=(v.review_links||'').split('\n').map(x=>x.trim()).filter(x=>/^https:\/\//.test(x));
   const id=current||doc(collection(db,'books')).id;
   await setDoc(doc(db,'books',id),v,{merge:!!current});
   await loadBooks();$('book-select').value=id;bookForm({id,...v});
-  msg('Fiche enregistrée dans Firebase.'+(v.published?' Elle est publiée dans Firestore.':' Elle reste en brouillon.')+' Les fichiers sélectionnés ne sont pas envoyés automatiquement.');
+  msg('Fiche enregistrée dans Firebase.'+(v.published?' Publication existante conservée.':' Brouillon non publié. Clique sur « Publier le livre » lorsque tout est prêt.')+' Les fichiers sélectionnés ne sont pas envoyés automatiquement.');
  }catch(err){showError(err);}
 };
+async function setPublication(published){
+ if(!current){msg('Enregistre d’abord la fiche avant de publier.');return;}
+ try{
+  if(published&&!confirm('Publier cette fiche dans Firestore ? Vérifie les informations et les liens avant de continuer.'))return;
+  await setDoc(doc(db,'books',current),{published},{merge:true});
+  const book=books.find(b=>b.id===current);if(book)book.published=published;
+  $('book-editor').elements.published.checked=published;
+  publicationState(published);
+  msg(published?'Publication enregistrée dans Firestore. Attention : l’affichage dans le catalogue public reste à vérifier.':'Livre repassé en brouillon dans Firestore.');
+ }catch(err){showError(err);}
+}
+$('publish-book').onclick=()=>setPublication(true);
+$('unpublish-book').onclick=()=>setPublication(false);
 $('chapter-form').onsubmit=async e=>{
  e.preventDefault();if(!current){msg('Enregistre d’abord le livre.');return;}
  try{
