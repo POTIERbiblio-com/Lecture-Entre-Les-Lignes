@@ -3665,6 +3665,49 @@ function loadClassicScript(path){return new Promise((resolve,reject)=>{const scr
 async function ensureOfflinePDF(book){if(location.protocol!=='file:'||typeof previewAsset==='function'||!book.pdfPath||book.pdf)return;if(window.ELLPDFData?.[book.pdfPath])return;const slug=book.pdfPath.replace(/^pdf\//,'').replace(/\.pdf$/,'');if(!/^[a-z0-9-]+$/.test(slug))return;await loadClassicScript('js/pdf-offline/'+slug+'.js');}
 function pdfAddress(b){if(b.pdf)return b.pdf;if(location.protocol==='file:'&&typeof previewAsset!=='function'&&window.ELLPDFData?.[b.pdfPath])return window.ELLPDFData[b.pdfPath];return b.pdfPath&&typeof previewPDF==='function'?previewPDF(b.pdfPath):b.pdfPath||'';}
 
+
+/* Catalogue partagé : fiches GitHub validées et fiches publiées par l'atelier Firebase. */
+async function loadPublicCatalogue(){
+ const mapping=Object.fromEntries(Object.entries(GENRES).map(([slug,[name,subs]])=>[name,{slug,subs}]));
+ const normalize=(entry,source)=>{
+  const genre=mapping[entry.category||entry.genre];
+  const genreSlug=genre?.slug||(GENRES[entry.genre]?entry.genre:null);
+  if(!genreSlug||!entry.title)return null;
+  const subs=GENRES[genreSlug][1];
+  const subIndex=entry.sub!==undefined&&/^\\d+$/.test(String(entry.sub))?Number(entry.sub):subs.indexOf(entry.subcategory||'');
+  if(subIndex<0||subIndex>=subs.length)return null;
+  const path=entry.pdf_path||entry.pdfPath||'';
+  const safePath=/^(?:pdf\/|livres\/)[^?#]+\\.pdf$/i.test(path)?path:'';
+  const cover=entry.cover_path||entry.cover||'';
+  const safeCover=/^(?:images\/|livres\/)[^?#]+\\.(?:png|jpe?g|webp)$/i.test(cover)?cover:'';
+  return {id:source+'-'+entry.id,title:entry.title,author:entry.author||'',genre:genreSlug,sub:String(subIndex),
+   cover:safeCover,pdfPath:safePath,presentation:entry.description||entry.presentation||'',summary:entry.summary||'',
+   publisher:entry.publisher||'',year:entry.publication_year||entry.year||'',isbn:entry.isbn||'',
+   reviewLinks:Array.isArray(entry.review_links)?entry.review_links:[],chapters:Array.isArray(entry.chapters)?entry.chapters:[],
+   catalogueSource:source};
+ };
+ state.books=state.books.filter(b=>!b.catalogueSource);
+ const add=(entry,source)=>{
+  const book=normalize(entry,source);if(!book)return;
+  const existing=state.books.find(b=>b.id===book.id||book.pdfPath&&b.pdfPath===book.pdfPath);
+  if(existing)Object.assign(existing,book);
+  else state.books.push(book);
+ };
+ try{
+  const response=await fetch('livres/catalogue-public.json',{cache:'no-store'});
+  if(response.ok){const data=await response.json();for(const item of data.books||[])if(item.published===true)add(item,'github');}
+ }catch(err){console.warn('Catalogue GitHub non chargé',err);}
+ try{
+  const [{initializeApp,getApps,getApp},{getFirestore,collection,getDocs,query,where}]=await Promise.all([
+   import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js'),
+   import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js')
+  ]);
+  const app=getApps().length?getApp():initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});
+  const snap=await getDocs(query(collection(getFirestore(app),'books'),where('published','==',true)));
+  snap.forEach(d=>add({id:d.id,...d.data()},'firebase'));
+ }catch(err){console.warn('Catalogue Firebase indisponible (vérifier les règles Firestore)',err);}
+}
+
 async function start(){try{await connectService();
 const privatePages=new Set(['mon-espace.html','surlignages.html','annotations.html','fiches.html','journaux.html','profil.html','sauvegardes.html','tests.html','critiques.html']);
 const currentPage=location.pathname.split('/').pop().toLowerCase();
@@ -3691,6 +3734,7 @@ for(const book of LIVRES_INITIAUX){
   }
 }
 try { await loadServiceState(); } catch(error) { showCarnetWarning(error.message); }
+await loadPublicCatalogue();
 if(changed&&db)await writeLocalState();
 if(!document.body.isConnected)return;
 applyDesign();
