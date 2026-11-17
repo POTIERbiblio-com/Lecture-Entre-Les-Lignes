@@ -1,0 +1,509 @@
+/* Reliure, papiers imprimés et collages du carnet de lecture. */
+:root {
+  --atelier-ink:#593447;
+  --atelier-rose:#bd6b89;
+  --atelier-blue:#c8e0ed;
+  --atelier-cream:#f9f2fb;
+  --atelier-edge:#b57c92;
+}
+html { scroll-behavior:smooth; }
+body.atelier-page {
+  color:var(--atelier-ink);
+  background-color:#fbe5ed;
+  background-image:radial-gradient(#9ac4da58 1.8px,transparent 2px),
+    repeating-linear-gradient(0deg,#7f425503 0 1px,transparent 1px 4px);
+  background-size:25px 25px,auto;
+}
+.atelier-page a { text-underline-offset:4px; }
+.atelier-page input,.atelier-page select,.atelier-page textarea {
+  color:#4f3045; background-color:#fdf6fb;
+  border:1px solid #aa7b8c; border-radius:4px 9px 5px 7px;
+}
+.atelier-page input:focus,.atelier-page select:focus,.atelier-page textarea:focus {
+  outline:3px solid #87b5ce; outline-offset:2px;
+}
+.atelier-page button,.atelier-page .btn,.atelier-page .cloud-link {
+  min-height:44px;
+}
+.atelier-edition {
+  display:flex; justify-content:space-between; gap:12px; align-items:center;
+  max-width:1280px; margin:auto; padding:9px 5% 6px;
+  font:700 10px/1.4 Manrope,Avenir,sans-serif; letter-spacing:.1em; text-transform:uppercase;
+  color:#85596c;
+}
+.atelier-edition span:last-child { font:700 16px/1 Caveat,"Segoe Print",serif; letter-spacing:0; text-transform:none; }
+.atelier-page .site-header {
+  max-width:1280px; width:calc(100% - 40px); margin:6px auto 0; padding:22px 32px 28px;
+  display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:18px;
+  position:relative; isolation:isolate; background:none; border:0; box-shadow:none;
+}
+.atelier-page .site-header::before {
+  content:""; position:absolute; inset:-8px -6px -10px; z-index:-1;
+  background:url("../images/atelier/nuage-navigation.svg") center/100% 100% no-repeat;
+  filter:drop-shadow(0 5px 0 #aa638721);
+}
+.atelier-page .brand { font:700 37px/.9 Caveat,"Segoe Print",Georgia,serif; color:#66384f; letter-spacing:-.045em; transform:rotate(-3deg); }
+.atelier-page .brand span { color:#bf617f; font-size:52px; }
+.atelier-page .site-nav { background:none; padding:0; display:flex; gap:5px 8px; flex-wrap:wrap; justify-content:center; align-items:center; }
+.atelier-page .site-nav a {
+  color:#66394c; position:relative; padding:8px 10px;
+  min-height:40px; display:flex; align-items:center;
+  font:700 20px/1 Caveat,"Segoe Print",serif; text-decoration:none; border:0; border-radius:0;
+  background:none; white-space:nowrap;
+}
+.atelier-page .site-nav a::before {
+  content:"";position:absolute; z-index:-1; inset:18% -2px 10%;
+  background:#d6e8ef; opacity:0; border-radius:28% 14% 23% 19% / 19% 24% 18% 21%; transform:rotate(-4deg);
+}
+.atelier-page .site-nav a.active::before,.atelier-page .site-nav a[aria-current=page]::before,.atelier-page .site-nav a:hover::before { opacity:1; }
+.atelier-page .site-nav a.nav-search::before { opacity:1; background:#f2c8d6; transform:rotate(3deg); }
+.atelier-page .site-main {
+  max-width:1280px; padding:42px 48px 30px;
+  position:relative; isolation:isolate; overflow:visible;
+}
+.atelier-page .site-main::before {
+  content:""; position:absolute; top:48px; bottom:64px; left:16px; width:12px; z-index:-2;
+  background:radial-gradient(ellipse at center,#b7839b 0 2px,#f8eff2 2.5px 4px,transparent 4.5px) center top/12px 42px repeat-y;
+}
+.atelier-page .crumb { padding:9px 45px 9px 12px; margin-bottom:27px; background:#f9f2fbb8; width:fit-content; border-radius:0 5px 12px 1px; }
+.atelier-page .crumb .margin-sticker { top:0; width:38px; right:-8px; }
+.atelier-page .section,.atelier-page .site-section { border:0; position:relative; }
+.artist-label { display:inline-block; margin:0 0 10px; padding:6px 12px; background:#e8dcf2; color:#62452f; font:700 11px/1.3 Manrope,Avenir,sans-serif; letter-spacing:.06em; transform:rotate(-2deg); }
+.artist-label::before { content:"✳"; font-size:16px; vertical-align:middle; margin-right:7px; }
+.artist-hand { font-family:Caveat,"Segoe Print",Georgia,serif; }
+.artist-kicker { margin:0; font:700 12px/1.5 Manrope,Avenir,sans-serif; letter-spacing:.11em; text-transform:uppercase; color:#8a526b; }
+.artist-title { margin:9px 0 19px; font:700 clamp(39px,5.8vw,77px)/.99 Caveat,"Segoe Print",Georgia,serif; color:#63364e; letter-spacing:-.03em; }
+.artist-word { display:inline-block; padding:0 .075em .07em; margin:0 .015em .09em 0; color:#643951; background:#f9f2fb; box-shadow:1px 3px #ad7c913b; transform:rotate(-2deg); }
+.artist-word:nth-child(3n+2) { background:#d2e6ee; transform:rotate(3deg); color:#3d5b70; }
+.artist-word:nth-child(3n) { background:#edc2d1; transform:rotate(-4deg); }
+.artist-dash { color:#a9637f; letter-spacing:.1em; }
+.artist-figure { position:relative; margin:0; }
+.artist-note { font:600 27px/1.05 Caveat,"Segoe Print",Georgia,serif; margin:0; }
+.artist-index { display:inline-grid; place-items:center; width:43px; height:43px; border:1.5px solid currentColor; border-radius:50% 45% 48% 47%; font:700 24px/1 Caveat,"Segoe Print",serif; }
+.artist-arrow { font:700 30px/1 Caveat,"Segoe Print",serif; }
+
+.artist-home {
+  position:relative; display:grid; grid-template-columns:1fr 1.12fr; min-height:520px;
+  margin:8px 0 50px; padding:28px 21px 31px; isolation:isolate; gap:15px;
+}
+.artist-home::before {
+  content:""; position:absolute; inset:0 -12px 0; z-index:-2;
+  background:#f6d0dd url("../images/atelier/quadrillage-papier.svg") center/140px 140px;
+  border-radius:3px 8px 4px 12px; transform:rotate(-1.1deg); box-shadow:7px 9px #b86a8733;
+}
+.artist-home::after { content:""; position:absolute; inset:12px -2px; z-index:-1; border:1.3px dashed #b77790; border-radius:7px; pointer-events:none; }
+.artist-home-copy { align-self:center; padding:24px 0 18px 14px; position:relative; z-index:3; }
+.artist-home-title { margin:10px 0 14px; max-width:520px; font:700 clamp(58px,7.8vw,107px)/.95 Georgia,"Times New Roman",serif; letter-spacing:-.055em; color:#83445d; }
+.artist-home-title > span:first-child { font-style:italic; font-weight:400; letter-spacing:-.07em; }
+.artist-home-title > span { display:block; }
+.artist-home-title .artist-word { display:inline-block; font-family:Caveat,"Segoe Print",serif; font-size:1.07em; box-shadow:3px 4px #9d65793d; }
+.artist-home-subtitle { font-size:14px; line-height:1.65; max-width:33ch; margin:9px 0 21px; }
+.artist-home-actions { display:flex; gap:9px 15px; align-items:center; flex-wrap:wrap; }
+.artist-primary {
+  display:inline-flex; gap:16px; align-items:center; padding:12px 17px;
+  color:#fff8eb; background:#8d4866; text-decoration:none; font-weight:800; font-size:13px;
+  border-radius:38% 18% 28% 19% / 9% 12% 11% 17%; box-shadow:3px 4px 0 #b783985c; min-height:46px;
+}
+.artist-primary:hover { background:#71334f; }
+.artist-home-actions .editorial-link { font-size:12px; color:#6e3d53; }
+.artist-home-art { position:relative; min-height:470px; align-self:stretch; }
+.artist-home-art::before {
+  content:"";position:absolute; inset:4% 4% 8% 4%;
+  background:#ebe4f2 url("../images/atelier/tache-papier.svg") center/cover;
+  clip-path:polygon(5% 4%,94% 0,100% 95%,0 100%); transform:rotate(5deg);
+}
+.artist-hero-photo { position:absolute; width:77%; height:87%; top:1%; left:4%; object-fit:contain; object-position:center; background:#fffaf4; border:8px solid #fff8ed; border-bottom-width:26px; box-shadow:5px 6px #9147664d; transform:rotate(5deg); }
+.artist-home-art .artist-book { position:absolute; width:45%; bottom:-1%; right:-6%; transform:rotate(-11deg); filter:drop-shadow(3px 4px #72435d50); }
+.artist-home-art .artist-stamp { position:absolute; top:-5%; right:0; width:28%; transform:rotate(13deg); }
+.artist-home-art figcaption { position:absolute; bottom:-11px; left:3%; z-index:3; max-width:65%; padding:7px 13px; background:#f9f2fb; font:700 27px/1 Caveat,"Segoe Print",serif; transform:rotate(-5deg); }
+.artist-washi { position:absolute; z-index:4; width:30%; height:22px; top:-2px; left:27%; background:repeating-linear-gradient(110deg,#b996bcbb 0 4px,#ead3daba 4px 9px); transform:rotate(-4deg); }
+.artist-route-map { margin:45px 0 40px; position:relative; padding:19px 0 0; }
+.artist-section-heading { display:flex; justify-content:space-between; gap:15px; align-items:end; margin-bottom:23px; }
+.artist-section-heading h2 { font:700 clamp(32px,4.8vw,53px)/1 Caveat,"Segoe Print",serif; margin:0; color:#73445a; }
+.artist-section-heading p { margin:7px 0 0; font-size:12px; }
+.artist-map-links { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
+.artist-map-links li { position:relative; counter-increment:routes; }
+.artist-map-links a {
+  position:relative; display:flex; flex-direction:column; justify-content:flex-end; isolation:isolate;
+  color:#573347; min-height:139px; padding:32px 20px 16px; text-decoration:none; background:#f8f1fb;
+  border:1px solid #c393a6; border-radius:4px; transform:rotate(-1.7deg); box-shadow:3px 5px #b682962e;
+}
+.artist-map-links li:nth-child(2n) a { transform:rotate(2deg); background:#dfedf1; }
+.artist-map-links li:nth-child(3n) a { transform:rotate(-1deg); background:#e8def2; }
+.artist-map-links a::before { content:""; width:48%; height:13px; position:absolute; top:-6px; left:25%; background:repeating-linear-gradient(90deg,#e1b1c8bb 0 5px,#f7dae5aa 5px 9px); }
+.artist-map-links .artist-index { position:absolute; top:12px; left:16px; width:25px; height:25px; font-size:16px; color:#a0667b; }
+.artist-map-links strong { font:700 25px/1 Caveat,"Segoe Print",serif; padding-top:13px; }
+.artist-map-links small { font-size:11px; margin-top:9px; }
+.artist-map-links .artist-arrow { position:absolute; right:17px; top:16px; }
+.artist-map-links a:hover { box-shadow:5px 7px #b682964b; }
+
+.atelier-page .featured-library { padding-top:28px; margin:44px 0; }
+.atelier-page .shelf-heading { padding:0 0 18px; border-bottom:0; }
+.atelier-page .shelf-heading h2 { font:700 clamp(31px,4vw,50px)/1 Caveat,"Segoe Print",serif; color:#784158; }
+.atelier-page .featured-grid { gap:30px 21px; padding:17px 12px 28px; background:url("../images/atelier/quadrillage-papier.svg") center/140px 140px,#eee7f5; border:1px solid #d3a8b7; border-radius:8px; box-shadow:6px 6px #c78da22b; }
+.atelier-page .featured-item { position:relative; padding:11px; margin:0; background:#faf3fb; border:1px solid #d4b1bc; transform:rotate(-1deg); box-shadow:2px 4px #ae7c8e25; }
+.atelier-page .featured-item:nth-child(2n) { transform:rotate(1.7deg); }
+.atelier-page .featured-item > a:first-child { display:block; position:relative; }
+.atelier-page .featured-item > a:first-child::before { content:""; position:absolute; width:45%; top:-15px; left:25%; height:13px; background:#bed6debd; z-index:2; transform:rotate(-5deg); }
+.atelier-page .featured-item img { height:188px; aspect-ratio:auto; width:100%; object-fit:contain; background:repeating-linear-gradient(91deg,#e8dcf2 0 1px,transparent 1px 21px),#e9e2f4; padding:16px 13px; transform:none; }
+.atelier-page .featured-item h3 { font-size:14px; line-height:1.4; margin-top:7px; }
+.atelier-page .featured-item small { display:block; font-size:9px; text-transform:uppercase; letter-spacing:.04em; margin-top:11px; color:#976279; }
+.atelier-page .featured-item p { font-size:11px; }
+
+.artist-chapter {
+  position:relative; display:grid; grid-template-columns:1.3fr .9fr; align-items:center;
+  min-height:290px; padding:24px 30px 28px; margin:5px 0 37px; gap:18px; isolation:isolate;
+}
+.artist-chapter::before { content:""; position:absolute; inset:0; z-index:-2; background:#eee7f5 url("../images/atelier/tache-papier.svg") center/cover; border:1px solid #c8a0a8; border-radius:2px 16px 3px 8px; transform:rotate(-1deg); box-shadow:5px 6px #b7849a2b; }
+.artist-chapter::after { content:""; position:absolute; left:12px; top:16px; bottom:16px; width:5px; border-left:1px dashed #bd8296; border-right:1px solid #bd82964d; pointer-events:none; }
+.artist-chapter-copy { position:relative; z-index:2; }
+.artist-chapter-copy p:last-child { font-size:13px; line-height:1.6; max-width:43ch; }
+.artist-chapter-picture { min-height:250px; position:relative; }
+.artist-chapter-picture .artist-main-photo { width:77%; height:230px; object-fit:cover; object-position:center 37%; border:7px solid #fff9ee; border-bottom-width:18px; box-shadow:3px 4px #9f6c843b; transform:rotate(6deg); display:block; margin:0 auto; }
+.artist-chapter-picture::before { content:""; position:absolute; top:0; left:22%; width:45%; height:16px; background:#cfb1d3a1; z-index:1; transform:rotate(4deg); }
+.artist-chapter-picture .artist-tiny-photo { position:absolute; width:32%; height:40%; bottom:0; right:-2%; border:4px solid #fff9ec; object-fit:cover; transform:rotate(-12deg); box-shadow:3px 3px #8b557b3b; }
+.artist-chapter-picture figcaption { position:absolute; bottom:-7px; left:0; font:700 26px/1 Caveat,"Segoe Print",serif; background:#f2c7da; padding:5px 11px; max-width:75%; transform:rotate(-4deg); }
+.artist-chapter-blue::before { background-color:#dfedf2; }
+.artist-chapter-blue .artist-word:nth-child(3n+2) { background:#eed0dd; }
+.artist-chapter-lilac::before { background-color:#ebdef0; }
+.artist-chapter-green::before { background-color:#e5ebd5; }
+.artist-chapter-rose::before { background-color:#f4d5df; }
+.artist-chapter-wide .artist-title { font-size:clamp(38px,5vw,64px); }
+
+.atelier-page .catalogue-drawer { background:#ece5f4 url("../images/atelier/tache-papier.svg") center/cover; border:1px solid #bd829a; border-radius:3px 16px 4px 9px; padding:28px; box-shadow:6px 7px #ac75932e; }
+.atelier-page .drawer-label { position:relative; padding:13px 18px 17px; border:2px solid #b78198; background:#f9f2fb; transform:rotate(-2deg); }
+.atelier-page .drawer-label::before { content:""; position:absolute; width:39%; height:15px; background:#c4dbe5bb; top:-7px; left:28%; }
+.atelier-page .drawer-label h1 { font:700 clamp(37px,5.8vw,67px)/1 Caveat,"Segoe Print",serif; }
+.atelier-page .index-tickets { gap:28px 26px; }
+.atelier-page .index-ticket { position:relative; padding:10px 10px 19px; background:#f9f2fb; border:1px solid #b7849c; border-radius:0 10px 1px 3px; box-shadow:4px 4px #b781983b; }
+.atelier-page .index-ticket::before { content:""; position:absolute; width:36%; top:-7px; left:31%; height:13px; background:repeating-linear-gradient(90deg,#e5c6a9ba 0 4px,#e8def2b0 4px 8px); z-index:3; }
+.atelier-page .index-ticket:nth-child(2n) { transform:rotate(2deg); }
+.atelier-page .index-ticket:nth-child(3n) { transform:rotate(-2deg); }
+.atelier-page .index-ticket .genre-plate { position:relative; }
+.atelier-page .index-ticket .genre-plate img { height:205px; object-fit:cover; border-radius:49% 49% 2px 4px / 31% 33% 2px 3px; }
+.atelier-page .index-ticket h2 { font-family:Caveat,"Segoe Print",serif; font-size:29px; line-height:1.05; }
+.atelier-page .white-highlight { background:#fffaf5ed; box-decoration-break:clone; padding:2px 6px; }
+.atelier-page .index-ticket p { font-size:12px; padding:0 7px; line-height:1.6; }
+
+.atelier-page .genre-file { position:relative; background:#f3e0df url("../images/atelier/quadrillage-papier.svg") center/140px 140px; border:1px solid #c291a2; border-radius:5px 15px 4px 10px; padding:29px; box-shadow:7px 8px #b680962e; }
+.atelier-page .file-tab { position:relative; margin-left:16px; background:#f7f0fb; border:2px solid #aa728c; padding:15px 25px 12px; max-width:fit-content; transform:rotate(-3deg); box-shadow:4px 4px #ba839d3b; }
+.atelier-page .file-tab::after { content:""; position:absolute; width:42%; height:16px; top:-7px; left:27%; background:#c2d8e3b8; }
+.atelier-page .file-tab h1 { font:700 clamp(39px,5.8vw,70px)/1 Caveat,"Segoe Print",serif; }
+.atelier-page .file-hand { font:700 28px/1 Caveat,"Segoe Print",serif; margin:19px 0 26px 18px; color:#8c4e6b; }
+.atelier-page .file-body { display:grid; grid-template-columns:.85fr 1.35fr; gap:27px; align-items:start; }
+.atelier-page .file-photo { margin:6px 0 17px; position:relative; padding:7px 7px 14px; background:#faf3fb; box-shadow:5px 5px #a8708938; transform:rotate(-4deg); }
+.atelier-page .file-photo::before { content:"";position:absolute; width:46%; top:-8px; left:25%; height:17px; background:#dcbacaad; z-index:2; }
+.atelier-page .file-photo img { width:100%; height:clamp(240px,36vw,440px); object-fit:cover; aspect-ratio:auto; }
+.atelier-page .file-photo figcaption { font:700 29px/1 Caveat,"Segoe Print",serif; text-align:center; padding:12px 0 2px; }
+.atelier-page .file-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0; padding:0; list-style:none; counter-reset:shelves; }
+.atelier-page .file-links li { counter-increment:shelves; margin:0; border:0; position:relative; }
+.atelier-page .file-links a {
+  min-height:128px; padding:14px 12px 10px; display:grid; grid-template-columns:49px 1fr;
+  gap:8px; align-items:center; color:#63374f; text-decoration:none;
+  background:var(--card-paper,#f8f1fb); border:1px solid #ba859b; border-radius:6px 13px 2px 6px;
+  box-shadow:3px 4px #a8708930; position:relative; transform:rotate(-1deg);
+}
+.atelier-page .file-links li:nth-child(3n+2) a { --card-paper:#dce9ee; transform:rotate(2deg); }
+.atelier-page .file-links li:nth-child(3n) a { --card-paper:#e9dfef; transform:rotate(-2deg); }
+.atelier-page .file-links a::before { content:counter(shelves,decimal-leading-zero); position:absolute; top:5px; left:11px; color:#9b6f81; font:700 10px/1 Manrope,Avenir,sans-serif; }
+.atelier-page .file-links a img { width:49px; height:58px; object-fit:contain; grid-row:1; margin-top:10px; }
+.atelier-page .file-links a strong { background:#fbf4fbe8; padding:3px 6px; font:700 23px/1.04 Caveat,"Segoe Print",serif; box-decoration-break:clone; overflow-wrap:anywhere; }
+.atelier-page .file-links a > span { position:absolute; bottom:5px; right:10px; font-size:20px; }
+.atelier-page .file-links a:hover { outline:2px solid #9b5d7f; outline-offset:2px; }
+.atelier-page .file-back { margin-top:27px; }
+
+.atelier-page .shelf-cover { margin-top:17px; }
+.atelier-page .shelf-cover::before { inset:12px -5px -14px 12px; background:var(--paper-dark); transform:rotate(1.7deg); }
+.atelier-page .shelf-cover::after {
+  box-shadow:inset 0 0 0 11px #fff9ec61;
+}
+.atelier-page .shelf-copy { padding-left:10px; }
+.atelier-page .shelf-ticket { border-top:1px dashed #a7758a; border-bottom:1px dashed #a7758a; padding:10px 13px; }
+.shelf-binding { position:absolute; left:-7px; top:11%; bottom:14%; width:17px; background:radial-gradient(ellipse,#845471 0 2px,#f5eefb 2.5px 5px,transparent 5.5px) top center/17px 42px repeat-y; z-index:4; pointer-events:none; }
+.shelf-margin-note { margin:15px 0 0; padding-left:31px; color:var(--ink); font:700 24px/1 Caveat,"Segoe Print",serif; max-width:21ch; transform:rotate(-4deg); }
+.shelf-margin-note::before { content:"↳"; font-size:32px; position:absolute; left:2px; top:-3px; }
+.shelf-frisson .shelf-margin-note { color:#fff2e7; }
+.shelf-craft-mark { position:absolute; width:65px; bottom:5px; right:14px; z-index:2; transform:rotate(12deg); filter:drop-shadow(2px 2px #5f354944); }
+.atelier-page .shelf-collage { margin-bottom:12px; }
+.atelier-page .shelf-collage::after { content:""; position:absolute; top:3px; left:22%; width:32%; height:18px; background:repeating-linear-gradient(110deg,#d4bfc9b0 0 4px,#e8dcf3a8 4px 9px); z-index:4; transform:rotate(-4deg); }
+.shelf-cabinet {
+  position:relative; padding:31px 24px 20px; margin:28px -4px 15px;
+  background:#f8f1fb url("../images/atelier/tache-papier.svg") center/cover;
+  border:1px solid #c598ab; border-radius:3px 9px 2px 10px; box-shadow:6px 6px #ab6b8a2e;
+}
+.shelf-cabinet::before { content:""; position:absolute; width:29%; height:14px; top:-7px; left:35%; background:#c1d9e3c2; transform:rotate(2deg); }
+.shelf-cabinet .shelf-drawer-title { display:inline-block; background:#f2d4df; transform:rotate(-1deg); padding:6px 16px 8px; border:1px solid #bb829b; }
+.atelier-page .journal-actions { border:0; background:transparent; box-shadow:none; padding:16px 0 6px; }
+.atelier-page .journal-actions input { border-radius:4px; border:1px solid #aa748a; border-bottom-width:3px; min-height:47px; }
+.atelier-page .journal-results { font-size:11px; letter-spacing:.04em; padding:8px 0; border-bottom:1px dashed #cfa4b5; margin-bottom:18px; }
+.atelier-page .journal-shelf { gap:22px; padding-top:4px; }
+.atelier-page .journal-shelf .book { background:#faf3fb; border:1px solid #c598aa; box-shadow:3px 4px #a96d8b25; position:relative; padding:19px; }
+.atelier-page .journal-shelf .book:nth-child(2n) { background:#f3edf4; }
+.atelier-page .journal-shelf > .empty {
+  border-left:0; padding:25px 24px; min-height:108px; display:flex; align-items:center;
+  background:#e8e1f2; border:1px dashed #b39383; border-radius:5px; color:#6d4e52;
+  font-family:Caveat,"Segoe Print",serif; font-weight:700; font-size:25px; line-height:1.2;
+}
+.atelier-page .journal-returns { padding-top:17px; border-top:1px dashed #c797aa; font-size:12px; }
+
+.atelier-page .catalogue-slip { position:relative; background:#e6e9e2 url("../images/atelier/quadrillage-papier.svg") center/140px 140px; border:1px solid #ab9eab; border-radius:6px 14px 3px 7px; padding:28px; box-shadow:7px 7px #b7849d30; }
+.atelier-page .slip-heading { align-items:center; gap:20px; min-height:275px; padding-bottom:20px; }
+.atelier-page .slip-heading h1 { font:700 clamp(40px,6vw,76px)/.98 Caveat,"Segoe Print",serif; color:#63445a; max-width:7ch; margin-top:20px; }
+.atelier-page .slip-heading .paper-label { border:1px solid #9d7b85; }
+.atelier-page .slip-collage { flex-basis:49%; height:270px; }
+.atelier-page .slip-photo { width:72%; height:92%; object-fit:cover; object-position:center 38%; padding:7px; background:#f9f2fb; transform:rotate(6deg); box-shadow:4px 4px #7d5c7940; }
+.atelier-page .slip-index { top:0; right:6px; transform:rotate(9deg); border:2px solid #9b627f; z-index:3; }
+.atelier-page .slip-book { width:35%; bottom:-5px; }
+.atelier-page #catalogue-search { background:#f9f2fb; border:1px solid #ac91a1; padding:18px; border-radius:2px 8px 4px 11px; position:relative; box-shadow:3px 4px #8c6d842a; }
+.atelier-page #catalogue-search::before { content:""; width:32%; position:absolute; height:14px; top:-7px; left:36%; background:#edbbd2b3; transform:rotate(-2deg); }
+.atelier-page .catalogue-tabs { padding-top:22px; }
+.atelier-page .catalogue-tabs button { border-radius:0 10px 1px 4px; border:1px solid #b28097; min-height:34px; font:700 18px/1 Caveat,"Segoe Print",serif; box-shadow:2px 3px #9f72822e; transform:rotate(-2deg); }
+.atelier-page .catalogue-tabs button:nth-child(2n) { transform:rotate(2deg); }
+.atelier-page .catalogue-tabs button[aria-pressed=true] { background:#854760; color:#fff8e9; }
+.atelier-page .results-heading h2 { font:700 41px/1 Caveat,"Segoe Print",serif; }
+.atelier-page .catalogue-results,.atelier-page .review-cards { gap:23px; }
+.atelier-page .catalogue-results .book,.atelier-page .review-cards .book { background:#f9f2fb; border:1px solid #c091a5; box-shadow:4px 5px #b8839a30; position:relative; padding:20px; }
+.atelier-page .book h2 { font-family:Georgia,"Times New Roman",serif; font-size:20px; line-height:1.2; }
+.atelier-page .book .btn { font-size:11px; min-height:38px; }
+
+.atelier-page .paper-pockets { background:#e8e0f4 url("../images/atelier/quadrillage-papier.svg") center/140px 140px; border:1px solid #b67b93; border-radius:4px 18px 3px 7px; box-shadow:7px 7px #ae739232; padding:29px; }
+.atelier-page .pockets-heading { border-bottom:1px dashed #b5829a; margin-bottom:25px; padding:0 0 23px; position:relative; }
+.atelier-page .pockets-heading h1 { font:700 clamp(41px,5.5vw,70px)/.98 Caveat,"Segoe Print",serif; }
+.atelier-page .pockets-inner { background:#faf3fb; border:1px solid #b58096; padding:23px; margin:0; border-radius:3px 12px 4px 6px; transform:rotate(-.6deg); box-shadow:4px 5px #aa698b26; }
+.atelier-page .pocket-links { gap:17px; }
+.atelier-page .pocket-link { min-height:145px; padding:17px; border:1px solid #b4879b; border-bottom-width:3px; background:#e8ddf2; border-radius:0 10px 2px 7px; position:relative; }
+.atelier-page .pocket-link:nth-child(3n+2) { background:#dcebf0; transform:rotate(2deg); }
+.atelier-page .pocket-link:nth-child(3n) { background:#f0dae5; transform:rotate(-1.5deg); }
+.atelier-page .pocket-link strong { font:700 25px/1.1 Caveat,"Segoe Print",serif; }
+.atelier-page .pocket-link small { font-size:12px; margin-top:13px; line-height:1.5; }
+.atelier-page .reviews-drawer { padding:30px; background:#e9d4e1 url("../images/atelier/tache-papier.svg") center/cover; border:1px solid #a67793; box-shadow:5px 6px #a971912e; border-radius:4px 16px 3px 8px; }
+.atelier-page .review-label { padding:18px; border:2px solid #a56f8f; background:#f9f2fb; transform:rotate(-2deg); }
+.atelier-page .review-label h1 { font:700 65px/1 Caveat,"Segoe Print",serif; }
+.atelier-page .review-label p { font-family:Caveat,"Segoe Print",serif; font-size:25px; }
+
+.atelier-page .site-main > form,.atelier-page .artist-chapter + form {
+  background:#f8f1fb url("../images/atelier/lignes-carnet.svg") top 5px left/100% 31px;
+  border:1px solid #ba8c9e; border-radius:2px 11px 4px 7px; padding:26px 32px; position:relative; box-shadow:5px 5px #bd8aa131;
+}
+.atelier-page .site-main > form::before { content:""; position:absolute; top:0; bottom:0; left:15px; border-left:1px solid #d5a0ac; }
+.atelier-page .site-main > form label { font-weight:800; color:#75445e; }
+.atelier-page .site-main > form h2 { font:700 32px/1 Caveat,"Segoe Print",serif; }
+.atelier-page .site-main > form input,.atelier-page .site-main > form textarea,.atelier-page .site-main > form select { background:#fdf6fbf2; }
+.atelier-page .site-main > .panel,.atelier-page .site-main > .note,.atelier-page .site-main > details {
+  position:relative; border:1px solid #ba8a9e; background:#f8f1fb; border-radius:3px 11px 4px 8px; box-shadow:3px 4px #bb89a02b; padding:22px; margin-top:22px;
+}
+.atelier-page summary { cursor:pointer; min-height:34px; padding-top:7px; }
+.atelier-page .reader { padding:clamp(22px,4vw,52px); background:#fbf4fb; color:#45323e; border:1px solid #c5a2ae; box-shadow:6px 6px #c197a52b; line-height:1.85; }
+.atelier-page #book-detail > .book { background:#f8f1fb url("../images/atelier/quadrillage-papier.svg") center/140px 140px; padding:28px; border:1px solid #c08fa5; border-radius:4px 17px 4px 8px; box-shadow:6px 6px #af78952e; }
+
+.artist-cinema {
+  position:relative; padding:38px 30px 28px; margin:54px 0 40px; isolation:isolate;
+  display:grid; grid-template-columns:1.6fr .8fr; gap:25px;
+}
+.artist-cinema::before {
+  content:"";position:absolute; inset:0 -8px; z-index:-2; background:#dfd5e8 url("../images/atelier/quadrillage-papier.svg") center/140px 140px;
+  border:1px solid #af80a0; border-radius:5px 14px 3px 8px; transform:rotate(.8deg); box-shadow:6px 7px #a96d8a32;
+}
+.artist-cinema::after { content:""; position:absolute; top:13px; left:12px; right:12px; bottom:13px; border:1px dashed #ab7a99; z-index:-1; pointer-events:none; }
+.artist-cinema-heading { grid-column:1/-1; display:flex; justify-content:space-between; align-items:end; gap:15px; padding:0 0 6px; }
+.artist-cinema-heading h2 { font:700 clamp(34px,5.1vw,60px)/.96 Caveat,"Segoe Print",serif; color:#633e5c; margin:8px 0 0; }
+.artist-cinema-heading .artist-note { transform:rotate(-6deg); max-width:11ch; text-align:center; color:#986687; font-size:26px; }
+.artist-tv { background:#e6b2c7; border:2px solid #a56a85; padding:16px 22px 15px; border-radius:7% 6% 8% 5% / 9% 6% 10% 8%; box-shadow:5px 6px #a271913b; position:relative; }
+.artist-tv::before { content:""; position:absolute; width:21%; height:15px; left:38%; top:-25px; border-top:2px solid #a16e8a; transform:rotate(-24deg); }
+.artist-tv::after { content:""; display:block; width:47%; height:7px; margin:15px auto 0; background:repeating-linear-gradient(90deg,#ad7791 0 2px,transparent 2px 6px); border-radius:5px; }
+.artist-screen { position:relative; border:5px solid #654655; border-radius:22px; overflow:hidden; background:#f1eaf5; aspect-ratio:16/9; }
+.artist-screen video { display:block; width:100%; height:100%; object-fit:contain; background:#f9f2fb; }
+.artist-tv-caption { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:12px 2px 0; color:#795066; font:700 19px/1 Caveat,"Segoe Print",serif; }
+.artist-channel { width:27px; height:27px; border:2px solid #9d637f; border-radius:50%; background:#f4d4e0; box-shadow:2px 2px #99617d3b; }
+.artist-programme { position:relative; background:#f8f1fb; border:1px solid #b48ca0; box-shadow:3px 5px #9d719237; padding:20px 20px 16px; align-self:start; transform:rotate(-3deg); }
+.artist-programme::before { content:""; position:absolute; top:-7px; left:27%; width:43%; height:16px; background:#c0d7dfb3; }
+.artist-programme h3 { font:700 32px/1.03 Caveat,"Segoe Print",serif; margin:10px 0 12px; }
+.artist-programme p { font-size:12px; line-height:1.7; }
+.artist-programme .programme-facts { border-top:1px dashed #bf92a9; border-bottom:1px dashed #bf92a9; padding:10px 0; font-weight:700; font-size:10px; letter-spacing:.03em; }
+.artist-programme a { display:block; font-size:11px; color:#8c4969; margin-top:14px; font-weight:800; }
+.artist-programme .artist-note { font-size:24px; color:#9e5f7b; line-height:1; margin-top:16px; }
+.artist-reel { position:absolute; right:-28px; bottom:-47px; width:92px; z-index:-1; transform:rotate(17deg); }
+.artist-library-card { margin-top:30px; display:grid; grid-template-columns:110px 1fr; gap:20px; align-items:center; background:#f8f1fb; border:1px solid #bc8da0; padding:17px; border-radius:5px 12px 4px 8px; box-shadow:4px 5px #b6869b2a; }
+.artist-library-card img { width:110px; height:120px; object-fit:cover; border:4px solid #fff8ed; transform:rotate(-6deg); }
+.artist-library-card h2 { font:700 32px/1 Caveat,"Segoe Print",serif; margin:0 0 9px; }
+.artist-library-card p { font-size:12px; margin:0 0 10px; }
+.artist-library-card a { font-size:12px; font-weight:800; }
+
+.artist-colophon {
+  margin:42px 0 10px; padding:23px 25px 21px;
+  display:grid; grid-template-columns:140px 1fr; gap:25px; align-items:center; position:relative; isolation:isolate;
+}
+.artist-colophon::before { content:"";position:absolute; inset:8px 0 0; z-index:-1; background:#f1d4df url("../images/atelier/quadrillage-papier.svg") center/140px 140px; border-top:1px dashed #ae7a91; border-bottom:1px dashed #ae7a91; clip-path:polygon(0 5%,12% 0,24% 4%,43% 0,66% 5%,86% 1%,100% 3%,99% 98%,83% 95%,65% 100%,44% 96%,28% 100%,9% 96%,0 99%); }
+.artist-colophon img { width:129px; height:147px; object-fit:cover; padding:5px; border:1px solid #b88ba0; background:#f9f2fb; box-shadow:2px 3px #b8819a3b; transform:rotate(-7deg); }
+.artist-colophon .artist-note { font-size:31px; color:#76445c; margin-bottom:12px; }
+.artist-colophon-links { display:flex; flex-wrap:wrap; gap:10px 21px; }
+.artist-colophon-links a { color:#734059; font-size:12px; font-weight:800; padding:4px 0; min-height:30px; }
+.artist-colophon .artist-label { font-size:9px; padding:4px 9px; }
+.atelier-page .site-footer {
+  padding:30px 5% 25px; max-width:1280px; margin:28px auto 0; position:relative; background:none; border:0; gap:15px;
+}
+.atelier-page .site-footer::before { content:"";position:absolute; z-index:-1; inset:-10px 12px 0; background:url("../images/atelier/nuage-navigation.svg") center/100% 100% no-repeat; transform:rotate(180deg); opacity:.85; }
+.atelier-page .site-footer a { min-height:35px; display:inline-flex; align-items:center; color:#805369; font-size:11px; }
+.atelier-page .site-footer > span { font:700 24px/1 Caveat,"Segoe Print",serif; }
+.atelier-page .site-footer .footer-author { display:inline-block; font-size:17px; }
+
+@keyframes paper-hello { from { opacity:.65; transform:translateY(8px) rotate(2deg); } to { opacity:1; transform:translateY(0) rotate(0); } }
+@media (prefers-reduced-motion:no-preference) {
+  .artist-home-copy,.artist-chapter-copy { animation:paper-hello .55s ease-out both; }
+  .atelier-page a,.atelier-page button { transition:box-shadow .18s ease,background-color .18s ease,color .18s ease; }
+  .artist-home-art .artist-stamp { transition:transform .25s ease-out; }
+  .artist-home-art:hover .artist-stamp { transform:rotate(-3deg) translateY(-5px); }
+  .artist-hero-photo,.artist-main-photo { transition:filter .25s ease; }
+  .artist-figure:hover .artist-hero-photo { filter:saturate(1.08); }
+}
+@media (max-width:1000px) {
+  .atelier-page .site-header { justify-content:center; padding:24px 24px 30px; gap:11px; margin-left:20px; margin-right:20px; }
+  .atelier-page .site-main { padding-left:36px; padding-right:36px; }
+  .atelier-page .site-main::before { left:10px; }
+  .artist-home { grid-template-columns:1fr 1fr; padding:17px 10px 25px; min-height:450px; }
+  .artist-home-art { min-height:400px; }
+  .artist-home-title { font-size:clamp(56px,8.2vw,90px); }
+  .artist-home-copy { padding-left:12px; }
+  .atelier-page .file-body { grid-template-columns:.8fr 1.3fr; gap:22px; }
+  .atelier-page .file-links a { grid-template-columns:39px 1fr; gap:5px; min-height:125px; padding-left:8px; padding-right:8px; }
+  .atelier-page .file-links a img { width:39px; }
+  .atelier-page .file-links a strong { font-size:21px; }
+  .artist-cinema { padding:28px 20px 25px; gap:20px; grid-template-columns:1.4fr .8fr; }
+  .artist-programme { padding:19px 14px 14px; }
+  .artist-programme h3 { font-size:29px; }
+}
+@media (max-width:760px) {
+  .atelier-edition { padding:8px 23px 4px; font-size:8px; }
+  .atelier-edition span:last-child { font-size:14px; }
+  .atelier-page .site-header { margin:4px 18px 0; padding:22px 12px 27px; }
+  .atelier-page .site-header::before { inset:-3px -9px -8px; }
+  .atelier-page .brand { font-size:34px; }
+  .atelier-page .site-nav { gap:2px 4px; }
+  .atelier-page .site-nav a { font-size:20px; padding:7px 8px; min-height:38px; }
+  .atelier-page .site-main { padding:34px 24px 25px; }
+  .atelier-page .site-main::before { display:none; }
+  .atelier-page .crumb { font-size:10px; padding:7px 35px 7px 8px; margin-bottom:21px; }
+  .artist-home { grid-template-columns:minmax(0,1fr); gap:7px; min-height:0; padding:18px 14px 28px; }
+  .artist-home-copy { padding:15px 8px 0; }
+  .artist-home-title { max-width:none; font-size:clamp(57px,13.6vw,92px); margin-top:9px; }
+  .artist-home-title > span { display:inline; }
+  .artist-home-title > span:first-child { display:block; }
+  .artist-home-subtitle { max-width:35ch; font-size:13px; }
+  .artist-home-art { min-height:clamp(320px,83vw,460px); margin:14px 13px 0; }
+  .artist-hero-photo { width:76%; left:7%; }
+  .artist-home-art .artist-stamp { width:27%; right:0; }
+  .artist-home-art .artist-book { right:-4%; width:41%; bottom:3%; }
+  .artist-home-art figcaption { font-size:26px; left:0; bottom:0; }
+  .artist-map-links { grid-template-columns:repeat(2,minmax(0,1fr)); gap:23px 17px; }
+  .artist-map-links a { padding:27px 14px 17px; min-height:150px; }
+  .artist-map-links strong { font-size:24px; }
+  .artist-section-heading { align-items:start; flex-wrap:wrap; margin-bottom:25px; }
+  .atelier-page .featured-grid { gap:25px 16px; padding:18px 10px; }
+  .atelier-page .featured-item img { height:170px; padding:10px; }
+  .atelier-page .featured-item { padding:8px; }
+  .artist-chapter { grid-template-columns:minmax(0,1fr); gap:9px; min-height:0; padding:22px 20px 25px; }
+  .artist-title { font-size:clamp(38px,8.9vw,66px); }
+  .artist-chapter-copy p:last-child { max-width:none; }
+  .artist-chapter-picture { min-height:250px; margin:2px 15px 0; }
+  .artist-chapter-picture .artist-main-photo { height:245px; width:77%; object-position:50% 33%; }
+  .artist-chapter-picture .artist-tiny-photo { width:29%; }
+  .atelier-page .catalogue-drawer { padding:20px 16px; }
+  .atelier-page .index-tickets { gap:26px 17px; }
+  .atelier-page .index-ticket { padding:7px 7px 14px; }
+  .atelier-page .index-ticket .genre-plate img { height:clamp(135px,33vw,200px); }
+  .atelier-page .index-ticket h2 { font-size:25px; }
+  .atelier-page .genre-file { padding:24px 16px; }
+  .atelier-page .file-tab { margin:0; padding:12px 17px; }
+  .atelier-page .file-hand { font-size:25px; margin-left:6px; }
+  .atelier-page .file-body { grid-template-columns:minmax(0,1fr); }
+  .atelier-page .file-photo { width:min(78%,340px); margin:0 auto 19px; }
+  .atelier-page .file-photo img { height:clamp(230px,65vw,350px); }
+  .atelier-page .file-links { grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 14px; }
+  .atelier-page .file-links a { grid-template-columns:44px 1fr; min-height:125px; gap:5px; padding:17px 8px 11px; }
+  .atelier-page .file-links a img { width:44px; }
+  .atelier-page .file-links a strong { font-size:23px; }
+  .shelf-cabinet { margin:25px 0 14px; padding:24px 16px 17px; }
+  .atelier-page .shelf-copy { padding-left:0; }
+  .atelier-page .shelf-binding { left:-5px; }
+  .atelier-page .shelf-margin-note { font-size:23px; margin-top:13px; max-width:none; }
+  .atelier-page .journal-shelf > .empty { padding:22px 16px; font-size:24px; }
+  .atelier-page .catalogue-slip { padding:22px 17px; }
+  .atelier-page .slip-heading { min-height:0; align-items:start; }
+  .atelier-page .slip-heading h1 { max-width:9ch; font-size:clamp(38px,9vw,62px); }
+  .atelier-page .slip-collage { flex-basis:41%; height:210px; }
+  .atelier-page .slip-photo { width:90%; height:90%; }
+  .atelier-page .slip-book { width:52%; bottom:7px; }
+  .atelier-page .slip-index { font-size:26px; width:64px; height:54px; right:-7px; }
+  .atelier-page #catalogue-search { padding:18px 13px; }
+  .atelier-page .paper-pockets,.atelier-page .reviews-drawer { padding:24px 17px; }
+  .atelier-page .pockets-inner { padding:19px 12px; }
+  .atelier-page .pockets-heading h1 { font-size:43px; }
+  .atelier-page .site-main > form { padding:22px; }
+  .atelier-page .site-main > form::before { left:10px; }
+  .artist-cinema { grid-template-columns:minmax(0,1fr); padding:28px 18px 26px; }
+  .artist-cinema-heading { grid-column:auto; gap:9px; padding-bottom:18px; }
+  .artist-cinema-heading .artist-note { font-size:23px; max-width:9ch; }
+  .artist-cinema-heading h2 { font-size:clamp(34px,8.4vw,49px); }
+  .artist-tv { padding:12px 13px 13px; }
+  .artist-screen { border-width:4px; border-radius:13px; }
+  .artist-programme { margin:9px 10px 0; transform:rotate(-1.8deg); }
+  .artist-reel { width:68px; right:-22px; bottom:-32px; }
+  .artist-library-card { grid-template-columns:83px 1fr; padding:14px; gap:15px; }
+  .artist-library-card img { width:83px; height:115px; }
+  .artist-colophon { grid-template-columns:96px 1fr; gap:19px; padding:21px 14px; }
+  .artist-colophon img { width:93px; height:132px; }
+  .artist-colophon .artist-note { font-size:28px; }
+  .artist-colophon-links { gap:7px 13px; }
+  .artist-colophon-links a { font-size:11px; }
+}
+@media (max-width:390px) {
+  .atelier-page .site-main { padding-left:18px; padding-right:18px; }
+  .atelier-page .site-nav a { font-size:18px; padding:7px 6px; }
+  .artist-home-art { margin-left:5px; margin-right:5px; }
+  .artist-map-links { gap:21px 13px; }
+  .artist-map-links a { padding:28px 11px 13px; }
+  .atelier-page .file-links a { grid-template-columns:35px 1fr; gap:4px; }
+  .atelier-page .file-links a img { width:35px; }
+  .atelier-page .file-links a strong { font-size:21px; }
+  .atelier-page .featured-item h3 { font-size:12px; }
+  .artist-cinema-heading .artist-note { font-size:20px; }
+  .artist-cinema { padding-left:13px; padding-right:13px; }
+  .artist-colophon { gap:14px; grid-template-columns:77px 1fr; }
+  .artist-colophon img { width:77px; height:115px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .atelier-page *, .atelier-page *::before,.atelier-page *::after { animation:none!important; transition:none!important; }
+}
+
+/* Pochettes et petites scènes des deux espaces de lecture. */
+.artist-pocket-heading { display:grid; grid-template-columns:1.15fr .85fr; gap:8px 19px; align-items:center; }
+.artist-pocket-heading > .paper-label { grid-column:1; align-self:end; width:fit-content; }
+.artist-pocket-heading > h1 { grid-column:1; align-self:start; margin-top:9px; }
+.artist-pocket-scene { grid-column:2; grid-row:1/3; margin:0 0 7px; position:relative; }
+.artist-pocket-scene img { display:block; width:100%; height:235px; object-fit:cover; object-position:50% 35%; border:6px solid #fff8ed; border-bottom-width:17px; box-shadow:3px 5px #a66c8a3b; transform:rotate(5deg); }
+.artist-pocket-scene figcaption { font:700 25px/1 Caveat,"Segoe Print",serif; position:absolute; bottom:-13px; left:-12%; max-width:110%; padding:5px 9px; background:#f7f0fb; transform:rotate(-4deg); }
+.atelier-page .pocket-tabs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:19px; padding:0; margin:0; list-style:none; }
+.atelier-page .pocket-tabs li { margin:0; border:0; }
+.atelier-page .pocket-tabs li a { display:flex; justify-content:space-between; align-items:center; gap:8px; min-height:95px; padding:16px 13px; background:#e8dcf2; border:1px solid #bb90a0; border-bottom-width:3px; border-radius:1px 9px 2px 4px; transform:rotate(-1deg); box-shadow:3px 4px #a5758e24; color:#694358; text-decoration:none; font:700 25px/1.1 Caveat,"Segoe Print",serif; }
+.atelier-page .pocket-tabs li:nth-child(3n+2) a { background:#dcebf0; transform:rotate(1.8deg); }
+.atelier-page .pocket-tabs li:nth-child(3n) a { background:#eadced; transform:rotate(-2deg); }
+.atelier-page .pocket-tabs li a:hover { outline:2px solid #a86b89; outline-offset:2px; }
+.atelier-page .pocket-note { background:#e9e2f2; border:1px dashed #b2957e; padding:19px; border-radius:3px 9px 4px 6px; box-shadow:3px 4px #a5768130; transform:rotate(2deg); }
+.atelier-page .pocket-note h2 { font:700 31px/1 Caveat,"Segoe Print",serif; }
+.atelier-page .pocket-note p { font-size:12px; }
+.atelier-page .pocket-note .editorial-link { font-size:12px; margin-top:9px; }
+
+@media (max-width:760px) {
+  .artist-pocket-heading { grid-template-columns:minmax(0,1fr); }
+  .artist-pocket-heading > .paper-label,.artist-pocket-heading > h1 { grid-column:1; }
+  .artist-pocket-scene { grid-column:1; grid-row:auto; width:75%; max-width:320px; margin:9px auto 22px; }
+  .artist-pocket-scene img { height:230px; }
+  .atelier-page .pocket-tabs { gap:17px 13px; }
+  .atelier-page .pocket-tabs li a { font-size:23px; padding:14px 10px; min-height:111px; }
+}
+
+/* Les glyphes directionnels utilisent une police complète. */
+.artist-arrow-glyph,.artist-primary > span,.shelf-margin-note::before {
+  font-family:Arial,"DejaVu Sans",sans-serif;
+}

@@ -1,0 +1,146 @@
+/* Collages des cinq outils du carnet, à partir des images du site. */
+.carnet-affiche {
+  --encre-carnet:#532641;
+  --papier-carnet:#f2e6f6;
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  align-items:end;
+  min-height:clamp(420px,46vw,620px);
+  padding:clamp(19px,4.5vw,58px);
+  overflow:hidden;
+  margin-bottom:35px;
+}
+.carnet-affiche-art {
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  background:var(--visuel) center var(--cadrage,50%) / cover no-repeat;
+}
+.carnet-affiche-titre {
+  position:relative;
+  width:fit-content;
+  max-width:min(100%,650px);
+  padding:clamp(14px,2.8vw,30px);
+  color:var(--encre-carnet);
+  background:var(--papier-carnet);
+}
+.carnet-affiche h1 {
+  margin:0;
+  font:400 italic clamp(53px,8.1vw,118px)/.86 var(--editorial-serif);
+  letter-spacing:-.045em;
+}
+.carnet-affiche p { margin:16px 0 13px; font:600 clamp(.92rem,1.55vw,1.12rem)/1.35 var(--editorial-sans); }
+.carnet-affiche-liens { display:flex; flex-wrap:wrap; align-items:center; gap:7px 16px; }
+.carnet-affiche-liens a { color:inherit; text-underline-offset:.2em; font:800 .84rem/1.25 var(--editorial-sans); }
+.carnet-affiche-liens a:first-child { padding:10px 13px; background:var(--encre-carnet); color:#fff8ee; text-decoration:none; }
+.carnet-affiche-liens a:hover { text-decoration:underline; }
+.carnet-affiche-sticker {
+  position:absolute; top:6%; right:5%; width:clamp(53px,12%,135px); max-height:132px;
+  transform:rotate(12deg); filter:drop-shadow(2px 4px 0 #56304850);
+}
+
+.carnet-affiche-passages {
+  --visuel:url("../images/carnet-video/magazine-rose.png");
+  --cadrage:52%;
+  background:#e44e93;
+}
+.carnet-affiche-passages .carnet-affiche-art { inset:0 0 0 11%; transform:rotate(-3deg) scale(1.04); }
+.carnet-affiche-passages .carnet-affiche-titre {
+  background:linear-gradient(8deg,#f1c1d3 0 13%,#f2e6f6 13% 100%);
+  transform:rotate(-3deg); box-shadow:7px 8px #6f27484f;
+}
+.carnet-affiche-passages h1 { text-decoration:underline #dc739b .095em; text-underline-offset:.12em; }
+.carnet-affiche-marges {
+  --visuel:url("../images/atelier/chuchotement.jpg");
+  --papier-carnet:#ead8f0;
+  --encre-carnet:#42274e;
+  background:#dac1e7;
+  justify-items:end;
+}
+.carnet-affiche-marges .carnet-affiche-art {
+  inset:-5% 15% -17% -2%; clip-path:polygon(0 0,90% 0,95% 87%,77% 100%,0 95%);
+  background-position:center 41%;
+}
+.carnet-affiche-marges .carnet-affiche-titre {
+  transform:rotate(2deg); box-shadow:8px 8px #76538955;
+  border-radius:4% 7% 5% 2% / 5% 7% 6% 8%;
+}
+.carnet-affiche-fiches {
+  --visuel:url("../images/carnet-video/carnet-jaune.png");
+  --cadrage:45%;
+  --encre-carnet:#533524;
+  background:#e8def5;
+}
+.carnet-affiche-fiches .carnet-affiche-art { inset:0 0 0 24%; }
+.carnet-affiche-fiches .carnet-affiche-titre {
+  max-width:min(100%,530px); border-left:7px double #b8785d;
+  background:repeating-linear-gradient(transparent 0 27px,#c78b6c30 27px 28px),#e5ecf8;
+  transform:rotate(-2deg);
+}
+.carnet-affiche-fiches h1 { font-family:var(--affiche); font-style:normal; letter-spacing:-.025em; }
+.carnet-affiche-journaux {
+  --visuel:url("../images/atelier/livre-paysage.jpg");
+  --cadrage:57%;
+  --papier-carnet:#e7f0dc;
+  --encre-carnet:#314b46;
+  background:#bee4d3;
+  justify-items:end;
+}
+.carnet-affiche-journaux .carnet-affiche-art {
+  inset:-5% 0 -6% 0; transform:rotate(1deg); background-size:cover;
+}
+.carnet-affiche-journaux .carnet-affiche-titre {
+  max-width:min(100%,590px); transform:rotate(-3deg);
+  border:5px solid #f7f0df; box-shadow:5px 8px #39634f4f;
+}
+.carnet-affiche-questions {
+  --visuel:url("../images/carnet-video/portrait-lilas.png");
+  --papier-carnet:#f0dfed;
+  --encre-carnet:#512c57;
+  background:#cfb1e7;
+}
+.carnet-affiche-questions .carnet-affiche-art {
+  inset:0 0 0 32%; background-position:center 40%;
+  clip-path:polygon(13% 0,100% 0,100% 100%,0 100%,6% 47%);
+}
+.carnet-affiche-questions .carnet-affiche-titre { max-width:min(100%,590px); transform:rotate(2deg); }
+.carnet-affiche-questions h1 { font-family:var(--affiche); font-style:normal; letter-spacing:-.025em; }
+
+.carnet-affiche ~ .trace-filters {
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px 18px; padding:23px; border-radius:0;
+  background:repeating-linear-gradient(transparent 0 28px,#a459781a 28px 29px),#f5eefb;
+  border-bottom:2px solid #b9859e;
+}
+.carnet-affiche ~ .trace-filters > div { min-width:0; }
+.carnet-affiche ~ .trace-filters :is(h2,[role="status"]) { grid-column:1 / -1; }
+.carnet-affiche ~ .trace-filters :is(input,select) { width:100%; }
+.carnet-affiche ~ :is(#note-form,#question-form) {
+  padding:clamp(15px,4vw,43px); border-radius:0; border:0;
+  border-left:5px double #bb809b;
+  background:repeating-linear-gradient(transparent 0 30px,#b2829a26 30px 31px),#f7f0fb;
+  box-shadow:5px 6px #8a4e6c23;
+}
+.carnet-affiche ~ :is(#note-form,#question-form) :is(input,select,textarea) { background:#fffcf6; }
+.carnet-affiche ~ #note-form .book-picker { border-radius:0; background:#e8d6e6; }
+.carnet-affiche ~ #question-form h2 { font:400 clamp(32px,5vw,52px)/1 var(--editorial-serif); margin:0 0 15px; }
+.carnet-affiche ~ .notes-results { margin:28px 0; }
+
+.carnet-onglets { margin:38px 0 22px; }
+.carnet-onglets h2 { font:400 clamp(34px,5vw,60px)/1 var(--editorial-serif); margin:0 0 15px; }
+.carnet-onglets > div { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+.carnet-onglets a { position:relative; display:grid; align-items:end; overflow:hidden; min-height:190px; isolation:isolate; color:#4e2940; text-decoration:none; }
+.carnet-onglets img { position:absolute; z-index:-1; width:100%; height:100%; object-fit:cover; object-position:center 38%; }
+.carnet-onglets a > span { width:fit-content; margin:8px; padding:5px 10px; background:#f7f0fb; font:600 clamp(20px,3vw,31px)/1 var(--affiche); }
+.carnet-onglets a:hover > span { text-decoration:underline; }
+@media(max-width:720px) {
+  .carnet-affiche { min-height:475px; }
+  .carnet-affiche h1 { font-size:clamp(49px,11vw,75px); }
+  .carnet-affiche-titre { max-width:100%; }
+  .carnet-affiche-sticker { top:5%; right:7%; width:73px; }
+  .carnet-affiche-fiches .carnet-affiche-art,.carnet-affiche-questions .carnet-affiche-art { inset:0; clip-path:none; }
+  .carnet-affiche ~ .trace-filters { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .carnet-onglets > div { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .carnet-onglets a { min-height:140px; }
+}
