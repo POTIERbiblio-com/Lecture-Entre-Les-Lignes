@@ -11,6 +11,12 @@
   "theme_color": "#ba7897",
   "icons": [
     {
+      "src": "images/app-icon-elegant.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
       "src": "images/niveau-1-accueil/logo/carnet.png",
       "sizes": "any",
       "type": "image/png",
