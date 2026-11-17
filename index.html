@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Accueil · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
-<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/carnet-video.css"></head>
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/carnet-video.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"></head>
 <body class="page-accueil atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <div class="site-header" role="banner">
@@ -134,5 +134,5 @@
 <a href="admin.html">Atelier admin</a></div>
 <script type="text/javascript" src="js/app.js?v=accounts-20261117">
 </script>
-</body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script></body>
 </html>
