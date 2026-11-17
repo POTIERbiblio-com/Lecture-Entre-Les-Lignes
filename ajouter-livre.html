@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ajouter un livre · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/comptes.css"></head>
+<body class="atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="site-header" role="banner">
+<a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<div class="site-nav" aria-label="Menu principal" role="navigation">
+<a href="index.html">Accueil</a>
+<a href="genres.html">Genres</a>
+<a href="lecture.html" class="active" aria-current="page">Lecture</a>
+<a href="mes-livres.html" class="nav-search">Chercher un livre</a>
+<a href="critiques.html">Critiques</a>
+<a href="mon-espace.html">Mon espace</a>
+</div>
+</div>
+<div class="site-main" role="main" id="contenu">
+<div class="crumb">
+<a href="index.html">Accueil</a> / <a href="lecture.html">Lecture</a> / <a href="ajouter-livre.html">Ajouter</a>
+</div>
+<header class="artist-chapter artist-chapter-rose banner-editorial">
+ <div class="artist-chapter-copy"><p class="artist-kicker">Nouveau volume</p>
+ <h1 class="artist-title" id="book-save-title">Une nouvelle lecture</h1><p>Renseigne le titre, choisis son rayon et ajoute une couverture ou ton fichier de lecture.</p></div>
+ <figure class="artist-chapter-picture"><img class="artist-main-photo" src="images/atelier/carnet-geant.jpg" alt="">
+ <img class="artist-tiny-photo" src="images/atelier/portrait-tasse.jpg" alt=""><img class="banner-sticker" src="images/objets/livre-ouvert.svg" alt=""><figcaption>Il reste une place sur l’étagère.</figcaption></figure>
+ </header><p id="book-access"><a class="btn secondary" href="admin.html">Accéder à l’atelier administrateur</a></p>
+<form id="book-form" hidden><label for="title">Titre</label><input id="title" name="title" required maxlength="180"><label for="author">Auteur</label><input id="author" name="author" required maxlength="150"><label for="genre">Genre</label><select id="genre" name="genre"><option value="fiction">Fiction</option><option value="savoirs">Savoirs</option><option value="arts">Arts</option><option value="vie-et-societe">Vie et société</option><option value="spiritualites">Spiritualités et religions</option><option value="jeunesse">Jeunesse et pédagogie</option></select><label for="sub">Sous-genre</label><select id="sub" name="sub"></select><label for="presentation">Présentation du livre</label><textarea id="presentation" name="presentation" placeholder="Le sujet, le contexte, ce qui m’attire…"></textarea><label for="summary">Résumé du livre</label><textarea id="summary" name="summary"></textarea><fieldset class="edition-editor"><legend>Carte d’identité du livre</legend><div class="edition-editor-fields"><label for="edition-publisher">Éditeur<input id="edition-publisher" maxlength="500"></label><label for="edition-year">Date de parution de cette édition<input id="edition-year" maxlength="500"></label><label for="edition-original">Première parution<input id="edition-original" maxlength="500"></label><label for="edition-isbn">ISBN de cette édition<input id="edition-isbn" maxlength="500"></label><label for="edition-kind">Libellé de l’ISBN (papier, numérique…)<input id="edition-kind" maxlength="500"></label><label for="edition-otherIsbn">ISBN des autres éditions<input id="edition-otherIsbn" maxlength="500"></label><label for="edition-issn">ISSN<input id="edition-issn" maxlength="500"></label><label for="edition-language">Langue<input id="edition-language" maxlength="500"></label><label for="edition-collection">Collection<input id="edition-collection" maxlength="500"></label><label for="edition-pages">Nombre de pages de l’édition imprimée<input id="edition-pages" maxlength="500"></label><label for="edition-contributors">Traduction et autres contributions<input id="edition-contributors" maxlength="500"></label></div><label for="edition-note">Précision sur l’édition</label><textarea id="edition-note" maxlength="4000" rows="3"></textarea></fieldset><fieldset class="edition-editor"><legend>Résumé par chapitre</legend><label for="chapter-unit">Structure du livre</label><select id="chapter-unit"><option>Chapitres</option><option>Parties</option><option>Dossiers</option><option>Stratagèmes</option><option>Repères d’après le sommaire</option><option>Passage</option></select><div id="chapter-fields"></div><button type="button" id="chapter-add" class="secondary">Ajouter une entrée</button></fieldset><label for="text">Texte à lire (facultatif)</label><textarea id="text" name="text"></textarea><label for="file">Ou fichier TXT / PDF</label><input id="file" type="file" accept=".txt,.pdf"><label for="cover">Couverture (facultative)</label><input id="cover" type="file" accept="image/png,image/jpeg,image/webp">
+<p class="note">Importe uniquement les fichiers que tu es autorisée à utiliser. Les fichiers ajoutés sont accessibles dans le catalogue en ligne.</p><button id="book-save">Enregistrer le livre</button>
+<p id="status" class="status" role="status">
+</p>
+</form>
+<aside class="artist-colophon" aria-label="Continuer dans le carnet">
+ <img src="images/atelier/carnet-geant.jpg" alt="" loading="lazy"><div><div class="artist-colophon-links"><a href="genres.html">Repartir dans les rayons <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a><a href="lecture.html">Lecture <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a></div></div></aside></div>
+<div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
+<a href="plan.html">Plan du site</a>
+<a href="admin.html">Atelier admin</a></div>
+<script type="text/javascript" src="js/app.js?v=dd11c654eb">
+</script>
+</body>
+</html>

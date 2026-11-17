@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mode d’emploi · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"></head>
+<body class="atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="site-header" role="banner">
+<a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<div class="site-nav" aria-label="Menu principal" role="navigation">
+<a href="index.html">Accueil</a>
+<a href="genres.html">Genres</a>
+<a href="lecture.html" aria-current="page" class="active">Lecture</a>
+<a href="mes-livres.html" class="nav-search">Chercher un livre</a>
+<a href="critiques.html">Critiques</a>
+<a href="mon-espace.html">Mon espace</a>
+</div>
+</div>
+<div class="site-main" role="main" id="contenu">
+<div class="crumb">
+<a href="index.html">Accueil</a> / <a href="aide.html">Mode d’emploi</a>
+</div>
+<header class="artist-chapter artist-chapter-green banner-lecture">
+ <div class="artist-chapter-copy"><p class="artist-kicker">Le mode d’emploi</p>
+ <h1 class="artist-title"><span class="artist-word">Mon</span> <span class="artist-word">site</span> <span class="artist-word">dans</span> <span class="artist-word">KompoZer</span></h1><p>Les repères pour ouvrir et modifier les pages du site.</p></div>
+ <figure class="artist-chapter-picture"><img class="artist-main-photo" src="images/atelier/a-l-ecoute.jpg" alt="">
+ <img class="artist-tiny-photo" src="images/atelier/carnet-sur-roues.jpg" alt=""><img class="banner-sticker" src="images/objets/questions.svg" alt=""><figcaption>On ouvre le carnet ensemble.</figcaption></figure>
+ </header><ol>
+<li>Décompresse toute l’archive en gardant ses dossiers.</li>
+<li>Dans KompoZer, ouvre <strong>index.html</strong>. Les autres pages sont de vrais fichiers HTML que tu peux modifier séparément.</li>
+<li>Change les textes en mode normal, les liens et images avec les outils de KompoZer. Garde leurs chemins relatifs.</li>
+<li>Pour utiliser la lecture, les imports et les sauvegardes, ouvre le site dans un navigateur moderne. Le rendu de l’éditeur peut différer du navigateur.</li>
+<li>Cherche un livre par son titre ou son auteur, puis ouvre sa présentation. L’ajout et la modification du catalogue sont réservés à l’atelier administrateur en ligne.</li>
+<li>Exporte régulièrement tes données dans Mon espace → Mes sauvegardes.</li>
+</ol>
+<h2>Pour l’ouvrir toujours à la même adresse</h2>
+<p>Avec Python installé, lance <code>python -m http.server 8000</code> dans le dossier du site puis ouvre <code>http://localhost:8000</code>. Cela stabilise l’adresse utilisée pour les sauvegardes.</p>
+<h2>Ce que cette version fait</h2>
+<p>Sélectionne le texte d’une page PDF pour le surligner. Les passages, les couleurs, les annotations et les fiches sont enregistrés automatiquement. Retrouve-les dans Mon espace ; filtre les passages par couleur ou par livre. Dans les journaux, recherche le titre du livre avant d’écrire.</p>
+<h2>Ce qui demande une partie serveur</h2>
+<p>Comptes, partage entre appareils, critiques publiques, réponses, modération et administration protégée. KompoZer édite les pages ; ces services ne sont pas fournis par ces fichiers locaux.</p>
+<h2>Sources et crédits</h2>
+<p>Les six couvertures et la photographie de bibliothèque viennent des pièces jointes du projet. Les notices externes des livres sont liées depuis leurs fiches. Les illustrations de genres sont détaillées dans <a href="SOURCES_ILLUSTRATIONS.txt">le fichier des sources visuelles</a>.</p>
+<ul>
+<li>
+<a href="https://sourceforge.net/projects/kompozer/files/current/0.8b3/">Téléchargement de KompoZer sur SourceForge ↗</a>
+</li>
+<li>
+<a href="ressources.html">Le carnet en quatre gestes · tutoriel vidéo</a>
+</li>
+</ul>
+<aside class="artist-colophon" aria-label="Continuer dans le carnet">
+ <img src="images/atelier/tiroir-imaginaire.jpg" alt="" loading="lazy"><div><div class="artist-colophon-links"><a href="mon-espace.html">Mon espace <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a><a href="sauvegardes.html">Garder une copie du carnet <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a></div></div></aside></div>
+<div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
+<a href="plan.html">Plan du site</a>
+<a href="admin.html">Atelier admin</a></div>
+<script type="text/javascript" src="js/app.js?v=dd11c654eb">
+</script>
+</body>
+</html>

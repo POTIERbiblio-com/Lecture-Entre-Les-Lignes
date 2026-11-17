@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Chercher un livre · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/livres-documentes.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"></head>
+<body class="page-mes-livres atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="site-header" role="banner">
+<a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<div class="site-nav" aria-label="Menu principal" role="navigation">
+<a href="index.html">Accueil</a>
+<a href="genres.html">Genres</a>
+<a href="lecture.html">Lecture</a>
+<a href="mes-livres.html" class="nav-search active" aria-current="page">Chercher un livre</a>
+<a href="critiques.html">Critiques</a>
+<a href="mon-espace.html">Mon espace</a>
+</div>
+</div>
+<div class="site-main" role="main" id="contenu">
+<div class="crumb">
+<a href="index.html">Accueil</a> / <a href="lecture.html">Lecture</a> / <a href="mes-livres.html">Chercher un livre</a>
+<img class="journal-sticker margin-sticker" src="images/carnet-illustre/sticker-loupe.svg" alt="" aria-hidden="true"></div>
+<div class="catalogue-slip">
+  <div class="slip-heading"><div><h1>Chercher un livre</h1></div><div class="slip-collage" aria-hidden="true"><img src="images/carnet-illustre/loupe.jpg" alt="" class="slip-photo"><img src="images/atelier/revue-ouverte.jpg" alt="" class="slip-book"></div></div>
+  <form id="catalogue-search" role="search">
+      <div class="catalogue-field catalogue-query"><label for="search">Titre, auteur, année, ISBN ou thème</label>
+      <input id="search" name="q" type="search" placeholder="Ex. Harari, 2015, leadership…" maxlength="160">
+      </div>
+<div class="search-controls">
+        <button type="submit" class="cloud-link">Rechercher <span aria-hidden="true" class="artist-arrow-glyph">↗</span></button>
+        <button type="reset" class="reset-link">Effacer</button>
+      </div>
+<div class="catalogue-field"><label for="search-genre">Genre</label>
+      <select id="search-genre" name="genre">
+        <option value="">Tous les genres</option>
+        <option value="fiction">Fiction</option>
+        <option value="savoirs">Savoirs</option>
+        <option value="arts">Arts</option>
+        <option value="vie-et-societe">Vie et société</option>
+        <option value="spiritualites">Spiritualités et religions</option>
+        <option value="jeunesse">Jeunesse et pédagogie</option>
+      </select>
+      </div>
+<div class="catalogue-field"><label for="search-year">Année de l’édition</label><select id="search-year"><option value="">Toutes les dates</option></select></div>
+<div class="catalogue-field"><label for="search-sort">Classer les résultats</label><select id="search-sort"><option value="title">Titre · A à Z</option><option value="author">Auteur · A à Z</option><option value="newest">Parution · récente d’abord</option><option value="oldest">Parution · ancienne d’abord</option></select></div>
+<label class="catalogue-pdf-filter"><input type="checkbox" id="pdf-only"> Avec un PDF disponible</label>
+
+    </form>
+  <div class="catalogue-tabs" id="catalogue-tabs" role="group" aria-label="Filtrer par rayon" hidden>
+    <span class="catalogue-tabs-label">Les rayons</span>
+    <button type="button" data-genre="" aria-pressed="true">Tout</button>
+    <button type="button" data-genre="fiction" aria-pressed="false">Fiction</button>
+    <button type="button" data-genre="savoirs" aria-pressed="false">Savoirs</button>
+    <button type="button" data-genre="arts" aria-pressed="false">Arts</button>
+    <button type="button" data-genre="vie-et-societe" aria-pressed="false">Vie et société</button>
+    <button type="button" data-genre="spiritualites" aria-pressed="false">Spiritualités</button>
+    <button type="button" data-genre="jeunesse" aria-pressed="false">Jeunesse</button>
+  </div>
+</div>
+<div class="search-results catalogue-shelf">
+  <div class="results-heading">
+    <h2>Les livres du carnet</h2>
+    <p id="search-count" aria-live="polite" aria-atomic="true"></p>
+  </div>
+  <div id="books" class="catalogue-results"></div>
+  <noscript><p>Pour filtrer le catalogue, active JavaScript ou <a href="genres.html">parcours les genres</a>.</p></noscript>
+  <div class="catalogue-links"><a class="editorial-link" href="genres.html">Feuilleter les genres ↗</a><a class="editorial-link" href="ajouter-livre.html">Ajouter un livre ↗</a></div>
+</div>
+<aside class="artist-colophon" aria-label="Continuer dans le carnet">
+ <img src="images/atelier/carnet-geant.jpg" alt="" loading="lazy"><div><div class="artist-colophon-links"><a href="genres.html">Repartir dans les rayons <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a><a href="lecture.html">Lecture <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a></div></div></aside></div>
+<div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
+<a href="plan.html">Plan du site</a>
+<a href="admin.html">Atelier admin</a></div>
+<script type="text/javascript" src="js/app.js?v=dd11c654eb">
+</script>
+</body>
+</html>

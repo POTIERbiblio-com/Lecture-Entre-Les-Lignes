@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mes journaux de livres · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/carnet-pages.css"></head>
+<body class="atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="site-header" role="banner">
+<a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<div class="site-nav" aria-label="Menu principal" role="navigation">
+<a href="index.html">Accueil</a>
+<a href="genres.html">Genres</a>
+<a href="lecture.html" aria-current="page" class="active">Lecture</a>
+<a href="mes-livres.html" class="nav-search">Chercher un livre</a>
+<a href="critiques.html">Critiques</a>
+<a href="mon-espace.html">Mon espace</a>
+</div>
+</div>
+<div class="site-main" role="main" id="contenu">
+<div class="crumb">
+<a href="index.html">Accueil</a> / <a href="mon-espace.html">Mon espace</a> / <a href="journaux.html">Mes journaux de livres</a>
+</div>
+<header class="carnet-affiche carnet-affiche-journaux" aria-labelledby="carnet-page-title">
+  <div class="carnet-affiche-art" aria-hidden="true"></div>
+  <div class="carnet-affiche-titre">
+    <h1 id="carnet-page-title">Mes journaux de livres</h1>
+    <p>Note ce que tu découvres au fil des chapitres.</p>
+    <div class="carnet-affiche-liens">
+      <a href="#note-form">Écrire dans le journal <span aria-hidden="true">↓</span></a>
+      <a href="#notes-results">Retrouver mes entrées <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+  <img class="carnet-affiche-sticker" src="images/objets/journal.svg" alt="">
+</header><form id="note-form" data-kind="journaux"><div class="book-picker"><h2 class="carnet-filter-title"><img src="images/objets/loupe.svg" alt="">Choisir le livre</h2><label for="book-title-search">Recherche par titre ou auteur</label><input id="book-title-search" type="search" autocomplete="off" placeholder="Ex. Sapiens…"><input id="book-select" type="hidden"><div id="book-search-results" class="book-search-results" aria-live="polite"></div><div id="selected-note-book" class="selected-note-book"></div></div><label for="note-title">Titre</label><input id="note-title" placeholder="Le titre du livre sera repris si tu laisses ce champ vide"><label for="note-page">Page / chapitre</label><input id="note-page"><label for="note-body">Mon texte</label><textarea id="note-body" required placeholder="Ce que j’ai lu aujourd’hui, les idées qui me restent…"></textarea><p class="automatic-note">Tes lignes sont enregistrées automatiquement.</p><button>Enregistrer maintenant</button><button type="button" id="note-new" class="text-button">Nouvelle page de journal</button>
+<p id="status" class="status" role="status">
+</p>
+</form>
+<section class="notes-results" id="notes-results" tabindex="-1"><label for="notes-search">Retrouver une entrée par titre de livre</label><input id="notes-search" type="search" placeholder="Titre du livre ou de l’entrée…"><div id="notes" data-kind="journaux">
+</div></section>
+<nav class="carnet-onglets" aria-labelledby="carnet-onglets-title">
+  <h2 id="carnet-onglets-title">Continuer dans le carnet</h2>
+  <div>
+    <a href="surlignages.html"><img src="images/atelier/revue-ouverte.jpg" alt="" loading="lazy"><span>Surlignages <span aria-hidden="true">↗</span></span></a>
+    <a href="annotations.html"><img src="images/atelier/chuchotement.jpg" alt="" loading="lazy"><span>Annotations <span aria-hidden="true">↗</span></span></a>
+    <a href="fiches.html"><img src="images/atelier/carnets-et-monde.jpg" alt="" loading="lazy"><span>Fiches <span aria-hidden="true">↗</span></span></a>
+    <a href="tests.html"><img src="images/atelier/a-l-ecoute.jpg" alt="" loading="lazy"><span>Questions <span aria-hidden="true">↗</span></span></a>
+  </div>
+</nav></div>
+<div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
+<a href="plan.html">Plan du site</a>
+<a href="admin.html">Atelier admin</a></div>
+<script type="text/javascript" src="js/app.js?v=dd11c654eb">
+</script>
+</body>
+</html>
