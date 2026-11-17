@@ -3674,12 +3674,12 @@ async function loadPublicCatalogue(){
   const genreSlug=genre?.slug||(GENRES[entry.genre]?entry.genre:null);
   if(!genreSlug||!entry.title)return null;
   const subs=GENRES[genreSlug][1];
-  const subIndex=entry.sub!==undefined&&/^\\d+$/.test(String(entry.sub))?Number(entry.sub):subs.indexOf(entry.subcategory||'');
+  const subIndex=entry.sub!==undefined&&/^\d+$/.test(String(entry.sub))?Number(entry.sub):subs.indexOf(entry.subcategory||'');
   if(subIndex<0||subIndex>=subs.length)return null;
   const path=entry.pdf_path||entry.pdfPath||'';
-  const safePath=/^(?:pdf\/|livres\/)[^?#]+\\.pdf$/i.test(path)?path:'';
+  const safePath=/^(?:pdf\/|livres\/)[^?#]+\.pdf$/i.test(path)?path:'';
   const cover=entry.cover_path||entry.cover||'';
-  const safeCover=/^(?:images\/|livres\/)[^?#]+\\.(?:png|jpe?g|webp)$/i.test(cover)?cover:'';
+  const safeCover=/^(?:images\/|livres\/)[^?#]+\.(?:png|jpe?g|webp)$/i.test(cover)?cover:'';
   return {id:source+'-'+entry.id,title:entry.title,author:entry.author||'',genre:genreSlug,sub:String(subIndex),
    cover:safeCover,pdfPath:safePath,presentation:entry.description||entry.presentation||'',summary:entry.summary||'',
    publisher:entry.publisher||'',year:entry.publication_year||entry.year||'',isbn:entry.isbn||'',
