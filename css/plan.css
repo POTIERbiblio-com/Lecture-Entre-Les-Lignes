@@ -1,0 +1,11 @@
+.lecture-reperes { margin: 32px 0; }
+.lecture-reperes table { width: 100%; border-collapse: collapse; color: #46273b; background: #faf1f6; font-size: .93em; }
+.lecture-reperes caption { text-align: left; font-weight: 700; margin-bottom: 8px; }
+.lecture-reperes th,.lecture-reperes td { padding: .75em; border: 1px solid #cfb0c4; text-align: left; vertical-align: middle; }
+.lecture-reperes thead th { background: #ead6e8; }
+.lecture-reperes tbody tr:nth-child(even) { background: #f4e7f0; }
+.lecture-reperes td a { color: #773552; text-decoration: underline; }
+@media screen and (max-width: 540px) {
+  .lecture-reperes th,.lecture-reperes td { padding: .45em; }
+  .lecture-reperes table { font-size: .84em; }
+}

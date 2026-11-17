@@ -1,0 +1,14 @@
+.carnet-compte,.edition-editor { border:1px solid #bd9cb8; color:#40283d; background:#f1e8f7; }
+.carnet-compte {
+  margin:18px 0 26px; padding:13px 18px; display:flex;
+  flex-wrap:wrap; align-items:center; gap:8px 18px;
+}
+.carnet-compte:empty { display:none; }
+.carnet-compte p { margin:0; }
+.edition-editor { margin:22px 0; padding:16px; min-width:0; }
+.edition-editor legend { color:#6a3658; padding:0 6px; font-weight:700; }
+.edition-editor-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr)); gap:0 12px; }
+.edition-editor label { display:block; }
+.chapter-editor-row { border:1px dashed #ac8aa7; margin:12px 0; padding:10px 14px; min-width:0; }
+.chapter-editor-actions { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; }
+#book-form[hidden],#book-access[hidden],[data-admin-only][hidden] { display:none !important; }
