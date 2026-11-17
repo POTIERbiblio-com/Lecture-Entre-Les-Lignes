@@ -3670,11 +3670,15 @@ function pdfAddress(b){if(b.pdf)return b.pdf;if(location.protocol==='file:'&&typ
 async function loadPublicCatalogue(){
  const mapping=Object.fromEntries(Object.entries(GENRES).map(([slug,[name,subs]])=>[name,{slug,subs}]));
  const normalize=(entry,source)=>{
-  const genre=mapping[entry.category||entry.genre];
-  const genreSlug=genre?.slug||(GENRES[entry.genre]?entry.genre:null);
+  const categoryName=String(entry.category||entry.genre||'').trim();
+  const aliases={'Savoir':'Savoirs','Savoirs':'Savoirs','Développement personnel':'Vie et société','Spiritualité':'Spiritualités et religions'};
+  const resolvedCategory=aliases[categoryName]||categoryName;
+  const genre=mapping[resolvedCategory];
+  const genreSlug=genre?.slug||(GENRES[resolvedCategory]?resolvedCategory:null);
   if(!genreSlug||!entry.title)return null;
   const subs=GENRES[genreSlug][1];
-  const subIndex=entry.sub!==undefined&&/^\d+$/.test(String(entry.sub))?Number(entry.sub):subs.indexOf(entry.subcategory||'');
+  const requestedSub=String(entry.subcategory||'').trim();
+  const subIndex=entry.sub!==undefined&&/^\d+$/.test(String(entry.sub))?Number(entry.sub):subs.findIndex(x=>x.toLowerCase()===requestedSub.toLowerCase());
   if(subIndex<0||subIndex>=subs.length)return null;
   const path=entry.pdf_path||entry.pdfPath||'';
   const safePath=/^(?:pdf\/|livres\/)[^?#]+\.pdf$/i.test(path)?path:'';
