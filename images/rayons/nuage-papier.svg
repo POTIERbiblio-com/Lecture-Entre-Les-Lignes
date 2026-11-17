@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 218">
+<defs><pattern id="points" width="7" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="2" r=".58" fill="#8c4d6c" opacity=".22"/></pattern></defs>
+<path id="paper" d="M16 102Q12 79 44 68Q25 43 73 32Q98 23 123 33Q124 12 163 9Q201 2 223 22Q253 0 293 12Q315 16 327 36Q356 15 392 36Q415 47 412 65Q460 61 469 87Q485 108 464 130Q488 154 460 171Q452 181 426 185Q408 213 361 198Q340 216 307 208Q287 218 252 205Q224 224 192 207Q160 219 139 196Q105 213 76 192Q37 199 26 172Q-3 163 9 140Q-2 123 16 102Z" fill="#fff9eb" stroke="#9e6380" stroke-width="3.5"/>
+<path d="M30 107Q34 69 89 65Q131 27 213 43Q324 19 403 65Q461 79 452 124Q452 182 370 177Q277 214 169 190Q63 197 33 154Z" fill="url(#points)"/>
+<path d="M44 78Q55 59 85 57M398 154Q419 158 439 143M30 134l6 10M313 189l21 4" fill="none" stroke="#c69aaf" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 270"><defs>
+<pattern id="grain" width="13" height="11" patternUnits="userSpaceOnUse"><path d="M1 4h1m6 5 2-1M11 2h1M4 10h1" stroke="#684758" stroke-width=".65" opacity=".19" fill="none"/></pattern>
+<pattern id="carreaux" width="21" height="21" patternUnits="userSpaceOnUse"><path d="M0 1h21M1 0v21" fill="none" stroke="#9d819e" stroke-width=".6" opacity=".28"/></pattern>
+</defs>
+<path d="M72 44Q121 13 168 43Q207 72 187 126Q173 161 130 165Q82 168 57 129Q28 78 72 44Z" fill="#bdd9df" stroke="#876b85" stroke-width="4"/>
+<path d="M82 57Q120 34 155 57Q185 80 169 118Q156 147 124 147Q88 146 72 119Q51 83 82 57Z" fill="#fff8e9" stroke="#8a7c91" stroke-width="2"/>
+<path d="M78 95q27-30 63-26m-61 39 23-17" stroke="#dce8ed" stroke-width="5" stroke-linecap="round" fill="none"/>
+<path d="M170 145L190 132L251 210Q257 221 246 228L233 238Q222 245 213 231Z" fill="#e3abc4" stroke="#906b85" stroke-width="3"/>
+<path d="M187 154l15-11m-6 21 13-10" stroke="#fff3e8" stroke-width="3" fill="none"/>
+<path d="M60 37l-9-14m-6 31-16-5m165-17 10-10" stroke="#b486a0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</svg>
