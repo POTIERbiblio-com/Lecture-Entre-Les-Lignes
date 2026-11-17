@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /Lecture-Entre-Les-Lignes/
+Sitemap: https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/sitemap.xml
