@@ -7,3 +7,7 @@
 @keyframes ell-title-appear{from{opacity:0;transform:translateY(22px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes ell-title-bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.025)}}
 @media(prefers-reduced-motion:reduce){.page-accueil .cover-lettering h1#cover-title,.page-accueil .cover-lettering h1#cover-title span{animation:none!important}}
+
+/* +8 points typographiques environ, sans changer la direction artistique */
+.page-accueil .cover-lettering h1#cover-title{font-size:calc(clamp(3.2rem,7.8vw,7.4rem) + 8pt)!important}
+@media(max-width:600px){.page-accueil .cover-lettering h1#cover-title{font-size:calc(clamp(2.8rem,11vw,5rem) + 8pt)!important}}
