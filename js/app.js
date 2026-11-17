@@ -3169,6 +3169,7 @@ function lockCatalog(){
 }
 function showAccount(){
  const box=$('account-status');if(!box)return;
+ if(location.hash.includes('type=recovery')){box.innerHTML='<h2>Définir un nouveau mot de passe</h2><form id="ell-recovery"><input id="ell-new-pass" type="password" minlength="6" required autocomplete="new-password" placeholder="Nouveau mot de passe"><button type="submit">Enregistrer le mot de passe</button></form><p id="ell-recovery-msg" role="status"></p>'; $('ell-recovery').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.updateUser({password:$('ell-new-pass').value});$('ell-recovery-msg').textContent=error?error.message:'Mot de passe modifié. Recharge la page pour accéder à ton compte.';};return;}
  if(!ell){box.textContent='Connexion momentanément indisponible.';return;}
  if(ellUser){
  box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>. Tes carnets sont liés à ton compte.</p>'+(adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';
