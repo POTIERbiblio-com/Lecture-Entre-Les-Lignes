@@ -60,6 +60,7 @@ $('book-editor').onsubmit=async e=>{
  try{
   const v=fields(e.target);
   v.publication_year=v.publication_year?Number(v.publication_year):null;
+  v.summary=v.description||'';
   v.published=!!(current&&books.find(b=>b.id===current)?.published);
   v.review_links=(v.review_links||'').split('\n').map(x=>x.trim()).filter(x=>/^https:\/\//.test(x));
   const id=current||doc(collection(db,'books')).id;
@@ -71,12 +72,18 @@ $('book-editor').onsubmit=async e=>{
 async function setPublication(published){
  if(!current){msg('Enregistre d’abord la fiche avant de publier.');return;}
  try{
-  if(published&&!confirm('Publier cette fiche dans Firestore ? Vérifie les informations et les liens avant de continuer.'))return;
+  if(published){
+   const book=books.find(b=>b.id===current);
+   if(!book?.title||!book?.category||!book?.subcategory){msg('Titre, genre et sous-genre obligatoires avant publication.');return;}
+   if(!book.pdf_path){msg('Aucun PDF hébergé : ajoute son chemin réel pour activer lecture et téléchargement. La sélection locale ne suffit pas.');return;}
+   if(!/^(?:pdf\\/|livres\\/)[^?#]+\\.pdf$|^https:\\/\\/potierbiblio-com\\.github\\.io\\/Lecture-Entre-Les-Lignes\\/(?:pdf|livres)\\/[^?#]+\\.pdf$/i.test(book.pdf_path)){msg('Le chemin du PDF doit pointer vers un fichier PDF du site GitHub Pages.');return;}
+   if(!confirm('Publier la fiche ? Le PDF doit déjà être hébergé légalement sur le site.'))return;
+  }
   await setDoc(doc(db,'books',current),{published},{merge:true});
   const book=books.find(b=>b.id===current);if(book)book.published=published;
   $('book-editor').elements.published.checked=published;
   publicationState(published);
-  msg(published?'Publication enregistrée dans Firestore. Attention : l’affichage dans le catalogue public reste à vérifier.':'Livre repassé en brouillon dans Firestore.');
+  msg(published?'Fiche publiée dans Firestore. Vérifie sa visibilité publique : '+location.origin+location.pathname.replace(/admin-catalogue\\.html$/,'livre.html')+'?id=firebase-'+current:'Livre repassé en brouillon dans Firestore.');
  }catch(err){showError(err);}
 }
 $('publish-book').onclick=()=>setPublication(true);
@@ -84,7 +91,7 @@ $('unpublish-book').onclick=()=>setPublication(false);
 $('chapter-form').onsubmit=async e=>{
  e.preventDefault();if(!current){msg('Enregistre d’abord le livre.');return;}
  try{
-  const v=fields(e.target);v.chapter_number=Number(v.chapter_number);v.book_id=current;
+  const v=fields(e.target);v.chapter_number=Number(v.chapter_number);v.page_start=v.page_start?Number(v.page_start):null;v.page_end=v.page_end?Number(v.page_end):null;v.book_id=current;
   if(chapter)await setDoc(doc(db,'book_chapters',chapter),v,{merge:true});
   else await addDoc(collection(db,'book_chapters'),v);
   await loadChapters();msg('Chapitre enregistré dans Firebase.');
