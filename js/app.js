@@ -3655,7 +3655,15 @@ function loadClassicScript(path){return new Promise((resolve,reject)=>{const scr
 async function ensureOfflinePDF(book){if(location.protocol!=='file:'||typeof previewAsset==='function'||!book.pdfPath||book.pdf)return;if(window.ELLPDFData?.[book.pdfPath])return;const slug=book.pdfPath.replace(/^pdf\//,'').replace(/\.pdf$/,'');if(!/^[a-z0-9-]+$/.test(slug))return;await loadClassicScript('js/pdf-offline/'+slug+'.js');}
 function pdfAddress(b){if(b.pdf)return b.pdf;if(location.protocol==='file:'&&typeof previewAsset!=='function'&&window.ELLPDFData?.[b.pdfPath])return window.ELLPDFData[b.pdfPath];return b.pdfPath&&typeof previewPDF==='function'?previewPDF(b.pdfPath):b.pdfPath||'';}
 
-async function start(){try{await connectService();try{db=await openDB();state=await load();}catch(storageError){state=blank();db=null;let warning=document.createElement('p');warning.className='note';warning.textContent='Le catalogue et ses PDF restent consultables. Le stockage de ce navigateur est indisponible : les nouveaux avis et notes ne pourront pas être conservés.';$('contenu').prepend(warning);}let changed=false;
+async function start(){try{await connectService();
+const privatePages=new Set(['mon-espace.html','surlignages.html','annotations.html','fiches.html','journaux.html','profil.html','sauvegardes.html','tests.html','critiques.html']);
+const currentPage=location.pathname.split('/').pop().toLowerCase();
+if(privatePages.has(currentPage)&&!ellUser){
+ const main=$('contenu')||document.querySelector('main');
+ if(main){main.innerHTML='<section class="account-login-gate" style="max-width:680px;margin:3rem auto;padding:2rem"><h1>Mon espace personnel</h1><p>Connecte-toi ou crée ton compte pour retrouver tes lectures, annotations, fiches et journaux. Chaque carnet est privé et rattaché à son propriétaire.</p><div id="account-status"></div></section>';showAccount();}
+ return;
+}
+try{db=await openDB();state=await load();}catch(storageError){state=blank();db=null;let warning=document.createElement('p');warning.className='note';warning.textContent='Le catalogue et ses PDF restent consultables. Le stockage de ce navigateur est indisponible : les nouveaux avis et notes ne pourront pas être conservés.';$('contenu').prepend(warning);}let changed=false;
 for(const book of LIVRES_INITIAUX){
   const existing=state.books.find(item=>item.id===book.id);
   if(!existing){
