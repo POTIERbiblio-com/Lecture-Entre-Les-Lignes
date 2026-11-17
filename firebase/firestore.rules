@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Entitlements are issued by a trusted server after verified payment.
+    // Clients can only read their own status; nobody can grant themselves a plan.
+    match /entitlements/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+    // This file is a proposed rule set, not deployed automatically.
+    // Other collections remain closed until reviewed.
+    match /{document=**} { allow read, write: if false; }
+  }
+}
