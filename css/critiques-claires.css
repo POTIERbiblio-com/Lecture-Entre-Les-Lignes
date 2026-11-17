@@ -12,3 +12,10 @@
 .page-critiques .review-book-card .editorial-link{display:inline-block!important;margin-top:6px!important}
 .page-critiques .review-filters{position:relative;z-index:2;background:#fffafc;padding:20px;border-radius:20px}
 @media(max-width:450px){.page-critiques .review-book-card{grid-template-columns:88px minmax(0,1fr)!important;gap:14px!important;padding:16px!important}.page-critiques .review-book-card > :first-child{width:88px!important;max-width:88px!important}.page-critiques .review-book-card > :first-child img{height:125px!important}}
+
+/* Une seule image principale dans le bandeau Critiques, sans chevauchement */
+.page-critiques .banner-revue .artist-chapter-picture{min-height:340px!important;overflow:visible!important;display:block!important}
+.page-critiques .banner-revue .artist-main-photo{position:relative!important;inset:auto!important;display:block!important;width:100%!important;height:340px!important;object-fit:cover!important;object-position:center!important;transform:none!important;border:9px solid #fffaf8!important;border-radius:18px!important;box-shadow:0 12px 26px #75435b2a!important;filter:none!important;opacity:1!important}
+.page-critiques .banner-revue .artist-tiny-photo,.page-critiques .banner-revue .banner-sticker,.page-critiques .banner-revue .artist-chapter-picture::before,.page-critiques .banner-revue .artist-chapter-picture::after{display:none!important}
+.page-critiques .banner-revue .artist-chapter-picture figcaption{position:relative!important;inset:auto!important;display:block!important;max-width:100%!important;margin:10px 0 0!important;padding:10px 15px!important;transform:none!important;font-size:1.1rem!important;text-align:center!important}
+@media(max-width:650px){.page-critiques .banner-revue .artist-main-photo{height:240px!important}.page-critiques .banner-revue .artist-chapter-picture{min-height:240px!important}}
