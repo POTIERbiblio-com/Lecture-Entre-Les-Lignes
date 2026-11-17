@@ -3669,7 +3669,7 @@ const privatePages=new Set(['mon-espace.html','surlignages.html','annotations.ht
 const currentPage=location.pathname.split('/').pop().toLowerCase();
 if(privatePages.has(currentPage)&&!ellUser){
  const main=$('contenu')||document.querySelector('main');
- if(main){main.innerHTML='<section class="account-login-gate" style="max-width:680px;margin:3rem auto;padding:2rem"><h1>Mon espace personnel</h1><p>Connecte-toi ou crée ton compte pour retrouver tes lectures, annotations, fiches et journaux. Chaque carnet est privé et rattaché à son propriétaire.</p><div id="account-status"></div></section>';showAccount();}
+ if(main){main.innerHTML='<section class="account-login-gate" style="max-width:800px;margin:3rem auto;padding:2rem;text-align:center"><img src="images/carnet-illustre/carnet-studieux.jpg" alt="Carnet de lecture illustré" style="width:100%;max-height:250px;object-fit:cover;border-radius:22px"><h1>Bienvenue dans ton carnet ♡</h1><p>Un espace rien qu’à toi pour tes lectures, annotations, fiches et journaux. Connecte-toi pour retrouver tes souvenirs de lecture.</p><div id="account-status" style="text-align:left"></div></section>';showAccount();}
  return;
 }
 try{db=await openDB();state=await load();}catch(storageError){state=blank();db=null;let warning=document.createElement('p');warning.className='note';warning.textContent='Le catalogue et ses PDF restent consultables. Le stockage de ce navigateur est indisponible : les nouveaux avis et notes ne pourront pas être conservés.';$('contenu').prepend(warning);}let changed=false;
