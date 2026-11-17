@@ -1,0 +1,32 @@
+name: Catalogue des livres
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'livres/**'
+      - 'scripts/build_book_catalog.py'
+      - '.github/workflows/catalogue-livres.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  catalogue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Générer le catalogue public
+        run: python scripts/build_book_catalog.py
+      - name: Enregistrer le catalogue actualisé
+        run: |
+          if ! git diff --quiet -- livres/catalogue-public.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add livres/catalogue-public.json
+            git commit -m "Actualiser le catalogue public des livres"
+            git push
+          fi
