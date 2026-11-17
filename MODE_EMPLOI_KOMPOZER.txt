@@ -1,0 +1,48 @@
+ENTRE LES LIGNES
+Site de lecture · pages HTML modifiables dans KompoZer
+
+1. Extraire le ZIP en entier avec WinRAR ou « Extraire tout ».
+2. Pour visiter le site, ouvrir index.html dans un navigateur récent.
+3. Pour modifier une page, ouvrir KompoZer, puis Fichier > Ouvrir un fichier.
+   Choisir index.html, genres.html, savoirs.html ou mes-livres.html.
+   Les titres blancs restent du texte HTML éditable sur les illustrations JPG.
+   Le mode Normal sert à modifier le texte, les liens et les images.
+   L’onglet Source donne accès au code HTML de chaque page.
+4. Dans ressources.html, les trois pense-bêtes forment une liste de liens.
+5. Garder les chemins relatifs et les dossiers css/, images/, fonts/ et js/.
+   Conserver les liens vers les feuilles de style, y compris roses-carnet.css.
+   Enregistrer en UTF-8. Contrôler le rendu dans un navigateur récent après
+   les modifications. C’est dans le navigateur que s’exécutent la recherche,
+   les animations et les fonctions du carnet.
+
+POUR ESSAYER LE CARNET
+Depuis la fiche d’un livre, clique sur « Entrer dans le livre ». Choisis une
+couleur et sélectionne un passage. Sur téléphone, touche ensuite « Surligner
+la sélection ». Pour une page scannée, active « Tracer une zone ».
+Retrouve les passages dans Lecture > Mes surlignages.
+Les notes, avis, imports et sauvegardes sont gérés dans le navigateur.
+Si le stockage est indisponible en ouvrant index.html directement,
+ouvre un terminal dans ce dossier et, si Python est installé, lance :
+    python -m http.server 8000 --bind 127.0.0.1
+Sur Windows, « py -m http.server 8000 --bind 127.0.0.1 » est aussi possible.
+Ouvre ensuite http://127.0.0.1:8000/index.html dans ton navigateur.
+Garde la même adresse et le même navigateur entre deux visites.
+Mon espace > Mes sauvegardes permet d’exporter puis de restaurer les données.
+
+SOURCE ET STOCKAGE
+HTML : les 82 pages au même niveau que index.html.
+CSS : style.css (mise en page), carnet-pastel.css (pois et vagues), collage.css (papiers et fonds), reliure.css (carnet, intercalaires et pochettes).
+JavaScript : js/app.js (catalogue, carnet, IndexedDB, export/import).
+Médias : images/ (photo, illustrations JPG, décor PNG et couvertures).
+Sources et prompt de la planche : SOURCES_ILLUSTRATIONS.txt.
+Polices : Avenir si elle est installée, sinon Manrope. Les légendes manuscrites utilisent Caveat.
+Inventaires : inventaires-par-page/ (un fichier par page et le registre).
+Le tutoriel est inclus dans videos/ et accessible sur l’accueil et dans Ressources.
+Le site et son tutoriel fonctionnent en local. Les sources externes des notices nécessitent Internet. KompoZer s’installe séparément :
+https://sourceforge.net/projects/kompozer/files/current/0.8b3/
+
+Le nouveau rayon Horreur se trouve dans Genres > Fiction. La mise en page illustrée est dans css/carnet-illustre.css.
+
+
+VIDÉO
+Le carnet en quatre gestes se lance sur l’accueil et dans Ressources. La vidéo, son affiche et le résumé des étapes sont inclus.

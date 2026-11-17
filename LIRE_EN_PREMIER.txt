@@ -1,0 +1,10 @@
+ENTRE LES LIGNES
+
+1. Clique droit sur le ZIP, puis Extraire tout.
+2. Ouvre KompoZer, puis Fichier > Ouvrir.
+3. Dans le dossier décompressé, saisis index.html dans la case Nom du fichier.
+   La page d’accueil se trouve au même niveau que ce fichier d’aide.
+
+Garde ensemble toutes les pages, les images et les dossiers css et js.
+
+Pour voir le rayon Horreur : Genres > Fiction > Horreur.

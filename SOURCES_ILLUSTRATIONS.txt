@@ -1,0 +1,108 @@
+ILLUSTRATIONS DE LA GALERIE
+Une planche originale de six illustrations générées, recadrées pour le site. Les intitulés en surlignage blanc restent du texte HTML éditable.
+
+Prompt de la planche
+Create one carefully composed web illustration atlas, a landscape canvas with six rectangular illustrations in an exact 3 columns by 2 rows equal grid. The layout must have no padding or gaps and each rectangular illustration must fill its cell edge to edge. Each scene is centered inside its own cell with enough margin so objects do not touch the boundaries. This is for a very personal French book journal web site, Entre les lignes. Make the art feel like analog handmade picture-book illustration, pencil scribbles, irregular hand-cut colored paper, matte opaque gouache brush marks, visible rough paper grain, softly faded and perfectly imperfect, European independent picture-book editorial, nostalgic stationery. Palette dusty pale rose, powder blue, blush, mauve, apricot, soft mint, cream. No thick black line art, no vector look, no 3D, no smooth gradient, no fake handwriting, no letters or text anywhere. Six different scenes. Top left FICTION: a large open book with a miniature night landscape emerging from it, tiny houses, cloud and moon, dusty peach and dusty violet. Top center KNOWLEDGE: a mint antique magnifying glass, fern clipping, a star chart made with dots and tiny watercolor glass flasks on pale powder blue. Top right ARTS: wooden palette with several gouache dabs, fan of brushes, hand-cut flowing paper offcuts, dusty pink coral peach. Bottom left SOCIETY: little illustrated neighborhood with two small human silhouettes talking under a blooming tree, pale blue and blush. Bottom center SPIRITUALITY: moon phases and small stars over a lavender mountain landscape, on a muted deep rose lavender background, quietly dreamlike. Bottom right YOUTH: a tiny paper kite, pastel stars and a toy rabbit holding a blank little book, warm custard and peach. Full backgrounds in each cell, avoid white outer borders. Distinct background color per cell, enough texture and contrast. This will be cropped into six art-only illustrations with HTML captions placed over them later, so absolutely no typography, labels, watermarks, frames, or buttons.
+
+Photographie de bibliothèque et couvertures : pièces jointes initiales du projet.
+Pois, vague, nuage et étoile : tracés vectoriels créés pour le site et exportés en PNG.
+
+
+COLLAGES AJOUTÉS
+Images jointes, numérotées selon l’ordre d’affichage du message.
+Les noms d’artiste ne sont pas renseignés lorsque le fichier source ne les indique pas.
+
+Image 3 · image(9).png → images/collage/livre-fraises.png (livre aux fraises, détouré)
+Image 4 · image(10).png → images/collage/livres-bonbon.png (pile de trois livres, détourée)
+Image 5 · image(20261106-131550).png → images/collage/livres-herbier.png (pile d’herbier, détourée)
+Image 6 · image(20261106-131631).png → images/collage/frise-livres.png (frise de dos de livres, détourée)
+Image 8 · image(20261106-131749).png → images/collage/papier-fleuri.jpg (fond de papeterie fleurie)
+Image 9 · image(20261106-131803).png → images/collage/television.jpg (décor de télévision pour la vidéo)
+Image 11 · image(20261106-131901).png → images/collage/etagere-fleurie.jpg (illustration du catalogue, mention de la créatrice conservée)
+Image 12 · image(20261106-131949).png → images/collage/etagere-etoilee.jpg (fond Lecture)
+Image 13 · image(20261106-132001).png → images/collage/etagere-romance.jpg (fond Critiques)
+Image 14 · image(20261106-132034).png → images/collage/salon-rose.jpg (fond Mon espace, filigrane conservé)
+Image 15 · image(20261106-132124).png → images/collage/lectrice.png (lectrice et chien, détourés)
+Image 16 · image(20261106-132140).png → images/collage/collage-books.png (collage BOOKS détouré)
+
+Pour les PNG transparents, la consigne de détourage était de conserver le sujet, ses détails et ses proportions et de retirer uniquement le fond extérieur.
+
+
+DÉCORS EN NUAGE
+nuage-menu.png et nuage-pense-bete.png sont des formes dessinées pour le site et exportées en PNG. Les encarts Après la dernière page réemploient deux illustrations de la planche des genres et l’étagère étoilée de l’image 12.
+
+
+CARNET ILLUSTRÉ
+Les collages suivants proviennent des fichiers joints au projet, dont les crédits ne sont pas indiqués dans les fichiers reçus. Ils ont été redimensionnés pour le site.
+- images/carnet-illustre/papier-etoiles.jpg : image(20261110-162742).png
+- images/carnet-illustre/megaphone.jpg : image(20261110-162919).png
+- images/carnet-illustre/frisson-rose.jpg : image(20261110-162932).png
+- images/carnet-illustre/loupe.jpg : image(20261110-163031).png
+- images/carnet-illustre/journal-retro.jpg : image(20261110-163040).png
+- images/carnet-illustre/appel-inquiet.jpg : image(20261110-163056).png
+- images/carnet-illustre/voyage-etoile.jpg : image(20261110-163156).png
+- images/carnet-illustre/confidences-lilas.jpg : image(20261110-163315).png
+- images/carnet-illustre/confidences-roses.jpg : image(20261110-163341).png
+- images/carnet-illustre/larmes-vintage.jpg : image(20261110-163357).png
+- images/carnet-illustre/surprise-vintage.jpg : image(20261110-163414).png
+- images/carnet-illustre/surprise-rose.jpg : image(20261110-163429).png
+- images/carnet-illustre/mode-rose.jpg : image(20261110-163442).png
+- images/carnet-illustre/lunettes-retro.jpg : image(20261110-163455).png
+- images/carnet-illustre/masque-ruban.jpg : image(20261110-163539).png
+- images/carnet-illustre/television-masque.jpg : image(20261110-163614).png
+- images/carnet-illustre/carnet-studieux.jpg : image(20261110-165219).png
+- images/carnet-illustre/lecture-rose.jpg : image(20261110-165250).png
+Les autocollants SVG sont des tracés réalisés pour le projet.
+
+PAGES DE SOUS-GENRES
+Les 30 collages combinent les pièces jointes citées plus haut avec 30 motifs tracés en SVG pour ces pages. Le nuage en papier et le gribouillis ont aussi été tracés pour le projet. Les inventaires par page recensent les fichiers utilisés.
+
+
+PAPIERS ET COLLAGES
+Les visuels suivants ont été extraits des documents Word fournis avec le projet, puis redimensionnés pour le site. Les auteurs ne sont pas identifiés dans ces pièces jointes. Les proportions sont conservées.
+• images/atelier/carnet-geant.jpg ← Document Word 1 / word/media/image1.jpeg
+• images/atelier/carnets-et-monde.jpg ← Document Word 1 / word/media/image2.jpeg
+• images/atelier/soucoupes-pastel.jpg ← Document Word 1 / word/media/image3.jpeg
+• images/atelier/livre-paysage.jpg ← Document Word 1 / word/media/image4.jpeg
+• images/atelier/carnet-sur-roues.jpg ← Document Word 1 / word/media/image5.jpeg
+• images/atelier/train-fleuri.jpg ← Document Word 1 / word/media/image6.jpeg
+• images/atelier/tele-dans-jardin.jpg ← Document Word 1 / word/media/image7.jpeg
+• images/atelier/porte-du-jardin.jpg ← Document Word 1 / word/media/image8.jpeg
+• images/atelier/salon-suspendu.jpg ← Document Word 1 / word/media/image9.jpeg
+• images/atelier/conversation-sur-canape.jpg ← Document Word 1 / word/media/image10.jpeg
+• images/atelier/cabine-rose.jpg ← Document Word 1 / word/media/image11.jpeg
+• images/atelier/televiseurs-roses.jpg ← Document Word 1 / word/media/image12.jpeg
+• images/atelier/papier-magazine.jpg ← Document Word 2 / word/media/image1.jpeg
+• images/atelier/ruban-magazine.jpg ← Document Word 2 / word/media/image2.jpeg
+• images/atelier/revue-ouverte.jpg ← Document Word 2 / word/media/image3.jpeg
+• images/atelier/tiroir-imaginaire.jpg ← Document Word 2 / word/media/image4.jpeg
+• images/atelier/visage-frisson.jpg ← Document Word 2 / word/media/image5.jpeg
+• images/atelier/amitie-illustration.jpg ← Document Word 2 / word/media/image6.jpeg
+• images/atelier/ampoule-etoiles.jpg ← Document Word 2 / word/media/image7.jpeg
+• images/atelier/joie-retro.jpg ← Document Word 3 / word/media/image1.jpeg
+• images/atelier/chuchotement.jpg ← Document Word 3 / word/media/image2.jpeg
+• images/atelier/regard-curieux.jpg ← Document Word 3 / word/media/image3.jpeg
+• images/atelier/a-l-ecoute.jpg ← Document Word 3 / word/media/image4.jpeg
+• images/atelier/appel-retro.jpg ← Document Word 3 / word/media/image5.jpeg
+• images/atelier/etonnement-retro.jpg ← Document Word 3 / word/media/image6.jpeg
+• images/atelier/portrait-tasse.jpg ← Document Word 3 / word/media/image7.jpeg
+• images/atelier/portrait-bulle.jpg ← Document Word 3 / word/media/image8.jpeg
+• images/atelier/portrait-tele.jpg ← Document Word 3 / word/media/image9.jpeg
+• images/atelier/visage-masque.jpg ← Document Word 3 / word/media/image10.jpeg
+• images/atelier/telephone-rose.jpg ← Document Word 3 / word/media/image11.jpeg
+• images/atelier/jardin-secret.jpg ← Document Word 3 / word/media/image12.jpeg
+• images/atelier/lecteur-journal.jpg ← Document Word 3 / word/media/image13.jpeg
+• images/atelier/aventure-nocturne.jpg ← Document Word 3 / word/media/image14.jpeg
+• images/atelier/lecture-dans-fauteuil.jpg ← 01-1000022526.jpg
+• images/atelier/telephone-pastel.jpg ← 02-1000022521.jpg
+• images/atelier/carnets-sous-les-pieds.jpg ← 03-1000022496.jpg
+
+Tutoriel Le carnet en quatre gestes
+Montage original pour Entre les lignes, réalisé à partir des illustrations du site.
+Fichiers : videos/guide-lecture.mp4 et videos/guide-lecture.jpg.
+
+Les motifs de papier, les nuages et le cachet de lecture ont été tracés en SVG pour le projet. Le MP4 du tutoriel est inclus avec le site.
+
+
+OBJETS DE LECTURE
+Les fiches, carnet, boîte à archives, surligneur, notes, loupe et bulles de navigation ont été tracés en SVG pour le projet. Les pages Accueil, Mon espace, Coin lecture et les entrées des six familles ont été recomposées en HTML et CSS avec les visuels déjà fournis.

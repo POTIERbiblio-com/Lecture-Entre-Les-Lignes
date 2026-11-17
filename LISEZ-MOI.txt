@@ -1,0 +1,45 @@
+ENTRE LES LIGNES — CARNET ILLUSTRÉ
+
+OUVRIR ET ÉDITER
+Décompresse toute l’archive. Ouvre le fichier index.html pour consulter le site.
+Dans KompoZer, ouvre index.html ou une page ouvrage-*.html pour l’éditer.
+Garde les dossiers images, css, js et pdf avec les pages HTML.
+Pour consulter le site en un seul fichier, ouvre Entre_les_lignes_apercu.html.
+
+LIRE ET GARDER DES TRACES
+Depuis la présentation, « Lire le PDF ici » ouvre le lecteur intégré.
+« Télécharger le PDF » enregistre une copie du fichier.
+Choisis une couleur et sélectionne le texte. Sur ordinateur, le passage est
+enregistré quand tu relâches la souris. Sur téléphone, utilise les poignées
+de sélection, puis touche « Surligner la sélection ».
+La palette propose six couleurs. Les outils Texte et Zone permettent de surligner.
+La Gomme enlève un passage ou une zone. Annuler revient sur la dernière action.
+L’annotation et la fiche de lecture s’enregistrent au fil de la saisie.
+La section Mes fiches reprend automatiquement le titre et la couverture du livre.
+Mes surlignages permet de filtrer par titre, livre ou couleur et de revenir à la page.
+Les numéros désignent les pages du PDF ; la numérotation imprimée peut différer.
+Pour une page scannée, active « Zone », puis fais glisser sur la
+page. Désactive le mode pour faire défiler la page normalement.
+
+JOURNAUX
+Recherche le titre dans le champ de recherche, puis clique sur le livre proposé.
+Rédige ta page de journal. Elle s’enregistre automatiquement.
+
+ADMINISTRATION
+Dans la version en ligne, connecte-toi au compte autorisé, puis ouvre Atelier admin.
+Utilise le mot de passe administrateur communiqué dans la conversation.
+Les droits et le mot de passe sont vérifiés côté serveur ; aucun mot de passe
+n’est inclus dans les pages HTML. L’atelier se verrouille après une heure.
+Le catalogue de la copie HTML est en lecture seule depuis l’interface.
+Les fiches, journaux et surlignages personnels restent utilisables dans cette copie.
+
+SAUVEGARDES
+Dans la copie HTML, les données sont conservées sur cet appareil et dans ce navigateur.
+Utilise Mon espace > Sauvegardes > Exporter pour garder un fichier de sauvegarde.
+Dans la version privée en ligne, le carnet du compte est aussi enregistré sur le serveur.
+En cas de message d’échec de synchronisation, conserve un export avant de continuer.
+
+Les vingt PDF sont inclus. Le Grand Livre des métiers est une copie scannée
+allégée qui contient les 240 pages. L’Art de la confiance en soi est un extrait.
+Les notes extérieures sont des relevés documentaires datés, avec leur source.
+Aucune note n’est affichée lorsqu’elle n’a pas pu être vérifiée.
