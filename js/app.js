@@ -3140,6 +3140,26 @@ async function loadServiceState(){
  const {data,error}=await ell.from('user_carnets').select('data').eq('user_id',ellUser.id).maybeSingle();if(error)throw error;
  ellClear();if(data?.data)restoreCarnet(data.data);localStorage.setItem('ell_account',ellUser.id);
  }else if(last){ellClear();await writeLocalState();localStorage.removeItem('ell_account');}
+ const {data:catalog,error:catalogError}=await ell.from('books').select('*').eq('published',true);
+ if(catalogError){console.warn('Catalogue en ligne indisponible',catalogError);return;}
+ for(const entry of catalog||[]){
+  const original=(entry.original_pdf||entry.pdf_path||'').replace(/^\/+/,''),page=entry.original_page||'';
+  const found=state.books.find(b=>(original&&(b.pdfPath===original))||(page&&(b.detailPath===page))||(b.externalCatalogId===entry.id));
+  if(found){
+   found.externalCatalogId=entry.id;
+   if(entry.title)found.title=entry.title;
+   if(entry.author)found.author=entry.author;
+   if(entry.description)found.presentation=entry.description;
+   if(entry.isbn)found.isbn=entry.isbn;
+   if(entry.publisher)found.publisher=entry.publisher;
+   if(entry.publication_year)found.year=entry.publication_year;
+   if(entry.cover_path)found.cover=entry.cover_path;
+   if(original)found.pdfPath=original;
+   found.reviewLinks=entry.review_links||[];
+  }else{
+   state.books.push({id:'db-'+entry.id,externalCatalogId:entry.id,title:entry.title,author:entry.author||'',genre:'savoirs',sub:'0',presentation:entry.description||'',cover:entry.cover_path||entry.original_cover||'',pdfPath:original||'',year:entry.publication_year||'',isbn:entry.isbn||'',publisher:entry.publisher||'',reviewLinks:entry.review_links||[]});
+  }
+ }
 }
 function lockCatalog(){
  document.querySelectorAll('a[href*="ajouter-livre.html"],[data-admin-only]').forEach(x=>x.hidden=!adminEnabled);
