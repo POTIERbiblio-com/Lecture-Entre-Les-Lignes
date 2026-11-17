@@ -1,0 +1,16 @@
+import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const sb=createClient('https://cezgcoaokwuobipwfffa.supabase.co','sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3');
+const $=id=>document.getElementById(id),msg=t=>$('admin-msg').textContent=t;
+let books=[],chapters=[],current=null,chapter=null;
+const fields=form=>Object.fromEntries(new FormData(form).entries());
+function bookForm(b={}){current=b.id||null;for(const e of $('book-editor').elements){if(!e.name)continue;e.type==='checkbox'?e.checked=!!b[e.name]:e.value=e.name==='review_links'?(b.review_links||[]).join('\n'):(b[e.name]??'');}loadChapters();}
+function chapterForm(c={}){chapter=c.id||null;for(const e of $('chapter-form').elements)if(e.name)e.value=c[e.name]??'';}
+async function loadBooks(){const {data,error}=await sb.from('books').select('*').order('title');if(error)throw error;books=data||[];$('book-select').replaceChildren(new Option('Sélectionner un livre',''));for(const b of books)$('book-select').add(new Option(b.title,b.id));}
+async function loadChapters(){chapters=[];$('chapter-select').replaceChildren(new Option('Nouveau chapitre',''));if(!current)return;const {data,error}=await sb.from('book_chapters').select('*').eq('book_id',current).order('chapter_number');if(error){msg(error.message);return;}chapters=data||[];for(const c of chapters)$('chapter-select').add(new Option((c.chapter_number||'')+' · '+(c.title||'Sans titre'),c.id));chapterForm();}
+$('book-select').onchange=()=>bookForm(books.find(b=>b.id===$('book-select').value)||{});
+$('new-book').onclick=()=>{$('book-select').value='';bookForm();};
+$('chapter-select').onchange=()=>chapterForm(chapters.find(c=>c.id===$('chapter-select').value)||{});
+$('new-chapter').onclick=()=>{$('chapter-select').value='';chapterForm();};
+$('book-editor').onsubmit=async e=>{e.preventDefault();const v=fields(e.target);v.publication_year=v.publication_year?Number(v.publication_year):null;v.published=e.target.elements.published.checked;v.review_links=v.review_links.split('\n').map(x=>x.trim()).filter(x=>/^https:\/\//.test(x));const query=current?sb.from('books').update(v).eq('id',current):sb.from('books').insert(v);const {data,error}=await query.select().single();if(error){msg(error.message);return;}msg('Livre enregistré.');await loadBooks();$('book-select').value=data.id;bookForm(data);};
+$('chapter-form').onsubmit=async e=>{e.preventDefault();if(!current){msg('Enregistre d’abord le livre.');return;}const v=fields(e.target);v.chapter_number=Number(v.chapter_number);v.book_id=current;const query=chapter?sb.from('book_chapters').update(v).eq('id',chapter):sb.from('book_chapters').insert(v);const {error}=await query;if(error){msg(error.message);return;}msg('Chapitre enregistré.');await loadChapters();};
+try{const {data:{user}}=await sb.auth.getUser();if(!user)throw Error('Connecte-toi depuis Mon espace.');await sb.rpc('claim_library_admin');const {data:admin}=await sb.from('admins').select('user_id').eq('user_id',user.id).maybeSingle();if(!admin)throw Error('Ce compte ne possède pas les droits administrateur.');$('admin-editor').hidden=false;await loadBooks();msg('Compte administrateur vérifié.');}catch(e){msg(e.message);}
