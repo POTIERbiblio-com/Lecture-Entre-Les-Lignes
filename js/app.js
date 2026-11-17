@@ -3175,12 +3175,11 @@ function showAccount(){
  box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>. Tes carnets sont liés à ton compte.</p>'+(adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';
  $('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});await ell.auth.signOut();localStorage.removeItem('ell_account');location.reload();};return;
  }
- box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-google">Continuer avec Google</button><button type="button" id="ell-reset">Mot de passe oublié ?</button><p id="ell-result" role="status"></p>';
+ box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-reset">Mot de passe oublié ?</button><p id="ell-result" role="status"></p>';
  const cred=()=>({email:$('ell-mail').value.trim(),password:$('ell-pass').value}),msg=x=>$('ell-result').textContent=x;
  $('ell-form').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.signInWithPassword(cred());if(error)msg(error.message);else location.reload();};
  $('ell-create').onclick=async()=>{const {error}=await ell.auth.signUp({...cred(),options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Vérifie ton e-mail pour confirmer ton inscription.');};
  $('ell-reset').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail pour recevoir le lien de réinitialisation.');return;}const {error}=await ell.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});msg(error?error.message:'Si ce compte existe, un e-mail de réinitialisation a été envoyé.');};
- $('ell-google').onclick=async()=>{const {error}=await ell.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)msg('Google OAuth doit être activé et configuré dans Supabase : '+error.message);};
 }
 
 async function storeCatalogBook(book){throw Error('Utilise la page Administration du catalogue.');}
@@ -3209,7 +3208,7 @@ async function startBookReader(book) {
   <div class="reader-tools">
    <a href="${esc(bookLink(book))}" class="editorial-link">← Fiche du livre</a>
    <div class="page-stepper"><button id="pdf-prev" type="button" aria-label="Page précédente">←</button><label for="pdf-page">Page</label><input id="pdf-page" type="number" min="1" value="${currentPage}"><span id="pdf-total"></span><button id="pdf-next" type="button" aria-label="Page suivante">→</button></div>
-   <label class="reader-zoom">Taille <select id="pdf-zoom"><option value="1">À la largeur</option><option value="1.25">125 %</option><option value="1.5">150 %</option><option value="2">200 %</option></select></label>
+   <label class="reader-zoom">Zoom <select id="pdf-zoom"><option value="0.5">50 %</option><option value="0.65">65 %</option><option value="0.75">75 %</option><option value="0.9">90 %</option><option value="1" selected>100 % · largeur</option><option value="1.1">110 %</option><option value="1.25">125 %</option><option value="1.5">150 %</option><option value="1.75">175 %</option><option value="2">200 %</option><option value="2.5">250 %</option><option value="3">300 %</option></select></label><button id="reader-expand" type="button" aria-pressed="false">⛶ Plein écran</button>
    <span id="reader-save-status" role="status">Ouverture du livre…</span>
    <div class="reader-mark-tools">
     <div class="reader-mode-tools" role="group" aria-label="Outils du lecteur">
@@ -3577,6 +3576,16 @@ async function startBookReader(book) {
  $('pdf-page').onkeydown = event => {
   if (event.key === 'Enter') { event.preventDefault(); if (pdf) void showPage(event.target.value); }
  };
+ const readerSection=host.querySelector('.annotated-reader');
+ const expand=$('reader-expand');
+ expand.onclick=async()=>{
+  const active=readerSection.classList.toggle('reader-expanded');
+  document.body.classList.toggle('reader-fullscreen-active',active);
+  expand.setAttribute('aria-pressed',String(active));
+  expand.textContent=active?'✕ Quitter le grand lecteur':'⛶ Plein écran';
+  if(pdf)await showPage(currentPage);
+ };
+ events.signal.addEventListener('abort',()=>document.body.classList.remove('reader-fullscreen-active'),{once:true});
  $('pdf-zoom').onchange = () => pdf && showPage(currentPage);
  try {
   if (book.pdf || book.pdfPath) {
