@@ -3138,8 +3138,9 @@ async function loadServiceState(){
  const last=localStorage.getItem('ell_account');
  if(ellUser){
  const {data,error}=await ell.from('user_carnets').select('data').eq('user_id',ellUser.id).maybeSingle();if(error)throw error;
- ellClear();if(data?.data)restoreCarnet(data.data);localStorage.setItem('ell_account',ellUser.id);
- }else if(last){ellClear();await writeLocalState();localStorage.removeItem('ell_account');}
+ if(data?.data){ellClear();restoreCarnet(data.data);}else if(last&&last!==ellUser.id){ellClear();}
+ localStorage.setItem('ell_account',ellUser.id);
+ }else if(last){ellClear();localStorage.removeItem('ell_account');}
  const {data:catalog,error:catalogError}=await ell.from('books').select('*').eq('published',true);
  if(catalogError){console.warn('Catalogue en ligne indisponible',catalogError);return;}
  for(const entry of catalog||[]){
@@ -3171,13 +3172,14 @@ function showAccount(){
  if(!ell){box.textContent='Connexion momentanément indisponible.';return;}
  if(ellUser){
  box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>. Tes carnets sont liés à ton compte.</p>'+(adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';
- $('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});await ell.auth.signOut();ellClear();await writeLocalState();localStorage.removeItem('ell_account');location.reload();};return;
+ $('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});await ell.auth.signOut();localStorage.removeItem('ell_account');location.reload();};return;
  }
- box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-google">Continuer avec Google</button><p id="ell-result" role="status"></p>';
+ box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-google">Continuer avec Google</button><button type="button" id="ell-reset">Mot de passe oublié ?</button><p id="ell-result" role="status"></p>';
  const cred=()=>({email:$('ell-mail').value.trim(),password:$('ell-pass').value}),msg=x=>$('ell-result').textContent=x;
  $('ell-form').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.signInWithPassword(cred());if(error)msg(error.message);else location.reload();};
  $('ell-create').onclick=async()=>{const {error}=await ell.auth.signUp({...cred(),options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Vérifie ton e-mail pour confirmer ton inscription.');};
- $('ell-google').onclick=async()=>{const {error}=await ell.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)msg(error.message);};
+ $('ell-reset').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail pour recevoir le lien de réinitialisation.');return;}const {error}=await ell.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});msg(error?error.message:'Si ce compte existe, un e-mail de réinitialisation a été envoyé.');};
+ $('ell-google').onclick=async()=>{const {error}=await ell.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)msg('Google OAuth doit être activé et configuré dans Supabase : '+error.message);};
 }
 
 async function storeCatalogBook(book){throw Error('Utilise la page Administration du catalogue.');}
