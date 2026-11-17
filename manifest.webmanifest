@@ -1,0 +1,20 @@
+{
+  "id": "/Lecture-Entre-Les-Lignes/",
+  "name": "Entre les lignes — Mon carnet de lecture",
+  "short_name": "Entre les lignes",
+  "description": "Ma bibliothèque, mes lectures, mes annotations et mes fiches.",
+  "lang": "fr",
+  "start_url": "./mon-espace.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff5f8",
+  "theme_color": "#ba7897",
+  "icons": [
+    {
+      "src": "images/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
