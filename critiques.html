@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Critiques · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
-<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/reader-fullscreen.css"><link rel="stylesheet" href="css/critiques-claires.css"></head>
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/reader-fullscreen.css"><link rel="stylesheet" href="css/critiques-claires.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"></head>
 <body class="page-critiques atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <div class="site-header" role="banner">
@@ -22,7 +22,7 @@
 <header class="artist-chapter artist-chapter-lilac banner-editorial banner-revue">
  <div class="artist-chapter-copy"><h1 class="artist-title">Critiques</h1><div class="banner-actions"><a href="#review-filters">Trouver un livre <span aria-hidden="true">↓</span></a></div></div>
  <figure class="artist-chapter-picture"><img class="artist-main-photo" src="images/carnet-illustre/journal-retro.jpg" alt="">
- <img class="artist-tiny-photo" src="images/atelier/revue-ouverte.jpg" alt=""><img class="banner-sticker" src="images/carnet-illustre/megaphone.jpg" alt=""><figcaption>On se raconte nos lectures ?</figcaption></figure>
+ <figcaption>On se raconte nos lectures ?</figcaption></figure>
  </header>
 <form class="review-filters" id="review-filters" role="search">
  <div class="review-query"><label for="review-search">Titre du livre ou auteur</label><input id="review-search" type="search" placeholder="Ex. Sapiens ou Harari"></div>
@@ -41,5 +41,5 @@
 <a href="admin.html">Atelier admin</a></div>
 <script type="text/javascript" src="js/app.js?v=reader-20261117">
 </script>
-</body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script></body>
 </html>
