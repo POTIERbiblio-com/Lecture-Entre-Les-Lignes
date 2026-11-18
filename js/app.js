@@ -3891,6 +3891,17 @@ function pdfAddress(b){if(b.pdf)return b.pdf;if(location.protocol==='file:'&&typ
 
 
 /* Catalogue partagé : fiches GitHub validées et fiches publiées par l'atelier Firebase. */
+
+async function applyCatalogueSuppressions(){
+ if(location.protocol==='file:')return;
+ try{
+  const client=await ellConnect();
+  const {data,error}=await client.from('catalogue_suppressions').select('book_id');
+  if(error)throw error;
+  const removed=new Set((data||[]).map(item=>item.book_id));
+  state.books=state.books.filter(book=>!removed.has(book.id)&&!removed.has(String(book.externalCatalogId||'')));
+ }catch(error){console.warn('Suppression catalogue : chargement indisponible',error);}
+}
 async function loadPublicCatalogue(){
  const mapping=Object.fromEntries(Object.entries(GENRES).map(([slug,[name,subs]])=>[name,{slug,subs}]));
  const normalize=(entry,source)=>{
@@ -3972,6 +3983,7 @@ for(const book of LIVRES_INITIAUX){
 }
 try { await loadServiceState(); } catch(error) { showCarnetWarning(error.message); }
 await loadPublicCatalogue();
+await applyCatalogueSuppressions();
 if(changed&&db)await writeLocalState();
 if(!document.body.isConnected)return;
 applyDesign();
