@@ -24,6 +24,7 @@ function refreshSubgenres(value=''){
 }
 genreSelect.addEventListener('change',()=>refreshSubgenres());
 function publicationState(published){$('publication-status').textContent=published?'Publié dans Firestore · visibilité publique à vérifier':'Brouillon · Non publié';$('publish-book').disabled=!current||!!published;$('unpublish-book').disabled=!current||!published;}
+const OWNER_EMAILS=new Set(['quentinmorel1912@gmail.com','juliepotier2006@gmail.com']);
 let books=[],chapters=[],current=null,chapter=null,ready=false;
 const fields=form=>Object.fromEntries(new FormData(form).entries());
 function showError(e){console.error('Catalogue Firebase:',e);msg('Impossible d’enregistrer : '+(e?.message||'erreur inconnue'));}
@@ -105,13 +106,15 @@ $('delete-chapter').onclick=async()=>{
 $('delete-book').onclick=async()=>{
  if(!current){msg('Sélectionne un livre à supprimer.');return;}
  const item=books.find(x=>x.id===current);
- if(!confirm('Supprimer définitivement « '+(item?.title||'ce livre')+' » et ses résumés ?'))return;
+ if(!confirm('Retirer « '+(item?.title||'ce livre')+' » du catalogue public ?'))return;
+ const confirmation=prompt('Pour confirmer, recopie exactement le titre du livre : '+(item?.title||''));
+ if(confirmation!==(item?.title||'')){msg('Suppression annulée : le titre ne correspond pas.');return;}
  try{
-  const batch=writeBatch(db);
-  for(const c of chapters)batch.delete(doc(db,'book_chapters',c.id));
-  batch.delete(doc(db,'books',current));
-  await batch.commit();current=null;await loadBooks();bookForm();
-  msg('Livre supprimé de Firestore. Les fichiers hébergés sur GitHub ne sont pas supprimés.');
+  await setDoc(doc(db,'catalogue_hidden', 'firebase-'+current),{book_id:'firebase-'+current,hidden:true,hidden_by:auth.currentUser?.email||'',hidden_at:new Date().toISOString()});
+  await setDoc(doc(db,'books',current),{published:false},{merge:true});
+  const local=books.find(b=>b.id===current);if(local)local.published=false;
+  publicationState(false);
+  msg('Livre retiré de la publication. Les fichiers hébergés ne sont pas supprimés.');
  }catch(err){showError(err);}
 };
 onAuthStateChanged(auth,async user=>{
@@ -119,8 +122,8 @@ onAuthStateChanged(auth,async user=>{
  if(!user){msg('Connecte-toi à Firebase depuis Mon espace, puis reviens ici.');return;}
  try{
   const token=await getIdTokenResult(user,true);
-  if(token.claims.admin!==true&&token.claims.catalogEditor!==true){
-   msg('Ce compte Firebase ne possède pas les droits d’édition du catalogue. Connecte-toi avec le compte de Quentin.');return;
+  if(!OWNER_EMAILS.has((user.email||'').toLowerCase()) || (token.claims.admin!==true&&token.claims.catalogEditor!==true)){
+   msg('Accès réservé aux comptes de Quentin et Julie disposant des droits éditeur Firebase.');return;
   }
   await loadBooks();ready=true;$('admin-editor').hidden=false;bookForm();
   msg('Compte éditeur Firebase vérifié. Tu peux créer et enregistrer une fiche.');
