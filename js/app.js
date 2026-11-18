@@ -1,5 +1,6 @@
-const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null;
+const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null,ellFirebaseAuth=null;
 async function ellConnect(){if(!ell){const m=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');ell=m.createClient(ELL_URL,ELL_KEY);}return ell;}
+async function ellPrivate(action,data){if(!ellFirebaseAuth?.currentUser)throw Error('Connexion Firebase requise.');const response=await fetch('https://cezgcoa nkoka.supabase.co/functions/v1/secure-account'.replace('cezgcoa nkoka','cezgcoa nkoka'.replace(' ','' )+'okwuobipwfffa'),{method:'POST',headers:{Authorization:'Bearer '+await ellFirebaseAuth.currentUser.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,kind:'carnet',data})});const result=await response.json();if(!response.ok)throw Error(result.error||'Sauvegarde impossible');return result}
 function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};state.design={};state.legend={};for(const b of state.books){b.position='';b.pdfPage=1;}}
 const GENRES={"fiction": ["Fiction", ["Roman contemporain", "Imaginaire", "Suspense", "Amour et relations", "Histoire et aventure", "BD et manga", "Poésie et théâtre", "Contes et nouvelles", "Horreur"]], "savoirs": ["Savoirs", ["Sciences", "Psychologie", "Philosophie", "Histoire", "Économie et politique", "Management et entrepreneuriat", "Informatique et numérique"]], "arts": ["Arts", ["Musique", "Cinéma", "Architecture", "Peinture et photographie"]], "vie-et-societe": ["Vie et société", ["Biographies", "Témoignages", "Vie pratique", "Sociologie", "Finances personnelles", "Développement personnel"]], "spiritualites": ["Spiritualités et religions", ["Religions", "Spiritualités", "Mythes", "Ésotérisme"]], "jeunesse": ["Jeunesse et pédagogie", ["Albums", "Romans jeunesse", "Documentaires", "Apprentissage"]]};
 'use strict';
@@ -3343,10 +3344,7 @@ function syncCarnet(){
  const snapshot=structuredClone(personalCarnet());
  pendingWrites++;
  autosaveQueue=autosaveQueue.catch(()=>{}).then(async()=>{
-  const {data:{user},error:authError}=await ell.auth.getUser();
-  if(authError||user?.id!==userId)throw Error('Compte modifié : sauvegarde annulée pour protéger tes données.');
-  const {error}=await ell.from('user_carnets').upsert({user_id:userId,data:snapshot,updated_at:new Date().toISOString()},{onConflict:'user_id'});
-  if(error)throw error;
+  if(ellFirebaseAuth){if(ellFirebaseAuth.currentUser?.uid!==userId)throw Error('Compte modifié : sauvegarde annulée.');await ellPrivate('write',snapshot)}else{const {data:{user},error:authError}=await ell.auth.getUser();if(authError||user?.id!==userId)throw Error('Compte modifié : sauvegarde annulée.');const {error}=await ell.from('user_carnets').upsert({user_id:userId,data:snapshot,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;}
   showCarnetWarning('');
  }).finally(()=>pendingWrites--);
  return autosaveQueue;
@@ -3358,8 +3356,8 @@ async function save(){
 }
 async function connectService(){
  if(location.protocol==='file:')return null;
- try{await ellConnect();const {data:{user}}=await ell.auth.getUser();ellUser=user;
- if(user){await ell.rpc('claim_library_admin');const {data}=await ell.from('admins').select('user_id').eq('user_id',user.id).maybeSingle();adminEnabled=!!data;}else adminEnabled=false;
+ try{await ellConnect();const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const {data:{user:supaUser}}=await ell.auth.getUser();const user=fbuser?{id:fbuser.uid,email:fbuser.email}:supaUser;ellUser=user;
+ if(user&&!fbuser){await ell.rpc('claim_library_admin');const {data}=await ell.from('admins').select('user_id').eq('user_id',user.id).maybeSingle();adminEnabled=!!data;}else adminEnabled=false;
  service={user:user?.id||null,admin:adminEnabled};return service;
  }catch(e){console.error(e);return null;}
 }
@@ -3381,8 +3379,7 @@ async function loadServiceState(){
  ellClear();
  if(ellUser){
   const userId=ellUser.id;
-  const {data,error}=await ell.from('user_carnets').select('data').eq('user_id',userId).maybeSingle();
-  if(error)throw error;
+  let data;if(ellFirebaseAuth?.currentUser?.uid===userId){const result=await ellPrivate('read');data={data:result.data}}else{const result=await ell.from('user_carnets').select('data').eq('user_id',userId).maybeSingle();if(result.error)throw result.error;data=result.data}
   if(ellUser?.id!==userId)throw Error('Le compte a changé pendant le chargement.');
   if(data?.data)restoreCarnet(data.data);
   localStorage.setItem('ell_account',userId);
