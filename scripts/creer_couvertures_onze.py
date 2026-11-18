@@ -8,7 +8,7 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[1]
 catalog = root / "catalogue-documente.json"
 books = json.loads(catalog.read_text(encoding="utf-8"))
-selected = [b for b in books if b.get("id", "") in {f"liv{i}" for i in range(110, 121)}]
+selected = [b for b in books if b.get("id", "") in {f"liv{i:04d}" for i in range(110, 121)}]
 if len(selected) != 11:
     raise SystemExit(f"11 livres attendus, {len(selected)} trouvés")
 out = root / "images" / "couvertures" / "nouveaux-11"
