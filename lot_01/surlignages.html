@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mes surlignages · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/carnet-pages.css"></head>
+<body class="atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="site-header" role="banner">
+<a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<div class="site-nav" aria-label="Menu principal" role="navigation">
+<a href="index.html">Accueil</a>
+<a href="genres.html">Genres</a>
+<a href="lecture.html" class="active" aria-current="page">Lecture</a>
+<a href="mes-livres.html" class="nav-search">Chercher un livre</a>
+<a href="critiques.html">Critiques</a>
+<a href="mon-espace.html">Mon espace</a>
+</div>
+</div>
+<div class="site-main" role="main" id="contenu">
+<div class="crumb">
+<a href="index.html">Accueil</a> / <a href="lecture.html">Lecture</a> / <a href="surlignages.html">Mes surlignages</a>
+</div>
+<header class="carnet-affiche carnet-affiche-passages" aria-labelledby="carnet-page-title">
+  <div class="carnet-affiche-art" aria-hidden="true"></div>
+  <div class="carnet-affiche-titre">
+    <h1 id="carnet-page-title">Mes surlignages</h1>
+    <p>Retrouve un passage par livre, page ou couleur.</p>
+    <div class="carnet-affiche-liens">
+      <a href="#trace-tools">Filtrer mes passages <span aria-hidden="true">↓</span></a>
+      <a href="mes-livres.html">Ouvrir un livre <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+  <img class="carnet-affiche-sticker" src="images/objets/surligneur.svg" alt="">
+</header><div class="trace-filters" id="trace-tools" tabindex="-1"><h2 class="carnet-filter-title"><img src="images/objets/loupe.svg" alt="">Retrouver un passage</h2><div><label for="highlight-search">Titre du livre</label><input id="highlight-search" type="search" placeholder="Rechercher un livre…"></div><div><label for="highlight-book">Livre</label><select id="highlight-book"><option value="">Tous les livres</option></select></div><div><label for="highlight-color">Couleur / légende</label><select id="highlight-color"><option value="">Toutes les couleurs</option></select></div><div><label for="highlight-order">Classer les passages</label><select id="highlight-order"><option value="book">Par livre et page</option><option value="color">Par couleur / légende</option></select></div><p id="highlight-count" role="status"></p></div><div id="highlights" data-mode="surlignages">
+</div>
+<nav class="carnet-onglets" aria-labelledby="carnet-onglets-title">
+  <h2 id="carnet-onglets-title">Continuer dans le carnet</h2>
+  <div>
+    <a href="annotations.html"><img src="images/atelier/chuchotement.jpg" alt="" loading="lazy"><span>Annotations <span aria-hidden="true">↗</span></span></a>
+    <a href="fiches.html"><img src="images/atelier/carnets-et-monde.jpg" alt="" loading="lazy"><span>Fiches <span aria-hidden="true">↗</span></span></a>
+    <a href="journaux.html"><img src="images/atelier/carnet-sur-roues.jpg" alt="" loading="lazy"><span>Journaux <span aria-hidden="true">↗</span></span></a>
+    <a href="tests.html"><img src="images/atelier/a-l-ecoute.jpg" alt="" loading="lazy"><span>Questions <span aria-hidden="true">↗</span></span></a>
+  </div>
+</nav></div>
+<div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
+<a href="plan.html">Plan du site</a>
+<a href="admin.html">Atelier admin</a></div>
+<script type="text/javascript" src="js/app.js?v=dd11c654eb">
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 270"><defs>
+<pattern id="grain" width="13" height="11" patternUnits="userSpaceOnUse"><path d="M1 4h1m6 5 2-1M11 2h1M4 10h1" stroke="#684758" stroke-width=".65" opacity=".19" fill="none"/></pattern>
+<pattern id="carreaux" width="21" height="21" patternUnits="userSpaceOnUse"><path d="M0 1h21M1 0v21" fill="none" stroke="#9d819e" stroke-width=".6" opacity=".28"/></pattern>
+</defs>
+<path d="M37 173L217 42L249 83L69 215Z" fill="#eab9cb" stroke="#9d6c84" stroke-width="2.6"/>
+<path d="M60 188L220 70L233 87L74 204Z" fill="#d3e4b5" stroke="#8a9c74" stroke-width="1.4"/>
+<path d="M217 42L232 31L263 73L249 83Z" fill="#cb93b5" stroke="#966a89" stroke-width="2"/>
+<path d="M37 173L69 215L23 220Z" fill="#fff1cc" stroke="#a1747c" stroke-width="2.4"/>
+<path d="M23 220L30 196L43 212Z" fill="#6d5263"/>
+<path d="M67 151l-9-14m24 4-9-14" stroke="#fff4e3" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M67 241q48-28 87-8t76-14" fill="none" stroke="#dfbad2" stroke-width="17" stroke-linecap="round"/>
+<path d="M68 238q48-25 87-8t76-13" fill="none" stroke="#ae7694" stroke-width="1.4" stroke-dasharray="3 5"/>
+<path d="M177 43l-5-16m20 10 9-15" stroke="#9f708a" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>

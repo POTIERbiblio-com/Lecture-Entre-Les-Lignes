@@ -1,0 +1,113 @@
+/* Collages locaux, papier de carnet et repères de lecture. */
+.journal-hero {
+  --journal-paper:#f7dce7;
+  --journal-ink:#62324d;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  min-height:210px;
+  padding:19px clamp(15px,4vw,48px);
+  margin:0 auto 22px;
+  color:var(--journal-ink);
+  background:repeating-linear-gradient(0deg,#faf3fb36 0 1px,transparent 1px 27px),var(--journal-paper);
+  border:1px solid #b9819b;
+  border-radius:15px 27px 12px 24px / 19px 18px 23px 15px;
+  box-shadow:4px 5px 0 #aa6d9133;
+}
+.tone-bleu { --journal-paper:#e4edf3; --journal-ink:#354c61; }
+.tone-miel { --journal-paper:#e7d9f1; --journal-ink:#69482d; }
+.tone-lilas { --journal-paper:#e8dff1; --journal-ink:#50375f; }
+.tone-menthe { --journal-paper:#e4edd9; --journal-ink:#40553f; }
+.journal-title { min-width:0; flex:1; }
+.journal-title .paper-label { display:inline-block; margin:0; color:inherit; }
+.journal-title h1,.journal-hand {
+  margin:6px 0;
+  font:700 clamp(38px,5.5vw,74px)/.97 Caveat,"Segoe Print",Georgia,serif;
+  letter-spacing:-.03em;
+  overflow-wrap:anywhere;
+}
+.journal-title p:not(.paper-label):not(.journal-hand) { margin:8px 0 0; max-width:38ch; }
+.journal-art { position:relative; flex:0 1 260px; min-width:105px; }
+.journal-picture {
+  position:relative;
+  width:min(100%,215px);
+  margin:0 auto;
+  padding:6px 6px 12px;
+  background:#fbf4fb;
+  box-shadow:2px 3px 0 #79416036;
+  transform:rotate(4deg);
+}
+.journal-picture::before,.horror-photos::before {
+  content:"";
+  position:absolute; z-index:2;
+  width:53%; height:17px; top:-5px; left:19%;
+  background:repeating-linear-gradient(110deg,#d899b5c7 0 6px,#f5c8dba9 6px 11px);
+  transform:rotate(-5deg);
+}
+.journal-picture img { display:block; width:100%; height:153px; object-fit:cover; object-position:50% 34%; }
+.journal-sticker { display:block; width:58px; filter:drop-shadow(1px 2px 1px #65334f43); }
+.journal-art > .journal-sticker { position:absolute; z-index:3; right:-3px; bottom:-11px; transform:rotate(10deg); animation:sticker-settle .55s ease-out both; }
+.journal-compact { min-height:168px; }
+.journal-compact .journal-title h1,.journal-compact .journal-hand { font-size:clamp(34px,4.5vw,58px); }
+.journal-compact .journal-art { flex-basis:185px; }
+.journal-compact .journal-picture { width:min(100%,148px); }
+.journal-compact .journal-picture img { height:106px; }
+.journal-compact .journal-sticker { width:48px; }
+.crumb { position:relative; min-height:22px; padding-right:47px; }
+.margin-sticker { position:absolute; top:-12px; right:4px; width:43px; transform:rotate(8deg); pointer-events:none; animation:sticker-settle .55s ease-out both; }
+.open-notebook > .cover-sticker { position:absolute; z-index:4; top:12px; right:14px; width:36px; transform:rotate(12deg); pointer-events:none; }
+.journal-actions {
+  display:flex; flex-wrap:wrap; gap:10px 16px; align-items:end;
+  padding:11px 13px 14px; background:#f9f2fb; border:1px solid #e4c4d1;
+  border-radius:8px 15px 7px 12px;
+}
+.journal-actions > div { flex:1 1 245px; min-width:0; }
+.journal-actions label { display:block; margin:0 0 3px; font-weight:700; font-size:13px; }
+.journal-actions input { width:100%; min-height:43px; }
+.journal-actions .btn { margin:0; }
+.journal-results { min-height:1.25em; color:#66465b; font-size:13px; margin:12px 0 5px; }
+.journal-shelf { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.journal-shelf .book { margin:0; background:#fbf4fb; border-radius:7px 13px 5px 9px; }
+.journal-shelf > .empty { grid-column:1/-1; margin:0; padding:14px; border-left:4px solid #bb80a0; background:#f9f2fb; }
+.journal-returns { display:flex; flex-wrap:wrap; gap:10px 18px; margin:17px 0 0; }
+.journal-hero + form { padding:clamp(12px,3vw,23px); background:#faf3fb; border:1px solid #e0b9cc; border-radius:7px 14px 6px 10px; }
+.journal-horror { --journal-paper:#45283f; --journal-ink:#fff2ed; border-color:#6d3b59; min-height:245px; }
+.journal-horror .journal-art { flex-basis:320px; }
+.horror-photos { position:relative; min-height:180px; }
+.horror-photos img { position:absolute; display:block; width:37%; height:111px; object-fit:cover; border:4px solid #fff5e9; border-bottom-width:10px; box-shadow:2px 3px 0 #20112090; }
+.horror-photos img:nth-child(1) { top:19px; left:0; transform:rotate(-11deg); object-position:center 31%; }
+.horror-photos img:nth-child(2) { top:4px; left:30%; width:42%; height:137px; transform:rotate(4deg); }
+.horror-photos img:nth-child(3) { top:54px; right:0; transform:rotate(13deg); }
+.horror-photos::before { top:3px; left:37%; width:31%; }
+.journal-horror .journal-sticker { bottom:-6px; }
+.book.horror-book { border:1px solid #a96389; background:#fae8ef; }
+.horror-book-mark { display:flex; align-items:center; gap:7px; width:fit-content; margin:4px 0 9px; padding:3px 8px; background:#503148; color:#fff6f0; border-radius:5px 10px 5px 8px; font:700 20px/1 Caveat,"Segoe Print",serif; }
+.book img.horror-book-sticker { width:30px; height:30px; object-fit:cover; border:1px solid #ffe9ee; border-radius:37% 44% 38% 42%; }
+@keyframes sticker-settle { from { opacity:0; rotate:-12deg; scale:.82; } to { opacity:1; rotate:0deg; scale:1; } }
+@media (hover:hover) {
+  .journal-actions .btn,.journal-returns a,.file-links a { transition:translate .17s ease; }
+  .journal-actions .btn:hover,.journal-returns a:hover,.file-links a:hover { translate:0 -2px; }
+}
+@media (max-width:660px) {
+  .journal-hero { gap:10px; min-height:149px; padding:12px 13px; margin-bottom:16px; }
+  .journal-title h1,.journal-compact .journal-title h1,.journal-compact .journal-hand { font-size:clamp(30px,8vw,47px); }
+  .journal-title p:not(.paper-label):not(.journal-hand) { font-size:13px; }
+  .journal-art,.journal-compact .journal-art { flex:0 0 37%; min-width:74px; }
+  .journal-picture { padding:4px 4px 7px; }
+  .journal-picture img,.journal-compact .journal-picture img { height:90px; }
+  .journal-art > .journal-sticker,.journal-compact .journal-sticker { width:37px; right:0; }
+  .journal-horror { flex-wrap:wrap; padding-bottom:14px; }
+  .journal-horror .journal-title { flex-basis:100%; }
+  .journal-horror .journal-art { flex:0 1 230px; margin:0 auto; }
+  .horror-photos { min-height:136px; }
+  .horror-photos img { height:86px; border-width:3px; border-bottom-width:7px; }
+  .horror-photos img:nth-child(2) { height:106px; }
+  .horror-photos img:nth-child(3) { top:41px; }
+  .journal-shelf { grid-template-columns:minmax(0,1fr); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .journal-sticker { animation:none !important; }
+  .journal-actions .btn,.journal-returns a,.file-links a { transition:none !important; }
+}

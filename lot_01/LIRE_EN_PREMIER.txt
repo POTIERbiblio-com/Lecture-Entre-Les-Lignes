@@ -1,0 +1,6 @@
+DOSSIER DES 11 LIVRES UNIQUEMENT — VERSION PRIVÉE
+
+Ouvrir index.html pour accéder aux 11 couvertures, fiches, résumés, PDF et téléchargements.
+Les fichiers PDF sont dans pdf/ ; les couvertures dans images/couvertures/.
+Pour la lecture PDF et les fonctions avancées qui nécessitent un serveur local, utiliser un hébergement privé autorisé ou un serveur local.
+Ce paquet n’est pas destiné à la publication publique sans les droits de diffusion nécessaires.

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 270"><defs>
+<pattern id="grain" width="13" height="11" patternUnits="userSpaceOnUse"><path d="M1 4h1m6 5 2-1M11 2h1M4 10h1" stroke="#684758" stroke-width=".65" opacity=".19" fill="none"/></pattern>
+<pattern id="carreaux" width="21" height="21" patternUnits="userSpaceOnUse"><path d="M0 1h21M1 0v21" fill="none" stroke="#9d819e" stroke-width=".6" opacity=".28"/></pattern>
+</defs>
+<path d="M28 68Q82 36 145 74Q211 37 272 71L259 212Q203 186 145 217Q85 185 31 211Z" fill="#d4b2b8" stroke="#9b6880" stroke-width="2.8"/>
+<path d="M39 51Q91 32 145 63Q207 29 260 55L251 195Q201 178 145 207Q91 177 37 194Z" fill="#fff8e6" stroke="#a17782" stroke-width="2.3"/>
+<path d="M39 51Q91 32 145 63L145 207Q91 177 37 194Z" fill="url(#grain)"/>
+<path d="M145 64V208m0-137q6 71 1 128" fill="none" stroke="#b99aa0" stroke-width="1.4"/>
+<path d="M56 81q35-10 69 7m-70 11q35-10 69 7m-70 11q35-10 69 7m-70 12q35-10 69 7m-69 12q35-10 67 6m-69 11q35-10 67 6" fill="none" stroke="#a1b8c5" stroke-width="1.2"/>
+<path d="M168 85q35-15 64-9m-65 26q35-15 64-9m-65 27q35-15 64-9m-65 27q35-15 64-9m-65 27q35-15 64-9" fill="none" stroke="#a1b8c5" stroke-width="1.2"/>
+<path d="M195 58l-4 75 13-8 11 8 6-83" fill="#d195af" stroke="#a76c8b" stroke-width="1.5"/>
+<path d="M38 201q52-20 105 12m5 0q55-29 104-9" fill="none" stroke="#9c7480" stroke-width="1.1"/>
+</svg>

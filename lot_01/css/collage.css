@@ -1,0 +1,233 @@
+@font-face {
+  font-family: Caveat;
+  src: url("../fonts/caveat.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --ink: #4a2d40;
+  --accent: #9b416b;
+  --pencil: Caveat, "Segoe Print", cursive;
+}
+.home-collage {
+  isolation: isolate;
+  min-height: 390px;
+  padding: 0 10% 44px 9%;
+}
+.collage-photo {
+  background: #fffaf5;
+  padding: 10px 10px 6px;
+  max-width: 390px;
+  margin: 0 auto;
+  box-shadow: 3px 7px 15px #663e5034;
+  transform: rotate(-5deg);
+}
+.collage-photo::before,
+.opening-paper::before,
+.scrap-notes li::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -10px;
+  left: 29%;
+  width: 40%;
+  height: 22px;
+  transform: rotate(-6deg);
+  background: repeating-linear-gradient(110deg,#f3b4cbcc 0 9px,#f8d5e2cc 9px 16px);
+}
+.collage-photo .shelf-photo {
+  height: clamp(210px, 31vw, 350px);
+  border: 0;
+  border-radius: 0;
+  object-position: center 48%;
+}
+.collage-photo span {
+  display: block;
+  font: 600 24px/1.15 var(--pencil);
+  color: #713b58;
+  padding: 7px 4px 3px;
+  text-align: center;
+}
+.home-collage img:not(.shelf-photo), .genre-spread > img, .search-collage .search-reader {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(2px 3px 2px #73405826);
+}
+.home-collage .hero-reader { width: 28%; right: 0; bottom: 2%; transform: rotate(6deg); }
+.home-collage .hero-strawberry { width: 19%; left: 0; top: 5%; transform: rotate(-17deg); }
+.home-collage .hero-stack { width: 22%; left: 2%; bottom: 0; transform: rotate(-6deg); }
+.home-collage .home-edge { display: none; }
+.shelf-sticker { display: block; width: 70px; max-height: 62px; object-fit: contain; transform: rotate(-8deg); }
+.page-accueil .section-line { position: relative; justify-content: flex-start; }
+.page-accueil .section-line > a { margin-left: auto; }
+.page-accueil .masthead-meta span:first-child { font: 700 26px/.9 var(--pencil); text-transform: none; letter-spacing: .01em; color: #803e61; }
+.genre-spread { position: relative; }
+.genre-spread .genre-gallery { gap: 22px 26px; padding-bottom: 44px; }
+.genre-spread .genre-plate {
+  border: 5px solid #fff9f3;
+  border-bottom-width: 13px;
+  border-radius: 4px 8px 3px 5px;
+  box-shadow: 3px 7px 0 #bd79944d;
+}
+.genre-spread .genre-plate:nth-child(2n) { border-radius: 10px 3px 6px 4px; }
+.genre-spread .genre-plate:nth-child(1) { transform: rotate(-2deg); }
+.genre-spread .genre-plate:nth-child(2) { transform: rotate(1deg); }
+.genre-spread .genre-plate:nth-child(3) { transform: rotate(2deg) translateY(8px); }
+.genre-spread .genre-plate:nth-child(4) { transform: rotate(1.2deg); }
+.genre-spread .genre-plate:nth-child(5) { transform: rotate(-1.8deg) translateY(4px); }
+.genre-spread .genre-plate:nth-child(6) { transform: rotate(1.7deg); }
+.genre-spread .genre-plate img { aspect-ratio: 1.58; }
+.genre-spread .plate-no { color: #65394d; }
+.genre-spread .genre-edge, .genre-spread .genre-margin-sticker { display: none; }
+.genre-spread .genre-margin-sticker { right: 0; bottom: 5px; width: 130px; transform: rotate(5deg); }
+.genres-intro p {
+  font: 700 clamp(22px, 3vw, 33px)/1.15 var(--pencil);
+  color: #874267;
+  margin-top: 1px;
+}
+.scrap-opening {
+  position: relative;
+  padding: clamp(22px, 5vw, 70px) 4%;
+  min-height: 335px;
+  display: flex;
+  align-items: center;
+  border-radius: 11px 22px 14px 8px;
+  margin-bottom: 30px;
+  background: #e9c6d4;
+  background-size: cover;
+  background-position: center;
+}
+.scrap-lecture { background-image: url("../images/collage/etagere-etoilee.jpg"); background-position: 50% 33%; }
+.scrap-critiques { background-image: url("../images/collage/etagere-romance.jpg"); background-position: 50% 39%; }
+.scrap-mon-espace { background-image: url("../images/collage/salon-rose.jpg"); background-position: 50% 59%; }
+.opening-paper {
+  position: relative;
+  background: #fff9f4;
+  max-width: min(650px, 80%);
+  padding: clamp(16px, 4vw, 45px);
+  box-shadow: 4px 7px 0 #79556350;
+  border-radius: 4px 14px 3px 11px;
+  transform: rotate(-1.4deg);
+}
+.opening-paper h1 { margin: 5px 0; font-size: clamp(35px, 6vw, 80px); }
+.opening-paper p { font: 600 clamp(19px, 3vw, 32px)/1.12 var(--pencil); margin: 8px 0 2px; }
+.search-spread {
+  position: relative;
+  background:
+    repeating-linear-gradient(96deg,#fff9f89c 0 15px,#f6d5e65c 15px 29px),
+    #f4d1df;
+  border: 0;
+  border-radius: 8px 15px 6px 11px;
+  box-shadow: 5px 6px 0 #be7e9b4d;
+}
+.search-main {
+  background: #fff9f4;
+  padding: clamp(15px, 3vw, 34px);
+  transform: rotate(-1deg);
+  box-shadow: 3px 4px 0 #c492a53c;
+}
+.search-art.search-collage { min-width: 0; max-width: 380px; width: 100%; justify-self: center; }
+.search-art .search-shelf {
+  width: min(80%, 300px);
+  max-height: 435px;
+  object-fit: contain;
+  margin-left: auto;
+  background: #fff9f3;
+  border-radius: 0;
+  transform: rotate(4deg);
+}
+.search-art .search-reader {
+  width: 46%;
+  left: 0;
+  bottom: 3%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transform: rotate(-8deg);
+}
+.search-tag { font: 700 clamp(17px, 2.8vw, 27px)/1.05 var(--pencil); }
+.resource-intro, .scraps-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.resource-intro h1 { margin-top: 6px; }
+.resource-sticker { width: clamp(75px, 14vw, 160px); transform: rotate(7deg); }
+.page-ressources .resource-tiles { grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); align-items: stretch; gap: 25px; }
+.page-ressources .gallica-library {
+  padding: 30px 18%;
+  background: #f0e9f5 url("../images/collage/papier-fleuri.jpg") center 45% / cover;
+  border-radius: 6px 12px 7px 8px;
+  box-shadow: 4px 6px 0 #c1849f53;
+}
+.gallica-library h2 { display: table; padding: 3px 8px; background: #fff9f3; }
+.gallica-library .eyebrow, .gallica-library p { display: table; background: #fff9f3; padding: 1px 5px; }
+.page-ressources .gallica-video {
+  overflow: visible;
+  background: #fffaf4;
+  border: 0;
+  border-radius: 4px 9px 3px 6px;
+  padding: 12px 16px 20px;
+  transform: rotate(1.4deg);
+  box-shadow: 5px 7px 0 #b8879c51;
+}
+.gallica-video img { height: 170px; object-fit: contain; mix-blend-mode: multiply; }
+.gallica-caption { position: static; text-align: center; }
+.gallica-caption .eyebrow, .gallica-caption p { margin: 3px auto 7px; background: transparent; }
+.gallica-caption .white-highlight { background: transparent; }
+.scraps-sticker { width: 75px; transform: rotate(9deg); }
+.scrap-notes { list-style: none; padding: 9px 8px; margin: 12px 0 24px; }
+.scrap-notes li {
+  position: relative;
+  background: #f7f0fb;
+  padding: 15px 13px;
+  margin: 9px 0;
+  box-shadow: 3px 5px 0 #a66d8f3d;
+  border-radius: 3px 12px 3px 7px;
+}
+.scrap-notes li:nth-child(1) { transform: rotate(-1.4deg); }
+.scrap-notes li:nth-child(2) { transform: rotate(1.5deg); background: #dcebf6; }
+.scrap-notes li:nth-child(3) { transform: rotate(-1deg); background: #f6d9e6; }
+.scrap-notes li::before { height: 14px; width: 60px; left: 26px; background: #c482a85b; }
+.scrap-notes li a { text-decoration: none; display: block; }
+.scrap-notes li a:hover strong { text-decoration: underline; }
+.scrap-notes li strong, .scrap-notes li span { display: block; }
+.scrap-notes li strong { font: 700 clamp(23px, 3vw, 32px)/1.04 var(--pencil); margin-bottom: 6px; }
+.scrap-notes li span { font-size: 13px; }
+@supports (display: grid) {
+  .scrap-notes { display: grid; gap: 16px; grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+@media (min-width: 1200px) {
+  .home-collage .home-edge {
+    display: block; right: -7%; top: 12%; width: 10%; max-height: 340px; object-fit: contain;
+    transform: rotate(3deg); z-index: 1;
+  }
+  .genre-spread { padding-left: 5%; padding-right: 3%; }
+  .genre-spread .genre-edge { display: block; left: -3%; bottom: 11%; width: 7%; max-height: 440px; object-fit: contain; transform: rotate(-3deg); }
+  .genre-spread .genre-margin-sticker { display: block; right: -2%; bottom: 2px; width: 13%; }
+  .genre-spread .genre-gallery { padding-bottom: 66px; }
+}
+@media (max-width: 660px) {
+  .home-collage { min-height: 0; padding: 10px 10% 28px; }
+  .collage-photo { max-width: 270px; }
+  .collage-photo .shelf-photo { height: clamp(155px, 48vw, 215px); }
+  .collage-photo span { font-size: 19px; }
+  .home-collage .hero-reader { width: 23%; right: 0; bottom: 0; }
+  .home-collage .hero-strawberry { width: 19%; top: 4%; left: 0; }
+  .home-collage .hero-stack { width: 21%; }
+  .page-accueil .masthead-meta span:first-child { font-size: 20px; }
+  .shelf-sticker { display: none; }
+  .genre-spread .genre-gallery { gap: 12px 10px; }
+  .genre-spread .genre-plate { border-width: 3px; border-bottom-width: 7px; }
+  .genre-spread .plate-label { left: 5px; bottom: 4px; right: 5px; }
+  .scrap-opening { min-height: 245px; }
+  .opening-paper { max-width: 85%; }
+  .search-art.search-collage { width: 52%; max-width: 200px; }
+  .search-art .search-shelf { max-height: 180px; }
+  .page-ressources .resource-tiles { grid-template-columns: minmax(0,1fr); }
+  .page-ressources .gallica-library { padding: 23px 13%; }
+  .scrap-notes { grid-template-columns: minmax(0,1fr); gap: 6px; }
+}
