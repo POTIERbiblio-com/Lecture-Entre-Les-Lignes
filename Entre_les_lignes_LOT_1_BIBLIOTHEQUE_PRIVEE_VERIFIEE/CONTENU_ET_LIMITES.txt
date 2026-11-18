@@ -1,0 +1,7 @@
+ARCHIVE DE LECTURE PRIVÉE — NON PRÊTE POUR UNE PUBLICATION PUBLIQUE
+
+Chaque livre inclut son PDF original, une couverture, sa fiche JSON, une page lecture.html avec lecteur PDF, téléchargement, identité, classement, chapitres et liens externes lorsqu’ils existent.
+
+Les chapitres dépourvus de résumé ont un EXTRAIT DOCUMENTAIRE, clairement signalé, et non un résumé inventé. Les critiques ne sont pas toutes disponibles ni vérifiées. L’application GitHub Pages existante ne consomme pas automatiquement ces pages HTML.
+
+NE PAS publier les PDF protégés dans un dépôt public sans autorisation.

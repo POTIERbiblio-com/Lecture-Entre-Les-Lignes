@@ -1,0 +1,42 @@
+{
+  "lot": 1,
+  "livres": [
+    {
+      "titre": "Avoir le courage de ne pas être aimé",
+      "pages_pdf_verifiees": 268,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "chapitres_reperes": 8,
+      "chapitres_avec_resume": 0,
+      "liens_critiques": 2
+    },
+    {
+      "titre": "Comment retrouver toute son énergie",
+      "pages_pdf_verifiees": 74,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "chapitres_reperes": 11,
+      "chapitres_avec_resume": 4,
+      "liens_critiques": 1
+    },
+    {
+      "titre": "Divorcer d’un manipulateur",
+      "pages_pdf_verifiees": 201,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "chapitres_reperes": 10,
+      "chapitres_avec_resume": 0,
+      "liens_critiques": 1
+    },
+    {
+      "titre": "Le Guide de l’apprenti millionnaire",
+      "pages_pdf_verifiees": 379,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "chapitres_reperes": 60,
+      "chapitres_avec_resume": 1,
+      "liens_critiques": 0
+    }
+  ],
+  "portee": "Archives de lecture privée. Tests de structure PDF et liens internes; aucun test du site public GitHub."
+}
