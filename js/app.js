@@ -7,6 +7,849 @@ const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g
 let db,state,objects=[];const id=new URLSearchParams(location.search).get('id')||$('book-detail')?.dataset.bookId||$('reader-content')?.dataset.bookId;
 const LIVRES_INITIAUX=[
 {
+  "id": "liv0110",
+  "title": "Les Secrets de la Loi d’Attraction",
+  "author": "Sié Issa",
+  "genre": "vie-et-societe",
+  "sub": "5",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Sié Issa présente la loi d’attraction comme une démarche où les pensées, les croyances et les attentes orienteraient les expériences vécues. Il commence par décrire trois étapes — demander, croire, recevoir — avant d’examiner les croyances limitantes et les habitudes mentales qui, selon lui, empêchent d’atteindre un objectif. Les exercices invitent à identifier ses convictions, à les reformuler, à pratiquer la gratitude et à agir dans différents domaines : travail, relations, santé et finances. Le texte relève du développement personnel : ses explications sur les « ondes » et le pouvoir causal des pensées sont des affirmations de l’auteur, non des mécanismes scientifiquement démontrés.",
+  "summary": "Sié Issa présente la loi d’attraction comme une démarche où les pensées, les croyances et les attentes orienteraient les expériences vécues. Il commence par décrire trois étapes — demander, croire, recevoir — avant d’examiner les croyances limitantes et les habitudes mentales qui, selon lui, empêchent d’atteindre un objectif. Les exercices invitent à identifier ses convictions, à les reformuler, à pratiquer la gratitude et à agir dans différents domaines : travail, relations, santé et finances. Le texte relève du développement personnel : ses explications sur les « ondes » et le pouvoir causal des pensées sont des affirmations de l’auteur, non des mécanismes scientifiquement démontrés.",
+  "text": "",
+  "pdfPages": 58,
+  "detailPath": "ouvrage-new11-loi-attraction.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "Introduction",
+      "pdfPage": 9,
+      "endPdfPage": 11,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 9 – Tous droits réservés – www.SieIssa.com Introduction « Demandez ce que vous voulez et soyez prêt à l'obtenir. » - Maya Angelou Imaginez avoir en votre possession un pouvoir total et absolu. Un pouvoir qui vous permet de maîtriser la chaleur du soleil, la pluie qui tombe, les vagues de la mer et la…",
+      "resume": "L’auteur raconte sa découverte de la loi d’attraction et les déceptions rencontrées lorsqu’il a essayé de l’appliquer. Il présente son livre comme une méthode pour transformer les intentions en résultats, en associant travail sur les croyances et exercices quotidiens. Cette entrée pose la promesse du guide, sans démontrer scientifiquement l’existence de la loi invoquée."
+    },
+    {
+      "title": "Qu’est-ce que la loi de l’Attraction ?",
+      "pdfPage": 12,
+      "endPdfPage": 16,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 12 – Tous droits réservés – www.SieIssa.com Qu’est-ce que la loi de l’Attraction ? « La loi de l’attraction attire tout ce dont vous avez besoin, comme un aimant, selon la nature de vos pensées. Votre environnement et votre condition financière sont par exemple le reflet exact de vos pensées quotidiennes ». -…",
+      "resume": "La méthode est organisée autour de trois verbes : demander, croire et recevoir. Demander suppose de formuler un objectif précis ; croire consiste à entretenir la conviction de pouvoir l’atteindre ; recevoir revient à se rendre disponible aux occasions et aux résultats espérés. L’auteur insiste sur la clarté des demandes, mais le lien causal qu’il établit entre pensée et événements reste une croyance de développement personnel."
+    },
+    {
+      "title": "L’histoire de la loi de l’Attraction",
+      "pdfPage": 17,
+      "endPdfPage": 18,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 17 – Tous droits réservés – www.SieIssa.com L’histoire de la loi de l’Attraction « Que vous pensiez être capable ou ne pas être capable, dans les deux cas, vous avez raison. » - Henry Ford Avant d’entrer dans les détails de la loi de l’Attraction, vous devez comprendre qu’il ne s’agit pas d’absurdités ou…",
+      "resume": "Cette section replace la notion de loi d’attraction dans une tradition de pensée positive et d’autosuggestion. L’auteur mobilise des références et des récits pour présenter cette idée comme ancienne et largement partagée. Il s’agit d’un exposé de la généalogie revendiquée par le guide, non d’une validation historique ou expérimentale du principe."
+    },
+    {
+      "title": "Les croyances limitantes",
+      "pdfPage": 19,
+      "endPdfPage": 21,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 19 – Tous droits réservés – www.SieIssa.com Pourquoi la loi de l’attraction ne fonctionne pas chez la plupart des gens ? « Vous demandez, et vous ne recevez pas, parce que vous demandez mal… » - Jacques 4 : 3 Il y a quelques jours, j’ai lu sur Facebook une publication intéressante sur la loi de l’attraction.…",
+      "resume": "Le texte explique les échecs supposés de la méthode par des convictions négatives intériorisées : peur de manquer d’argent, sentiment d’indignité ou anticipation de l’échec. Le lecteur est invité à observer ses formulations spontanées pour reconnaître ces freins. L’intérêt pratique réside dans l’examen du discours intérieur ; la responsabilité des difficultés réelles ne peut toutefois être réduite aux croyances individuelles."
+    },
+    {
+      "title": "Développer des croyances positives",
+      "pdfPage": 22,
+      "endPdfPage": 28,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 22 – Tous droits réservés – www.SieIssa.com Comment développer des croyances positives et inspirantes et activer votre pouvoir d'attraction ? « La réalité est une projection de vos pensées ou des choses auxquelles vous pensez habituellement. » - Stephen Richards J’aborde cette question dans le livre…",
+      "resume": "L’auteur propose une progression en trois temps : repérer les pensées limitantes, leur opposer des formulations plus constructives, puis répéter ces nouvelles convictions. Il conseille notamment l’écriture et la fréquentation de contenus jugés inspirants. L’objectif est de modifier les habitudes d’interprétation et d’encourager une attitude plus active face aux projets."
+    },
+    {
+      "title": "Les prémisses de la loi de l’Attraction",
+      "pdfPage": 29,
+      "endPdfPage": 33,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 29 – Tous droits réservés – www.SieIssa.com Les prémisses de la loi de l’Attraction : comment devenir Maître de l’Attraction ? « Quand une porte de bonheur se ferme, une autre s'ouvre; mais souvent nous regardons si longtemps la porte fermée que nous ne voyons pas celle qui nous a été ouverte. » - Helen…",
+      "resume": "L’ouvrage introduit la distinction entre « ondes positives » et « ondes négatives », associées à des émotions telles que joie, gratitude, colère ou tristesse. Selon l’auteur, ces états influenceraient les expériences attirées dans la vie. Cette présentation relève du vocabulaire propre à la loi d’attraction : elle ne décrit pas un mécanisme physique établi."
+    },
+    {
+      "title": "Cinq étapes pour débloquer le pouvoir",
+      "pdfPage": 34,
+      "endPdfPage": 39,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 34 – Tous droits réservés – www.SieIssa.com 5 étapes pour débloquer le pouvoir de la loi de l’Attraction ? « Vous êtes le créateur de votre propre réalité. » - Anonyme A quoi bon connaître les principes de la loi de l’Attraction si vous ne pouvez pas les appliquer ? Une fois que vous aurez compris les…",
+      "resume": "Cinq étapes structurent la mise en pratique : prendre une part de responsabilité dans ses choix, dresser un état des lieux, cultiver des pensées plus positives, accepter le cadre proposé par l’auteur et pratiquer la gratitude. Les exercices visent à passer d’une attente vague à une routine de réflexion. L’ouvrage combine ainsi responsabilisation personnelle et croyances spirituelles."
+    },
+    {
+      "title": "Applications dans la vie quotidienne",
+      "pdfPage": 40,
+      "endPdfPage": 51,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 40 – Tous droits réservés – www.SieIssa.com Qu’est-ce que la loi de l’Attraction peut faire pour vous ? « Nous recevons exactement ce que nous espérons recevoir. » - John Holland La loi de l’Attraction peut changer le cours de votre vie, et les évènements qui s’y dérouleront. Voyons de plus près ce que la loi…",
+      "resume": "Les exemples appliquent la démarche à quatre domaines : évolution professionnelle, relations, santé et finances. L’auteur invite à préciser ce que l’on souhaite, à imaginer une situation favorable et à reconnaître les occasions d’agir. Ses affirmations concernant la santé et l’argent ne doivent pas être considérées comme des garanties de guérison ou de réussite financière."
+    },
+    {
+      "title": "Cinq erreurs courantes",
+      "pdfPage": 52,
+      "endPdfPage": 58,
+      "repere": "Les Secrets De La Loi De L’Attraction – Sié Issa 52 – Tous droits réservés – www.SieIssa.com 5 erreurs courantes avec la loi de l’attraction. Comment les éviter et tirer profit de cette loi ? « Nourrissez de grandes pensées, car vous n'irez jamais plus haut que vos pensées. » - Benjamin Disraeli Beaucoup de gens connaissent la loi de l’attraction. Ils ont…",
+      "resume": "La dernière partie met en garde contre des usages simplistes : attendre un résultat immédiat, se limiter à penser positivement ou abandonner dès les premières difficultés. L’auteur réintroduit l’action et la patience comme conditions pratiques. Le livre se clôt sur l’idée que les habitudes et la persévérance comptent autant que les intentions affichées."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0111",
+  "title": "La Chute",
+  "author": "Albert Camus",
+  "genre": "fiction",
+  "sub": "0",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "À Amsterdam, Jean-Baptiste Clamence engage une conversation avec un interlocuteur silencieux. Ancien avocat parisien, il décrit d’abord une existence flatteuse, faite de générosité apparente, de réussite sociale et de bonne conscience. Au fil de son monologue, des souvenirs plus troubles ébranlent cette image : il découvre l’écart entre la vertu qu’il affichait et ses motivations profondes. Le récit se transforme en examen de la culpabilité, de l’hypocrisie et du besoin de juger autrui. Camus construit une confession ambiguë : en s’accusant, Clamence cherche aussi à entraîner son auditeur dans une culpabilité commune.",
+  "summary": "À Amsterdam, Jean-Baptiste Clamence engage une conversation avec un interlocuteur silencieux. Ancien avocat parisien, il décrit d’abord une existence flatteuse, faite de générosité apparente, de réussite sociale et de bonne conscience. Au fil de son monologue, des souvenirs plus troubles ébranlent cette image : il découvre l’écart entre la vertu qu’il affichait et ses motivations profondes. Le récit se transforme en examen de la culpabilité, de l’hypocrisie et du besoin de juger autrui. Camus construit une confession ambiguë : en s’accusant, Clamence cherche aussi à entraîner son auditeur dans une culpabilité commune.",
+  "text": "",
+  "pdfPages": 81,
+  "detailPath": "ouvrage-new11-la-chute.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "Récit continu — début",
+      "pdfPage": 9,
+      "endPdfPage": 34,
+      "repere": "Puis-je, monsieur, vous proposer mes services, sans risquer d’être importun ? Je crains que vous ne sachiez vous faire entendre de l’estimable gorille qui préside aux destinées de cet établissement. Il ne parle, en effet, que le hollandais. A moins que vous ne m’autorisiez à plaider votre cause, il ne devinera pas que vous désirez du genièvre. Voilà, j’ose…",
+      "resume": "Le narrateur, Jean-Baptiste Clamence, aborde un inconnu dans un bar d’Amsterdam et s’impose peu à peu comme son interlocuteur. Ancien avocat parisien, il se présente d’abord comme un homme généreux, cultivé et apprécié. Sa parole séduisante laisse déjà percevoir un goût de la supériorité morale et du jugement des autres. Le récit est un monologue adressé à un auditeur presque muet, et non un roman découpé en chapitres."
+    },
+    {
+      "title": "Récit continu — milieu",
+      "pdfPage": 35,
+      "endPdfPage": 59,
+      "repere": "J’apprenais du moins que je n’étais du côté des coupables, des accusés, que dans la mesure exacte où leur faute ne me causait aucun dommage. Leur culpabilité me rendait éloquent parce que je n’en étais pas la victime. Quand j’étais menacé, je ne devenais pas seulement un juge à mon tour, mais plus encore : un maître irascible qui voulait, hors de toute loi,…",
+      "resume": "Clamence revient sur la satisfaction qu’il tirait de ses bonnes actions : aider les autres renforçait aussi l’image flatteuse qu’il avait de lui-même. Le souvenir d’une femme tombant dans la Seine, à laquelle il n’a pas porté secours, fissure cette assurance. Un rire entendu derrière lui devient le symbole d’une conscience qui ne peut plus échapper à sa propre hypocrisie. La confession montre comment la culpabilité transforme son rapport à la justice et à autrui."
+    },
+    {
+      "title": "Récit continu — fin",
+      "pdfPage": 60,
+      "endPdfPage": 81,
+      "repere": "elle a consenti depuis à écrire ses souvenirs pour un journal confessionnel très ouvert aux idées modernes. La jeune fille, de son côté, s’est mariée pour satisfaire ses instincts débridés et donner un emploi à des dons remarquables. Je ne suis pas peu fier non plus d’avoir été accueilli comme un égal, à cette époque, par une corporation masculine trop…",
+      "resume": "Installé à Amsterdam, Clamence se dit « juge-pénitent » : il avoue ses fautes pour mieux obtenir le droit de juger celles des autres. Sa confession ne débouche donc pas sur une innocence retrouvée, mais sur une stratégie qui généralise la culpabilité humaine. La ville, l’eau et l’image du jugement final renforcent l’atmosphère d’enfermement moral. La fin révèle que son interlocuteur est progressivement invité à se reconnaître dans le même procès intérieur."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0112",
+  "title": "La prodigieuse machine à vendre",
+  "author": "Chet Holmes",
+  "genre": "savoirs",
+  "sub": "5",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Chet Holmes propose une méthode pour rendre la performance commerciale moins dépendante de l’improvisation. Ses douze leviers concernent notamment la gestion des priorités, la formation répétée, le marketing éducatif, la prospection, la qualité des présentations et l’organisation des équipes. L’auteur insiste sur la discipline d’exécution : sélectionner quelques pratiques décisives et les répéter jusqu’à ce qu’elles deviennent des habitudes collectives. Le livre s’adresse aux responsables commerciaux et dirigeants qui souhaitent structurer leur activité plutôt que multiplier des initiatives dispersées. Les exemples et résultats annoncés sont ceux de l’auteur et ne constituent pas une garantie de performance.",
+  "summary": "Chet Holmes propose une méthode pour rendre la performance commerciale moins dépendante de l’improvisation. Ses douze leviers concernent notamment la gestion des priorités, la formation répétée, le marketing éducatif, la prospection, la qualité des présentations et l’organisation des équipes. L’auteur insiste sur la discipline d’exécution : sélectionner quelques pratiques décisives et les répéter jusqu’à ce qu’elles deviennent des habitudes collectives. Le livre s’adresse aux responsables commerciaux et dirigeants qui souhaitent structurer leur activité plutôt que multiplier des initiatives dispersées. Les exemples et résultats annoncés sont ceux de l’auteur et ne constituent pas une garantie de performance.",
+  "text": "",
+  "pdfPages": 354,
+  "detailPath": "ouvrage-new11-machine-vendre.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "Préface d’Olivier Roland",
+      "pdfPage": 13,
+      "endPdfPage": 15,
+      "repere": "ous pouvez avoir les plus beaux bureaux du monde, le logo le plus design, le site Web le plus visité et le plus plébiscité, les meilleurs employés, avoir toute la presse qui parle de vous en bien, tout cela n’a aucune importance si vous ne faites pas assez de ventes : votre entreprise fera faillite. Pourtant, de nombreux créateurs d’entreprise font l’erreur…",
+      "resume": "Olivier Roland présente le livre comme une méthode à mettre en œuvre plutôt qu’un recueil de conseils à consommer passivement. Il insiste sur la différence entre comprendre une idée et l’appliquer de façon régulière. La préface prépare ainsi le lecteur à une démarche de transformation des pratiques commerciales."
+    },
+    {
+      "title": "Note au lecteur de Jay Conrad Levinson",
+      "pdfPage": 16,
+      "endPdfPage": 17,
+      "repere": "’ai eu de nombreuses occasions d’écouter Chet Holmes et le privilège de travailler avec lui à plusieurs reprises. C’est un homme talentueux, et judicieux dans de si nombreux domaines que j’ai eu envie de le pousser à écrire un livre. J’ai dû faire preuve d’une discipline et d’une détermination sans faille pour l’en convaincre. Maintenant que j’ai lu La…",
+      "resume": "Jay Conrad Levinson situe Chet Holmes dans l’univers du marketing et de la vente. Il souligne la portée opérationnelle de ses conseils et l’importance de systèmes reproductibles plutôt que d’actions isolées. Ce texte est une recommandation introductive, non une démonstration indépendante de l’efficacité des méthodes."
+    },
+    {
+      "title": "Préface de Michael E. Gerber",
+      "pdfPage": 18,
+      "endPdfPage": 20,
+      "repere": "orsque Chet Holmes m’a appelé pour m’annoncer la publication de son livre et me demander d’y jeter un coup d’œil, je me suis dit : « Oh, non ! Encore un livre de marketing ! » Ne vous méprenez pas : en ce qui concerne le commerce, Chet est un as. Il excelle dans ce domaine. Chet sait des choses au sujet des cycles de vente, des systèmes commerciaux, du…",
+      "resume": "Michael E. Gerber insiste sur la nécessité de faire fonctionner une entreprise comme un ensemble organisé de processus. La réussite ne dépend pas seulement du talent individuel, mais de la capacité à construire des méthodes transmissibles et mesurables. La préface annonce le fil conducteur de l’ouvrage : rendre la performance moins aléatoire."
+    },
+    {
+      "title": "Avant-propos",
+      "pdfPage": 21,
+      "endPdfPage": 26,
+      "repere": "Voici un aperçu de la situation économique actuelle : Une société fait faillite toutes les trois minutes. Toutes les trente-deux secondes, une entreprise change de direction. Toutes les quinze minutes*, une entreprise change de propriétaire. 96 % des entreprises font faillite dans la décennie qui suit leur création. 26 000 nouveaux produits ou marques sont…",
+      "resume": "L’avant-propos présente la maîtrise comme le résultat d’une répétition disciplinée de quelques pratiques essentielles. Holmes relie management, marketing et vente dans une même logique d’amélioration continue. Il demande au lecteur de choisir des outils puis de les appliquer jusqu’à en faire des habitudes d’entreprise."
+    },
+    {
+      "title": "Introduction",
+      "pdfPage": 27,
+      "endPdfPage": 35,
+      "repere": "e propriétaire de l’une des plus grandes entreprises de nettoyage de tapis des États-Unis – Rug Renovating, dont les 30 000 clients sont répartis dans trois États (New York, New Jersey et Connecticut) – est venu me demander de l’aide. Selon lui, les efforts de l’entreprise pour élargir sa clientèle devenaient de moins en moins efficaces au fil des ans. Tout…",
+      "resume": "L’introduction part d’expériences commerciales pour défendre une idée centrale : de petites améliorations répétées peuvent produire un effet important. Holmes illustre l’intérêt d’un positionnement clair, de la formation et d’une approche stratégique des prospects. Le livre propose douze leviers qui doivent fonctionner ensemble plutôt que comme des recettes indépendantes."
+    },
+    {
+      "title": "1 La gestion du temps : les secrets des dirigeants",
+      "pdfPage": 36,
+      "endPdfPage": 54,
+      "repere": "COMMENT OPTIMISER VOTRE PRODUCTIVITÉ ET ENCOURAGER LE PERSONNEL À FAIRE DE MÊME ’ai développé ce système de gestion du temps lorsque je dirigeais neuf départements pour le compte du milliardaire Charlie Munger, vice-président du fonds d’investissement de Warren Buffett. J’ai toujours essayé d’embaucher des personnes brillantes, créatives et combatives.…",
+      "resume": "Le premier levier concerne l’emploi du temps du dirigeant. Holmes recommande de limiter les interruptions, de planifier les tâches prioritaires et de réserver des créneaux précis aux réunions et décisions. Il distingue les urgences apparentes des activités qui développent réellement l’entreprise. L’enjeu est de libérer du temps pour les actions à forte valeur."
+    },
+    {
+      "title": "2 Élever le niveau de compétences et instaurer des formations régulières",
+      "pdfPage": 55,
+      "endPdfPage": 77,
+      "repere": "PRÉPROGRAMMER L’ENTREPRISE AFIN QU’ELLE TOURNE COMME UNE MACHINE BIEN RÉGLÉE elon un article de la Harvard Business Review, seulement 10 % de la population manifestent une soif constante d’apprendre. Il s’agit de personnes qui sont curieuses et aiment découvrir de nouvelles choses. Les 90 % restants ne cherchent pas à améliorer leurs compétences, sauf s’ils…",
+      "resume": "Le chapitre défend une formation régulière et structurée des équipes, plutôt qu’un apprentissage improvisé au contact des collègues. Il recommande de formaliser les procédures, de pratiquer les situations difficiles et de répéter les compétences commerciales. La qualité du service et des ventes devient alors un résultat du système de formation, pas seulement du recrutement."
+    },
+    {
+      "title": "3 Organiser des ateliers de travail efficaces",
+      "pdfPage": 78,
+      "endPdfPage": 104,
+      "repere": "COMMENT SE RÉUNIR POUR TRAVAILLER ENSEMBLE ET DEVENIR PLUS PERFORMANTS e meilleur moyen de construire une Prodigieuse Machine à Vendre et de la faire fonctionner au mieux est d’organiser des ateliers de travail réguliers, hautement productifs, dont l’objectif sera d’améliorer le développement de votre entreprise à tous les niveaux, dans tous les services.…",
+      "resume": "Holmes critique les réunions où l’on échange des idées sans décider de leur mise en œuvre. Il propose des ateliers consacrés à un problème concret, débouchant sur des actions, des responsables et un suivi. L’intérêt du travail collectif est d’obtenir une méthode commune et de vérifier ensuite son application."
+    },
+    {
+      "title": "4 Devenir un brillant stratège",
+      "pdfPage": 105,
+      "endPdfPage": 131,
+      "repere": "COMMENT RENDRE JUSQU’À 9 FOIS PLUS PRODUCTIF CHACUN DE VOS ACTES omme nous l’avons déjà noté dans les chapitres précédents, dénicher un nouveau client est une entreprise ardue. Aussi, lorsque vous vous trouvez face à un client potentiel, il est essentiel de donner le meilleur de vos compétences. Mieux vaut donc avoir en tête une stratégie précise. Dans ce…",
+      "resume": "La stratégie consiste à comprendre les problèmes économiques du client avant de lui présenter un produit. Holmes préconise des messages éducatifs et un positionnement qui donnent une raison forte d’écouter l’entreprise. Les exemples montrent comment se distinguer d’une concurrence abondante sans réduire systématiquement les prix."
+    },
+    {
+      "title": "5 Embaucher des champions",
+      "pdfPage": 132,
+      "endPdfPage": 163,
+      "repere": "COMMENT ACCÉLÉRER VOTRE CROISSANCE EN EMPLOYANT, DANS TOUS LES DOMAINES, DES GENS BOURRÉS DE TALENT i vous avez envie de créer une Prodigieuse Machine à Vendre, l’une des pièces majeures du puzzle consiste à comprendre la personnalité des vendeurs les plus talentueux du marché. En d’autres termes, vous devez apprendre à les recruter et à les garder, afin de…",
+      "resume": "Pour recruter des vendeurs très performants, Holmes invite à regarder au-delà du CV et à évaluer l’énergie, la persévérance et la capacité à progresser. Il discute les méthodes de sélection, la rémunération et les conditions qui attirent les meilleurs profils. Le recrutement est présenté comme un investissement stratégique nécessitant des critères explicites."
+    },
+    {
+      "title": "6 L’art d’attirer les meilleurs clients",
+      "pdfPage": 164,
+      "endPdfPage": 183,
+      "repere": "LE MOYEN LE PLUS RAPIDE ET LE MOINS COÛTEUX D’AUGMENTER RADICALEMENT LE CHIFFRE D’AFFAIRES a stratégie qui suit a permis à beaucoup d’entreprises de doubler leur chiffre d’affaires, bien plus rapidement que n’importe quel autre concept. Le postulat tient en une phrase : les meilleurs clients sont toujours moins nombreux que les autres. Viser les meilleurs…",
+      "resume": "Le chapitre introduit la recherche des clients idéaux : ceux pour lesquels l’offre a une valeur élevée et qui peuvent devenir des partenaires durables. Plutôt que prospecter tout le marché indistinctement, Holmes conseille de concentrer les efforts sur une liste de cibles prioritaires. Il montre comment préparer des approches personnalisées et suivies."
+    },
+    {
+      "title": "7 Les 7 outils incontournables du marketing",
+      "pdfPage": 184,
+      "endPdfPage": 229,
+      "repere": "OPTIMISEZ TOUTES LES FACETTES DE VOTRE MARKETING DE BASE i vous voulez diriger une Prodigieuse Machine à Vendre, tous les secteurs de votre entreprise doivent fonctionner avec une précision chirurgicale, y compris le marketing. Considérez qu’il est essentiel de mettre en place une stratégie de marketing cohérente et de l’exploiter au mieux. Si vous faites…",
+      "resume": "Holmes décrit sept outils de marketing à combiner pour renforcer la visibilité d’une entreprise. Il insiste surtout sur la cohérence du message, des images et de la proposition de valeur à travers les supports. Une campagne dispersée perd de son efficacité ; une campagne coordonnée multiplie les occasions de contact avec le même argument central."
+    },
+    {
+      "title": "8 Capter le regard",
+      "pdfPage": 230,
+      "endPdfPage": 252,
+      "repere": "LES PIRES ERREURS À COMMETTRE DANS UNE PRÉSENTATION omme vous l’avez constaté à la lecture des premiers chapitres de cet ouvrage, fabriquer une Prodigieuse Machine à Vendre ne consiste pas seulement à augmenter ses ventes, mais à réorganiser et huiler tous les rouages de votre entreprise afin qu’ils fonctionnent au mieux. Dans ce chapitre, vous apprendrez…",
+      "resume": "Une présentation commerciale doit attirer l’attention et rendre l’information facile à comprendre. Holmes examine le rôle des titres, de la mise en page, des images et de la couleur. Il invite à remplacer les diapositives surchargées par des démonstrations qui conduisent progressivement le public vers l’idée essentielle."
+    },
+    {
+      "title": "9 Comment conquérir les meilleurs clients",
+      "pdfPage": 253,
+      "endPdfPage": 277,
+      "repere": "LES TACTIQUES PAS À PAS POUR ATTIRER VOS CLIENTS IDÉAUX omme vous l’avez appris au chapitre 6, la stratégie des 100 clients idéaux est un plan d’attaque visant à entrer en contact avec vos meilleurs clients potentiels. C’est le moyen le plus rapide de transformer votre entreprise en Prodigieuse Machine à Vendre, car les clients idéaux sont ceux qui…",
+      "resume": "La conquête des grands comptes repose sur la répétition, la patience et la personnalisation des contacts. Holmes décrit des démarches de prospection soutenues, où chaque relance apporte une nouvelle raison d’échanger. Le refus initial n’est pas traité comme la fin automatique de la relation commerciale, mais le suivi doit rester pertinent."
+    },
+    {
+      "title": "10 La vente",
+      "pdfPage": 278,
+      "endPdfPage": 301,
+      "repere": "PLUS VOUS APPROFONDIREZ LES LIENS, PLUS VOUS VENDREZ a plupart des entreprises laissent la quasi-totalité du processus de vente aux mains des seuls vendeurs. Or, si vous voulez mettre en place une Prodigieuse Machine à Vendre, il faut privilégier le travail en équipe et utiliser la matière grise de chacun pour examiner de près, améliorer et créer des…",
+      "resume": "Le chapitre décompose la vente en étapes qu’il faut apprendre, pratiquer et améliorer. Holmes aborde la découverte du besoin, la présentation, le traitement des objections et la conclusion. Il insiste sur les jeux de rôle et l’entraînement : connaître un script ne suffit pas pour savoir conduire une conversation réelle."
+    },
+    {
+      "title": "11 Le suivi et les relations avec les clients",
+      "pdfPage": 302,
+      "endPdfPage": 323,
+      "repere": "COMMENT GARDER VOS CLIENTS À VIE ET AUGMENTER VOS BÉNÉFICES i l’on observe la plupart des entreprises, on constate qu’elles concentrent la majorité de leurs efforts commerciaux sur les six premières étapes vues plus haut, dont le but est de décrocher des clients, et semblent considérer que le travail s’arrête là. Or, dénicher un nouveau client coûte six…",
+      "resume": "Après la vente, la relation client doit être entretenue activement. Holmes propose de programmer des contacts, d’apporter une attention personnalisée et de développer la confiance dans la durée. Il montre que la fidélisation et les recommandations dépendent aussi de l’expérience vécue après la signature."
+    },
+    {
+      "title": "12 Les derniers réglages",
+      "pdfPage": 324,
+      "endPdfPage": 354,
+      "repere": "FIXER DES OBJECTIFS, ÉVALUER L’EFFICACITÉ ET ACTIVER VOTRE PLAN DIRECTEUR ixer des objectifs et évaluer l’efficacité des procédures constituent le douzième volet de notre ouvrage. Il a pour objectif d’augmenter l’efficacité des 11 domaines d’action étudiés dans les chapitres précédents. Pour nous, se fixer un objectif ne consiste pas simplement à le noter…",
+      "resume": "La conclusion rassemble les douze leviers et revient sur la discipline nécessaire à leur application. Holmes encourage à installer des routines, mesurer les résultats et corriger les pratiques. Certaines affirmations sur l’état d’esprit relèvent de son approche personnelle ; le point opérationnel central reste la répétition méthodique des actions."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0113",
+  "title": "Les Lois du succès — Tome 1 (leçons 1 à 4)",
+  "author": "Napoleon Hill",
+  "genre": "vie-et-societe",
+  "sub": "5",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Ce premier tome présente les fondations du programme de Napoleon Hill. Le « cerveau collectif » désigne la coopération organisée entre personnes qui partagent un projet. L’auteur invite ensuite à définir un objectif précis, puis à renforcer la confiance en soi pour agir malgré l’incertitude. Il termine par l’habitude de l’épargne, comprise comme une discipline de gestion personnelle. Les leçons mêlent arguments, anecdotes et exercices d’auto-observation ; elles reflètent une philosophie de réussite plutôt qu’un modèle scientifique validé.",
+  "summary": "Ce premier tome présente les fondations du programme de Napoleon Hill. Le « cerveau collectif » désigne la coopération organisée entre personnes qui partagent un projet. L’auteur invite ensuite à définir un objectif précis, puis à renforcer la confiance en soi pour agir malgré l’incertitude. Il termine par l’habitude de l’épargne, comprise comme une discipline de gestion personnelle. Les leçons mêlent arguments, anecdotes et exercices d’auto-observation ; elles reflètent une philosophie de réussite plutôt qu’un modèle scientifique validé.",
+  "text": "",
+  "pdfPages": 254,
+  "detailPath": "ouvrage-new11-lois-succes-1.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "CONTENU DES QUATRE TOMES",
+      "pdfPage": 10,
+      "endPdfPage": 24,
+      "repere": "Tome UN Leçon 1 Introduction au génie organisateur (cerveau collectif) Leçon 2 Un but clairement défini Leçon 3 La confiance en soi Leçon 4 L’habitude de l’épargne Tome DEUX Leçon 5 L’initiative et le leadership Leçon 6 L’imagination Leçon 7 L’enthousiasme Leçon 8 La maîtrise de soi Tome TROIS Leçon 9 L’habitude de faire plus que le salaire perçu Leçon 10…",
+      "resume": "Ce tableau présente l’architecture du cours de Napoleon Hill en dix-sept leçons réparties sur quatre tomes. Il permet de situer les thèmes — objectif, confiance, initiative, coopération et habitudes — dans un parcours de développement personnel et professionnel. Ce n’est pas une leçon autonome."
+    },
+    {
+      "title": "Leçon 1: Introduction au génie organisateur (cerveau collectif)",
+      "pdfPage": 25,
+      "endPdfPage": 102,
+      "repere": "C LEÇON 1 INTRODUCTION AU GÉNIE ORGANISATEUR ou CERVEAU COLLECTIF « Vous pouvez le faire, si vous y croyez. » e livre est un cours sur les principes essentiels du succès. Le succès est, avant toute chose, une question d’ajustement de la personnalité qui devra sans cesse affronter des milieux différents et changeants tout en essayant de maintenir un esprit…",
+      "resume": "Hill introduit l’idée du « cerveau collectif » : réunir des personnes autour d’un objectif partagé permettrait de combiner connaissances, expériences et encouragements. Il insiste sur la qualité des relations, la coordination et la recherche d’un accord durable. Les exemples de réussite servent à illustrer sa philosophie de la coopération, sans constituer une preuve scientifique d’un pouvoir mental collectif."
+    },
+    {
+      "title": "Leçon 2: Un but clairement défini",
+      "pdfPage": 103,
+      "endPdfPage": 156,
+      "repere": "V LEÇON 2 UN BUT CLAIREMENT DÉFINI Vous pouvez y arriver, si vous y croyez. ous amorcez un cours de philosophie qui innove, car c’est la première fois que sont décrits les éléments connus qui furent utilisés par des gens à qui le succès a souri. La formulation des principes et des lois se veut simple et accessible, quel que soit votre métier. Le style…",
+      "resume": "La deuxième leçon place la définition d’un but au centre de la réussite. Hill conseille de formuler un objectif précis, de l’écrire et de le relier à un plan d’action. Il oppose cette démarche à la dispersion des efforts et aux décisions dictées par les circonstances. La répétition du but doit, selon lui, orienter les choix quotidiens."
+    },
+    {
+      "title": "Leçon 3: La confiance en soi",
+      "pdfPage": 157,
+      "endPdfPage": 209,
+      "repere": "A LEÇON 3 LA CONFIANCE EN SOI Vous pouvez y arriver, si vous y croyez! vant d’aborder les principes fondamentaux sur lesquels se base cette leçon, je tiens à vous rappeler qu’ils représentent le résultat de plus de vingt-cinq années de recherche et qu’ils ont été testés et approuvés par les responsables de la communauté scientifique. Le scepticisme est…",
+      "resume": "Hill analyse les peurs et les doutes qui affaiblissent l’initiative : peur de la pauvreté, du jugement, de la maladie ou de l’échec. Il propose de travailler l’autosuggestion, l’entourage et la représentation de soi pour construire une assurance plus stable. La confiance est présentée comme une compétence à exercer, non comme une qualité immuable."
+    },
+    {
+      "title": "Leçon 4: L’habitude de l’épargne",
+      "pdfPage": 210,
+      "endPdfPage": 254,
+      "repere": "C LEÇON 4 L’HABITUDE DE L’ÉPARGNE onseiller à quelqu’un d’économiser de l’argent sans lui décrire la façon d’épargner serait un peu comme dessiner un cheval et écrire en-dessous: Ceci est un cheval. Il est évident d’affirmer que l’épargne est essentielle au succès, mais la première grande question dans l’esprit des gens qui n’épargnent pas est: Comment…",
+      "resume": "L’épargne est abordée comme une discipline de maîtrise de ses dépenses et de préparation des projets. Hill recommande de distinguer besoins et habitudes de consommation, de prévoir une part régulière à mettre de côté et d’éviter l’endettement irréfléchi. Le propos relie sécurité financière, autonomie et capacité à saisir des occasions."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0114",
+  "title": "Les Lois du succès — Tome 2 (leçons 5 à 8)",
+  "author": "Napoleon Hill",
+  "genre": "vie-et-societe",
+  "sub": "5",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Le deuxième tome regroupe quatre qualités que Napoleon Hill juge indispensables à l’action. L’initiative et le leadership concernent la capacité à décider et à entraîner les autres ; l’imagination permet de concevoir des solutions et des possibilités nouvelles. L’enthousiasme est présenté comme une énergie communicative, tandis que la maîtrise de soi vise à éviter que les émotions et les impulsions ne détournent l’effort. Ensemble, ces leçons prolongent le travail sur les objectifs abordé dans le premier tome.",
+  "summary": "Le deuxième tome regroupe quatre qualités que Napoleon Hill juge indispensables à l’action. L’initiative et le leadership concernent la capacité à décider et à entraîner les autres ; l’imagination permet de concevoir des solutions et des possibilités nouvelles. L’enthousiasme est présenté comme une énergie communicative, tandis que la maîtrise de soi vise à éviter que les émotions et les impulsions ne détournent l’effort. Ensemble, ces leçons prolongent le travail sur les objectifs abordé dans le premier tome.",
+  "text": "",
+  "pdfPages": 244,
+  "detailPath": "ouvrage-new11-lois-succes-2.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "CONTENU DES QUATRE TOMES",
+      "pdfPage": 7,
+      "endPdfPage": 9,
+      "repere": "Tome UN Leçon 1 Introduction au génie organisateur (cerveau collectif) Leçon 2 Un but clairement défini Leçon 3 La confiance en soi Leçon 4 L’habitude de l’épargne Tome DEUX Leçon 5 L’initiative et le leadership Leçon 6 L’imagination Leçon 7 L’enthousiasme Leçon 8 La maîtrise de soi Tome TROIS Leçon 9 L’habitude de faire plus que le salaire perçu Leçon 10…",
+      "resume": "Le sommaire situe les leçons 5 à 8 dans la progression des dix-sept principes. Ce tome se concentre sur la mise en mouvement des projets et sur la maîtrise des comportements individuels."
+    },
+    {
+      "title": "Leçon 5: L’initiative et le leadership",
+      "pdfPage": 10,
+      "endPdfPage": 67,
+      "repere": "A LEÇON 5 L’INITIATIVE ET LES QUALITÉS DE LEADERSHIP Vous pouvez le faire si vous y croyez! vant de commencer à maîtriser cette leçon, permettez-moi de vous rappeler qu’il existe une coordination parfaite de la pensée qui couvre tous les aspects des leçons de ce cours sur les lois du succès. Les dix-sept leçons s’allient et se fusionnent les unes aux autres…",
+      "resume": "L’initiative consiste à agir sans attendre constamment des instructions ; le leadership suppose de donner une direction et de mobiliser les autres. Hill valorise la responsabilité, la décision et l’exemple personnel. Il distingue ainsi le simple désir de réussir de la capacité à entraîner une action concrète."
+    },
+    {
+      "title": "Leçon 6: L’imagination",
+      "pdfPage": 68,
+      "endPdfPage": 129,
+      "repere": "L LEÇON 6 L’IMAGINATION Vous pouvez le faire si vous y croyez! ’imagination est l’atelier de l’esprit humain où de vieilles idées et des faits établis peuvent être réassemblés en de nouvelles combinaisons et utilisés à de nouvelles fins. Le dictionnaire définit l’imagination comme suit : 1. Faculté que possède l’esprit de se représenter des images;…",
+      "resume": "L’imagination est présentée comme une ressource pour créer des solutions et reconnaître des occasions que les autres ne voient pas. Hill invite à combiner des idées existantes, à questionner les habitudes et à transformer une intuition en projet. La créativité ne vaut toutefois que si elle débouche sur une réalisation."
+    },
+    {
+      "title": "Leçon 7: L’enthousiasme",
+      "pdfPage": 130,
+      "endPdfPage": 177,
+      "repere": "L LEÇON 7 L'ENTHOUSIASME Vous pouvez y arriver si vous y croyez! ’enthousiasme est un état d’esprit qui inspire et stimule une personne à s’engager par l’action dans le travail qu’elle doit accomplir. L’enthousiasme fait d’ailleurs beaucoup plus que cela; il est contagieux et comporte une incidence vitale non seulement sur la personne enthousiaste, mais…",
+      "resume": "Hill décrit l’enthousiasme comme une énergie communicative qui soutient l’engagement et la persuasion. Il montre comment la conviction peut influencer la manière de parler, de travailler et de coopérer. Il met aussi l’accent sur l’entretien de cet élan par des habitudes positives, sans le confondre avec une compétence technique."
+    },
+    {
+      "title": "Leçon 8: La maîtrise de soi",
+      "pdfPage": 178,
+      "endPdfPage": 244,
+      "repere": "D LEÇON 8 LA MAÎTRISE DE SOI Vous pouvez y arriver si vous y croyez! ans la leçon précédente, vous avez appris la valeur de l’enthousiasme. Vous avez aussi appris de quelle façon générer l’enthousiasme et transmettre son influence aux autres, par le principe de la suggestion. Vous arrivez maintenant à l’étude de la maîtrise de soi par laquelle vous pouvez…",
+      "resume": "La maîtrise de soi vise à éviter que colère, peur ou impulsivité dictent les décisions. Hill insiste sur le contrôle de la parole, la patience et la cohérence entre objectifs et comportements. L’autodiscipline complète les leçons précédentes : l’initiative sans retenue peut se retourner contre le projet."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0115",
+  "title": "Les Lois du succès — Tome 3 (leçons 9 à 12)",
+  "author": "Napoleon Hill",
+  "genre": "vie-et-societe",
+  "sub": "5",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Le troisième tome développe des habitudes professionnelles et intellectuelles. Hill défend d’abord l’idée de fournir un travail supérieur au strict minimum attendu, puis étudie l’importance d’une personnalité agréable dans les relations. La leçon sur la pensée exacte encourage à distinguer les faits des opinions et à examiner les informations reçues. Enfin, la concentration vise à maintenir l’attention sur un objectif sans se disperser. Ces principes forment un programme de conduite personnelle, illustré par les exemples et convictions de l’auteur.",
+  "summary": "Le troisième tome développe des habitudes professionnelles et intellectuelles. Hill défend d’abord l’idée de fournir un travail supérieur au strict minimum attendu, puis étudie l’importance d’une personnalité agréable dans les relations. La leçon sur la pensée exacte encourage à distinguer les faits des opinions et à examiner les informations reçues. Enfin, la concentration vise à maintenir l’attention sur un objectif sans se disperser. Ces principes forment un programme de conduite personnelle, illustré par les exemples et convictions de l’auteur.",
+  "text": "",
+  "pdfPages": 202,
+  "detailPath": "ouvrage-new11-lois-succes-3.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "CONTENU DES QUATRE TOMES",
+      "pdfPage": 7,
+      "endPdfPage": 9,
+      "repere": "Tome UN Leçon 1 Introduction au génie organisateur (cerveau collectif) Leçon 2 Un but clairement défini Leçon 3 La confiance en soi Leçon 4 L’habitude de l’épargne Tome DEUX Leçon 5 L’initiative et le leadership Leçon 6 L’imagination Leçon 7 L’enthousiasme Leçon 8 La maîtrise de soi Tome TROIS Leçon 9 L’habitude de faire plus que le salaire perçu Leçon 10…",
+      "resume": "Le sommaire récapitule la structure des quatre tomes et situe les leçons 9 à 12. Ce volume traite surtout des comportements professionnels, du raisonnement et de l’attention."
+    },
+    {
+      "title": "Leçon 9: L’habitude de faire plus que le salaire perçu",
+      "pdfPage": 10,
+      "endPdfPage": 53,
+      "repere": "V LEÇON 9 L’HABITUDE DE FAIRE PLUS QUE LE SALAIRE PERÇU Vous pouvez y arriver si vous y croyez! ous aurez peut-être l’impression que je déroge de l’objet de la présente leçon en l’entamant avec un débat sur l’amour, mais si vous voulez bien réserver votre jugement jusqu’à la fin, vous serez peut-être prêt à admettre alors qu’un tel débat en accroît la…",
+      "resume": "Hill soutient que fournir un travail utile au-delà du strict minimum peut développer les compétences, la réputation et les possibilités futures. Il associe cette attitude au sens du service et à la création de valeur. Cette thèse est une recommandation de l’auteur et ne garantit pas une rémunération ou une reconnaissance équitable."
+    },
+    {
+      "title": "Leçon 10: Une personnalité agréable",
+      "pdfPage": 54,
+      "endPdfPage": 89,
+      "repere": "Q LEÇON 10 UNE PERSONNALITÉ AGRÉABLE Vous pouvez y arriver si vous y croyez! u’est-ce qu’une personne agréable? Une personne qui a une personnalité qui plait. Dans cette leçon, nous chercherons les causes de cette attraction et la façon de la créer. Votre personnalité est la somme totale de vos caractéristiques et de votre apparence qui vous distingue de…",
+      "resume": "Une personnalité agréable repose, selon Hill, sur le respect, l’écoute, la courtoisie et la capacité à travailler avec autrui. Il relie les habitudes de communication à la confiance et aux opportunités professionnelles. L’enjeu n’est pas seulement de séduire, mais de rendre les relations durables et constructives."
+    },
+    {
+      "title": "Leçon 11: Penser avec exactitude",
+      "pdfPage": 90,
+      "endPdfPage": 135,
+      "repere": "I Leçon 11 PENSER AVEC EXACTITUDE Vous pouvez y arriver si vous y croyez! l est important de vous dire que cette leçon est la plus importante, la plus intéressante et aussi la plus difficile à exposer de tout ce cours sur les lois du succès. L’importance et l’intérêt de cette leçon viennent de ce qu’elle traite d’un principe présent dans tout le cours. Et…",
+      "resume": "Hill demande de distinguer les faits vérifiés des opinions, rumeurs et suppositions. Il insiste sur l’examen des informations et des intérêts qui orientent un jugement. La pensée exacte devient un outil de décision : avant de conclure, il faut clarifier ce que l’on sait réellement et ce qui reste incertain."
+    },
+    {
+      "title": "Leçon 12: La concentration",
+      "pdfPage": 136,
+      "endPdfPage": 202,
+      "repere": "C Leçon 12 LA CONCENTRATION Vous pouvez y arriver si vous y croyez! ette leçon occupe une position capitale dans ce cours, car elle est basée sur une loi de la psychologie d’une importance vitale pour toutes les autres leçons du cours. Permettez-moi de définir le mot concentration dans le sens que je l’utilise dans cette leçon : La concentration est…",
+      "resume": "La concentration consiste à maintenir son attention sur un objectif choisi malgré les distractions. Hill conseille de relier le but général à des actions précises, puis de répéter cet effort dans le temps. Le chapitre prolonge la leçon du but défini en soulignant la continuité nécessaire à son accomplissement."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0116",
+  "title": "Les Lois du succès — Tome 4 (leçons 13 à 17)",
+  "author": "Napoleon Hill",
+  "genre": "vie-et-societe",
+  "sub": "5",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Le dernier tome rassemble cinq leçons qui donnent une dimension collective et morale au succès. La coopération et la capacité à apprendre des échecs ouvrent la réflexion. Hill traite ensuite de la tolérance et de la Règle d’Or, qui invitent à considérer les autres dans ses décisions. Il clôt son cours par une loi des habitudes, présentée comme une force qui façonnerait progressivement la conduite. Ce volume insiste sur la persévérance, les relations et les comportements répétés ; certaines affirmations relèvent de la philosophie personnelle de l’auteur.",
+  "summary": "Le dernier tome rassemble cinq leçons qui donnent une dimension collective et morale au succès. La coopération et la capacité à apprendre des échecs ouvrent la réflexion. Hill traite ensuite de la tolérance et de la Règle d’Or, qui invitent à considérer les autres dans ses décisions. Il clôt son cours par une loi des habitudes, présentée comme une force qui façonnerait progressivement la conduite. Ce volume insiste sur la persévérance, les relations et les comportements répétés ; certaines affirmations relèvent de la philosophie personnelle de l’auteur.",
+  "text": "",
+  "pdfPages": 202,
+  "detailPath": "ouvrage-new11-lois-succes-4.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "CONTENU DES QUATRE TOMES",
+      "pdfPage": 8,
+      "endPdfPage": 9,
+      "repere": "Tome UN Leçon 1 Introduction au génie organisateur (cerveau collectif) Leçon 2 Un but clairement défini Leçon 3 La confiance en soi Leçon 4 L’habitude de l’épargne Tome DEUX Leçon 5 L’initiative et le leadership Leçon 6 L’imagination Leçon 7 L’enthousiasme Leçon 8 La maîtrise de soi Tome TROIS Leçon 9 L’habitude de faire plus que le salaire perçu Leçon 10…",
+      "resume": "Le tableau d’ouverture rappelle la place des cinq dernières leçons dans l’ensemble du cours. Le tome aborde les relations, l’échec, les valeurs et les habitudes."
+    },
+    {
+      "title": "Leçon 13: La coopération",
+      "pdfPage": 10,
+      "endPdfPage": 51,
+      "repere": "LE MONDE FONCIÈREMENT ET FONDAMENTALEMENT EST CONSITITUÉ SUR UNE BASE D’HARMONIE. TOUT FONCTIONNE EN COOPÉRATION AVEC QUELQUE CHOSE D’AUTRE. - Preston Bradley L LEÇON 13 LA COOPÉRATION Vous pouvez y arriver si vous y croyez! A COOPÉRATION est le début de tout effort organisé. Comme nous l’avons vu dans la deuxième leçon de ce cours, Andrew Carnegie a…",
+      "resume": "La coopération permet de rassembler des compétences et d’avancer vers un résultat commun. Hill insiste sur la confiance réciproque, la répartition des efforts et le dépassement des rivalités inutiles. Cette leçon complète celle du cerveau collectif du premier tome par une attention aux comportements quotidiens."
+    },
+    {
+      "title": "Leçon 14: Tirer une leçon des échecs",
+      "pdfPage": 52,
+      "endPdfPage": 96,
+      "repere": "LA DÉFAITE, TOUT COMME UNE MIGRAINE, NOUS AVERTIT QUE QUELQUE CHOSE A MAL TOURNÉ. SI NOUS SOMMES INTELLIGENTS, NOUS EN CHERCHERONS LA CAUSE ET PROFITERONS DE L’EXPÉRIENCE. - Napoleon Hill D LEÇON 14 TIRER UNE LEÇON DES ÉCHECS Vous pouvez y arriver si vous y croyez! ’ordinaire, le terme défaite en est un négatif. Mais dans cette leçon, le mot prendra une…",
+      "resume": "Hill invite à considérer l’échec comme une information sur ce qui doit être modifié. Il propose d’analyser les causes d’un revers, de corriger la stratégie et de poursuivre avec davantage d’expérience. Le chapitre défend la persévérance, tout en rappelant implicitement qu’une répétition sans apprentissage n’est pas une méthode."
+    },
+    {
+      "title": "Leçon 15: La tolérance",
+      "pdfPage": 97,
+      "endPdfPage": 120,
+      "repere": "NOUS AVONS TOUS BESOIN D’UNE LEÇON QUI PROVIENT DES CRAYONS. CERTAINS SONT AIGUISÉS, CERTAINS PORTENT DE CURIEUX NOMS ET ILS SONT DE COULEURS DIFFÉRENTES. MAIS EN FIN DE COMPTE, ILS DOIVENT TOUS APPRENDRE À VIVRE DANS LA MÊME BOÎTE. - Nick Meno J LEÇON 15 LA TOLÉRANCE Vous pouvez y arriver si vous y croyez! e vais commencer cette leçon sur la tolérance par…",
+      "resume": "La tolérance consiste à résister aux préjugés et aux jugements hâtifs. Hill montre comment les convictions rigides entravent la coopération et la compréhension des autres. Il appelle à examiner les différences de croyances et d’opinions avec davantage d’ouverture."
+    },
+    {
+      "title": "Leçon 16: La pratique de la Règle d’Or",
+      "pdfPage": 121,
+      "endPdfPage": 163,
+      "repere": "NOTRE DESTINÉE FAIT DE NOUS DES FRÈRES : NI L’UN NI L’AUTRE N’AVANCE SEUL; TOUT CE QUE NOUS TRANSMETTONS DANS LA VIE D’AUTRUI REVIENT DANS LA NÔTRE. - Edwin Markham C LEÇON 16 LA PRATIQUE DE LA RÈGLE D’OR Vous pouvez y arriver si vous y croyez! ette leçon constitue l’étoile qui vous permettra de profiter constructivement des connaissances acquises des…",
+      "resume": "La Règle d’or consiste à traiter les autres comme on souhaiterait être traité. Hill en fait une base éthique pour les échanges professionnels et personnels, en reliant honnêteté, respect et réputation. Le chapitre oppose les bénéfices durables de la confiance aux avantages immédiats obtenus par la tromperie."
+    },
+    {
+      "title": "Leçon 17: La loi universelle de la force cosmique des habitudes",
+      "pdfPage": 164,
+      "endPdfPage": 202,
+      "repere": "L’HABITUDE EST UN CÂBLE QUE NOUS TISSONS JOUR APRÈS JOUR JUSQU’À CE QU’IL NOUS DEVIENNE IMPOSSIBLE DE LE BRISER. - Horace Mann N LEÇON 17 LA LOI UNIVERSELLE DE LA FORCE COSMIQUE DES HABITUDES Vous pouvez y arriver si vous y croyez! ous abordons maintenant la LOI DE LA FORCE COSMIQUE DES HABITUDES, loi universelle au moyen de laquelle la Nature fixe toutes…",
+      "resume": "La dernière leçon décrit les habitudes comme des forces qui orientent progressivement la conduite. Hill relie répétition, pensée et environnement personnel dans une conception large du succès. Ses affirmations sur une « force cosmique » relèvent de sa philosophie ; l’idée pratique est d’identifier puis de transformer les routines qui influencent les décisions."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0117",
+  "title": "Petit traité de sagesse bouddhiste à l’usage des Occidentaux",
+  "author": "Xavier Cornette de Saint Cyr",
+  "genre": "spiritualites",
+  "sub": "1",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Xavier Cornette de Saint Cyr présente des notions de sagesse bouddhiste à un lectorat occidental. Il explore la souffrance, l’attachement, les habitudes de pensée et la possibilité de transformer son rapport aux événements. L’ouvrage privilégie une approche accessible, qui relie les enseignements à des situations ordinaires et à une pratique attentive de soi. Il ne s’agit pas d’un traité exhaustif sur toutes les écoles du bouddhisme, mais d’une invitation à réfléchir à la bienveillance, à la lucidité et au détachement.",
+  "summary": "Xavier Cornette de Saint Cyr présente des notions de sagesse bouddhiste à un lectorat occidental. Il explore la souffrance, l’attachement, les habitudes de pensée et la possibilité de transformer son rapport aux événements. L’ouvrage privilégie une approche accessible, qui relie les enseignements à des situations ordinaires et à une pratique attentive de soi. Il ne s’agit pas d’un traité exhaustif sur toutes les écoles du bouddhisme, mais d’une invitation à réfléchir à la bienveillance, à la lucidité et au détachement.",
+  "text": "",
+  "pdfPages": 195,
+  "detailPath": "ouvrage-new11-sagesse-bouddhiste.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "Dédicace",
+      "pdfPage": 9,
+      "endPdfPage": 11,
+      "repere": "À Juliette Compagnion, amie ɹdèle et ô combien précieuse, et à mon ɹls Louis, pilier solide, attentif, subtil et sensible. Les remerciements sont bien souvent placés en ɹn d’ouvrage. Je voudrais faire diʃéremment et débuter ce livre en remerciant chaleureusement celles et ceux qui ont contribué, d’une manière ou d’une autre, à son élaboration et à son…",
+      "resume": "La dédicace situe le livre dans une démarche personnelle de transmission. Elle ne constitue pas un chapitre doctrinal et n’appelle donc pas un résumé de contenu autonome."
+    },
+    {
+      "title": "Préface de Pierre Pradervand",
+      "pdfPage": 12,
+      "endPdfPage": 15,
+      "repere": "ous vivons un monde dont une des caractéristiques principales est la confusion. La confusion est sans doute une caractéristique fréquente des périodes de transition. Comme nos sociétés se transforment à une vitesse qui nous dépasse littéralement tous, cette confusion touche à tous les domaines – de l’éthique à la sémantique, de la technique aux…",
+      "resume": "Pierre Pradervand introduit l’ouvrage comme une porte d’entrée vers une sagesse applicable à la vie occidentale. Il valorise une lecture ouverte, tournée vers l’expérience plutôt que vers l’adhésion aveugle à des formules. Cette préface prépare la dimension pratique du livre."
+    },
+    {
+      "title": "Introduction",
+      "pdfPage": 16,
+      "endPdfPage": 23,
+      "repere": "ne Tradition, qui compte aujourd’hui quelques millions d’adeptes ou « sympathisants », est née des enseignements d’un homme qui, il y a près de vingt-six siècles, consacra son existence à une intense et féconde réɻexion sur la vie et la mort. Cet homme insista sur le fait que notre « éveil » – notre « salut » – a pour fondement non pas les croyances, dogmes…",
+      "resume": "L’auteur explique son intention : présenter des notions bouddhistes sans présupposer une formation religieuse. Il insiste sur la souffrance, l’impermanence et la transformation du rapport à soi et aux autres. Le propos se veut accessible à des lecteurs qui cherchent une éthique quotidienne."
+    },
+    {
+      "title": "Première partie : Un Sermon qui fait date",
+      "pdfPage": 24,
+      "endPdfPage": 82,
+      "repere": "L I La naissance d’une Tradition L’enfance d’un Prince a date de la naissance de celui qui deviendra Bouddha demeure imprécise. Certains proposent des dates comme −623, −563 ou encore −558. Au-delà des controverses, il est communément admis qu’il est né vers 560 à 550 avant J.-C. Ce VIe siècle avant J.-C. est une époque passionnante et étonnante en termes…",
+      "resume": "La première partie retrace le parcours traditionnel du Bouddha, de la vie princière à la découverte de la souffrance et à l’éveil. Elle présente les Quatre Nobles Vérités : existence de l’insatisfaction, origine dans l’attachement, possibilité de cessation et chemin de pratique. Le non-attachement n’est pas décrit comme de l’indifférence, mais comme une manière de réduire l’emprise des désirs et des peurs."
+    },
+    {
+      "title": "Deuxième partie : Une éthique de l’action",
+      "pdfPage": 83,
+      "endPdfPage": 138,
+      "repere": "L IV La discipline éthique La méthode pour la cessation de dukkha a Quatrième Noble Vérité expose qu’il existe une méthode pour la cessation de dukkha. En fait, il ne s’agit pas seulement de la faire cesser, mais aussi et surtout d’emprunter marga, c’est-à-dire le chemin qui mène à la cessation des souʃrances. On peut dire que le bouddhisme place l’Autre au…",
+      "resume": "Cette partie développe les dimensions pratiques du Noble Sentier octuple. La parole juste, l’action juste et les moyens d’existence justes organisent la conduite éthique ; l’effort, l’attention et la concentration soutiennent l’exercice mental ; la compréhension et l’intention justes orientent le discernement. L’auteur cherche à traduire ces principes en gestes quotidiens."
+    },
+    {
+      "title": "Troisième partie : La relation à l’Autre",
+      "pdfPage": 139,
+      "endPdfPage": 180,
+      "repere": "L VII Méditation et action La forme et le fond ’ensemble des pratiques de l’Octuple Sentier permet un développement de soi qui se caractérise essentiellement par un changement de niveau de conscience. On passe ainsi progressivement à un niveau supérieur. La méditation est l’un des moyens pour y accéder. Cela concerne particulièrement samãdhi. En eʃet, Sila…",
+      "resume": "La dernière partie examine la relation à autrui et le passage de la méditation à l’action. Elle insiste sur l’intention bienveillante, l’attention portée aux autres et la cohérence entre convictions et comportement. La sagesse n’est pas présentée comme un retrait du monde, mais comme une façon d’y participer avec moins de jugement et d’attachement."
+    },
+    {
+      "title": "Glossaire",
+      "pdfPage": 181,
+      "endPdfPage": 189,
+      "repere": "A Action juste (sammã-kammanta) : En négatif : s’abstenir de faire tout ce qui peut engendrer de la souʃrance et nuire à autrui de quelque manière que ce soit ; ne pas agir de manière impulsive et non contrôlée. En positif : action adaptée à la situation et ne causant pas de tort à autrui. C’est être en accord entre ce que l’on dit, ce que l’on pense et ce…",
+      "resume": "Le glossaire définit les principaux termes utilisés dans l’ouvrage, notamment ceux liés à la souffrance, à l’éveil et à la pratique. Il sert d’outil de consultation plutôt que de chapitre argumentatif."
+    },
+    {
+      "title": "Bibliographie",
+      "pdfPage": 190,
+      "endPdfPage": 193,
+      "repere": "Il existe quantité d’ouvrages sur le bouddhisme et il ne saurait être question de tous les répertorier. La liste suivante ne se veut donc nullement exhaustive. Elle a comme modeste ambition de se présenter comme « points de repère » pour celles et ceux qui souhaitent découvrir cette philosophie/religion/sagesse ou bien aller plus loin dans son exploration.…",
+      "resume": "La bibliographie rassemble des ouvrages pour prolonger l’étude de la philosophie et de la pratique bouddhistes. Elle indique des pistes de lecture complémentaires, sans développer de thèse nouvelle."
+    },
+    {
+      "title": "Invitation aux lecteurs",
+      "pdfPage": 194,
+      "endPdfPage": 195,
+      "repere": "crire ce livre m’a été un vrai plaisir, j’espère que le lire vous a également donné de la joie et matière à réɻexion et action. Le Bouddhisme, c’est un ensemble de chemins vers l’Autre et la Sérénité. Après celui de l’écriture vient un autre plaisir : l’échange avec les lecteurs. Quand quelqu’un a aimé un livre, le savoir me fait toujours du bien (oui, oui,…",
+      "resume": "L’invitation finale s’adresse aux lecteurs souhaitant poursuivre leur réflexion et leur pratique. Elle clôt le parcours pédagogique du livre plutôt qu’elle n’ouvre une nouvelle partie théorique."
+    }
+  ],
+  "externalReviews": []
+},
+{
+  "id": "liv0118",
+  "title": "Surmonter ses complexes : les comprendre pour les assumer",
+  "author": "Bénédicte Nadaud et Karine Zagaroli",
+  "genre": "savoirs",
+  "sub": "1",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Bénédicte Nadaud et Karine Zagaroli examinent la manière dont une caractéristique physique, psychologique ou sociale peut devenir un complexe. Elles distinguent les complexes subjectifs, liés à la perception de soi et au regard d’autrui, des complexes fondés sur une différence plus tangible. Elles interrogent l’influence des normes, des comparaisons et de l’histoire personnelle, puis proposent des pistes pour réduire l’emprise de ces jugements. L’objectif n’est pas de promettre une perfection impossible, mais d’apprendre à vivre avec ses particularités sans les laisser définir toute son identité.",
+  "summary": "Bénédicte Nadaud et Karine Zagaroli examinent la manière dont une caractéristique physique, psychologique ou sociale peut devenir un complexe. Elles distinguent les complexes subjectifs, liés à la perception de soi et au regard d’autrui, des complexes fondés sur une différence plus tangible. Elles interrogent l’influence des normes, des comparaisons et de l’histoire personnelle, puis proposent des pistes pour réduire l’emprise de ces jugements. L’objectif n’est pas de promettre une perfection impossible, mais d’apprendre à vivre avec ses particularités sans les laisser définir toute son identité.",
+  "text": "",
+  "pdfPages": 186,
+  "detailPath": "ouvrage-new11-surmonter-complexes.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "Introduction",
+      "pdfPage": 12,
+      "endPdfPage": 15,
+      "repere": "Pourquoi consacrer tout un livre aux complexes ? Tout simplement parce que nous sommes nombreux, très nombreux, à en avoir. Mais les complexes, qu’est-ce que c’est ? Ils semblent bien réels, ils hantent cha- cun de nous et cependant, ils sont difﬁciles à déﬁnir. Peut-être parce que dire son complexe, c’est toujours une façon de révéler sa personnalité.…",
+      "resume": "Les autrices distinguent trois familles de complexes : subjectifs, rationnels et issus de la comparaison. Elles montrent que la souffrance dépend autant de la signification attribuée à une caractéristique que de cette caractéristique elle-même. Le livre propose de comprendre l’origine des complexes pour apprendre à vivre avec eux."
+    },
+    {
+      "title": "I. Les complexes subjectifs",
+      "pdfPage": 16,
+      "endPdfPage": 73,
+      "repere": "PREMIÈRE PARTIE Les complexes subjectifs Ces petits défauts qui ont pris trop d’importance à nos yeux S U R M O N T E R S E S C O M P L E X E S 6 © Groupe Eyrolles Trop grand, trop petit, pas assez mince ! Toutes les occasions sont bonnes pour se remettre en question et s’attarder sur ces petits défauts qui empoisonnent le quotidien. Tout le monde est…",
+      "resume": "Un complexe subjectif naît d’un défaut perçu comme majeur alors qu’il peut être peu visible ou peu important pour autrui. Les autrices explorent le poids de l’éducation, des normes et du regard d’autrui dans cette perception. Elles montrent comment l’attention sélective et l’autocritique entretiennent le malaise. L’enjeu est de réévaluer ce regard plutôt que de chercher une perfection inaccessible."
+    },
+    {
+      "title": "II. Les complexes rationnels",
+      "pdfPage": 74,
+      "endPdfPage": 127,
+      "repere": "DEUXIÈME PARTIE Les complexes rationnels Tous les complexes visibles aux yeux des autres S U R M O N T E R S E S C O M P L E X E S 64 © Groupe Eyrolles Taches de naissance, obésité, strabisme, malformation d’un membre… Certains défauts ou handicaps sont parfaitement visibles aux yeux des autres, donnant lieu à ce que nous appellerons les complexes…",
+      "resume": "Les complexes rationnels concernent des différences réelles et observables, dont la portée psychologique varie selon les situations. Le livre examine les réactions sociales, les difficultés du quotidien et les stratégies d’adaptation. Les autrices invitent à reconnaître la différence sans la réduire à une identité entièrement négative. Une caractéristique visible peut aussi devenir une ressource ou un trait assumé."
+    },
+    {
+      "title": "III. Les complexes de comparaison",
+      "pdfPage": 128,
+      "endPdfPage": 181,
+      "repere": "TROISIÈME PARTIE Les complexes de comparaison Une place dans la société mal assumée S U R M O N T E R S E S C O M P L E X E S 118 © Groupe Eyrolles Se comparer aux autres est inévitable. Au travail, entre amis, en famille, on a besoin de savoir ce que l’autre est devenu, de voir s’il a réussi, si ses enfants sont de bons élèves, si sa maison est belle… Tout…",
+      "resume": "Les complexes de comparaison se développent dans les relations : famille, amis, école, travail ou vie amoureuse. Les autrices montrent comment la rivalité et la mesure permanente de soi par rapport aux autres produisent insatisfaction et dévalorisation. Elles proposent de comprendre ces mécanismes pour transformer la comparaison en motivation, plutôt qu’en condamnation de soi."
+    },
+    {
+      "title": "Conclusion",
+      "pdfPage": 182,
+      "endPdfPage": 183,
+      "repere": "Sacrés complexes ! Ils sont partout, chez la grande blonde comme chez la petite brune, chez le grand mince comme chez le petit musclé. De plus, ils évoluent au ﬁl du temps ; les rencontres et les événements de la vie modiﬁent la perception que chacun se fait de ses complexes : une aven- ture amoureuse, et aussitôt, on se sent plus séduisant. Il ne faut donc…",
+      "resume": "La conclusion rassemble l’idée essentielle du livre : surmonter un complexe ne signifie pas nécessairement supprimer la caractéristique qui l’a déclenché. Il s’agit surtout d’assouplir le jugement sur soi, d’accepter certaines limites et de reconnaître ses qualités. Le changement porte autant sur le regard que sur les comportements."
+    },
+    {
+      "title": "Bibliographie",
+      "pdfPage": 184,
+      "endPdfPage": 186,
+      "repere": "ALLAIS Juliette, La psychogénéalogie, Eyrolles, 2007. AMADIEU Jean-François, Le poids des apparences, Odile Jacob, 2002. ANDRÉ Christophe et MUZO, Petits complexes et grosses déprimes, Seuil, 2004. ANDRÉ Christophe et LÉGERON Patrick, La peur des autres : Trac, timidité et phobie sociale, Odile Jacob, 1995. ANDRÉ Christophe et LELORD François, Comment gérer…",
+      "resume": "La bibliographie fournit des références sur l’estime de soi, les relations sociales et la psychologie des complexes. Elle complète les analyses du livre sans former un chapitre narratif."
+    }
+  ],
+  "externalReviews": [
+    {
+      "label": "Avis de lecteur — Fnac",
+      "url": "https://www.fnac.com/a2307233/Benedicte-Nadaud-Surmonter-ses-complexes",
+      "description": "Un avis de lecteur décrit un ouvrage bienveillant, invitant à reconnaître les qualités plutôt qu’à rabaisser les défauts."
+    }
+  ]
+},
+{
+  "id": "liv0119",
+  "title": "Divorcer d’un manipulateur : un emploi à plein-temps",
+  "author": "Christel Petitcollin",
+  "genre": "vie-et-societe",
+  "sub": "2",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Christel Petitcollin décrit les difficultés particulières d’une séparation lorsqu’un partenaire utilise, selon son analyse, des stratégies de manipulation. Elle suit le cheminement qui va de la prise de conscience à la décision de partir, puis aborde la préparation matérielle, la protection de soi, les démarches judiciaires et les conflits qui peuvent persister après la rupture. Le livre cherche à aider le lecteur à anticiper les tensions et à retrouver une marge de décision. Ses catégories psychologiques ne remplacent pas une évaluation clinique et ses conseils juridiques doivent être vérifiés selon la situation et le droit applicable.",
+  "summary": "Christel Petitcollin décrit les difficultés particulières d’une séparation lorsqu’un partenaire utilise, selon son analyse, des stratégies de manipulation. Elle suit le cheminement qui va de la prise de conscience à la décision de partir, puis aborde la préparation matérielle, la protection de soi, les démarches judiciaires et les conflits qui peuvent persister après la rupture. Le livre cherche à aider le lecteur à anticiper les tensions et à retrouver une marge de décision. Ses catégories psychologiques ne remplacent pas une évaluation clinique et ses conseils juridiques doivent être vérifiés selon la situation et le droit applicable.",
+  "text": "",
+  "pdfPages": 201,
+  "detailPath": "ouvrage-new11-divorcer-manipulateur.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "Du même auteur",
+      "pdfPage": 4,
+      "endPdfPage": 7,
+      "repere": "D U MÊME AUTEUR Parus aux éditions Guy Trédaniel Échapper aux manipulateurs Je pense trop Parus aux éditions Jouvence S’affirmer et oser dire non Bien communiquer avec son enfant Émotions, mode d’emploi Scénario de vie gagnant Les Clés de l’harmonie familiale Réussir son couple Du divorce à la famille recomposée Savoir écouter, cela s’apprend Victime,…",
+      "resume": "Cette page recense d’autres ouvrages de Christel Petitcollin sur la communication, les relations et la manipulation. Il s’agit d’une liste bibliographique, non d’un chapitre du récit."
+    },
+    {
+      "title": "Introduction",
+      "pdfPage": 8,
+      "endPdfPage": 18,
+      "repere": "« Bonjour Madame, Je viens de terminer votre livre Échapper aux manipulateurs et deux impressions s’imposent à moi : — Ce livre m’est personnellement destiné tant il est le reflet de ma vie depuis des années. — Le sujet de ce livre est mon ex-mari, tant sa description correspond à la virgule près. C’est lui à 250 % !!! Je suis divorcée et depuis 10 ans, il…",
+      "resume": "L’autrice explique pourquoi une séparation avec un conjoint qu’elle décrit comme manipulateur peut devenir un conflit psychologique et juridique durable. Elle s’appuie sur des situations rencontrées dans sa pratique pour annoncer les risques qu’elle souhaite rendre visibles. Le propos relève de son expérience et de son interprétation des relations d’emprise."
+    },
+    {
+      "title": "Chapitre 1 — De la rencontre à la décision de partir",
+      "pdfPage": 19,
+      "endPdfPage": 34,
+      "repere": "Un conte de fées ? A un moment où elles prennent la décision de divorcer, les victimes ont un lourd vécu derrière elles. Il est important de connaître tout l’historique de la relation pour comprendre leur comportement. Les brimades, les méchancetés se sont accumulées, laissant des plaies béantes et à vif. Leur estime de soi et leur confiance en l’avenir ont…",
+      "resume": "Le chapitre suit le passage d’une rencontre idéalisée à la découverte de comportements vécus comme déstabilisants. Il décrit la séduction initiale, les contradictions, l’isolement progressif et la difficulté à reconnaître la dynamique relationnelle. La décision de partir apparaît comme un processus, rarement comme un événement soudain."
+    },
+    {
+      "title": "Chapitre 2 — Qui sont les manipulateurs ?",
+      "pdfPage": 35,
+      "endPdfPage": 71,
+      "repere": "Un personnage standard Comme je vous le disais dès l’introduction, le tableau est incroyablement stéréotypé. C’est pourquoi le manipulateur peut se résumer en quelques données : il a deux visages, quatre ficelles et trois pensées. Sa violence s’exerce en trois temps, elle provoque trois phases de dégâts et se termine en apothéose : un bouquet final de…",
+      "resume": "Petitcollin présente des comportements qu’elle associe à la manipulation : double discours, culpabilisation, renversement des responsabilités et usage stratégique de l’entourage. Elle cherche à expliquer pourquoi ces conduites peuvent être difficiles à identifier de l’extérieur. Ses typologies ne remplacent pas une évaluation clinique individuelle."
+    },
+    {
+      "title": "Chapitre 3 — Qui sont les victimes de manipulation ?",
+      "pdfPage": 72,
+      "endPdfPage": 103,
+      "repere": "Une vision fausse et injuste des victimes L’idée la plus communément admise dans l’opinion publique est qu’il faut être quelqu’un de faible, de naïf et de stupide pour se faire manipuler. La plupart des gens préfèrent croire que ça ne pourrait pas leur arriver. Certains juges, avocats et psys ont même assené de façon péremptoire à mes clients que la…",
+      "resume": "L’autrice examine les effets de la relation sur la personne qui la subit : doute, perte de confiance, fatigue et difficulté à faire reconnaître les faits. Elle s’intéresse également aux traits et circonstances qui peuvent compliquer la prise de distance. Le chapitre insiste sur la nécessité de reconstruire une perception autonome de la situation."
+    },
+    {
+      "title": "Chapitre 4 — Terminer la sortie d’emprise psychologique",
+      "pdfPage": 104,
+      "endPdfPage": 130,
+      "repere": "Une période de grande fragilité Avant d’envisager de divorcer physiquement, il faut divorcer mentalement, c’est-à-dire sortir définitivement de l’emprise psychologique. Chercher à quitter un manipulateur alors qu’il a encore le pouvoir de vous retourner la cervelle ou vous rendormir en quelques phrases, est encore plus dangereux que de rester avec lui. De…",
+      "resume": "La sortie d’emprise est décrite comme un travail psychologique qui peut se poursuivre après la séparation matérielle. Petitcollin évoque les tentatives de rapprochement, les promesses et les réactions émotionnelles qui peuvent relancer le lien. Elle encourage à identifier les mécanismes répétitifs et à établir des limites cohérentes."
+    },
+    {
+      "title": "Chapitre 5 — Préparer son évasion",
+      "pdfPage": 131,
+      "endPdfPage": 150,
+      "repere": "Lorsque l’on divorce d’un manipulateur, on ne peut se permettre aucun faux pas, aucune approximation. Une erreur de jugement peut avoir des conséquences fâcheuses pour vous et pour vos enfants. Il n’est que temps de faire face à la situation avec réalisme et bon sens. Ne faites plus semblant de croire que votre conjoint va être d’accord pour divorcer et que…",
+      "resume": "Le chapitre aborde la préparation concrète d’un départ : organisation des documents, suivi des dépenses, anticipation des questions relatives aux enfants et recherche d’un soutien adapté. L’autrice insiste sur la difficulté de prouver certains faits du quotidien. Ces pistes sont contextualisées par le droit et les pratiques de l’époque de publication ; elles ne constituent pas un conseil juridique à jour."
+    },
+    {
+      "title": "Chapitre 6 — Bien comprendre l’appareil judiciaire",
+      "pdfPage": 151,
+      "endPdfPage": 190,
+      "repere": "Comprendre la loi et le fonctionnement de la justice « Nul n’est censé ignorer la loi. » Malgré ce postulat de base, je suis sidérée par la naïveté de certains de mes clients. Ben non, ils n’ont pas signé de contrat. Ben non, ils n’ont pas gardé les factures. Ben non, ils n’ont pas mis le nez dans les comptes du foyer ces dix dernières années, puisque leur…",
+      "resume": "Petitcollin explique les logiques et contraintes de l’appareil judiciaire telles qu’elle les observe : preuves, procédures, délais et rôle des professionnels. Elle souligne le décalage possible entre l’expérience intime d’une relation et ce qui peut être établi devant un tribunal. Les règles applicables ont pu évoluer depuis la parution du livre."
+    },
+    {
+      "title": "Chapitre 7 — Gérer la pression au décollage",
+      "pdfPage": 191,
+      "endPdfPage": 197,
+      "repere": "Voila, vous avez maintenant tous les éléments pour sortir de votre état de victime épuisée, vidée, terrorisée. Vous avez pris conscience de votre part de responsabilité. Jusqu’à présent, ce que vous faisiez : plaider coupable, y retourner pour l’apaiser, vous montrer conciliante, c’est-à-dire soumise, et vous refaire maltraiter, a toujours aggravé la…",
+      "resume": "La séparation ne met pas toujours fin aux tensions. Le chapitre traite des réactions de l’ex-conjoint, de la pression exercée par l’entourage et de la nécessité de garder une ligne de conduite stable. L’autrice encourage à limiter les échanges conflictuels et à s’appuyer sur des interlocuteurs compétents."
+    },
+    {
+      "title": "Conclusion — Il y a une vie après ce divorce !",
+      "pdfPage": 198,
+      "endPdfPage": 201,
+      "repere": "Pour vous permettre de tenir bon tout au long de cette rude période, je peux vous en raconter la fin, ou plus exactement la période d’après-guerre. Mes clientes victimes ont retrouvé la paix et ont pu recommencer à vivre selon leurs valeurs de sérénité, d’harmonie et de respect. Leur nouvel entourage correspond tellement mieux à ce qu’elles attendaient de…",
+      "resume": "La conclusion ouvre sur la reconstruction d’une vie personnelle après la séparation. Elle insiste sur la récupération de la confiance et de la liberté de décision. Le message final est que le conflit ne doit pas définir durablement l’identité de la personne qui en sort."
+    }
+  ],
+  "externalReviews": [
+    {
+      "label": "Avis de lecteurs — Fnac",
+      "url": "https://www.fnac.com/Divorcer-d-un-manipulateur/a4124027/avis",
+      "description": "Plusieurs lecteurs apprécient les conseils pratiques ; certains signalent un point de vue déséquilibré ou des informations juridiques datées."
+    }
+  ]
+},
+{
+  "id": "liv0120",
+  "title": "Comment retrouver toute son énergie : la fatigue n’est pas une fatalité",
+  "author": "Maurice Tran Dinh Can et Juliette Jarre",
+  "genre": "vie-et-societe",
+  "sub": "2",
+  "cover": "images/atelier/soucoupes-pastel.jpg",
+  "presentation": "Le Dr Maurice Tran Dinh Can et Juliette Jarre abordent la fatigue à partir d’une réflexion sur les habitudes de vie, les sensations corporelles et l’expérience clinique du médecin. Ils invitent le lecteur à reconnaître les signes d’épuisement, à examiner son quotidien et à réfléchir aux moyens de retrouver un meilleur équilibre. L’ouvrage accorde une place importante à l’acupuncture et à l’interprétation de la fatigue proposée par le praticien. Ces propositions reflètent son expérience ; elles ne remplacent ni un diagnostic médical ni la recherche des causes d’une fatigue persistante.",
+  "summary": "Le Dr Maurice Tran Dinh Can et Juliette Jarre abordent la fatigue à partir d’une réflexion sur les habitudes de vie, les sensations corporelles et l’expérience clinique du médecin. Ils invitent le lecteur à reconnaître les signes d’épuisement, à examiner son quotidien et à réfléchir aux moyens de retrouver un meilleur équilibre. L’ouvrage accorde une place importante à l’acupuncture et à l’interprétation de la fatigue proposée par le praticien. Ces propositions reflètent son expérience ; elles ne remplacent ni un diagnostic médical ni la recherche des causes d’une fatigue persistante.",
+  "text": "",
+  "pdfPages": 74,
+  "detailPath": "ouvrage-new11-retrouver-energie.html",
+  "catalogueRevision": 20261119,
+  "publicationStatus": "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée",
+  "pdfPath": "",
+  "chapters": [
+    {
+      "title": "Dedication 1",
+      "pdfPage": 6,
+      "endPdfPage": 6,
+      "repere": "À mes enfants et petits-enfants À ma famille À mes amis À mes patients",
+      "resume": "La dédicace exprime la dimension personnelle de l’ouvrage et les liens de l’auteur avec ses proches. Elle ne contient pas de développement médical à résumer."
+    },
+    {
+      "title": "Dedication 2",
+      "pdfPage": 7,
+      "endPdfPage": 7,
+      "repere": "Cet ouvrage est le fruit d’une réflexion entre le Dr Maurice Tran Dinh Can et Juliette Jarre.",
+      "resume": "La seconde dédicace et les pages liminaires introduisent la réflexion sur la complexité du corps humain. Elles servent de transition vers le témoignage professionnel du médecin."
+    },
+    {
+      "title": "Preambule",
+      "pdfPage": 8,
+      "endPdfPage": 8,
+      "repere": "Préambule Voici plus de quarante ans que je reçois des patients. Durant toutes ces années, j’ai acquis une expérience que j’ai sans cesse questionnée, pour comprendre ce que je mettais en œuvre par ma pratique. C’est une chose assez extraordinaire de voir que certains gestes ont une action d’une grande efficacité sur des patients, alors que l’on a acquis un…",
+      "resume": "Le médecin présente une expérience de plusieurs décennies auprès de patients et son intérêt pour la fatigue. Il explique que ses observations l’ont amené à interroger ses pratiques et à vouloir les transmettre. Il précise que certaines explications correspondent à sa propre interprétation clinique."
+    },
+    {
+      "title": "Avant-propos",
+      "pdfPage": 9,
+      "endPdfPage": 14,
+      "repere": "Pendant toutes mes études de médecine, et au fil des années de pratique, un émerveillement m’est toujours resté : celui que j’ai éprouvé en comprenant à quel point le corps humain est une machine extraordinaire. Imaginez seulement la multitude d’événements qui se déroulent simultanément dans notre organisme, la complexité des équilibres vitaux, l’harmonie…",
+      "resume": "L’avant-propos invite le lecteur à reconnaître les signes de fatigue souvent minimisés : sommeil perturbé, épuisement et difficulté à récupérer. Il présente le décalage entre les besoins physiologiques et une culture de la performance permanente. Cette entrée prépare un examen des habitudes quotidiennes."
+    },
+    {
+      "title": "Cette fatigue qui nous plombe",
+      "pdfPage": 15,
+      "endPdfPage": 17,
+      "repere": "Vous connaissiez peut-être déjà la plupart des signes. Les courbatures, le manque d’entrain, la mauvaise humeur… Tout ce que vous ressentez est plus ou moins désagréable, pénible, mais vous avez sûrement appris à faire avec… Maintenant, essayons de comprendre pourquoi nous ressentons ces symptômes. Muscles fatigués Prenons les courbatures, par exemple.…",
+      "resume": "Le chapitre critique la tendance à ignorer les signaux d’épuisement pour continuer à produire. Les auteurs expliquent comment les stimulants et la volonté peuvent masquer temporairement le besoin de repos. La fatigue est présentée comme un signal à écouter plutôt qu’un défaut moral."
+    },
+    {
+      "title": "Le cerveau",
+      "pdfPage": 18,
+      "endPdfPage": 22,
+      "repere": "humain est une mécanique fantastique, qui, comme toute mécanique, doit obéir aux lois universelles des mécaniques : ne pas franchir ses limites et satisfaire ses besoins. Le cerveau, en tant qu’organe central de notre corps, communique avec toutes les autres parties. Il donne des ordres, régule, organise, coordonne. Un travail complexe ! Transmission des…",
+      "resume": "Les auteurs décrivent le cerveau comme un organe complexe coordonnant de multiples fonctions. Ils utilisent cette présentation pour souligner la charge de travail permanente du système nerveux. Le chapitre prépare l’idée qu’une surcharge peut avoir des répercussions sur le bien-être général."
+    },
+    {
+      "title": "La fatigue du cerveau",
+      "pdfPage": 23,
+      "endPdfPage": 25,
+      "repere": "La fatigue est là pour nous donner des indications précieuses, comme nous l’avons vu, à l’instar de tous les signaux physiologiques qui se manifestent pour nous rappeler nos besoins fondamentaux : la faim, la soif, etc. Elle existe pour nous aider à vivre, à mieux vivre. En nous indiquant le moment où nous devons nous reposer, elle sert l’intérêt de notre…",
+      "resume": "La fatigue cérébrale est abordée à travers la surcharge mentale, l’attention et les exigences de la vie moderne. Les auteurs décrivent le risque de banaliser des symptômes qui persistent. Leur démarche invite à examiner le rythme de vie plutôt qu’à simplement compenser l’épuisement."
+    },
+    {
+      "title": "Les effets de la fatigue : la somatisation",
+      "pdfPage": 26,
+      "endPdfPage": 35,
+      "repere": "Quand il a besoin de repos, parce qu’il a été trop sollicité, trop longtemps, le cerveau exprime ce besoin par un signal de fatigue. Tous les êtres vivants répondent instinctivement à ce signal de fatigue par du repos… tous, sauf une espèce rebelle, qui résiste encore et toujours : l’homme. Le cerveau réitère alors sa demande de façon beaucoup plus aiguë.…",
+      "resume": "Cette partie relie les tensions psychiques à des manifestations corporelles, en utilisant le terme de somatisation. Elle présente des récits de personnes dont l’état de santé s’est dégradé dans un contexte de pression prolongée. Les expériences relatées illustrent une approche clinique, mais ne permettent pas à elles seules d’établir la cause de chaque symptôme."
+    },
+    {
+      "title": "Comment en suis-je arrivé à me passionner pour la fatigue ?",
+      "pdfPage": 36,
+      "endPdfPage": 46,
+      "repere": "Qui suis-je ? À cause de ses opinions politiques, mon père, militaire vietnamien, a dû s’exiler en France avec toute sa famille. C’était en 1955. J’avais dix ans. Mes études secondaires se sont déroulées au lycée Jean-Baptiste-Say (à Paris, dans le XVIe arrondissement), dans des classes qui préparaient à l’école des Arts et Métiers. Puis, j’ai décidé de…",
+      "resume": "Le médecin retrace son parcours et son apprentissage de l’acupuncture. Il explique les notions de méridiens, de yin et de yang, puis l’usage qu’il fait d’un point crânien appelé Paé-Roé. Ces éléments décrivent sa pratique et le cadre de la médecine traditionnelle chinoise, dont les mécanismes invoqués ne sont pas tous établis scientifiquement."
+    },
+    {
+      "title": "Connaître et comprendre sa fatigue… pour mieux lui dire au revoir !",
+      "pdfPage": 47,
+      "endPdfPage": 55,
+      "repere": "La fatigue a une grande utilité, comme tous les autres signaux physiologiques tels que la faim ou la soif. Elle est là pour nous aider à vivre, à mieux vivre. En nous indiquant le moment où nous devons nous reposer, elle sert l’intérêt de notre cerveau, elle l’aide à maintenir sa performance, pour notre plus grand bien. Il n’est pas dans les habitudes de…",
+      "resume": "Le lecteur est invité à observer sa propre fatigue, à la décrire sans la minimiser et à repérer les circonstances dans lesquelles elle augmente. Les auteurs insistent sur la connaissance de soi et l’identification des habitudes qui empêchent la récupération. Il s’agit d’une démarche d’auto-observation, non d’un diagnostic."
+    },
+    {
+      "title": "Sortir de la fatigue pour retrouver une bonne santé",
+      "pdfPage": 56,
+      "endPdfPage": 63,
+      "repere": "Le sommeil est la clé du repos. Lapalissade, me direz-vous ? Oui, certes, mais compte tenu du nombre de personnes fatiguées, il me semble indispensable de le rappeler ! Mais alors pourquoi n’utilisons-nous pas ce remède si simple, si immédiat ? Généralement parce que, malgré son évidence, il nous échappe. Difficile de décréter que l’on va dormir……",
+      "resume": "Les pistes proposées concernent le relâchement des tensions, la gestion des préoccupations et le retour à des rythmes plus compatibles avec les besoins du corps. Les auteurs présentent différentes pratiques issues de leur expérience. Une fatigue persistante ou inexpliquée nécessite toutefois un avis médical plutôt que le seul recours à ces conseils."
+    },
+    {
+      "title": "Retrouver notre équilibre, préserver notre « écologie interne »",
+      "pdfPage": 64,
+      "endPdfPage": 68,
+      "repere": "J’ai toujours été sensible à une pratique des médecins chinois que je trouve particulièrement sensée : dans l’ancien temps, ceux-ci ne se faisaient payer que lorsque leurs patients étaient en bonne santé. À la moindre trace de maladie, ils les traitaient gratuitement… C’est une manière de renverser le point de vue sur le soignant que j’aime beaucoup !…",
+      "resume": "La notion d’« écologie interne » désigne ici l’équilibre entre sommeil, repos, activité et contraintes quotidiennes. Le chapitre invite à agir sur les horaires et les habitudes réellement modifiables, notamment le coucher. L’objectif est de prévenir l’accumulation de fatigue plutôt que de rechercher un regain d’énergie immédiat."
+    },
+    {
+      "title": "Conclusion",
+      "pdfPage": 69,
+      "endPdfPage": 74,
+      "repere": "Vous voilà maintenant seuls face à votre fatigue. Seuls ? Pas tout à fait, quand même. Vous avez maintenant des outils en main pour la détecter, la comprendre, la combattre. Le premier pas, le plus important, est l’acceptation de cette fatigue, le fait de la reconnaître pour ce qu’elle est : un véritable problème à prendre en compte. Je vais vous dire une…",
+      "resume": "La conclusion rappelle que retrouver de l’énergie suppose de prendre au sérieux les signaux du corps et de modifier progressivement certaines habitudes. Elle synthétise l’approche personnelle du médecin, qui associe hygiène de vie et pratiques d’acupuncture."
+    }
+  ],
+  "externalReviews": [
+    {
+      "label": "Revue de presse recensée par l’éditeur",
+      "url": "https://www.editionsdurocher.fr/product/101497/comment-retrouver-toute-son-energie/",
+      "description": "L’éditeur recense plusieurs mentions dans la presse, notamment Femina et La Libre Belgique ; il ne s’agit pas ici de critiques indépendantes vérifiées en texte intégral."
+    }
+  ]
+},
+{
   "id": "liv0101",
   "title": "Avoir le courage de ne pas être aimé",
   "author": "Ichiro Kishimi et Fumitake Koga",
