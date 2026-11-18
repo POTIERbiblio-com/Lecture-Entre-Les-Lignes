@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="850" viewBox="0 0 600 850">
-<rect width="600" height="850" fill="#f7e9d8"/>
-<rect x="29" y="29" width="542" height="792" rx="12" fill="none" stroke="#805b45" stroke-width="2"/>
-<circle cx="300" cy="154" r="65" fill="#e2c29c" opacity=".7"/>
-<path d="M 100 555 Q 300 490 500 555" fill="none" stroke="#e2c29c" stroke-width="12"/>
-<g font-family="Georgia,serif" fill="#805b45"><text x="300" y="243" text-anchor="middle" font-size="43" font-weight="700">Surmonter ses</text><text x="300" y="309" text-anchor="middle" font-size="43" font-weight="700">complexes</text><text x="300" y="670" text-anchor="middle" font-size="23">Bénédicte Nadaud et Karine</text><text x="300" y="699" text-anchor="middle" font-size="23">Zagaroli</text>
-<text x="300" y="93" text-anchor="middle" font-size="18" letter-spacing="5">ENTRE LES LIGNES</text>
-<text x="300" y="785" text-anchor="middle" font-size="17" letter-spacing="3">BIBLIOTHÈQUE</text></g>
-</svg>
