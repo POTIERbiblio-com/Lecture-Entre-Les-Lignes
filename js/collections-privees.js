@@ -1,34 +1,10 @@
-/* Favoris et listes privés, isolés par utilisateur Supabase. */
 (()=>{'use strict';
-const URL='https://cezgcoaokwuobipwfffa.supabase.co',KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';
-const empty=()=>({favorites:[],boards:[]});let client,user,cache=empty(),ready=false,writing=Promise.resolve(),mode='none';
-const listeners=new Set();
+const ENDPOINT='https://cezgcoa nkoka.supabase.co/functions/v1/secure-account'.replace('cezgcoa nkoka','cezgcoaokwuobipwfffa');
+const empty=()=>({favorites:[],boards:[]});let user=null,auth=null,cache=empty(),ready=false,promise=null,queue=Promise.resolve();const listeners=new Set();
 const normalize=x=>({favorites:Array.isArray(x?.favorites)?x.favorites.filter(v=>typeof v==='string'):[],boards:Array.isArray(x?.boards)?x.boards.filter(b=>b&&typeof b.id==='string'&&Array.isArray(b.books)).map(b=>({...b,books:b.books.filter(v=>typeof v==='string')})):[]});
-const emit=()=>{for(const cb of listeners)cb(read());window.dispatchEvent(new Event('ell-lists-change'))};
-const read=()=>normalize(cache);
-async function firebaseUser(){const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const app=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});const auth=getAuth(app);return new Promise(resolve=>{const unsubscribe=onAuthStateChanged(auth,u=>{unsubscribe();resolve(u)},()=>resolve(null))})}
-async function init(){
- if(ready)return user;
- const m=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
- client=m.createClient(URL,KEY);const {data,error}=await client.auth.getUser();
- if(error||!data.user){const firebase=await firebaseUser();if(firebase){user={id:firebase.uid,email:firebase.email};mode='firebase-local';cache=normalize(JSON.parse(localStorage.getItem('ell-reading-boards-firebase-'+firebase.uid)||'{}'));ready=true;emit();return user}user=null;mode='none';cache=empty();ready=true;emit();return null}
- user=data.user;mode='supabase';const {data:row,error:loadError}=await client.from('user_reading_collections').select('data').eq('user_id',user.id).maybeSingle();
- if(loadError)throw loadError;
- cache=normalize(row?.data);ready=true;emit();
- client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){user=null;cache=empty();ready=false;emit();init().catch(console.error)}});
- return user;
-}
-async function save(next){
- await init();if(!user)throw Error('Connecte-toi pour enregistrer tes favoris et listes.');
- const previous=cache;cache=normalize(next);emit();
- const snapshot=JSON.stringify(cache);
- if(mode==='firebase-local'){localStorage.setItem('ell-reading-boards-firebase-'+user.id,snapshot);return}
- const task=writing.catch(()=>{}).then(async()=>{
-  const {error}=await client.from('user_reading_collections').upsert({user_id:user.id,data:JSON.parse(snapshot),updated_at:new Date().toISOString()},{onConflict:'user_id'});
-  if(error)throw error;
- });
- writing=task;
- try{await task}catch(e){cache=previous;emit();throw e}
-}
-window.ELLCollections={init,read,save,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn)},get user(){return user},get storageMode(){return mode}};
+const read=()=>normalize(cache);const emit=()=>{for(const fn of listeners)fn(read());dispatchEvent(new Event('ell-lists-change'))};
+async function request(action,data){if(!auth?.currentUser)throw Error('Connecte-toi pour accéder à tes favoris.');const r=await fetch(ENDPOINT,{method:'POST',headers:{Authorization:'Bearer '+await auth.currentUser.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,kind:'collections',data})});const j=await r.json();if(!r.ok)throw Error(j.error||'Sauvegarde indisponible');return j}
+async function init(){if(ready)return user;if(promise)return promise;promise=(async()=>{const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const app=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});auth=getAuth(app);const signed=await new Promise(resolve=>{const unsub=onAuthStateChanged(auth,u=>{unsub();resolve(u)},()=>resolve(null))});if(!signed){user=null;cache=empty();ready=true;emit();return null}user={id:signed.uid,email:signed.email};const result=await request('read');cache=normalize(result.data);ready=true;emit();onAuthStateChanged(auth,u=>{if((u?.uid||null)!==(user?.id||null)){user=null;ready=false;promise=null;cache=empty();emit();init().catch(console.error)}});return user})();try{return await promise}catch(e){promise=null;throw e}}
+async function save(next){await init();if(!user)throw Error('Connecte-toi pour enregistrer tes favoris.');const previous=cache;cache=normalize(next);emit();const snapshot=read();const task=queue.catch(()=>{}).then(()=>request('write',snapshot));queue=task;try{await task}catch(e){cache=previous;emit();throw e}}
+window.ELLCollections={init,read,save,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn)},get user(){return user}};
 })();
