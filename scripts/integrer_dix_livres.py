@@ -31,7 +31,7 @@ with zipfile.ZipFile(ARCHIVE) as z:
             target.write_bytes(z.read(source))
         # Fiche du dossier local adaptée aux chemins du site publié
         fiche=z.read(src_fiche).decode('utf-8')
-        fiche=fiche.replace('../pdf/', 'livres-10/pdf/').replace('../couvertures/', 'livres-10/couvertures/')
+        fiche=fiche.replace('../pdf/', 'livres-10/pdf/').replace('../couvertures/', 'livres-10/couvertures/')\n        fiche=fiche.replace('href="index.html"', 'href="mes-livres.html"')
         fiche=fiche.replace('href="pdf/', 'href="livres-10/pdf/').replace('src="couvertures/', 'src="livres-10/couvertures/')
         (ROOT/(b['id']+'-fiche.html')).write_text(fiche,encoding='utf-8')
     (ROOT/'livres-10'/'catalogue_10_livres.json').write_text(json.dumps(catalogue,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
