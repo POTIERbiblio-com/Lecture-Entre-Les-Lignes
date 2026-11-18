@@ -1,6 +1,6 @@
 const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null;
 async function ellConnect(){if(!ell){const m=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');ell=m.createClient(ELL_URL,ELL_KEY);}return ell;}
-function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};for(const b of state.books){b.position='';b.pdfPage=1;}}
+function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};state.design={};state.legend={};for(const b of state.books){b.position='';b.pdfPage=1;}}
 const GENRES={"fiction": ["Fiction", ["Roman contemporain", "Imaginaire", "Suspense", "Amour et relations", "Histoire et aventure", "BD et manga", "Poésie et théâtre", "Contes et nouvelles", "Horreur"]], "savoirs": ["Savoirs", ["Sciences", "Psychologie", "Philosophie", "Histoire", "Économie et politique", "Management et entrepreneuriat", "Informatique et numérique"]], "arts": ["Arts", ["Musique", "Cinéma", "Architecture", "Peinture et photographie"]], "vie-et-societe": ["Vie et société", ["Biographies", "Témoignages", "Vie pratique", "Sociologie", "Finances personnelles", "Développement personnel"]], "spiritualites": ["Spiritualités et religions", ["Religions", "Spiritualités", "Mythes", "Ésotérisme"]], "jeunesse": ["Jeunesse et pédagogie", ["Albums", "Romans jeunesse", "Documentaires", "Apprentissage"]]};
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3338,14 +3338,23 @@ function readPendingCarnet() {
 }
 
 function syncCarnet(){
- pendingWrites++;autosaveQueue=autosaveQueue.catch(()=>{}).then(async()=>{
- const {error}=await ell.from('user_carnets').upsert({user_id:ellUser.id,data:personalCarnet(),updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;showCarnetWarning('');
- }).finally(()=>pendingWrites--);return autosaveQueue;
+ const userId=ellUser?.id;
+ if(!userId)return Promise.reject(Error('Connecte-toi pour enregistrer ton carnet personnel.'));
+ const snapshot=structuredClone(personalCarnet());
+ pendingWrites++;
+ autosaveQueue=autosaveQueue.catch(()=>{}).then(async()=>{
+  const {data:{user},error:authError}=await ell.auth.getUser();
+  if(authError||user?.id!==userId)throw Error('Compte modifié : sauvegarde annulée pour protéger tes données.');
+  const {error}=await ell.from('user_carnets').upsert({user_id:userId,data:snapshot,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+  if(error)throw error;
+  showCarnetWarning('');
+ }).finally(()=>pendingWrites--);
+ return autosaveQueue;
 }
 async function save(){
- if(ellUser){try{await syncCarnet();}catch(e){showCarnetWarning(e.message);throw e;}}
- else await writeLocalState();
- message(ellUser?'Enregistré dans ton compte.':'Enregistré sur cet appareil.');
+ if(!ellUser)throw Error('Connecte-toi pour enregistrer des annotations, fiches et surlignages privés.');
+ try{await syncCarnet();}catch(e){showCarnetWarning(e.message);throw e;}
+ message('Enregistré dans ton compte.');
 }
 async function connectService(){
  if(location.protocol==='file:')return null;
@@ -3355,22 +3364,31 @@ async function connectService(){
  }catch(e){console.error(e);return null;}
 }
 function restoreCarnet(data) {
-  Object.assign(state, data);
-  for (const book of state.books) {
-    const position = data.positions?.[book.id];
-    book.position = position?.position || '';
-    book.pdfPage = position?.pdfPage || 1;
+  // Never replace the public catalogue or copy a different account's data.
+  const safe=data&&typeof data==='object'?data:{};
+  for(const field of ['notes','highlights','questions'])state[field]=Array.isArray(safe[field])?safe[field]:[];
+  for(const field of ['reviews','profile','design','legend'])state[field]=safe[field]&&typeof safe[field]==='object'&&!Array.isArray(safe[field])?safe[field]:{};
+  for(const book of state.books){
+    const position=safe.positions?.[book.id];
+    book.position=typeof position?.position==='string'?position.position:'';
+    book.pdfPage=Number.isFinite(Number(position?.pdfPage))&&Number(position.pdfPage)>0?Number(position.pdfPage):1;
   }
 }
 
 async function loadServiceState(){
  if(!ell)return;
- const last=localStorage.getItem('ell_account');
+ // Clear local data before loading: no notes/highlights from a prior session can flash on screen.
+ ellClear();
  if(ellUser){
- const {data,error}=await ell.from('user_carnets').select('data').eq('user_id',ellUser.id).maybeSingle();if(error)throw error;
- if(data?.data){ellClear();restoreCarnet(data.data);}else if(last&&last!==ellUser.id){ellClear();}
- localStorage.setItem('ell_account',ellUser.id);
- }else if(last){ellClear();localStorage.removeItem('ell_account');}
+  const userId=ellUser.id;
+  const {data,error}=await ell.from('user_carnets').select('data').eq('user_id',userId).maybeSingle();
+  if(error)throw error;
+  if(ellUser?.id!==userId)throw Error('Le compte a changé pendant le chargement.');
+  if(data?.data)restoreCarnet(data.data);
+  localStorage.setItem('ell_account',userId);
+ }else{
+  localStorage.removeItem('ell_account');
+ }
  const {data:catalog,error:catalogError}=await ell.from('books').select('*').eq('published',true);
  if(catalogError){console.warn('Catalogue en ligne indisponible',catalogError);return;}
  for(const entry of catalog||[]){
@@ -3987,7 +4005,7 @@ for(const book of LIVRES_INITIAUX){
     changed=true;
   }
 }
-try { await loadServiceState(); } catch(error) { showCarnetWarning(error.message); }
+try { await loadServiceState(); } catch(error) { ellClear(); showCarnetWarning('Impossible de charger ton carnet personnel : '+error.message); }
 await loadPublicCatalogue();
 await applyCatalogueSuppressions();
 if(changed&&db)await writeLocalState();
