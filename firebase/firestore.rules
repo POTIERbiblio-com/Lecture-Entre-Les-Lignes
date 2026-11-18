@@ -16,11 +16,11 @@ service cloud.firestore {
          get(/databases/$(database)/documents/books/$(resource.data.book_id)).data.published == true);
       allow create, update, delete: if editor();
     }
-    match /book_requests/{requestId} {
+    function requestManager() {\n      return editor() && request.auth.token.email in ['quentinmorel1912@gmail.com', 'juliepotier2006@gmail.com'];\n    }\n    match /book_requests/{requestId} {
       function owner() {
         return request.auth != null && resource.data.requesterUid == request.auth.uid;
       }
-      allow get, list: if editor() || owner();
+      allow get, list: if requestManager() || owner();
       allow create: if request.auth != null &&
         request.resource.data.keys().hasOnly([
           'title','author','genre','subgenre','edition','publicationDate','price','isbn','referenceUrl','summary','details',
@@ -40,7 +40,7 @@ service cloud.firestore {
         request.resource.data.reason == '' &&
         request.resource.data.adminMessage == '' &&
         request.resource.data.createdAt == request.time;
-      allow update: if editor() &&
+      allow update: if requestManager() &&
         request.resource.data.diff(resource.data).affectedKeys().hasOnly([
           'status','reason','adminMessage','reviewedBy','reviewedAt'
         ]) &&
