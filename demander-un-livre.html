@@ -2,20 +2,21 @@
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Proposer un livre · Entre les lignes</title>
-<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css">
-<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css"><link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css">
 <link rel="stylesheet" href="css/book-requests.css"></head>
-<body class="atelier-page">
+<body class="page-proposer-livre atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <header class="site-header"><a class="brand" href="index.html">Entre les lignes<span>.</span></a>
 <nav class="site-nav" aria-label="Menu principal"><a href="index.html">Accueil</a><a href="genres.html">Genres</a><a href="lecture.html">Lecture</a><a href="mes-livres.html">Chercher un livre</a><a href="critiques.html">Critiques</a><a class="active" aria-current="page" href="demander-un-livre.html">Proposer un livre</a><a href="mon-espace.html">Mon espace</a></nav></header>
-<main id="contenu" class="request-wrap">
-<header class="request-hero"><div><span class="request-eyebrow">✦ LA BOÎTE À IDÉES</span><h1>Un livre à nous <em>souffler ?</em></h1><p>Une lecture t'a marqué ? Partage-la avec nous ! Toutes les propositions sont examinées avant d'être ajoutées à la bibliothèque.</p><div class="request-capsules"><span>♡ Tes découvertes</span><span>✦ Notre bibliothèque</span><span>✿ De nouvelles histoires</span></div></div>
-<div class="request-hero-art"><img class="request-hero-main" src="images/atelier/revue-ouverte.jpg" alt="Revue ouverte"><img class="request-hero-small" src="images/carnet-illustre/lecture-rose.jpg" alt="Illustration autour de la lecture"><span aria-hidden="true" class="request-doodle">✿</span></div></header>
+<div class="site-main" role="main" id="contenu"><main class="request-wrap"><div class="crumb"><a href="index.html">Accueil</a> / <span>Proposer un livre</span></div>
+<section class="request-banner" aria-labelledby="request-title">
+<div class="request-banner-copy"><span class="request-eyebrow">LE CARNET DES SUGGESTIONS · N° 07</span><h1 id="request-title"><span class="artist-word">Proposer</span><br><em>un livre</em></h1><p>Un titre que tu aimerais retrouver sur nos étagères ? Glisse-nous ta suggestion dans le carnet.</p><a class="request-banner-link" href="#request-form">Remplir ma proposition <span aria-hidden="true">↗</span></a></div>
+<div class="request-banner-collage" aria-hidden="true"><img class="request-banner-photo" src="images/atelier/carnets-et-monde.jpg" alt=""><img class="request-banner-detail" src="images/atelier/revue-ouverte.jpg" alt=""><img class="request-banner-sticker" src="images/carnet-illustre/sticker-fleur.svg" alt=""></div>
+</section>
 <div class="request-steps" aria-label="Comment ça marche"><div><strong>01</strong><span>Tu proposes ton livre</span></div><div><strong>02</strong><span>L'équipe étudie la demande</span></div><div><strong>03</strong><span>Tu retrouves sa réponse ici</span></div></div>
 <p id="request-status" role="status">Vérification de la connexion…</p>
 <section id="request-member" hidden>
-<form id="request-form" class="request-card"><div class="request-card-title"><div><span class="request-eyebrow">✿ TA DÉCOUVERTE</span><h2>Ma proposition ♡</h2></div><img src="images/objets/livre-ouvert.svg" alt="" aria-hidden="true"></div>
+<form id="request-form" class="request-card"><div class="request-card-title"><div><span class="request-eyebrow">FICHE À REMPLIR · 01</span><h2>Ma proposition</h2></div><span class="request-card-number" aria-hidden="true">✳</span></div>
 <p class="request-hint">Les champs marqués * sont obligatoires. Plus tu donnes de détails, plus il sera facile de retrouver la bonne édition.</p>
 <div class="request-grid">
 <label>Titre du livre *<input name="title" maxlength="200" autocomplete="off" required placeholder="Le titre exact du livre"></label>
@@ -28,7 +29,7 @@
 <label>ISBN <input name="isbn" maxlength="30" placeholder="ISBN-10 ou ISBN-13"></label>
 <label class="request-wide">Lien vers une fiche du livre <input type="url" name="referenceUrl" maxlength="500" placeholder="https://…"></label>
 </div>
-<div class="request-cover-layout"><div><label>Couverture du livre *<input id="request-cover" name="cover" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG ou WebP · 3 Mo maximum. Choisis une image que tu as le droit de partager.</small></label></div><div class="request-cover-preview"><img id="request-preview" src="images/atelier/livre-paysage.jpg" alt="Aperçu de couverture ou illustration de lecture"><span id="request-preview-label">Ta couverture apparaîtra ici ♡</span></div></div>
+<div class="request-cover-layout"><div><label>Couverture du livre *<input id="request-cover" name="cover" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG ou WebP · 3 Mo maximum. Choisis une image que tu as le droit de partager.</small></label></div><div class="request-cover-preview"><img id="request-preview" src="images/atelier/revue-ouverte.jpg" alt="Aperçu de couverture ou illustration de lecture"><span id="request-preview-label">Ta couverture apparaîtra ici ♡</span></div></div>
 <label>Résumé du livre <textarea name="summary" rows="4" maxlength="2500" placeholder="De quoi parle ce livre ? (facultatif)"></textarea></label>
 <label>Pourquoi nous le proposer ? / Informations complémentaires <textarea name="details" rows="5" maxlength="3000" placeholder="Ce qui t'a plu, une édition précise, un détail utile…"></textarea></label>
 <button type="submit" id="send-request">Envoyer ma proposition ♡</button>
@@ -37,6 +38,6 @@
 </section>
 <section id="request-admin" hidden class="request-card"><h2>✦ Demandes à traiter</h2><p>Gestion réservée aux comptes administrateurs.</p><div id="admin-requests"></div></section>
 <p id="request-login" hidden class="request-login"><a href="connexion-firebase.html">Connecte-toi ou crée ton compte pour proposer un livre et suivre sa réponse ♡</a></p>
-</main><script type="module" src="js/book-requests.js"></script>
-<script>const cover=document.getElementById('request-cover'),preview=document.getElementById('request-preview'),lbl=document.getElementById('request-preview-label');let previewUrl='';cover.addEventListener('change',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);const file=cover.files&&cover.files[0];if(file&&file.type.startsWith('image/')){previewUrl=URL.createObjectURL(file);preview.src=previewUrl;lbl.textContent='Ta couverture sélectionnée ♡';}else{preview.src='images/atelier/livre-paysage.jpg';lbl.textContent='Ta couverture apparaîtra ici ♡';}});</script>
+</main></div><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a><a href="plan.html">Plan du site</a><a href="mon-espace.html">Mon espace</a></div><script type="module" src="js/book-requests.js"></script>
+<script>const cover=document.getElementById('request-cover'),preview=document.getElementById('request-preview'),lbl=document.getElementById('request-preview-label');let previewUrl='';cover.addEventListener('change',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);const file=cover.files&&cover.files[0];if(file&&file.type.startsWith('image/')){previewUrl=URL.createObjectURL(file);preview.src=previewUrl;lbl.textContent='Ta couverture sélectionnée ♡';}else{preview.src='images/atelier/revue-ouverte.jpg';lbl.textContent='Ta couverture apparaîtra ici ♡';}});</script>
 </body></html>
