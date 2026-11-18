@@ -100,3 +100,30 @@
 .request-process .step-tag{position:relative;align-self:flex-start;margin-top:auto;background:#fffdf6d9;padding:6px 10px;border:1px solid #c8b5c5;border-radius:3px;transform:rotate(-3deg);font:700 .59rem/1.4 var(--editorial-mono,monospace);letter-spacing:.07em;color:#745a7d}
 .request-process-footnote{margin:20px 8px 0;text-align:center;font:italic 1.08rem/1.4 var(--editorial-serif,Georgia,serif);color:#916b87}
 @media(max-width:760px){.request-process .request-steps{grid-template-columns:1fr;gap:35px;max-width:480px;margin:auto}.request-process .request-step{min-height:235px;transform:none}.request-process .request-step:not(:last-child)::after{content:"⬇";right:calc(50% - 17px);top:auto;bottom:-36px;transform:none}.request-process .step-illustration{width:90px;height:65px;margin:-24px 0 0}.request-process .illustrated-book{font-size:3rem}.request-process-heading h2{font-size:2rem}.request-process-seal{width:70px;height:70px;font-size:.5rem}}
+
+/* 2026 : couverture de proposition pleine largeur, même DynaPuff que l'accueil */
+.page-proposer-livre .request-wrap{max-width:1320px;width:100%}
+.page-proposer-livre .request-banner{width:100%;min-height:clamp(500px,53vw,690px);grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:0;padding:clamp(25px,5vw,76px);background:linear-gradient(115deg,#f6d7e8 0%,#f8e5f1 49%,#e6d9f7 100%);border:2px solid #b995b3;border-radius:16px 65px 22px 50px;overflow:hidden;isolation:isolate}
+.page-proposer-livre .request-banner::before{background-image:radial-gradient(#ac86b630 1.3px,transparent 1.3px);background-size:21px 21px;opacity:.9}
+.page-proposer-livre .request-banner-copy{z-index:4;align-self:center}
+.page-proposer-livre .request-banner h1,.page-proposer-livre .request-banner h1 em,.page-proposer-livre .request-banner h1 span{font-family:'DynaPuff',system-ui,sans-serif!important;font-weight:700!important;font-style:normal!important;letter-spacing:-.052em!important;line-height:.99!important}
+.page-proposer-livre .request-banner h1{font-size:clamp(4.1rem,8.6vw,9.2rem)!important;margin:15px 0 26px;white-space:nowrap;color:#6e4074;text-shadow:3px 4px 0 #fff8f5}
+.page-proposer-livre .request-banner h1 em{color:#a76b91}
+.page-proposer-livre .request-banner .request-eyebrow{display:inline-block;background:#fff4b9;padding:8px 13px;transform:rotate(-2deg);border:1px solid #d8b96c;box-shadow:3px 3px 0 #d9b6c6;font-weight:700}
+.page-proposer-livre .request-banner p{max-width:530px;font-size:clamp(1rem,1.6vw,1.28rem);line-height:1.55;background:#fff9f5d9;padding:13px 17px;border-radius:4px 17px 5px 16px}
+.page-proposer-livre .request-banner-link{display:inline-flex;align-items:center;gap:10px;background:#70466f;color:#fff;padding:14px 23px;border:0;border-radius:25px 5px 22px 6px;box-shadow:4px 5px 0 #c49db8;transform:rotate(-2deg);font-size:1rem}
+.page-proposer-livre .request-banner-collage{height:100%;min-height:410px;max-width:none;width:100%;position:relative;justify-self:stretch;z-index:2}
+.page-proposer-livre .request-banner-photo{left:13%;top:3%;width:68%;height:63%;object-fit:cover;transform:rotate(-9deg);border:10px solid #fff;box-shadow:10px 12px 0 #b68aa45c}
+.page-proposer-livre .request-banner-detail{right:0;bottom:5%;width:49%;height:39%;object-fit:cover;transform:rotate(9deg);border:8px solid #fff;box-shadow:7px 9px 0 #a887bb50}
+.page-proposer-livre .request-banner-extra{position:absolute;left:0;bottom:3%;width:48%;height:34%;object-fit:cover;border:8px solid #fff;transform:rotate(-6deg);box-shadow:6px 7px 0 #b18ea950}
+.page-proposer-livre .request-banner-reader{position:absolute;right:1%;top:-2%;width:30%;max-height:43%;object-fit:contain;filter:drop-shadow(3px 5px 2px #79546d40);transform:rotate(8deg)}
+.page-proposer-livre .request-banner-sticker{left:7%;bottom:37%;width:76px;height:76px;z-index:5}
+.page-proposer-livre .request-banner-heart{position:absolute;right:23%;bottom:37%;width:65px;height:65px;transform:rotate(16deg);z-index:5}
+.page-proposer-livre .request-banner-star{position:absolute;left:4%;top:2%;font:5rem Georgia,serif;color:#c28da8;transform:rotate(-16deg)}
+.page-proposer-livre .request-process .step-illustration{width:170px;height:120px;background:#fff9f1;border-radius:13px;transform:rotate(-5deg);border:6px solid #fff;box-shadow:4px 5px 0 #b9a1bc;overflow:visible}
+.page-proposer-livre .request-process .step-photo{width:100%;height:100%;object-fit:cover;border-radius:6px}
+.page-proposer-livre .request-process .step-corner-sticker{position:absolute;right:-11px;bottom:-16px;width:53px;height:53px;object-fit:contain;transform:rotate(13deg);z-index:2}
+.page-proposer-livre .request-process .request-step{min-height:375px;padding:24px}
+.page-proposer-livre .request-process .request-step h3{font-size:1.85rem}
+@media(max-width:900px){.page-proposer-livre .request-banner{grid-template-columns:1fr 1fr;padding:35px 25px;min-height:510px}.page-proposer-livre .request-banner h1{font-size:clamp(3.6rem,8vw,6rem)!important}.page-proposer-livre .request-banner-collage{min-height:330px}.page-proposer-livre .request-process .step-illustration{width:125px;height:95px}}
+@media(max-width:650px){.page-proposer-livre .request-banner{display:block;padding:32px 23px 16px;min-height:0;border-radius:15px 38px 20px 32px}.page-proposer-livre .request-banner h1{font-size:clamp(3.3rem,13vw,5.2rem)!important}.page-proposer-livre .request-banner-collage{min-height:270px;height:270px;margin-top:12px}.page-proposer-livre .request-banner-photo{height:185px}.page-proposer-livre .request-banner-detail{height:120px}.page-proposer-livre .request-banner-extra{height:100px}.page-proposer-livre .request-banner-reader{width:26%}.page-proposer-livre .request-banner-sticker{width:48px;height:48px}.page-proposer-livre .request-banner-heart{width:42px;height:42px}.page-proposer-livre .request-process .step-illustration{width:160px;height:105px}.page-proposer-livre .request-process .request-step{min-height:290px}}
