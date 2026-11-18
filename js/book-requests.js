@@ -14,18 +14,31 @@ const formatError=err=>{
   const code=err?.code||'';
   if(code==='permission-denied'||code==='storage/unauthorized')return 'Envoi refusé par Firebase : les règles de sécurité ne sont probablement pas publiées.';
   if(code==='unavailable'||code==='storage/retry-limit-exceeded')return 'Connexion au serveur indisponible. Réessaie quand le réseau est stable.';
+  if(code==='storage/canceled')return 'Transfert interrompu. Réessaie et garde cette page ouverte jusqu’à la confirmation.';
+  if(code==='storage/object-not-found')return 'Le serveur ne retrouve pas le fichier transféré. Réessaie.';
   if(code==='storage/quota-exceeded')return 'Espace de stockage indisponible : quota atteint.';
   return 'Envoi impossible : '+(code||err?.message||'erreur inconnue');
 };
 function uploadWithProgress(file,path,onProgress){
-  return new Promise((resolve,reject)=>{
+  // Un PDF volumineux sur réseau mobile peut rester plus de 25 s sans progression.
+  // Ne jamais annuler automatiquement : storage/canceled provenait de task.cancel().
+  const retryable=new Set(['storage/retry-limit-exceeded','storage/unknown']);
+  const once=()=>new Promise((resolve,reject)=>{
     const task=uploadBytesResumable(ref(storage,path),file,{contentType:path.endsWith('.pdf')?'application/pdf':file.type});
-    let idle=setTimeout(()=>task.cancel(),25000);
     task.on('state_changed',snapshot=>{
-      clearTimeout(idle);idle=setTimeout(()=>task.cancel(),25000);
-      onProgress(Math.round(snapshot.bytesTransferred/snapshot.totalBytes*100));
-    },error=>{clearTimeout(idle);reject(error);},()=>{clearTimeout(idle);resolve(task.snapshot.ref);});
+      onProgress(Math.round(snapshot.bytesTransferred/Math.max(snapshot.totalBytes,1)*100));
+    },reject,()=>resolve(task.snapshot.ref));
   });
+  return (async()=>{
+    for(let attempt=0;attempt<3;attempt++){
+      try{return await once()}
+      catch(error){
+        if(!retryable.has(error?.code)||attempt===2)throw error;
+        onProgress(0);
+        await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));
+      }
+    }
+  })();
 }
 $('request-form').onsubmit=async e=>{
   e.preventDefault();
@@ -49,6 +62,7 @@ $('request-form').onsubmit=async e=>{
     const pdfPath=hasPdf?'book-request-pdfs/'+user.uid+'/'+fileId+'.pdf':'';
     let coverUrl='';
     if(hasCover||hasPdf){
+      b.textContent='Envoi en cours…';
       const progress={cover:0,pdf:0};
       const report=()=>{$('request-status').textContent='Envoi des fichiers : couverture '+(hasCover?progress.cover+' %':'aucune')+' · PDF '+(hasPdf?progress.pdf+' %':'aucun');};
       report();
