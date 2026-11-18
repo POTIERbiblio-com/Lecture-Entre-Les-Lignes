@@ -1,0 +1,56 @@
+{
+  "livres": [
+    {
+      "titre": "Vendre ou perdre",
+      "pdf_present": true,
+      "sha256_identique": true,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "nombre_sections": 22
+    },
+    {
+      "titre": "10 points clés pour réussir",
+      "pdf_present": true,
+      "sha256_identique": true,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "nombre_sections": 10
+    },
+    {
+      "titre": "La puissance de votre subconscient",
+      "pdf_present": true,
+      "sha256_identique": true,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "nombre_sections": 20
+    },
+    {
+      "titre": "À la poursuite du Soleil",
+      "pdf_present": true,
+      "sha256_identique": true,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "nombre_sections": 12
+    },
+    {
+      "titre": "Soigner avec l’énergie : les thérapies quantiques et psycho-énergétiques",
+      "pdf_present": true,
+      "sha256_identique": true,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "nombre_sections": 9
+    },
+    {
+      "titre": "Optimiser son temps facilement",
+      "pdf_present": true,
+      "sha256_identique": true,
+      "couverture_presente": true,
+      "fiche_presente": true,
+      "nombre_sections": 6
+    }
+  ],
+  "lecture_sur_site_publie": "non testée",
+  "annotations_apres_reconnexion": "non testées",
+  "critiques_externes": "aucune source vérifiée",
+  "droits_de_diffusion": "non vérifiés"
+}

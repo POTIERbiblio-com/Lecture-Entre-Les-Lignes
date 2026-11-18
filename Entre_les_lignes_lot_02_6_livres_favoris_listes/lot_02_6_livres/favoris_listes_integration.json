@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "storageKey": "ell-reading-boards-v1",
+  "favorites": {
+    "property": "favorites",
+    "valueType": "array of book IDs"
+  },
+  "lists": {
+    "property": "boards",
+    "shape": {
+      "id": "board-...",
+      "name": "Nom de la liste",
+      "books": [
+        "liv0131"
+      ]
+    }
+  },
+  "books": [
+    {
+      "id": "liv0137",
+      "title": "Vendre ou perdre",
+      "favoriteAction": "coeur",
+      "listAction": "Ajouter à une liste"
+    },
+    {
+      "id": "liv0138",
+      "title": "10 points clés pour réussir",
+      "favoriteAction": "coeur",
+      "listAction": "Ajouter à une liste"
+    },
+    {
+      "id": "liv0139",
+      "title": "La puissance de votre subconscient",
+      "favoriteAction": "coeur",
+      "listAction": "Ajouter à une liste"
+    },
+    {
+      "id": "liv0140",
+      "title": "À la poursuite du Soleil",
+      "favoriteAction": "coeur",
+      "listAction": "Ajouter à une liste"
+    },
+    {
+      "id": "liv0141",
+      "title": "Soigner avec l’énergie : les thérapies quantiques et psycho-énergétiques",
+      "favoriteAction": "coeur",
+      "listAction": "Ajouter à une liste"
+    },
+    {
+      "id": "liv0142",
+      "title": "Optimiser son temps facilement",
+      "favoriteAction": "coeur",
+      "listAction": "Ajouter à une liste"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+ENTRE LES LIGNES — LOT DE 6 LIVRES / IMPORT CATALOGUE
+
+Ce ZIP contient les PDF, couvertures, fiches et le catalogue source.
+Le fichier catalogue_pour_application.json fournit les champs id/title/author/cover/pdfPath/pdfPages/chapters attendus par le site.
+
+FAVORIS ET LISTES : le site Entre les lignes possède déjà les actions cœur et Ajouter à une liste. Une fois ces livres réellement importés dans le catalogue de l’application, ces actions s’appliqueront à leurs identifiants liv0131–liv0142. Le fichier favoris_listes_integration.json décrit ces identifiants ; aucun faux favori n’est prérempli.
+
+IMPORTANT : le ZIP ne publie pas automatiquement les livres sur GitHub Pages. L’import nécessite d’ajouter les données au catalogue réellement chargé par js/app.js et de copier les PDF/couvertures aux chemins indiqués. Vérifier les droits de diffusion avant toute publication publique.
+
+Les résumés de chapitre présents sont des notices thématiques existantes, PAS des résumés détaillés vérifiés chapitre par chapitre. Les liens externes de critiques ne sont pas garantis vérifiés. La lecture PDF et les outils de surlignage/annotation ne sont pas testés sur le site déployé.
