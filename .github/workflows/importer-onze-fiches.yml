@@ -1,0 +1,35 @@
+name: Intégrer les 11 fiches de livres
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Extension_11_livres_resumes_critiques.zip'
+      - 'scripts/importer_onze_fiches.py'
+      - '.github/workflows/importer-onze-fiches.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  importer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installer les fiches et les résumés sans diffuser les PDF
+        run: python scripts/importer_onze_fiches.py
+      - name: Publier les changements au catalogue
+        run: |
+          git add js/app.js catalogue-documente.json ouvrage-new11-*.html
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Ajouter onze fiches de livres et leurs résumés"
+            git push
+          fi
