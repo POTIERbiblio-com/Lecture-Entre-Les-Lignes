@@ -37,7 +37,7 @@ service cloud.firestore {
         request.resource.data.title.size() <= 200 &&
         request.resource.data.details is string &&
         request.resource.data.details.size() <= 3000 &&
-        request.resource.data.coverPath.matches('book-request-covers/' + request.auth.uid + '/.*') &&
+        (request.resource.data.coverPath == '' || request.resource.data.coverPath.matches('book-request-covers/' + request.auth.uid + '/.*')) &&
         request.resource.data.coverUrl is string &&
         request.resource.data.pdfPath is string &&
         (request.resource.data.pdfPath == '' || request.resource.data.pdfPath.matches('book-request-pdfs/' + request.auth.uid + '/[A-Za-z0-9_-]+\\.pdf')) &&
