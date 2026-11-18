@@ -4159,3 +4159,9 @@ document.body?.addEventListener('play', event => {
 }, true);
 window.addEventListener('beforeunload',releaseCurrentPage);
 start();
+
+// Actions Favoris et Listes disponibles sur toutes les fiches et cartes du catalogue.
+if(!document.querySelector('script[src*="favoris-catalogue.js"]')){
+ const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='css/favoris-listes.css';document.head.append(sheet);
+ const script=document.createElement('script');script.src='js/favoris-catalogue.js?v=20261118';document.body.append(script);
+}
