@@ -1,0 +1,1819 @@
+[
+  {
+    "id": "liv0121",
+    "titre": "600 citations pour réfléchir avant d’agir",
+    "auteur": "Luc Boyer et Romain Bureau",
+    "genre": "savoirs",
+    "sous_genre": "Philosophie et citations",
+    "resume": "Recueil de citations regroupées autour de la réflexion et de l’action.",
+    "pdf": "pdf/nouveau-01.pdf",
+    "couverture": "couvertures/nouveau-01.jpg",
+    "nombre_pages": 177,
+    "sha256": "6e9fbbb7a7ddd7ef908673c9581e7f76caa486932151ed2933100fe7598e1ff6",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "Anticipation et décision",
+        "page_pdf": 11,
+        "fin_page_pdf": 22,
+        "resume": "Les citations opposent l’urgence d’agir à la nécessité de prévoir. Elles invitent le décideur à articuler information, jugement, intuition et prise de risque, tout en rappelant que les décisions ont des conséquences durables.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=11"
+      },
+      {
+        "numero": 2,
+        "titre": "Innovation, remise en cause et changement",
+        "page_pdf": 23,
+        "fin_page_pdf": 42,
+        "resume": "Les auteurs rapprochent des pensées sur la nouveauté, la remise en question des habitudes et la difficulté de transformer l’existant. Le chapitre sert de réservoir de formulations pour discuter des résistances et de l’adaptation.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=23"
+      },
+      {
+        "numero": 3,
+        "titre": "Mise en œuvre et action",
+        "page_pdf": 43,
+        "fin_page_pdf": 54,
+        "resume": "Cette section déplace l’attention des intentions vers la réalisation. Les extraits interrogent la volonté, la persévérance et l’écart entre ce que l’on affirme et ce que l’on fait effectivement.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=43"
+      },
+      {
+        "numero": 4,
+        "titre": "Travail, production, vente et conquête",
+        "page_pdf": 55,
+        "fin_page_pdf": 78,
+        "resume": "Les citations abordent l’effort professionnel, la création de valeur, les échanges et l’ambition. Elles permettent de mettre en perspective la performance et le sens accordé au travail.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=55"
+      },
+      {
+        "numero": 5,
+        "titre": "Animation, motivation et récompense",
+        "page_pdf": 79,
+        "fin_page_pdf": 100,
+        "resume": "Les extraits rassemblent des idées sur la conduite des équipes, la reconnaissance et les ressorts de l’engagement. La motivation n’y apparaît pas comme un simple ordre, mais comme une question de relations et de responsabilités.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=79"
+      },
+      {
+        "numero": 6,
+        "titre": "Attitudes et comportements : compréhension et développement",
+        "page_pdf": 101,
+        "fin_page_pdf": 122,
+        "resume": "Le chapitre explore les comportements humains, leurs contradictions et la possibilité d’apprendre à se connaître. Il propose des points de départ pour réfléchir aux réactions individuelles et à l’évolution personnelle.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=101"
+      },
+      {
+        "numero": 7,
+        "titre": "Communication et image",
+        "page_pdf": 123,
+        "fin_page_pdf": 140,
+        "resume": "Les formules rassemblées éclairent les effets de la parole, de l’apparence et de la réputation. Elles peuvent servir à interroger la sincérité d’un message et les malentendus qu’il produit.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=123"
+      },
+      {
+        "numero": 8,
+        "titre": "Éthique et finalités",
+        "page_pdf": 141,
+        "fin_page_pdf": 177,
+        "resume": "Les citations conduisent à se demander au service de quoi l’on décide et l’on agit. Elles rappellent que le succès immédiat ne dispense pas d’examiner les valeurs, les responsabilités et la destination de l’action.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-01.pdf#page=141"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "notice éditeur, pas un avis",
+        "source": "Éditions Eyrolles",
+        "url": "https://www.editions-eyrolles.com/livre/600-citations-pour-reflechir-avant-d-agir",
+        "observation": "Présentation et sommaire confirmés par l’éditeur ; aucune note de lecteurs de cette édition n’a été vérifiée."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0122",
+    "titre": "L’Ego est l’ennemi : maîtrisez votre plus grand adversaire",
+    "auteur": "Ryan Holiday",
+    "genre": "savoirs",
+    "sous_genre": "Psychologie",
+    "resume": "Ryan Holiday décrit les effets de l’ego sur trois phases de la vie : l’aspiration, la réussite et l’échec. Il critique l’autopromotion, le sentiment de supériorité et l’incapacité à accepter l’apprentissage ou les revers. Le livre défend l’humilité, la discipline, le travail et le retour aux faits comme conditions d’une progression durable.",
+    "pdf": "pdf/nouveau-02.pdf",
+    "couverture": "couvertures/nouveau-02.jpg",
+    "nombre_pages": 191,
+    "sha256": "acf41b6475278aeb1e168e41962a5bb60863933604b8b103a50ea30b10cea6c8",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "L’aspiration : se préparer sans se surestimer",
+        "page_pdf": 19,
+        "fin_page_pdf": 26,
+        "resume": "Ryan Holiday présente l’ego comme un obstacle dès le début d’un projet : l’ambition et le discours sur soi peuvent détourner du travail concret. Il recommande de conserver une attitude d’apprenant.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=19"
+      },
+      {
+        "numero": 2,
+        "titre": "Parler, parler et parler encore",
+        "page_pdf": 27,
+        "fin_page_pdf": 31,
+        "resume": "Le chapitre critique la tentation de raconter ses ambitions avant de les avoir réalisées. Pour l’auteur, la parole peut procurer une satisfaction prématurée qui remplace l’effort.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=27"
+      },
+      {
+        "numero": 3,
+        "titre": "Être ou faire ?",
+        "page_pdf": 32,
+        "fin_page_pdf": 37,
+        "resume": "Holiday oppose la recherche d’un statut ou d’une image à la volonté de produire quelque chose d’utile. L’enjeu est de choisir l’action plutôt que la reconnaissance.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=32"
+      },
+      {
+        "numero": 4,
+        "titre": "L’éternel étudiant",
+        "page_pdf": 38,
+        "fin_page_pdf": 43,
+        "resume": "Le progrès exige d’accepter de ne pas savoir et de recevoir des corrections. La posture d’élève devient un antidote à l’arrogance.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=38"
+      },
+      {
+        "numero": 5,
+        "titre": "Éviter de s’emballer",
+        "page_pdf": 44,
+        "fin_page_pdf": 49,
+        "resume": "L’enthousiasme initial n’est pas une preuve de maîtrise. Le chapitre recommande de garder le sens des proportions et d’éviter les grands récits sur sa propre destinée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=44"
+      },
+      {
+        "numero": 6,
+        "titre": "La stratégie de la toile vierge",
+        "page_pdf": 50,
+        "fin_page_pdf": 55,
+        "resume": "À ses débuts, il peut être plus utile d’aider les autres et de créer des occasions d’apprendre que de chercher immédiatement à être au premier plan. Holiday valorise le travail discret.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=50"
+      },
+      {
+        "numero": 7,
+        "titre": "Se retenir",
+        "page_pdf": 56,
+        "fin_page_pdf": 60,
+        "resume": "La maîtrise de soi consiste notamment à ne pas répondre à chaque provocation. L’auteur met en garde contre les réactions dictées par l’orgueil blessé.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=56"
+      },
+      {
+        "numero": 8,
+        "titre": "Sortir de sa tête",
+        "page_pdf": 61,
+        "fin_page_pdf": 66,
+        "resume": "Une vie entièrement occupée par ses projections et son image favorise les illusions. Holiday invite à confronter ses idées à la réalité extérieure et aux tâches présentes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=61"
+      },
+      {
+        "numero": 9,
+        "titre": "Le danger de l’orgueil précoce",
+        "page_pdf": 67,
+        "fin_page_pdf": 71,
+        "resume": "Une réussite partielle peut susciter un sentiment de supériorité dangereux. L’auteur recommande de garder un jugement lucide sur son niveau réel.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=67"
+      },
+      {
+        "numero": 10,
+        "titre": "Travailler, travailler et travailler encore",
+        "page_pdf": 72,
+        "fin_page_pdf": 79,
+        "resume": "Les résultats viennent d’un effort poursuivi plutôt que de l’auto-promotion. Le chapitre valorise la répétition, l’apprentissage et la discipline.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=72"
+      },
+      {
+        "numero": 11,
+        "titre": "La réussite : rester lucide",
+        "page_pdf": 80,
+        "fin_page_pdf": 86,
+        "resume": "Une fois le succès obtenu, l’ego peut entraîner autosatisfaction, besoin de contrôle et aveuglement. Le livre propose de maintenir la modestie et l’exigence.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=80"
+      },
+      {
+        "numero": 12,
+        "titre": "Toujours apprendre",
+        "page_pdf": 87,
+        "fin_page_pdf": 91,
+        "resume": "L’expérience et la réputation ne dispensent jamais de se remettre en question. La progression dépend de la capacité à écouter des avis contraires.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=87"
+      },
+      {
+        "numero": 13,
+        "titre": "Ne pas se raconter d’histoires",
+        "page_pdf": 92,
+        "fin_page_pdf": 97,
+        "resume": "Holiday critique les récits arrangés qui transforment le hasard ou les aides reçues en preuve de génie personnel. Il privilégie une lecture précise des faits.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=92"
+      },
+      {
+        "numero": 14,
+        "titre": "Qu’est-ce qui est important à vos yeux ?",
+        "page_pdf": 98,
+        "fin_page_pdf": 102,
+        "resume": "Le chapitre invite à distinguer ses priorités profondes des signes extérieurs de prestige. Sans hiérarchie claire, la réussite peut devenir une course sans fin.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=98"
+      },
+      {
+        "numero": 15,
+        "titre": "Droit, contrôle et paranoïa",
+        "page_pdf": 103,
+        "fin_page_pdf": 107,
+        "resume": "La réussite peut créer le sentiment de tout mériter, puis la peur de perdre sa place. Holiday décrit les impasses d’une volonté excessive de contrôler les autres.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=103"
+      },
+      {
+        "numero": 16,
+        "titre": "Se gérer",
+        "page_pdf": 108,
+        "fin_page_pdf": 112,
+        "resume": "Au-delà de la compétence technique, la responsabilité suppose de gérer son temps, ses impulsions et ses décisions. L’auteur insiste sur la discipline personnelle.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=108"
+      },
+      {
+        "numero": 17,
+        "titre": "Gare à la maladie du moi",
+        "page_pdf": 113,
+        "fin_page_pdf": 117,
+        "resume": "Le danger survient lorsque chaque événement est interprété à travers sa propre importance. Le chapitre encourage à se détacher de l’obsession de sa personne.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=113"
+      },
+      {
+        "numero": 18,
+        "titre": "Méditer sur l’immensité",
+        "page_pdf": 118,
+        "fin_page_pdf": 121,
+        "resume": "Remettre son parcours dans une perspective historique et collective aide à relativiser sa réussite. L’humilité devient un outil de lucidité.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=118"
+      },
+      {
+        "numero": 19,
+        "titre": "Rester sobre",
+        "page_pdf": 122,
+        "fin_page_pdf": 129,
+        "resume": "Holiday prône une conduite mesurée même quand la reconnaissance augmente. Il oppose la stabilité de caractère à l’excès et à l’autocélébration.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=122"
+      },
+      {
+        "numero": 20,
+        "titre": "L’échec : traverser la difficulté",
+        "page_pdf": 130,
+        "fin_page_pdf": 139,
+        "resume": "La troisième partie traite des moments où les projets se brisent. L’auteur y distingue la souffrance réelle du drame supplémentaire créé par un ego qui refuse la contradiction.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=130"
+      },
+      {
+        "numero": 21,
+        "titre": "Temps vif ou temps mort ?",
+        "page_pdf": 140,
+        "fin_page_pdf": 143,
+        "resume": "Les périodes d’attente et de revers peuvent être perdues dans l’amertume ou utilisées pour apprendre. Holiday propose de transformer ce temps en travail utile.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=140"
+      },
+      {
+        "numero": 22,
+        "titre": "L’effort est suffisant",
+        "page_pdf": 144,
+        "fin_page_pdf": 148,
+        "resume": "Le résultat n’est jamais entièrement sous notre contrôle ; l’engagement et la qualité du travail le sont davantage. L’auteur propose de ne pas conditionner toute estime de soi à la victoire.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=144"
+      },
+      {
+        "numero": 23,
+        "titre": "Les moments Fight Club",
+        "page_pdf": 149,
+        "fin_page_pdf": 153,
+        "resume": "Les revers exposent brutalement les illusions que l’on entretient sur soi. Le chapitre recommande de regarder ces faits en face plutôt que de chercher des excuses.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=149"
+      },
+      {
+        "numero": 24,
+        "titre": "Fixer les limites",
+        "page_pdf": 154,
+        "fin_page_pdf": 159,
+        "resume": "Savoir reconnaître l’existence d’une situation difficile évite de prolonger une lutte dictée seulement par l’orgueil. La lucidité permet de réorienter ses efforts.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=154"
+      },
+      {
+        "numero": 25,
+        "titre": "Tenir un tableau des résultats",
+        "page_pdf": 160,
+        "fin_page_pdf": 163,
+        "resume": "L’auteur demande d’évaluer ses actes selon des critères réels, et non à partir d’une narration flatteuse. La confrontation aux résultats soutient l’apprentissage.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=160"
+      },
+      {
+        "numero": 26,
+        "titre": "Aimer toujours",
+        "page_pdf": 164,
+        "fin_page_pdf": 171,
+        "resume": "Face à l’injustice ou à l’échec, entretenir le ressentiment risque d’emprisonner durablement. Le chapitre encourage à ne pas laisser l’amertume guider la suite.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=164"
+      },
+      {
+        "numero": 27,
+        "titre": "Épilogue : vigilance durable",
+        "page_pdf": 172,
+        "fin_page_pdf": 191,
+        "resume": "L’ego réapparaît aux différentes étapes du parcours. Le livre se conclut sur la nécessité de cultiver l’humilité, le travail et la capacité d’adaptation sans les considérer comme acquis.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-02.pdf#page=172"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "avis clients",
+        "source": "Fnac",
+        "url": "https://www.fnac.com/L-ego-est-l-ennemi/a13700660/avis",
+        "note": "4,5/5",
+        "nombre": "5 avis",
+        "observation": "Avis sur l’édition brochée française, pas spécifiquement sur le PDF fourni. Certains témoignages portent sur l’achat ou un cadeau plutôt que sur la lecture."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "correction_notice": "Le PDF intitulé à tort « Avoir le courage de ne pas être aimé » dans le dossier initial contient en réalité L’Ego est l’ennemi de Ryan Holiday ; couverture et sommaire vérifiés.",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0123",
+    "titre": "Comment attirer le meilleur dans votre vie",
+    "auteur": "Votre Efficacité Personnelle (éditeur indiqué sur le PDF ; auteur individuel non identifié)",
+    "genre": "savoirs",
+    "sous_genre": "Développement personnel",
+    "resume": "Texte sur la pensée positive, la concentration et la façon d’aborder ses objectifs.",
+    "pdf": "pdf/nouveau-03.pdf",
+    "couverture": "couvertures/nouveau-03.jpg",
+    "nombre_pages": 37,
+    "sha256": "2dd8505800c05f5801a56c33a4cab3e2422b37496b7b6c09db7d60c5b9c69e55",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "Préface et introduction",
+        "page_pdf": 5,
+        "fin_page_pdf": 8,
+        "resume": "Le livret présente la pensée positive comme une façon de diriger son attention et de mieux utiliser ses ressources. Son vocabulaire de magnétisme relève de l’approche développée par le document, pas d’un mécanisme scientifique établi.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-03.pdf#page=5"
+      },
+      {
+        "numero": 2,
+        "titre": "La puissance du magnétisme",
+        "page_pdf": 9,
+        "fin_page_pdf": 10,
+        "resume": "Le texte affirme que l’attitude personnelle et la disposition d’esprit modifieraient la relation aux circonstances. Il appelle le lecteur à observer ses attentes et à développer confiance et volonté.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-03.pdf#page=9"
+      },
+      {
+        "numero": 3,
+        "titre": "La force magnétique de la pensée",
+        "page_pdf": 11,
+        "fin_page_pdf": 27,
+        "resume": "L’auteur associe les pensées répétées aux habitudes, aux choix et à la manière d’interpréter les événements. Les explications en termes de vibrations sont des croyances présentées dans le livret et ne démontrent pas une causalité physique.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-03.pdf#page=11"
+      },
+      {
+        "numero": 4,
+        "titre": "La concentration est essentielle",
+        "page_pdf": 28,
+        "fin_page_pdf": 31,
+        "resume": "Le livret insiste sur l’attention soutenue pour orienter les efforts vers un objectif. Il oppose la dispersion mentale à une démarche plus ordonnée et persévérante.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-03.pdf#page=28"
+      },
+      {
+        "numero": 5,
+        "titre": "Conseils pour renforcer la concentration",
+        "page_pdf": 32,
+        "fin_page_pdf": 37,
+        "resume": "La dernière partie présente des exercices d’attention et une invitation à pratiquer régulièrement. Le bénéfice suggéré concerne surtout la discipline et la focalisation, sans garantie de résultat matériel.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-03.pdf#page=32"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "non disponible",
+        "source": "Aucune critique précise identifiée",
+        "url": null,
+        "observation": "Les résultats trouvés concernent surtout des ouvrages homonymes d’autres auteurs ; aucun n’est attribué à ce PDF."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Aucun avis fiable attribuable à ce document identifié",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0124",
+    "titre": "Faire face aux émotions",
+    "auteur": "Christine Chevalier",
+    "genre": "savoirs",
+    "sous_genre": "Psychologie",
+    "resume": "Guide consacré aux émotions et à la gestion quotidienne des conflits, du stress et de l’agressivité.",
+    "pdf": "pdf/nouveau-04.pdf",
+    "couverture": "couvertures/nouveau-04.jpg",
+    "nombre_pages": 266,
+    "sha256": "b2ead403d78669a040c69eb3d15c25c2e65ca038a032dabcbc0acf47abd7ad85",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "Les émotions : de quoi s’agit-il ?",
+        "page_pdf": 16,
+        "fin_page_pdf": 32,
+        "resume": "Christine Chevalier définit les émotions et leurs fonctions dans les interactions. Elle introduit des outils d’analyse transactionnelle afin de distinguer ce qui se passe chez une personne de la réaction que cela suscite chez son interlocuteur.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-04.pdf#page=16"
+      },
+      {
+        "numero": 2,
+        "titre": "Comprendre l’émotion pour pouvoir aider",
+        "page_pdf": 33,
+        "fin_page_pdf": 77,
+        "resume": "Le chapitre décrit le déroulement émotionnel, les signes corporels et les bénéfices d’une expression adaptée. Il propose de reconnaître l’émotion avant de vouloir résoudre immédiatement le problème.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-04.pdf#page=33"
+      },
+      {
+        "numero": 3,
+        "titre": "Accompagner les émotions",
+        "page_pdf": 78,
+        "fin_page_pdf": 113,
+        "resume": "L’autrice organise l’accompagnement autour de gestes successifs : recevoir, supporter, permettre, aider, apaiser et réparer. Chaque étape suppose de tenir compte de la personne et du contexte plutôt que d’imposer une réponse standard.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-04.pdf#page=78"
+      },
+      {
+        "numero": 4,
+        "titre": "Quelques exemples d’interventions",
+        "page_pdf": 114,
+        "fin_page_pdf": 131,
+        "resume": "Des situations illustrent la régulation de la colère, de la peur, de la tristesse et de la joie. Ces cas montrent comment adapter l’écoute, les paroles et les limites à l’émotion rencontrée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-04.pdf#page=114"
+      },
+      {
+        "numero": 5,
+        "titre": "Accompagner ou non les conflits",
+        "page_pdf": 132,
+        "fin_page_pdf": 142,
+        "resume": "Chevalier analyse les manifestations d’un conflit et les résistances qui empêchent sa résolution. Elle détaille les conditions minimales nécessaires avant d’intervenir, et les situations où une médiation improvisée peut être inadaptée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-04.pdf#page=132"
+      },
+      {
+        "numero": 6,
+        "titre": "La violence et l’agressivité",
+        "page_pdf": 143,
+        "fin_page_pdf": 199,
+        "resume": "Le texte distingue les signes, les mécanismes et les contextes de la violence. Il met l’accent sur le repérage des risques et sur les précautions à prendre lorsqu’une réaction devient menaçante.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-04.pdf#page=143"
+      },
+      {
+        "numero": 7,
+        "titre": "La situation de choc émotionnel",
+        "page_pdf": 200,
+        "fin_page_pdf": 266,
+        "resume": "Le dernier chapitre décrit les réactions de crise et les besoins immédiats de la personne touchée. Les outils proposés visent un accompagnement adapté, sans confondre aide relationnelle et prise en charge clinique.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-04.pdf#page=200"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "évaluations externes",
+        "source": "Chasse aux Livres",
+        "url": "https://www.chasse-aux-livres.fr/prix/2100497014/faire-face-aux-emotions-christine-chevalier-9782100497010",
+        "note": "2,8/5",
+        "nombre": "4 évaluations",
+        "observation": "Page de l’œuvre chez Dunod (ISBN 9782100497010) ; le PDF est l’édition de club 2007 autorisée par l’éditeur, non la même édition."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0125",
+    "titre": "Histoire de la psychologie : des origines à nos jours",
+    "auteur": "Clément Rizet",
+    "genre": "savoirs",
+    "sous_genre": "Psychologie",
+    "resume": "Parcours historique de la psychologie, de ses racines antiques aux approches contemporaines.",
+    "pdf": "pdf/nouveau-05.pdf",
+    "couverture": "couvertures/nouveau-05.jpg",
+    "nombre_pages": 560,
+    "sha256": "56384d143369c42c9081ddb2b64d464bad6eb6a716a64ff62c3c91ab5d3b858f",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "Les origines antiques",
+        "page_pdf": 12,
+        "fin_page_pdf": 60,
+        "resume": "Clément Rizet retrace les premières représentations de la vie psychique dans les textes et mythes de l’Antiquité. Il examine ensuite la contribution de Socrate, de Platon et d’Aristote, notamment les questions de l’âme, du désir, de la connaissance et des facultés humaines.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=12"
+      },
+      {
+        "numero": 2,
+        "titre": "L’ère médiévale",
+        "page_pdf": 61,
+        "fin_page_pdf": 76,
+        "resume": "Le chapitre passe de la psychologie augustinienne aux réflexions sur la personne et la connaissance de soi. Il présente aussi les apports des traditions philosophiques arabe et hébraïque, puis leur articulation avec la scolastique chrétienne.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=61"
+      },
+      {
+        "numero": 3,
+        "titre": "La Renaissance",
+        "page_pdf": 77,
+        "fin_page_pdf": 87,
+        "resume": "Rizet montre comment l’humanisme et les transformations culturelles renouvellent les interrogations sur l’individu. Les auteurs étudiés éclairent l’évolution des conceptions de la liberté, de la personnalité et du comportement.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=77"
+      },
+      {
+        "numero": 4,
+        "titre": "L’âge classique",
+        "page_pdf": 88,
+        "fin_page_pdf": 136,
+        "resume": "La période classique confronte raison, expérience et mécanismes du corps. Le chapitre replace l’étude de l’esprit dans les débats philosophiques qui précèdent l’autonomisation de la psychologie.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=88"
+      },
+      {
+        "numero": 5,
+        "titre": "Le siècle des Lumières",
+        "page_pdf": 137,
+        "fin_page_pdf": 190,
+        "resume": "L’auteur examine les réflexions sur la sensibilité, l’éducation et la connaissance au XVIIIe siècle. Il suit la montée des démarches d’observation et les discussions concernant les rapports entre nature, société et sujet.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=137"
+      },
+      {
+        "numero": 6,
+        "titre": "Le XIXe siècle",
+        "page_pdf": 191,
+        "fin_page_pdf": 299,
+        "resume": "Le développement des sciences expérimentales et de la médecine modifie les approches du psychisme. Rizet présente les étapes qui conduisent à la constitution de la psychologie comme discipline plus autonome.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=191"
+      },
+      {
+        "numero": 7,
+        "titre": "De l’inconscient aux sciences cognitives",
+        "page_pdf": 300,
+        "fin_page_pdf": 442,
+        "resume": "Le chapitre suit les débats autour de l’inconscient et les transformations des méthodes psychologiques au XXe siècle. Il situe les courants successifs dans leurs contextes théoriques, cliniques et scientifiques.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=300"
+      },
+      {
+        "numero": 8,
+        "titre": "XXIe siècle : neurosciences et psychologies",
+        "page_pdf": 443,
+        "fin_page_pdf": 560,
+        "resume": "La dernière partie décrit les liens entre neurosciences, cognition et différentes pratiques psychologiques contemporaines. Elle souligne la pluralité des objets et des méthodes plutôt qu’une théorie unique de l’esprit.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-05.pdf#page=443"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "avis client",
+        "source": "Fnac",
+        "url": "https://www.fnac.com/a15668942/Clement-Rizet-Histoire-de-la-Psychologie-Des-origines-a-nos-jours",
+        "note": "3/5",
+        "nombre": "1 avis",
+        "observation": "Avis principalement consacré à la qualité physique de la reliure et à des erreurs perçues ; ce n’est pas un jugement consensuel du contenu."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0126",
+    "titre": "L’Art de la séduction",
+    "auteur": "Robert Greene",
+    "genre": "savoirs",
+    "sous_genre": "Psychologie sociale",
+    "resume": "Édition condensée sur les mécanismes de séduction et d’influence.",
+    "pdf": "pdf/nouveau-06.pdf",
+    "couverture": "couvertures/nouveau-06.jpg",
+    "nombre_pages": 199,
+    "sha256": "4ad10c4c438918d87c9cf2147bce4b3354ddc65786713bea492f91e8ed4d17e5",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "La Sirène",
+        "page_pdf": 12,
+        "fin_page_pdf": 17,
+        "resume": "Greene décrit un archétype fondé sur le pouvoir d’attraction de l’apparence et de l’imaginaire. Il prend des exemples historiques pour montrer comment une image séduisante capte l’attention.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=12"
+      },
+      {
+        "numero": 2,
+        "titre": "Le Libertin",
+        "page_pdf": 18,
+        "fin_page_pdf": 22,
+        "resume": "Le personnage mise sur l’intensité affichée du désir et l’impression d’exclusivité. L’analyse porte sur l’effet émotionnel d’une passion ostensible.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=18"
+      },
+      {
+        "numero": 3,
+        "titre": "L’Amant idéal",
+        "page_pdf": 23,
+        "fin_page_pdf": 27,
+        "resume": "Cet archétype cherche à incarner les attentes intimes de l’autre. L’auteur examine la façon dont l’écoute et la mise en scène d’un idéal produisent de l’attachement.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=23"
+      },
+      {
+        "numero": 4,
+        "titre": "Le Dandy",
+        "page_pdf": 28,
+        "fin_page_pdf": 34,
+        "resume": "Le dandy se distingue des codes attendus et cultive une singularité visible. Cette indépendance devient, dans la grille de Greene, un ressort d’attraction.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=28"
+      },
+      {
+        "numero": 5,
+        "titre": "L’Éternel enfant",
+        "page_pdf": 35,
+        "fin_page_pdf": 39,
+        "resume": "La spontanéité et le jeu constituent ici une figure de séduction. Greene relie la légèreté apparente à un désir de retrouver des émotions moins contraintes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=35"
+      },
+      {
+        "numero": 6,
+        "titre": "La Coquette",
+        "page_pdf": 40,
+        "fin_page_pdf": 44,
+        "resume": "Le chapitre analyse l’alternance entre attention et distance. Il décrit comment l’incertitude entretenue peut renforcer l’attente, tout en reposant sur une dynamique potentiellement manipulatrice.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=40"
+      },
+      {
+        "numero": 7,
+        "titre": "Le Charmeur",
+        "page_pdf": 45,
+        "fin_page_pdf": 49,
+        "resume": "La séduction passe par l’art de mettre l’autre en valeur et d’éviter les confrontations directes. Le chapitre illustre le poids de la sociabilité et des attentions.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=45"
+      },
+      {
+        "numero": 8,
+        "titre": "La Figure charismatique",
+        "page_pdf": 50,
+        "fin_page_pdf": 57,
+        "resume": "Greene s’intéresse à l’assurance, au récit personnel et à l’effet de présence. Il explique comment ces traits peuvent créer une adhésion collective.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=50"
+      },
+      {
+        "numero": 9,
+        "titre": "La Star",
+        "page_pdf": 58,
+        "fin_page_pdf": 66,
+        "resume": "La star entretient une image partiellement inaccessible qui laisse place aux projections. Le mystère et la distance participent ici à la fascination.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=58"
+      },
+      {
+        "numero": 10,
+        "titre": "Choisir sa victime",
+        "page_pdf": 67,
+        "fin_page_pdf": 70,
+        "resume": "La seconde partie traite de la sélection d’une personne jugée réceptive. L’auteur présente une stratégie d’influence ; ce cadre instrumental doit être distingué d’une relation consentie et réciproque.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=67"
+      },
+      {
+        "numero": 11,
+        "titre": "Inspirer confiance",
+        "page_pdf": 71,
+        "fin_page_pdf": 75,
+        "resume": "Greene décrit la création d’un climat rassurant avant de rechercher une proximité. Il montre comment une attitude apparemment naturelle peut être planifiée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=71"
+      },
+      {
+        "numero": 12,
+        "titre": "Souffler le chaud et le froid",
+        "page_pdf": 76,
+        "fin_page_pdf": 80,
+        "resume": "La stratégie repose sur une alternance d’attention et de retrait. Le texte décrit l’incertitude émotionnelle ainsi produite, qui peut constituer une forme de manipulation.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=76"
+      },
+      {
+        "numero": 13,
+        "titre": "Susciter la jalousie",
+        "page_pdf": 81,
+        "fin_page_pdf": 85,
+        "resume": "Le chapitre présente la concurrence et la valeur attribuée par autrui comme instruments d’attraction. Il s’agit d’un mécanisme social décrit par l’auteur, non d’une recommandation relationnelle saine.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=81"
+      },
+      {
+        "numero": 14,
+        "titre": "Créer des besoins sans les satisfaire",
+        "page_pdf": 86,
+        "fin_page_pdf": 91,
+        "resume": "Greene étudie la création d’un manque et son entretien. Cette tactique met le désir au service d’une asymétrie de pouvoir.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=86"
+      },
+      {
+        "numero": 15,
+        "titre": "Maîtriser l’art de l’insinuation",
+        "page_pdf": 92,
+        "fin_page_pdf": 96,
+        "resume": "L’auteur insiste sur les suggestions indirectes plutôt que sur des demandes explicites. Le chapitre examine comment un message ambigu peut être interprété comme une idée personnelle.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=92"
+      },
+      {
+        "numero": 16,
+        "titre": "Habiter l’esprit de l’autre",
+        "page_pdf": 97,
+        "fin_page_pdf": 100,
+        "resume": "La stratégie consiste à s’aligner sur les centres d’intérêt et les préoccupations de l’interlocuteur. Greene traite cet ajustement comme un moyen d’influence.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=97"
+      },
+      {
+        "numero": 17,
+        "titre": "Proposer la tentation",
+        "page_pdf": 101,
+        "fin_page_pdf": 105,
+        "resume": "Le chapitre décrit une offre conçue pour correspondre à un désir déjà présent. Il distingue l’attrait de la proposition de la décision effective de celui qui la reçoit.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=101"
+      },
+      {
+        "numero": 18,
+        "titre": "Entretenir le suspense",
+        "page_pdf": 106,
+        "fin_page_pdf": 109,
+        "resume": "L’attente et le rythme des événements deviennent des outils d’attention. Greene présente le suspense comme une manière de maintenir l’investissement émotionnel.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=106"
+      },
+      {
+        "numero": 19,
+        "titre": "Troubler par la magie du discours",
+        "page_pdf": 110,
+        "fin_page_pdf": 115,
+        "resume": "Le chapitre porte sur la forme du langage, l’imagination et la suggestion. L’auteur montre comment la parole peut embellir ou orienter une perception.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=110"
+      },
+      {
+        "numero": 20,
+        "titre": "Soigner les détails",
+        "page_pdf": 116,
+        "fin_page_pdf": 120,
+        "resume": "Des gestes précis, un cadre ou une attention personnalisée contribuent à créer une impression. Greene s’intéresse ici à la force des signes apparemment secondaires.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=116"
+      },
+      {
+        "numero": 21,
+        "titre": "S’auréoler de poésie",
+        "page_pdf": 121,
+        "fin_page_pdf": 124,
+        "resume": "La mise en récit et les images culturelles servent à donner une dimension idéalisée à une rencontre. Le chapitre insiste sur les effets de l’imaginaire.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=121"
+      },
+      {
+        "numero": 22,
+        "titre": "Être désarmant",
+        "page_pdf": 125,
+        "fin_page_pdf": 129,
+        "resume": "L’auteur présente la vulnérabilité affichée comme une manière d’abaisser les défenses. Il en souligne les effets possibles sur la perception de sincérité.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=125"
+      },
+      {
+        "numero": 23,
+        "titre": "Créer l’illusion",
+        "page_pdf": 130,
+        "fin_page_pdf": 134,
+        "resume": "Greene examine les mises en scène qui modifient la lecture d’une situation. Ce chapitre souligne la proximité entre charme, fiction et tromperie.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=130"
+      },
+      {
+        "numero": 24,
+        "titre": "Isoler la victime",
+        "page_pdf": 135,
+        "fin_page_pdf": 140,
+        "resume": "Le chapitre décrit l’éloignement des autres influences comme une tactique de contrôle. Cette dynamique peut présenter des risques réels pour l’autonomie d’une personne.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=135"
+      },
+      {
+        "numero": 25,
+        "titre": "Faire ses preuves",
+        "page_pdf": 141,
+        "fin_page_pdf": 145,
+        "resume": "L’auteur explique comment la démonstration d’efforts ou de sacrifices peut renforcer l’impression de dévouement. Le chapitre analyse la valeur symbolique des actes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=141"
+      },
+      {
+        "numero": 26,
+        "titre": "Provoquer une régression",
+        "page_pdf": 146,
+        "fin_page_pdf": 150,
+        "resume": "Greene s’intéresse au retour d’émotions liées à l’enfance ou à une dépendance affective. Il le traite comme une forme d’influence psychologique.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=146"
+      },
+      {
+        "numero": 27,
+        "titre": "Offrir le fruit défendu",
+        "page_pdf": 151,
+        "fin_page_pdf": 156,
+        "resume": "L’interdit peut augmenter la valeur perçue d’une possibilité. Le chapitre analyse la tension entre normes sociales et désir de transgression.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=151"
+      },
+      {
+        "numero": 28,
+        "titre": "Convoquer le sublime",
+        "page_pdf": 157,
+        "fin_page_pdf": 161,
+        "resume": "Les images, les lieux et les émotions élevées peuvent transformer une expérience ordinaire. L’auteur en décrit les effets d’intensification.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=157"
+      },
+      {
+        "numero": 29,
+        "titre": "Mêler la douleur au plaisir",
+        "page_pdf": 162,
+        "fin_page_pdf": 167,
+        "resume": "Greene décrit des alternances émotionnelles destinées à renforcer l’attachement. Cette approche expose les risques d’une relation déséquilibrée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=162"
+      },
+      {
+        "numero": 30,
+        "titre": "Devenir proie",
+        "page_pdf": 168,
+        "fin_page_pdf": 174,
+        "resume": "La tactique inverse momentanément les rôles en laissant l’autre prendre l’initiative. L’auteur l’analyse comme un changement de position dans le rapport de pouvoir.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=168"
+      },
+      {
+        "numero": 31,
+        "titre": "Réveiller la bête",
+        "page_pdf": 175,
+        "fin_page_pdf": 180,
+        "resume": "Le chapitre traite de l’intensification du désir et des pulsions. Il fait de cette mobilisation émotionnelle une étape du processus de séduction décrit.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=175"
+      },
+      {
+        "numero": 32,
+        "titre": "Savoir porter le coup final",
+        "page_pdf": 181,
+        "fin_page_pdf": 186,
+        "resume": "Greene décrit le moment décisif où une longue progression débouche sur une action directe. Le chapitre aborde le tempo et les risques d’une pression excessive.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=181"
+      },
+      {
+        "numero": 33,
+        "titre": "Survivre aux lendemains qui déchantent",
+        "page_pdf": 187,
+        "fin_page_pdf": 199,
+        "resume": "L’auteur s’intéresse à ce qui se produit après la phase d’intensité. Il évoque la difficulté de maintenir l’image et l’attention créées durant la séduction.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-06.pdf#page=187"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "avis clients sur une autre édition",
+        "source": "Fnac",
+        "url": "https://www.fnac.com/L-art-de-la-seduction/a13302130/avis",
+        "note": "4,5/5",
+        "nombre": "11 avis sur le broché",
+        "observation": "Attention : le PDF est l’édition condensée Alisio 2020 ; les avis Fnac portent sur la version brochée proposée et ne sont pas attribués à la version condensée."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "edition": "Édition condensée française, Alisio, 2020, ISBN 9791092928532",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0127",
+    "titre": "La puissance de votre subconscient",
+    "auteur": "Joseph Murphy",
+    "genre": "savoirs",
+    "sous_genre": "Développement personnel",
+    "resume": "Joseph Murphy expose les liens qu’il suppose entre pensées conscientes, convictions inconscientes et expériences de vie. Chaque chapitre applique cette idée à la santé, au travail, aux relations, à la peur ou à la réussite. Il s’agit d’une œuvre de spiritualité et de développement personnel : les promesses thérapeutiques ou causales ne sont pas démontrées.",
+    "pdf": "pdf/nouveau-07.pdf",
+    "couverture": "couvertures/nouveau-07.jpg",
+    "nombre_pages": 322,
+    "sha256": "00cdd677dadf39182258ba67781acb8b174997aec3a3c0f34152605cba436e57",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "Le trésor qui est en vous",
+        "page_pdf": 23,
+        "fin_page_pdf": 38,
+        "resume": "Murphy présente le subconscient comme une réserve de possibilités et affirme que les convictions profondes orientent l’existence. Le chapitre invite à identifier des croyances habituelles, dans le cadre spirituel propre à l’auteur.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=23"
+      },
+      {
+        "numero": 2,
+        "titre": "Le mécanisme de votre esprit",
+        "page_pdf": 39,
+        "fin_page_pdf": 59,
+        "resume": "L’auteur distingue esprit conscient et subconscient, puis décrit les effets qu’il attribue à la suggestion et à la répétition. Ses formulations ne constituent pas une description scientifique consensuelle du cerveau.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=39"
+      },
+      {
+        "numero": 3,
+        "titre": "La puissance miraculeuse de votre subconscient",
+        "page_pdf": 60,
+        "fin_page_pdf": 73,
+        "resume": "Des récits et affirmations illustrent la capacité supposée du subconscient à produire des changements. Le lecteur est invité à accueillir ces exemples comme des thèses de l’auteur, non comme des preuves médicales.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=60"
+      },
+      {
+        "numero": 4,
+        "titre": "Les guérisons par l’esprit dans l’Antiquité",
+        "page_pdf": 74,
+        "fin_page_pdf": 88,
+        "resume": "Murphy retrace des traditions anciennes où les croyances et les rites étaient associés à la guérison. Il les utilise pour soutenir son interprétation spirituelle des pouvoirs de l’esprit.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=74"
+      },
+      {
+        "numero": 5,
+        "titre": "Les guérisons par l’esprit dans les temps modernes",
+        "page_pdf": 89,
+        "fin_page_pdf": 101,
+        "resume": "Le chapitre rassemble des exemples plus récents de guérisons attribuées à la foi ou aux suggestions mentales. Les anecdotes rapportées ne permettent pas de vérifier un effet thérapeutique spécifique.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=89"
+      },
+      {
+        "numero": 6,
+        "titre": "Les techniques de guérison mentale",
+        "page_pdf": 102,
+        "fin_page_pdf": 121,
+        "resume": "L’auteur propose des visualisations, des affirmations et des pratiques de concentration. Elles sont décrites comme exercices spirituels ; elles ne doivent pas se substituer à des soins médicaux.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=102"
+      },
+      {
+        "numero": 7,
+        "titre": "Le subconscient tend vers la vie",
+        "page_pdf": 122,
+        "fin_page_pdf": 130,
+        "resume": "Le texte présente le subconscient comme orienté vers la conservation et l’équilibre. Murphy recommande d’entretenir des représentations mentales positives.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=122"
+      },
+      {
+        "numero": 8,
+        "titre": "La voie vers la réussite",
+        "page_pdf": 131,
+        "fin_page_pdf": 141,
+        "resume": "Le chapitre associe objectifs précis, confiance et préparation intérieure. La réussite y est interprétée à travers l’influence supposée des pensées.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=131"
+      },
+      {
+        "numero": 9,
+        "titre": "Le subconscient, la voie vers la richesse",
+        "page_pdf": 142,
+        "fin_page_pdf": 151,
+        "resume": "Murphy soutient que certaines croyances limitantes empêchent la prospérité. Il propose de modifier le rapport psychologique à l’argent par la répétition de pensées favorables.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=142"
+      },
+      {
+        "numero": 10,
+        "titre": "Le droit à la richesse",
+        "page_pdf": 152,
+        "fin_page_pdf": 163,
+        "resume": "L’auteur conteste la culpabilité liée au désir de confort matériel. Il cherche à présenter l’abondance comme compatible avec une vie intérieure équilibrée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=152"
+      },
+      {
+        "numero": 11,
+        "titre": "Le subconscient, l’auxiliaire du succès",
+        "page_pdf": 164,
+        "fin_page_pdf": 179,
+        "resume": "Le texte aborde l’imagination et la confiance dans les activités professionnelles. Les exemples visent à encourager une orientation mentale cohérente avec ses projets.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=164"
+      },
+      {
+        "numero": 12,
+        "titre": "Les savants recourent au subconscient",
+        "page_pdf": 180,
+        "fin_page_pdf": 192,
+        "resume": "Murphy raconte des découvertes et intuitions attribuées à un travail mental en dehors de l’attention consciente. Il en déduit un rôle créatif pour le subconscient.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=180"
+      },
+      {
+        "numero": 13,
+        "titre": "Le subconscient et les merveilles du sommeil",
+        "page_pdf": 193,
+        "fin_page_pdf": 204,
+        "resume": "Le sommeil est présenté comme favorable à la résolution de problèmes et à la maturation des idées. L’auteur suggère d’orienter ses pensées avant de s’endormir.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=193"
+      },
+      {
+        "numero": 14,
+        "titre": "Le subconscient et les problèmes conjugaux",
+        "page_pdf": 205,
+        "fin_page_pdf": 219,
+        "resume": "Le chapitre relie la qualité des relations aux représentations et attentes que l’on entretient. Murphy insiste sur les paroles et attitudes qui nourrissent la confiance.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=205"
+      },
+      {
+        "numero": 15,
+        "titre": "Le subconscient et le bonheur",
+        "page_pdf": 220,
+        "fin_page_pdf": 230,
+        "resume": "L’auteur défend l’idée que le bonheur se cultive dans les habitudes de pensée. Il propose de travailler les interprétations et réactions quotidiennes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=220"
+      },
+      {
+        "numero": 16,
+        "titre": "Le subconscient et les relations harmonieuses",
+        "page_pdf": 231,
+        "fin_page_pdf": 247,
+        "resume": "Murphy encourage une disposition moins hostile envers les autres. Il relie les relations apaisées à une transformation des ressentiments.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=231"
+      },
+      {
+        "numero": 17,
+        "titre": "Le subconscient, un outil de pardon",
+        "page_pdf": 248,
+        "fin_page_pdf": 264,
+        "resume": "Le pardon est présenté comme une façon de ne plus alimenter une blessure intérieure. L’auteur recommande de renoncer à la rumination sans nier les faits subis.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=248"
+      },
+      {
+        "numero": 18,
+        "titre": "Le subconscient, un outil pour supprimer les blocages mentaux",
+        "page_pdf": 265,
+        "fin_page_pdf": 279,
+        "resume": "Les résistances, l’indécision et les habitudes sont reliées à des croyances récurrentes. Murphy propose la suggestion positive pour les remplacer.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=265"
+      },
+      {
+        "numero": 19,
+        "titre": "Le subconscient, un outil pour vaincre la peur",
+        "page_pdf": 280,
+        "fin_page_pdf": 296,
+        "resume": "Le chapitre examine les peurs anticipatoires et la manière de leur opposer des représentations rassurantes. Ses méthodes relèvent du développement personnel et ne remplacent pas un accompagnement professionnel.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=280"
+      },
+      {
+        "numero": 20,
+        "titre": "Le subconscient, un outil pour rester jeune d’esprit",
+        "page_pdf": 297,
+        "fin_page_pdf": 322,
+        "resume": "Murphy associe la vitalité intellectuelle à la curiosité et à la confiance dans la vie. Il invite à ne pas réduire les capacités personnelles à l’âge.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-07.pdf#page=297"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "avis sur l’œuvre originale",
+        "source": "Goodreads",
+        "url": "https://www.goodreads.com/book/show/2420111.The_Power_of_Your_Subconscious_Mind",
+        "note": "environ 4,06/5",
+        "nombre": "plus de 92 000 évaluations, nombre évolutif",
+        "observation": "Statistiques globales de l’œuvre anglaise et de ses diverses éditions ; non spécifiques à la traduction française 2010 du PDF."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0128",
+    "titre": "Les lois de la nature humaine",
+    "auteur": "Robert Greene",
+    "genre": "savoirs",
+    "sous_genre": "Psychologie sociale",
+    "resume": "Analyse des comportements humains, des émotions et des rapports interpersonnels.",
+    "pdf": "pdf/nouveau-08.pdf",
+    "couverture": "couvertures/nouveau-08.jpg",
+    "nombre_pages": 954,
+    "sha256": "6d552ee25cb6fc21cfb105949761fe3749a5b85a9b222f16044b7b3c94289fa9",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "La loi de l’irrationalité",
+        "page_pdf": 24,
+        "fin_page_pdf": 72,
+        "resume": "Greene montre comment les émotions et les biais perturbent les décisions. Il décrit des méthodes d’observation de soi pour limiter les emballements et gagner en recul.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=24"
+      },
+      {
+        "numero": 2,
+        "titre": "La loi du narcissisme",
+        "page_pdf": 73,
+        "fin_page_pdf": 124,
+        "resume": "Le chapitre distingue les besoins ordinaires de reconnaissance des formes d’égocentrisme qui étouffent l’attention à autrui. L’auteur présente l’empathie comme une compétence à développer.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=73"
+      },
+      {
+        "numero": 3,
+        "titre": "La loi de la persona",
+        "page_pdf": 125,
+        "fin_page_pdf": 174,
+        "resume": "Greene s’intéresse à l’image sociale que chacun compose et aux signes qui échappent à cette mise en scène. Il propose d’observer les comportements dans la durée plutôt que de croire uniquement aux déclarations.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=125"
+      },
+      {
+        "numero": 4,
+        "titre": "La loi du comportement compulsif",
+        "page_pdf": 175,
+        "fin_page_pdf": 223,
+        "resume": "Le chapitre examine les habitudes répétitives qui révèlent le caractère sous pression. Greene met en garde contre les jugements fondés sur une seule impression.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=175"
+      },
+      {
+        "numero": 5,
+        "titre": "La loi de la convoitise",
+        "page_pdf": 224,
+        "fin_page_pdf": 255,
+        "resume": "L’auteur décrit le désir de ce qui semble rare ou inaccessible. Il montre comment l’imagination peut rendre un objet plus attrayant que sa valeur réelle.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=224"
+      },
+      {
+        "numero": 6,
+        "titre": "La loi du manque de vision",
+        "page_pdf": 256,
+        "fin_page_pdf": 290,
+        "resume": "Greene critique les réactions de court terme qui font perdre de vue les conséquences. Il encourage à considérer la durée et les effets indirects d’une décision.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=256"
+      },
+      {
+        "numero": 7,
+        "titre": "La loi de la défensive",
+        "page_pdf": 291,
+        "fin_page_pdf": 340,
+        "resume": "Le chapitre analyse la résistance des personnes qui se sentent jugées ou menacées. L’auteur présente des procédés d’influence fondés sur la reconnaissance de leur perspective.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=291"
+      },
+      {
+        "numero": 8,
+        "titre": "La loi de l’auto-sabotage",
+        "page_pdf": 341,
+        "fin_page_pdf": 384,
+        "resume": "La manière d’interpréter le monde peut entretenir des comportements défaitistes. Greene examine le rôle des attitudes dans les interactions et les occasions saisies.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=341"
+      },
+      {
+        "numero": 9,
+        "titre": "La loi du refoulement",
+        "page_pdf": 385,
+        "fin_page_pdf": 431,
+        "resume": "L’auteur décrit des aspects de soi que l’on refuse de reconnaître et qui peuvent réapparaître indirectement. Il invite à observer ses contradictions au lieu de les attribuer systématiquement aux autres.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=385"
+      },
+      {
+        "numero": 10,
+        "titre": "La loi de l’envie",
+        "page_pdf": 432,
+        "fin_page_pdf": 478,
+        "resume": "Greene s’intéresse à la comparaison sociale et à l’hostilité parfois dissimulée qu’elle produit. Il détaille des signes possibles et rappelle la difficulté d’interpréter les intentions.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=432"
+      },
+      {
+        "numero": 11,
+        "titre": "La loi de la mégalomanie",
+        "page_pdf": 479,
+        "fin_page_pdf": 523,
+        "resume": "Le succès peut susciter une illusion d’infaillibilité et conduire à des décisions excessives. Le chapitre souligne l’importance des limites et des retours critiques.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=479"
+      },
+      {
+        "numero": 12,
+        "titre": "La loi de l’inflexibilité des sexes",
+        "page_pdf": 524,
+        "fin_page_pdf": 578,
+        "resume": "Greene explore les représentations du masculin et du féminin dans le psychisme. Ses interprétations s’inscrivent dans son cadre théorique et ne valent pas description universelle des identités.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=524"
+      },
+      {
+        "numero": 13,
+        "titre": "La loi du désœuvrement",
+        "page_pdf": 579,
+        "fin_page_pdf": 631,
+        "resume": "Le livre défend le rôle d’un but personnel dans la persévérance et l’organisation des choix. Greene relie le sentiment de direction à la capacité de traverser les difficultés.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=579"
+      },
+      {
+        "numero": 14,
+        "titre": "La loi de la conformité",
+        "page_pdf": 632,
+        "fin_page_pdf": 704,
+        "resume": "L’auteur examine les pressions du groupe, les dynamiques de pouvoir et les effets de l’appartenance. Il souligne la nécessité de conserver un jugement indépendant.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=632"
+      },
+      {
+        "numero": 15,
+        "titre": "La loi de l’inconstance",
+        "page_pdf": 705,
+        "fin_page_pdf": 761,
+        "resume": "Le chapitre interroge la légitimité et la construction de l’autorité. Greene distingue les apparences de leadership de la confiance durable qu’inspirent les actes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=705"
+      },
+      {
+        "numero": 16,
+        "titre": "La loi de l’agressivité",
+        "page_pdf": 762,
+        "fin_page_pdf": 835,
+        "resume": "Greene étudie les manifestations indirectes de l’hostilité, notamment les comportements passifs-agressifs. Il propose de repérer les contradictions entre les paroles et les actes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=762"
+      },
+      {
+        "numero": 17,
+        "titre": "La loi de la myopie générationnelle",
+        "page_pdf": 836,
+        "fin_page_pdf": 905,
+        "resume": "Chaque génération est façonnée par un contexte historique et culturel. Le chapitre propose de comprendre les attitudes collectives en regardant l’époque qui les a produites.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=836"
+      },
+      {
+        "numero": 18,
+        "titre": "La loi du déni de mort",
+        "page_pdf": 906,
+        "fin_page_pdf": 954,
+        "resume": "L’auteur examine les réactions humaines à la finitude et les manières de l’écarter de la conscience. Il présente la conscience de la mortalité comme une invitation à mieux hiérarchiser sa vie.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-08.pdf#page=906"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "avis clients sur édition française",
+        "source": "Fnac Suisse",
+        "url": "https://www.fr.fnac.ch/a13530068/Robert-Greene-Les-lois-de-la-nature-humaine",
+        "note": "4/5",
+        "nombre": "28 avis",
+        "observation": "Référence imprimée française Alisio 2019, ISBN 9782379350283, correspond à l’œuvre intégrale, et non à une édition condensée."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0129",
+    "titre": "Qui es-tu ?",
+    "auteur": "Lise Bourbeau",
+    "genre": "savoirs",
+    "sous_genre": "Développement personnel",
+    "resume": "Lise Bourbeau propose une lecture symbolique de la personnalité à travers les perceptions, le langage, les émotions, les habitudes et le corps. Le livre invite à s’observer et à s’accepter dans un cadre spirituel propre à l’autrice. Les interprétations psychologiques et médicales développées ne constituent pas des connaissances scientifiques validées.",
+    "pdf": "pdf/nouveau-09.pdf",
+    "couverture": "couvertures/nouveau-09.jpg",
+    "nombre_pages": 218,
+    "sha256": "3baf1d05713e7776c36c5cb208f8641fb8ee23a27e2551eb7fc66f9189da2801",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "Tu es une âme en évolution",
+        "page_pdf": 5,
+        "fin_page_pdf": 15,
+        "resume": "Lise Bourbeau expose sa conception spirituelle d’une existence conçue comme apprentissage. Elle invite à examiner la responsabilité personnelle et l’acceptation de soi ; ses références au karma relèvent de ses croyances.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=5"
+      },
+      {
+        "numero": 2,
+        "titre": "Tu es ce que tu vois",
+        "page_pdf": 16,
+        "fin_page_pdf": 24,
+        "resume": "Le chapitre utilise la métaphore du miroir : ce qui attire ou irrite chez autrui pourrait servir d’indice pour réfléchir à soi. Cette lecture symbolique n’établit pas une causalité objective entre les personnes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=16"
+      },
+      {
+        "numero": 3,
+        "titre": "Tu es ce que tu entends",
+        "page_pdf": 25,
+        "fin_page_pdf": 32,
+        "resume": "L’autrice examine les réactions aux paroles, aux critiques et à l’autorité. Elle encourage à écouter ce que ces réactions révèlent des besoins ou jugements personnels.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=25"
+      },
+      {
+        "numero": 4,
+        "titre": "Tu es ce que tu dis",
+        "page_pdf": 33,
+        "fin_page_pdf": 45,
+        "resume": "Les formulations habituelles et les réactions verbales sont présentées comme des signes de croyances internes. Bourbeau invite à observer son langage pour mieux identifier ses positions.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=33"
+      },
+      {
+        "numero": 5,
+        "titre": "Tu es ce que tu penses",
+        "page_pdf": 46,
+        "fin_page_pdf": 56,
+        "resume": "L’autrice insiste sur les pensées récurrentes et leur influence présumée sur la perception et les comportements. Elle propose de remplacer l’autocritique par une attention plus consciente.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=46"
+      },
+      {
+        "numero": 6,
+        "titre": "Tu es ce que tu ressens",
+        "page_pdf": 57,
+        "fin_page_pdf": 60,
+        "resume": "Le chapitre invite à reconnaître les émotions plutôt qu’à les refouler. Il décrit les ressentis comme des informations sur les besoins et les situations vécues.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=57"
+      },
+      {
+        "numero": 7,
+        "titre": "Tu es ce que tu manges",
+        "page_pdf": 61,
+        "fin_page_pdf": 68,
+        "resume": "Bourbeau interprète les préférences et les habitudes alimentaires comme des indices symboliques du rapport à soi. Ces liens relèvent de son cadre de développement personnel.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=61"
+      },
+      {
+        "numero": 8,
+        "titre": "Tu es ce que tu portes",
+        "page_pdf": 69,
+        "fin_page_pdf": 75,
+        "resume": "Les choix vestimentaires deviennent un support pour interroger la liberté personnelle et l’influence du regard des autres. L’autrice propose d’observer ses habitudes sans les considérer comme de simples contraintes extérieures.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=69"
+      },
+      {
+        "numero": 9,
+        "titre": "Tu es ta demeure",
+        "page_pdf": 76,
+        "fin_page_pdf": 82,
+        "resume": "Le chapitre associe les espaces de vie aux habitudes, aux besoins et à la façon d’organiser son quotidien. Il s’agit d’une grille symbolique de réflexion, pas d’un diagnostic de personnalité.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=76"
+      },
+      {
+        "numero": 10,
+        "titre": "Tu es la forme de ton corps",
+        "page_pdf": 83,
+        "fin_page_pdf": 111,
+        "resume": "L’autrice développe des interprétations de la morphologie et de la posture. Ces associations ne constituent pas des indicateurs médicaux ou psychologiques validés.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=83"
+      },
+      {
+        "numero": 11,
+        "titre": "Tu es tes malaises et maladies",
+        "page_pdf": 112,
+        "fin_page_pdf": 204,
+        "resume": "Bourbeau attribue diverses affections à des conflits émotionnels ou spirituels. Ces affirmations ne sont pas médicalement établies et ne doivent jamais servir à expliquer une maladie ni retarder une consultation.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=112"
+      },
+      {
+        "numero": 12,
+        "titre": "Conclusion et cheminement personnel",
+        "page_pdf": 205,
+        "fin_page_pdf": 218,
+        "resume": "La fin de l’ouvrage invite à faire le bilan de ses observations et à poursuivre une réflexion sur ses croyances. L’accent porte sur la liberté de choisir sa réponse aux événements.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-09.pdf#page=205"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "avis clients sur une autre édition",
+        "source": "Fnac",
+        "url": "https://www.fnac.com/Qui-es-tu/a16741706/avis",
+        "note": "4,5/5",
+        "nombre": "21 avis",
+        "observation": "Ces avis portent sur un format poche récent et non nécessairement sur l’édition révisée de 1995 du PDF."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "derniere_revision": "2026-11-18"
+  },
+  {
+    "id": "liv0130",
+    "titre": "Stratégie : les 33 lois de la guerre",
+    "auteur": "Robert Greene",
+    "genre": "savoirs",
+    "sous_genre": "Stratégie",
+    "resume": "Présentation de trente-trois stratégies illustrées par des exemples historiques.",
+    "pdf": "pdf/nouveau-10.pdf",
+    "couverture": "couvertures/nouveau-10.jpg",
+    "nombre_pages": 491,
+    "sha256": "3c132ace0a987ba7e9a08a4341aa5e40de4476a9550de24bf7cfa388d0cc5c02",
+    "chapitres": [
+      {
+        "numero": 1,
+        "titre": "La stratégie de la polarité",
+        "page_pdf": 25,
+        "fin_page_pdf": 36,
+        "resume": "Greene recommande d’identifier clairement les oppositions pour concentrer ses efforts. Il transpose des conflits historiques à la définition d’une stratégie personnelle.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=25"
+      },
+      {
+        "numero": 2,
+        "titre": "La stratégie de la guérilla psychologique",
+        "page_pdf": 37,
+        "fin_page_pdf": 48,
+        "resume": "La deuxième loi invite à se défaire des méthodes devenues inadaptées. L’auteur valorise la souplesse tactique et la capacité de surprendre.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=37"
+      },
+      {
+        "numero": 3,
+        "titre": "La stratégie de l’équilibre",
+        "page_pdf": 49,
+        "fin_page_pdf": 62,
+        "resume": "Garder son sang-froid permet de décider malgré la pression. Greene souligne les dangers d’une réaction émotionnelle précipitée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=49"
+      },
+      {
+        "numero": 4,
+        "titre": "La stratégie du dernier carré",
+        "page_pdf": 63,
+        "fin_page_pdf": 76,
+        "resume": "L’auteur examine comment un sentiment d’urgence peut mobiliser l’énergie d’un groupe. Il en illustre les effets dans des circonstances extrêmes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=63"
+      },
+      {
+        "numero": 5,
+        "titre": "La stratégie du commandement contrôlé",
+        "page_pdf": 77,
+        "fin_page_pdf": 90,
+        "resume": "Le chapitre porte sur la coordination et la répartition des responsabilités dans un collectif. Greene distingue l’unité de direction du contrôle de chaque détail.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=77"
+      },
+      {
+        "numero": 6,
+        "titre": "La stratégie du chaos contrôlé",
+        "page_pdf": 91,
+        "fin_page_pdf": 100,
+        "resume": "L’auteur décrit la nécessité d’adapter ses forces aux circonstances plutôt que de figer l’organisation. La rapidité des décisions devient un avantage.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=91"
+      },
+      {
+        "numero": 7,
+        "titre": "La stratégie du moral",
+        "page_pdf": 101,
+        "fin_page_pdf": 120,
+        "resume": "Une cause partagée peut soutenir la cohésion et la motivation. Greene analyse la place des convictions dans l’action collective.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=101"
+      },
+      {
+        "numero": 8,
+        "titre": "La stratégie de l’économie",
+        "page_pdf": 121,
+        "fin_page_pdf": 134,
+        "resume": "Il faut sélectionner les conflits qui valent l’énergie engagée. L’auteur recommande de comparer le coût d’une confrontation à son utilité réelle.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=121"
+      },
+      {
+        "numero": 9,
+        "titre": "La stratégie de la contre-attaque",
+        "page_pdf": 135,
+        "fin_page_pdf": 148,
+        "resume": "Greene décrit la défense active qui utilise l’engagement de l’adversaire pour retourner la situation. Le moment choisi compte autant que la force mobilisée.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=135"
+      },
+      {
+        "numero": 10,
+        "titre": "La stratégie de la dissuasion",
+        "page_pdf": 149,
+        "fin_page_pdf": 164,
+        "resume": "Une posture crédible peut éviter certains affrontements. Le chapitre examine la réputation et la capacité perçue à répondre.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=149"
+      },
+      {
+        "numero": 11,
+        "titre": "La stratégie du repli",
+        "page_pdf": 165,
+        "fin_page_pdf": 178,
+        "resume": "L’auteur souligne que céder du terrain n’est pas nécessairement perdre. Le recul peut préserver ses ressources et préparer une autre manœuvre.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=165"
+      },
+      {
+        "numero": 12,
+        "titre": "La grande stratégie",
+        "page_pdf": 179,
+        "fin_page_pdf": 192,
+        "resume": "Greene distingue les succès locaux de l’objectif à long terme. Il invite à construire des plans cohérents plutôt qu’à enchaîner des victoires isolées.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=179"
+      },
+      {
+        "numero": 13,
+        "titre": "La stratégie du renseignement",
+        "page_pdf": 193,
+        "fin_page_pdf": 206,
+        "resume": "Connaître les motivations et contraintes d’un adversaire éclaire ses décisions. Le chapitre présente l’observation comme préalable à toute manœuvre.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=193"
+      },
+      {
+        "numero": 14,
+        "titre": "La stratégie de la blitzkrieg",
+        "page_pdf": 207,
+        "fin_page_pdf": 214,
+        "resume": "Le mouvement rapide et la surprise peuvent empêcher une réaction organisée. Greene l’illustre par des exemples militaires.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=207"
+      },
+      {
+        "numero": 15,
+        "titre": "La stratégie de la manipulation",
+        "page_pdf": 215,
+        "fin_page_pdf": 230,
+        "resume": "Le chapitre étudie le contrôle du rythme des événements et des choix offerts. Il décrit des tactiques d’influence qu’il faut lire avec recul critique.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=215"
+      },
+      {
+        "numero": 16,
+        "titre": "La stratégie du centre de gravité",
+        "page_pdf": 231,
+        "fin_page_pdf": 240,
+        "resume": "Greene recommande de chercher l’élément décisif dont dépend la force opposée. La concentration des efforts évite de se disperser sur des points secondaires.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=231"
+      },
+      {
+        "numero": 17,
+        "titre": "La stratégie de la conquête par la division",
+        "page_pdf": 241,
+        "fin_page_pdf": 256,
+        "resume": "L’auteur montre comment des forces unies peuvent être affaiblies par leur séparation. Il analyse la fragmentation comme tactique de conflit.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=241"
+      },
+      {
+        "numero": 18,
+        "titre": "La stratégie du pivotement",
+        "page_pdf": 257,
+        "fin_page_pdf": 270,
+        "resume": "La confrontation frontale peut renforcer les défenses adverses. Greene propose de déplacer l’effort vers des zones moins protégées.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=257"
+      },
+      {
+        "numero": 19,
+        "titre": "La stratégie de l’annihilation",
+        "page_pdf": 271,
+        "fin_page_pdf": 280,
+        "resume": "Le chapitre décrit un encerclement visant à supprimer les possibilités de riposte. Cette logique militaire radicale ne doit pas être confondue avec une conduite éthique des relations.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=271"
+      },
+      {
+        "numero": 20,
+        "titre": "La stratégie de la manœuvre",
+        "page_pdf": 281,
+        "fin_page_pdf": 298,
+        "resume": "Greene souligne l’intérêt de créer une position défavorable à l’adversaire avant une confrontation. Le terrain et la configuration comptent davantage que la seule puissance.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=281"
+      },
+      {
+        "numero": 21,
+        "titre": "La stratégie de la guerre diplomatique",
+        "page_pdf": 299,
+        "fin_page_pdf": 310,
+        "resume": "L’auteur décrit la négociation accompagnée de mesures concrètes. Il s’intéresse au rapport entre parole, position et concessions.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=299"
+      },
+      {
+        "numero": 22,
+        "titre": "La stratégie de sortie",
+        "page_pdf": 311,
+        "fin_page_pdf": 324,
+        "resume": "Le chapitre insiste sur la nécessité de prévoir une conclusion. Une victoire mal terminée peut compromettre l’ensemble des efforts.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=311"
+      },
+      {
+        "numero": 23,
+        "titre": "La stratégie de la perception",
+        "page_pdf": 325,
+        "fin_page_pdf": 336,
+        "resume": "Greene analyse la façon dont récits et apparences influencent la compréhension d’un conflit. Il présente la mise en scène comme instrument tactique.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=325"
+      },
+      {
+        "numero": 24,
+        "titre": "La stratégie de l’imprévisibilité",
+        "page_pdf": 337,
+        "fin_page_pdf": 350,
+        "resume": "Le chapitre s’intéresse aux effets de l’incertitude sur les calculs adverses. Il montre comment la variabilité d’action peut modifier un rapport de forces.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=337"
+      },
+      {
+        "numero": 25,
+        "titre": "La stratégie de la vertu",
+        "page_pdf": 351,
+        "fin_page_pdf": 364,
+        "resume": "L’auteur explique que la dimension morale d’un conflit peut influencer le soutien des tiers. Il examine la différence entre légitimité revendiquée et motivations réelles.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=351"
+      },
+      {
+        "numero": 26,
+        "titre": "La stratégie de l’ombre",
+        "page_pdf": 365,
+        "fin_page_pdf": 382,
+        "resume": "Greene décrit des objectifs dissimulés derrière une action visible. La prudence critique s’impose face à ces tactiques de tromperie.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=365"
+      },
+      {
+        "numero": 27,
+        "titre": "La stratégie de l’alliance",
+        "page_pdf": 383,
+        "fin_page_pdf": 396,
+        "resume": "Le chapitre montre comment les alliances modifient l’équilibre des ressources. Il insiste sur les partenaires, leurs intérêts et la fragilité des coalitions.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=383"
+      },
+      {
+        "numero": 28,
+        "titre": "La stratégie de la domination",
+        "page_pdf": 397,
+        "fin_page_pdf": 412,
+        "resume": "L’auteur décrit des tactiques destinées à laisser l’adversaire s’exposer lui-même. Il examine les rivalités cachées au sein d’un même camp.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=397"
+      },
+      {
+        "numero": 29,
+        "titre": "La stratégie des petits pas",
+        "page_pdf": 413,
+        "fin_page_pdf": 422,
+        "resume": "La progression graduelle peut réduire les résistances et rendre possible une évolution importante. Greene souligne l’importance du rythme.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=413"
+      },
+      {
+        "numero": 30,
+        "titre": "La stratégie de la communication",
+        "page_pdf": 423,
+        "fin_page_pdf": 436,
+        "resume": "Le chapitre analyse la manière dont un message façonne la perception d’un groupe. Il s’intéresse à la persuasion et à l’orientation des attentes.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=423"
+      },
+      {
+        "numero": 31,
+        "titre": "La stratégie de la cinquième colonne",
+        "page_pdf": 437,
+        "fin_page_pdf": 448,
+        "resume": "L’auteur examine la déstabilisation intérieure d’une organisation par des alliés apparents. Cette analyse des conflits peut aussi servir à reconnaître les comportements de sabotage.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=437"
+      },
+      {
+        "numero": 32,
+        "titre": "La stratégie de la résistance passive",
+        "page_pdf": 449,
+        "fin_page_pdf": 464,
+        "resume": "Le texte présente le refus indirect et la docilité de façade comme tactiques de pouvoir. Il montre les risques d’une relation marquée par la dissimulation.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=449"
+      },
+      {
+        "numero": 33,
+        "titre": "La stratégie de la réaction en chaîne",
+        "page_pdf": 465,
+        "fin_page_pdf": 491,
+        "resume": "La dernière loi décrit la terreur comme instrument de paralysie. C’est une analyse d’une méthode de violence, non une recommandation ; le texte doit être lu avec distance éthique.",
+        "type": "synthèse originale basée sur le chapitre ou la section du PDF",
+        "lecture_locale": "pdf/nouveau-10.pdf#page=465"
+      }
+    ],
+    "critiques_externes": [
+      {
+        "type": "avis clients",
+        "source": "Fnac",
+        "url": "https://www.fnac.com/Strategie-les-33-lois-de-la-guerre/a12059807/avis",
+        "note": "4,5/5",
+        "nombre": "14 avis",
+        "observation": "Avis associés à une édition brochée de l’œuvre ; pas une validation du PDF numérique exact."
+      }
+    ],
+    "statut": "Dossier local préparé, non publié",
+    "integrite_verifiee": true,
+    "critiques_externes_statut": "Liens vérifiés ; édition et nature des évaluations précisées",
+    "derniere_revision": "2026-11-18"
+  }
+]

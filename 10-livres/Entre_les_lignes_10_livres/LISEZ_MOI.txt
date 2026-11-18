@@ -1,0 +1,9 @@
+ENTRE LES LIGNES · DOSSIER ENRICHI - 18 novembre 2026
+
+10 PDF présents ; les 10 empreintes SHA-256 correspondent aux valeurs du catalogue.
+171 synthèses éditoriales de chapitres ou sections ; 10 fiches HTML.
+Les sources externes sont identifiées pour 9 œuvres, dont 1 notice éditeur sans avis. Ne pas confondre éditions, voir les notes propres à chaque fiche.
+Une erreur de la version précédente a été corrigée : « Avoir le courage de ne pas être aimé » était en réalité L’Ego est l’ennemi, de Ryan Holiday.
+Ouvrir fiches/index.html dans le dossier décompressé. Liens de lecture/téléchargement locaux.
+Les PDF sont inclus uniquement dans le ZIP remis à l’utilisateur. La mise en ligne publique sur Netlify et la synchronisation des annotations ne sont pas effectuées.
+Les résumés reprennent les propos des auteurs ; ils ne valident pas des thèses psychologiques ou médicales.
