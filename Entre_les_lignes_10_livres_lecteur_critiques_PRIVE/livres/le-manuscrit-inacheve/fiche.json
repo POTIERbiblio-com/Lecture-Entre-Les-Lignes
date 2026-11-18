@@ -1,0 +1,516 @@
+{
+  "title": "Le Manuscrit inachevé",
+  "author": "Franck Thilliez",
+  "category": "Fiction",
+  "subcategory": "Suspense",
+  "description": "Thriller construit autour d’un manuscrit inachevé et de l’histoire de Léane, avec une intrigue à énigmes et plusieurs niveaux de récit.",
+  "summary": "Thriller construit autour d’un manuscrit inachevé et de l’histoire de Léane, avec une intrigue à énigmes et plusieurs niveaux de récit.",
+  "publisher": "",
+  "publication_year": null,
+  "isbn": "",
+  "chapters": [
+    {
+      "number": 2,
+      "title": "Préface",
+      "page_start": 5,
+      "page_end": null,
+      "summary": "La préface installe un dispositif de manuscrit retrouvé, attribué à un auteur fictif, et introduit le mystère de sa fin manquante.",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 3,
+      "title": "Prologue",
+      "page_start": 10,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 4,
+      "title": "Chapitre 1",
+      "page_start": 15,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 5,
+      "title": "Chapitre 2",
+      "page_start": 19,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 6,
+      "title": "Chapitre 3",
+      "page_start": 25,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 7,
+      "title": "Chapitre 4",
+      "page_start": 30,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 8,
+      "title": "Chapitre 5",
+      "page_start": 38,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 9,
+      "title": "Chapitre 6",
+      "page_start": 46,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 10,
+      "title": "Chapitre 7",
+      "page_start": 52,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 11,
+      "title": "Chapitre 8",
+      "page_start": 58,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 12,
+      "title": "Chapitre 9",
+      "page_start": 68,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 13,
+      "title": "Chapitre 10",
+      "page_start": 71,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 14,
+      "title": "Chapitre 11",
+      "page_start": 81,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 15,
+      "title": "Chapitre 12",
+      "page_start": 84,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 16,
+      "title": "Chapitre 13",
+      "page_start": 88,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 17,
+      "title": "Chapitre 14",
+      "page_start": 93,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 18,
+      "title": "Chapitre 15",
+      "page_start": 99,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 19,
+      "title": "Chapitre 16",
+      "page_start": 105,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 20,
+      "title": "Chapitre 17",
+      "page_start": 108,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 21,
+      "title": "Chapitre 18",
+      "page_start": 114,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 22,
+      "title": "Chapitre 19",
+      "page_start": 121,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 23,
+      "title": "Chapitre 20",
+      "page_start": 125,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 24,
+      "title": "Chapitre 21",
+      "page_start": 128,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 25,
+      "title": "Chapitre 22",
+      "page_start": 131,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 26,
+      "title": "Chapitre 23",
+      "page_start": 137,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 27,
+      "title": "Chapitre 24",
+      "page_start": 143,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 28,
+      "title": "Chapitre 25",
+      "page_start": 145,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 29,
+      "title": "Chapitre 26",
+      "page_start": 149,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 30,
+      "title": "Chapitre 27",
+      "page_start": 156,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 31,
+      "title": "Chapitre 28",
+      "page_start": 163,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 32,
+      "title": "Chapitre 29",
+      "page_start": 171,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 33,
+      "title": "Chapitre 30",
+      "page_start": 175,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 34,
+      "title": "Chapitre 31",
+      "page_start": 178,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 35,
+      "title": "Chapitre 32",
+      "page_start": 182,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 36,
+      "title": "Chapitre 33",
+      "page_start": 185,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 37,
+      "title": "Chapitre 34",
+      "page_start": 191,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 38,
+      "title": "Chapitre 35",
+      "page_start": 194,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 39,
+      "title": "Chapitre 36",
+      "page_start": 198,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 40,
+      "title": "Chapitre 37",
+      "page_start": 206,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 41,
+      "title": "Chapitre 38",
+      "page_start": 212,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 42,
+      "title": "Chapitre 39",
+      "page_start": 220,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 43,
+      "title": "Chapitre 40",
+      "page_start": 229,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 44,
+      "title": "Chapitre 41",
+      "page_start": 234,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 45,
+      "title": "Chapitre 42",
+      "page_start": 237,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 46,
+      "title": "Chapitre 43",
+      "page_start": 242,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 47,
+      "title": "Chapitre 44",
+      "page_start": 252,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 48,
+      "title": "Chapitre 45",
+      "page_start": 259,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 49,
+      "title": "Chapitre 46",
+      "page_start": 263,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 50,
+      "title": "Chapitre 47",
+      "page_start": 270,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 51,
+      "title": "Chapitre 48",
+      "page_start": 276,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 52,
+      "title": "Chapitre 49",
+      "page_start": 282,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 53,
+      "title": "Chapitre 50",
+      "page_start": 286,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 54,
+      "title": "Chapitre 51",
+      "page_start": 292,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 55,
+      "title": "Chapitre 52",
+      "page_start": 297,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 56,
+      "title": "Chapitre 53",
+      "page_start": 301,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 57,
+      "title": "Chapitre 54",
+      "page_start": 304,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 58,
+      "title": "Chapitre 55",
+      "page_start": 308,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 59,
+      "title": "Chapitre 56",
+      "page_start": 313,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    },
+    {
+      "number": 60,
+      "title": "Chapitre 57",
+      "page_start": 318,
+      "page_end": null,
+      "summary": "",
+      "page_reference": "page du PDF (non page imprimée)"
+    }
+  ],
+  "review_links": [
+    "https://www.leparisien.fr/culture-loisirs/livres/franck-thilliez-nous-piege-avec-son-manuscrit-inacheve-28-05-2018-7739661.php",
+    "https://www.senscritique.com/livre/Le_Manuscrit_inacheve/30478796/critiques",
+    "https://www.critiqueslibres.com/livre/53706-le-manuscrit-inacheve-thilliez-franck"
+  ],
+  "published": false,
+  "rights_verified": false,
+  "verification_note": "Fiche basée sur la couverture, les pages légales et le contenu du PDF joint. Résumés de chapitres à compléter après lecture. Ne pas publier le PDF sans droits de diffusion.",
+  "pdf_pages": 437,
+  "source_file": "Le Manuscrit inachevé (Franck THILLIE... (Z-Library) copie(1).pdf",
+  "pdf_path": "livres/le-manuscrit-inacheve/livre.pdf",
+  "cover_path": "livres/le-manuscrit-inacheve/couverture.png",
+  "source_document": "PDF transmis par l’utilisatrice; copie privée, non autorisée à la diffusion publique",
+  "external_reviews": [
+    {
+      "title": "Le Parisien — critique de la construction du thriller",
+      "url": "https://www.leparisien.fr/culture-loisirs/livres/franck-thilliez-nous-piege-avec-son-manuscrit-inacheve-28-05-2018-7739661.php",
+      "source": "Le Parisien"
+    },
+    {
+      "title": "SensCritique — critiques de lecteurs",
+      "url": "https://www.senscritique.com/livre/Le_Manuscrit_inacheve/30478796/critiques",
+      "source": "SensCritique"
+    },
+    {
+      "title": "CritiquesLibres — avis et discussion",
+      "url": "https://www.critiqueslibres.com/livre/53706-le-manuscrit-inacheve-thilliez-franck",
+      "source": "CritiquesLibres"
+    }
+  ],
+  "chapter_summary_status": "Les chapitres sans résumé restent vides : pas de résumé inventé."
+}

@@ -1,0 +1,8 @@
+VERSION PRIVÉE — NE PAS ENVOYER CE ZIP OU CES PDF SUR GITHUB PUBLIC.
+
+Ouvrir index-prive.html depuis un ordinateur pour accéder aux dix fiches et lecteurs.
+Sur téléphone, l’ouverture directe des HTML locaux peut limiter l’affichage des PDF; ouvrir chaque livre.pdf dans le lecteur du téléphone.
+Le lecteur a été contrôlé techniquement sur les dix fichiers (PDF valides, pages lisibles avec PyMuPDF), mais pas testé sur ton téléphone ni sur le site GitHub Pages.
+Les liens de critiques externes ne sont présents que lorsqu’une page pertinente a été identifiée; une présentation d’éditeur n’est pas présentée comme critique indépendante.
+Les résumés par chapitre ne sont remplis que lorsque le contenu a pu être vérifié; les autres restent vides.
+Pour une publication publique, obtenir les droits nécessaires et tester l’intégration du catalogue GitHub/Firebase.
