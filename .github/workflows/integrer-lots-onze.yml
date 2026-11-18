@@ -1,0 +1,29 @@
+name: Intégrer les 11 livres dans le catalogue
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/integrer_lots_onze.py'
+      - '.github/workflows/integrer-lots-onze.yml'
+permissions:
+  contents: write
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Intégrer les notices et couvertures
+        run: python scripts/integrer_lots_onze.py
+      - name: Enregistrer les fichiers
+        run: |
+          git add js/app.js catalogue-documente.json ouvrage-new11-*.html images/couvertures/new11-*.jpg
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Intégrer les 11 livres au catalogue public sans PDF"
+            git push
+          fi
