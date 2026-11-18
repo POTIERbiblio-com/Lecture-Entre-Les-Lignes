@@ -1,0 +1,39 @@
+name: Intégrer les six nouveaux livres
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Correctif_6_livres_a_fusionner.zip'
+      - 'scripts/importer_six_livres.py'
+      - '.github/workflows/importer-six-livres.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  importer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le site existant
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Décompresser et intégrer uniquement les six livres
+        run: python scripts/importer_six_livres.py
+      - name: Enregistrer les fichiers ajoutés
+        run: |
+          git add catalogue-documente.json js/app.js pdf/nouveau-*.pdf images/couvertures/nouveau-*.jpg ouvrage-nouveau-*.html
+          if git diff --cached --quiet; then
+            echo "Aucun changement supplémentaire."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Intégrer six livres au catalogue sans modifier le reste du site"
+            git push
+          fi
