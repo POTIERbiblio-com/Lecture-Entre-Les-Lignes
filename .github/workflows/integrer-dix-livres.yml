@@ -1,0 +1,29 @@
+name: Installer les 10 livres dans Entre les lignes
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'imports/10-livres.zip'
+permissions:
+  contents: write
+jobs:
+  integrer:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Vérifier les PDF et intégrer les 10 livres
+        run: python scripts/integrer_dix_livres.py
+      - name: Publier les fichiers intégrés dans main
+        run: |
+          git add js/app.js catalogue-documente.json livres-10/ liv012*-fiche.html liv0130-fiche.html
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Intégrer 10 livres avec PDF, couvertures et fiches"
+            git push
+          fi
