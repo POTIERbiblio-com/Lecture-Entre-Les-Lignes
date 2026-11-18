@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+<path d="M89 10L102 16L117 13L127 24L143 27L148 42L163 50L162 65L172 78L165 93L169 109L156 120L153 137L136 141L126 156L109 155L95 168L80 161L63 166L53 152L36 150L31 134L17 124L19 108L8 93L15 79L12 61L26 51L30 34L47 31L59 17L75 20Z" fill="#f4d99d" stroke="#fff6e4" stroke-width="6"/>
+<circle cx="90" cy="90" r="62" fill="none" stroke="#95643f" stroke-width="1.7" stroke-dasharray="3 4"/>
+<path d="M56 83q17-8 34 1q18-10 35-1v33q-19-9-35 0q-18-10-34 0Zm34 1v32" fill="none" stroke="#95643f" stroke-width="2.5" stroke-linejoin="round"/>
+<text x="90" y="62" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#895237" letter-spacing="1.5">CARNET DE</text>
+<text x="90" y="139" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-style="italic" fill="#895237">lecture</text>
+</svg>
