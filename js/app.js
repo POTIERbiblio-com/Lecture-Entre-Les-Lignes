@@ -3957,7 +3957,7 @@ async function loadPublicCatalogue(){
 }
 
 async function start(){try{await connectService();
-const privatePages=new Set(['mon-espace.html','surlignages.html','annotations.html','fiches.html','journaux.html','profil.html','sauvegardes.html','tests.html','critiques.html']);
+const privatePages=new Set(['mon-espace.html','surlignages.html','annotations.html','fiches.html','journaux.html','profil.html','sauvegardes.html','tests.html']);
 const currentPage=location.pathname.split('/').pop().toLowerCase();
 if(privatePages.has(currentPage)&&!ellUser){
  const main=$('contenu')||document.querySelector('main');
