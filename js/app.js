@@ -4160,6 +4160,7 @@ document.body?.addEventListener('play', event => {
 window.addEventListener('beforeunload',releaseCurrentPage);
 start();
 
+window.ELL_FAVORITES_BOOKS=LIVRES_INITIAUX.map(b=>({id:b.id,detailPath:b.detailPath||''}));
 // Actions Favoris et Listes disponibles sur toutes les fiches et cartes du catalogue.
 if(!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='css/favoris-listes.css';document.head.append(sheet);
