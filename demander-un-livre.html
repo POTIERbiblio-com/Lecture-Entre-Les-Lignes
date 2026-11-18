@@ -1,1 +1,42 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Proposer un livre · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/book-requests.css"></head><body><header class="site-header"><a class="brand" href="index.html">Entre les lignes<span>.</span></a><nav class="site-nav"><a href="mon-espace.html">Mon espace</a><a href="mes-livres.html">Bibliothèque</a></nav></header><main class="request-wrap"><header class="request-hero"><div><span class="request-eyebrow">✦ LA BOÎTE À IDÉES</span><h1>Un livre à nous <em>souffler ?</em></h1><p>Propose une lecture pour enrichir la bibliothèque. Le titre et la couverture sont nécessaires, les autres détails sont facultatifs.</p></div><img src="images/carnet-illustre/lecture-rose.jpg" alt="Illustration d'un carnet de lecture"></header><p id="request-status" role="status">Vérification de la connexion…</p><section id="request-member" hidden><form id="request-form" class="request-card"><h2>Ma proposition ♡</h2><div class="request-grid"><label>Titre du livre *<input name="title" maxlength="200" required></label><label>Auteur <input name="author" maxlength="160"></label><label>Édition / éditeur <input name="edition" maxlength="160"></label><label>Date de parution <input name="publicationDate" placeholder="Ex. 2020" maxlength="50"></label><label>Prix indicatif <input name="price" placeholder="Ex. 12,90 €" maxlength="50"></label><label>ISBN <input name="isbn" maxlength="30"></label></div><label>Couverture du livre * <input name="cover" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG ou WebP, 3 Mo maximum. Utilise une image que tu as le droit de partager.</small></label><label>Autres renseignements / message <textarea name="details" rows="5" maxlength="3000" placeholder="Pourquoi ce livre ? Une édition précise ? Un lien vers sa fiche ?"></textarea></label><button type="submit" id="send-request">Envoyer ma demande ♡</button></form><section class="request-card"><h2>Mes demandes</h2><p>Tu retrouves ici les réponses de l'équipe, visibles uniquement sur ton compte.</p><div id="my-requests"></div></section></section><section id="request-admin" hidden class="request-card"><h2>✦ Demandes à traiter</h2><p>Seuls les comptes disposant des droits administrateur peuvent répondre et modifier les statuts.</p><div id="admin-requests"></div></section><p id="request-login" hidden><a href="connexion-firebase.html">Connecte-toi pour proposer un livre et suivre sa réponse.</a></p></main><script type="module" src="js/book-requests.js"></script></body></html>
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposer un livre · Entre les lignes</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/book-requests.css"></head>
+<body class="atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<header class="site-header"><a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<nav class="site-nav" aria-label="Menu principal"><a href="index.html">Accueil</a><a href="genres.html">Genres</a><a href="lecture.html">Lecture</a><a href="mes-livres.html">Chercher un livre</a><a href="critiques.html">Critiques</a><a class="active" aria-current="page" href="demander-un-livre.html">Proposer un livre</a><a href="mon-espace.html">Mon espace</a></nav></header>
+<main id="contenu" class="request-wrap">
+<header class="request-hero"><div><span class="request-eyebrow">✦ LA BOÎTE À IDÉES</span><h1>Un livre à nous <em>souffler ?</em></h1><p>Une lecture t'a marqué ? Partage-la avec nous ! Toutes les propositions sont examinées avant d'être ajoutées à la bibliothèque.</p><div class="request-capsules"><span>♡ Tes découvertes</span><span>✦ Notre bibliothèque</span><span>✿ De nouvelles histoires</span></div></div>
+<div class="request-hero-art"><img class="request-hero-main" src="images/atelier/revue-ouverte.jpg" alt="Revue ouverte"><img class="request-hero-small" src="images/carnet-illustre/lecture-rose.jpg" alt="Illustration autour de la lecture"><span aria-hidden="true" class="request-doodle">✿</span></div></header>
+<div class="request-steps" aria-label="Comment ça marche"><div><strong>01</strong><span>Tu proposes ton livre</span></div><div><strong>02</strong><span>L'équipe étudie la demande</span></div><div><strong>03</strong><span>Tu retrouves sa réponse ici</span></div></div>
+<p id="request-status" role="status">Vérification de la connexion…</p>
+<section id="request-member" hidden>
+<form id="request-form" class="request-card"><div class="request-card-title"><div><span class="request-eyebrow">✿ TA DÉCOUVERTE</span><h2>Ma proposition ♡</h2></div><img src="images/objets/livre-ouvert.svg" alt="" aria-hidden="true"></div>
+<p class="request-hint">Les champs marqués * sont obligatoires. Plus tu donnes de détails, plus il sera facile de retrouver la bonne édition.</p>
+<div class="request-grid">
+<label>Titre du livre *<input name="title" maxlength="200" autocomplete="off" required placeholder="Le titre exact du livre"></label>
+<label>Auteur ou autrice *<input name="author" maxlength="160" required placeholder="Prénom et nom de l'auteur"></label>
+<label>Genre <select name="genre"><option value="">Choisir un genre (facultatif)</option><option value="fiction">Fiction</option><option value="savoirs">Savoirs</option><option value="arts">Arts</option><option value="vie-et-societe">Vie et société</option><option value="spiritualites">Spiritualités et religions</option><option value="jeunesse">Jeunesse et pédagogie</option></select></label>
+<label>Sous-genre <input name="subgenre" maxlength="100" placeholder="Ex. Psychologie, philosophie…"></label>
+<label>Éditeur / édition <input name="edition" maxlength="160" placeholder="Ex. Éditions Gallimard"></label>
+<label>Date de parution <input name="publicationDate" placeholder="Ex. 2020" maxlength="50"></label>
+<label>Prix indicatif <input name="price" placeholder="Ex. 12,90 €" maxlength="50"></label>
+<label>ISBN <input name="isbn" maxlength="30" placeholder="ISBN-10 ou ISBN-13"></label>
+<label class="request-wide">Lien vers une fiche du livre <input type="url" name="referenceUrl" maxlength="500" placeholder="https://…"></label>
+</div>
+<div class="request-cover-layout"><div><label>Couverture du livre *<input id="request-cover" name="cover" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG ou WebP · 3 Mo maximum. Choisis une image que tu as le droit de partager.</small></label></div><div class="request-cover-preview"><img id="request-preview" src="images/atelier/livre-paysage.jpg" alt="Aperçu de couverture ou illustration de lecture"><span id="request-preview-label">Ta couverture apparaîtra ici ♡</span></div></div>
+<label>Résumé du livre <textarea name="summary" rows="4" maxlength="2500" placeholder="De quoi parle ce livre ? (facultatif)"></textarea></label>
+<label>Pourquoi nous le proposer ? / Informations complémentaires <textarea name="details" rows="5" maxlength="3000" placeholder="Ce qui t'a plu, une édition précise, un détail utile…"></textarea></label>
+<button type="submit" id="send-request">Envoyer ma proposition ♡</button>
+</form>
+<section class="request-card"><h2>Mes propositions</h2><p>Tu retrouveras ici les réponses de l'équipe, visibles uniquement depuis ton compte.</p><div id="my-requests"></div></section>
+</section>
+<section id="request-admin" hidden class="request-card"><h2>✦ Demandes à traiter</h2><p>Gestion réservée aux comptes administrateurs.</p><div id="admin-requests"></div></section>
+<p id="request-login" hidden class="request-login"><a href="connexion-firebase.html">Connecte-toi ou crée ton compte pour proposer un livre et suivre sa réponse ♡</a></p>
+</main><script type="module" src="js/book-requests.js"></script>
+<script>const cover=document.getElementById('request-cover'),preview=document.getElementById('request-preview'),lbl=document.getElementById('request-preview-label');let previewUrl='';cover.addEventListener('change',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);const file=cover.files&&cover.files[0];if(file&&file.type.startsWith('image/')){previewUrl=URL.createObjectURL(file);preview.src=previewUrl;lbl.textContent='Ta couverture sélectionnée ♡';}else{preview.src='images/atelier/livre-paysage.jpg';lbl.textContent='Ta couverture apparaîtra ici ♡';}});</script>
+</body></html>
