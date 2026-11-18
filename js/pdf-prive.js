@@ -6,6 +6,6 @@ export async function ouvrirPdfPrive(bookId,{download=false}={}){
  const response=await fetch('https://cezgcoa nkoka.supabase.co/functions/v1/secure-account'.replace('cezgcoa nkoka','cezgcoaokwuobipwfffa'),{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+await user.getIdToken()},body:JSON.stringify({action:'private-pdf',bookId:String(bookId)})});
  const result=await response.json();if(!response.ok)throw Error(result.error||'PDF indisponible');
  const url=new URL(result.url);if(url.protocol!=='https:'||url.hostname!=='cezgcoaokwuobipwfffa.supabase.co'||!url.pathname.includes('/storage/v1/object/sign/book-pdfs/'))throw Error('Adresse PDF non autorisée');
- if(download){const a=document.createElement('a');a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';a.click()}else window.open(url.href,'_blank','noopener,noreferrer');
+ if(download){const a=document.createElement('a');a.href=url.href;a.rel='noopener noreferrer';a.click()}else window.location.assign(url.href);
  return result;
 }
