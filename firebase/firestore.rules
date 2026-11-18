@@ -23,7 +23,7 @@ service cloud.firestore {
       allow get, list: if editor() || owner();
       allow create: if request.auth != null &&
         request.resource.data.keys().hasOnly([
-          'title','author','edition','publicationDate','price','isbn','details',
+          'title','author','genre','subgenre','edition','publicationDate','price','isbn','referenceUrl','summary','details',
           'requesterUid','requesterEmail','coverPath','coverUrl','status',
           'reason','adminMessage','createdAt'
         ]) &&
