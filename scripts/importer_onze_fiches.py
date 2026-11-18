@@ -34,7 +34,7 @@ def main():
             raise SystemExit("Point d'insertion du catalogue absent")
         for b in books:
             htmlpath = b["detailPath"]
-            if not re.fullmatch(r"ouvrage-new11-[a-z0-9-]+\\.html", htmlpath):
+            if not re.fullmatch(r"ouvrage-new11-[a-z0-9-]+\.html", htmlpath):
                 raise SystemExit("Nom de fiche invalide")
             if (ROOT / htmlpath).exists():
                 raise SystemExit("Fiche déjà présente : " + htmlpath)
@@ -49,7 +49,7 @@ def main():
                 raise SystemExit("Zone PDF introuvable : " + htmlpath)
             html = html.replace(b["cover"], PLACEHOLDER)
             # Garder les résumés et les liens externes, sans créer de lien PDF cassé.
-            html = re.sub(r'<a\\s+href="lire\\.html[^"]*"[^>]*>.*?</a>',
+            html = re.sub(r'<a\s+href="lire\.html[^"]*"[^>]*>.*?</a>',
                           '<span>Lecture du PDF non disponible publiquement</span>',
                           html, flags=re.DOTALL)
             (ROOT / htmlpath).write_text(html, encoding="utf-8")
@@ -58,9 +58,9 @@ def main():
             b.pop("pdfSha256", None)
             b["publicationStatus"] = "Fiche publique ; PDF non diffusé faute d'autorisation vérifiée"
         existing.extend(books)
-        CAT.write_text(json.dumps(existing, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
-        additions = ",\\n".join(json.dumps(b, ensure_ascii=False, indent=2) for b in books)
-        APP.write_text(app.replace(MARK, MARK + "\\n" + additions + ",", 1), encoding="utf-8")
+        CAT.write_text(json.dumps(existing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        additions = ",\n".join(json.dumps(b, ensure_ascii=False, indent=2) for b in books)
+        APP.write_text(app.replace(MARK, MARK + "\n" + additions + ",", 1), encoding="utf-8")
         print("11 fiches et résumés intégrés ;", len(existing), "livres au catalogue ; aucun PDF publié")
 
 if __name__ == "__main__":
