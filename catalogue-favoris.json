@@ -362,5 +362,47 @@
     "author": "Exercice de lecture · texte original du site",
     "cover": "",
     "genre": "fiction"
+  },
+  {
+    "id": "liv0137",
+    "title": "Vendre ou perdre",
+    "author": "Grant Cardone",
+    "cover": "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/couvertures/liv0137.jpg",
+    "genre": "savoirs"
+  },
+  {
+    "id": "liv0138",
+    "title": "10 points clés pour réussir",
+    "author": "Jean-Philippe Tixier",
+    "cover": "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/couvertures/liv0138.jpg",
+    "genre": "savoirs"
+  },
+  {
+    "id": "liv0139",
+    "title": "La puissance de votre subconscient",
+    "author": "Joseph Murphy",
+    "cover": "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/couvertures/liv0139.jpg",
+    "genre": "spiritualites"
+  },
+  {
+    "id": "liv0140",
+    "title": "À la poursuite du Soleil",
+    "author": "Linda Geddes",
+    "cover": "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/couvertures/liv0140.jpg",
+    "genre": "savoirs"
+  },
+  {
+    "id": "liv0141",
+    "title": "Soigner avec l’énergie : les thérapies quantiques et psycho-énergétiques",
+    "author": "Luc Bodin",
+    "cover": "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/couvertures/liv0141.jpg",
+    "genre": "savoirs"
+  },
+  {
+    "id": "liv0142",
+    "title": "Optimiser son temps facilement",
+    "author": "Aurélien Vezzani",
+    "cover": "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/couvertures/liv0142.jpg",
+    "genre": "savoirs"
   }
 ]
