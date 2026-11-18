@@ -1,0 +1,26 @@
+name: Retirer les 11 livres du site public
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/retirer_onze_livres_publics.py'
+      - '.github/workflows/retirer-onze-livres.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/retirer_onze_livres_publics.py
+      - name: Publier la suppression
+        run: |
+          git add -A catalogue-documente.json js/app.js ouvrage-new11-*.html images/couvertures/nouveaux-11/ Extension_11_livres_resumes_critiques.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Retirer les onze livres et l'archive PDF du site public"
+          git push
