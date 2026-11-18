@@ -1,0 +1,18 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /book-request-covers/{uid}/{filename} {
+      allow write: if request.auth != null &&
+        request.auth.uid == uid &&
+        resource == null &&
+        request.resource.size <= 3 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/(jpeg|png|webp)');
+      allow read: if request.auth != null &&
+        (request.auth.uid == uid ||
+         request.auth.token.admin == true ||
+         request.auth.token.catalogEditor == true);
+    }
+  }
+}
+// IMPORTANT : publier manuellement dans Firebase Storage > Rules.
+// Ces règles ne couvrent que les couvertures proposées ; fusionner avec les autres règles existantes.
