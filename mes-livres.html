@@ -25,7 +25,7 @@
   <div class="slip-heading"><div><h1>Chercher un livre</h1></div><div class="slip-collage" aria-hidden="true"><img src="images/carnet-illustre/loupe.jpg" alt="" class="slip-photo"><img src="images/atelier/revue-ouverte.jpg" alt="" class="slip-book"></div></div>
   <form id="catalogue-search" role="search">
       <div class="catalogue-field catalogue-query"><label for="search">Titre, auteur, année, ISBN ou thème</label>
-      <input id="search" name="q" type="search" placeholder="Ex. Harari, 2015, leadership…" maxlength="160">
+      <input id="search" name="q" type="search" placeholder="Un titre, un auteur, un thème…" maxlength="160" autocomplete="off"><p class="catalogue-search-help">Recherche dans tous les livres du catalogue, y compris les nouveaux ajouts.</p>
       </div>
 <div class="search-controls">
         <button type="submit" class="cloud-link">Rechercher <span aria-hidden="true" class="artist-arrow-glyph">↗</span></button>
@@ -58,6 +58,7 @@
     <button type="button" data-genre="jeunesse" aria-pressed="false">Jeunesse</button>
   </div>
 </div>
+<nav class="catalogue-shortcuts" aria-label="Accès rapide aux collections"><a href="favoris.html">♥ Mes favoris</a><a href="listes.html">✦ Mes listes</a><a href="lecture.html">📖 Espace lecture</a></nav>
 <div class="search-results catalogue-shelf">
   <div class="results-heading">
     <h2>Les livres du carnet</h2>
@@ -72,7 +73,7 @@
 <div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
-<script type="text/javascript" src="js/app.js?v=admin-suppressions-resumes-20261118">
+<script type="text/javascript" src="js/app.js?v=lot2-catalogue-20261118">
 </script>
-<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/favoris-catalogue.js?v=20261118" defer></script></body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/favoris-catalogue.js?v=illustrations-20261118" defer></script></body>
 </html>
