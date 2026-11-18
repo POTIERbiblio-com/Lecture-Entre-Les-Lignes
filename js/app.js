@@ -3898,6 +3898,17 @@ function pdfAddress(b){if(b.pdf)return b.pdf;if(location.protocol==='file:'&&typ
 
 /* Catalogue partagé : fiches GitHub validées et fiches publiées par l'atelier Firebase. */
 
+async function applyFirebaseCatalogueHidden(){
+ try{
+  const [{initializeApp,getApps,getApp},{getFirestore,collection,getDocs}]=await Promise.all([
+   import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js'),
+   import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js')]);
+  const app=getApps().length?getApp():initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});
+  const snap=await getDocs(collection(getFirestore(app),'catalogue_hidden'));
+  const hidden=new Set(snap.docs.filter(d=>d.data().hidden===true).map(d=>d.id));
+  state.books=state.books.filter(b=>!hidden.has(b.id));
+ }catch(err){console.warn('Masquage Firebase non vérifié : règles Firestore à publier',err);}
+}
 async function applyCatalogueSuppressions(){
  if(location.protocol==='file:')return;
  try{
@@ -3990,6 +4001,7 @@ for(const book of LIVRES_INITIAUX){
 try { await loadServiceState(); } catch(error) { showCarnetWarning(error.message); }
 await loadPublicCatalogue();
 await applyCatalogueSuppressions();
+await applyFirebaseCatalogueHidden();
 if(changed&&db)await writeLocalState();
 if(!document.body.isConnected)return;
 applyDesign();
