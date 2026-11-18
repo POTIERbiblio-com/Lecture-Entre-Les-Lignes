@@ -1,5 +1,5 @@
 const ROOT='https://cezgcoaokwuobipwfffa.supabase.co/functions/v1/secure-account';
-const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);
+const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js')]);
 const app=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});
 const auth=getAuth(app);const root=document.getElementById('ell-billing-actions');const status=document.getElementById('ell-subscription-status');
 async function request(action,extras={}){const user=auth.currentUser;if(!user)throw Error('Connecte-toi à ton compte pour continuer.');const response=await fetch(ROOT,{method:'POST',headers:{Authorization:'Bearer '+await user.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,...extras})});const data=await response.json();if(!response.ok)throw Error(data.error||'Service indisponible');return data}
