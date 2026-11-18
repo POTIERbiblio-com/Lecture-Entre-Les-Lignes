@@ -12,7 +12,8 @@ function watch(q,target,admin){unsubs.push(onSnapshot(q,snap=>{const list=snap.d
 onAuthStateChanged(auth,async u=>{unsubs.forEach(f=>f());unsubs=[];user=u;$('request-member').hidden=!u;$('request-login').hidden=!!u;if(!u){$('request-status').textContent='Connecte-toi pour envoyer et suivre tes demandes.';return;}try{$('request-status').textContent='Connecté avec '+u.email;watch(query(collection(db,'book_requests'),where('requesterUid','==',u.uid)),'my-requests',false);}catch(e){$('request-status').textContent='Vérification des droits impossible : '+(e.code||e.message);}});
 const formatError=err=>{
   const code=err?.code||'';
-  if(code==='permission-denied'||code==='storage/unauthorized')return 'Envoi refusé par Firebase : les règles de sécurité ne sont probablement pas publiées.';
+  if(code==='permission-denied')return 'Firebase Firestore refuse l’enregistrement. Vérifie les règles Firestore publiées et la connexion du compte.';
+  if(code==='storage/unauthorized')return 'Firebase Storage refuse ce fichier. Vérifie les règles Storage publiées, le compte connecté et les limites de taille/type.';
   if(code==='unavailable'||code==='storage/retry-limit-exceeded')return 'Connexion au serveur indisponible. Réessaie quand le réseau est stable.';
   if(code==='storage/canceled')return 'Transfert interrompu. Réessaie et garde cette page ouverte jusqu’à la confirmation.';
   if(code==='storage/object-not-found')return 'Le serveur ne retrouve pas le fichier transféré. Réessaie.';
