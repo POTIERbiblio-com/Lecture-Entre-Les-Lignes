@@ -16,7 +16,10 @@ service cloud.firestore {
          get(/databases/$(database)/documents/books/$(resource.data.book_id)).data.published == true);
       allow create, update, delete: if editor();
     }
-    function requestManager() {\n      return editor() && request.auth.token.email in ['quentinmorel1912@gmail.com', 'juliepotier2006@gmail.com'];\n    }\n    match /book_requests/{requestId} {
+    function requestManager() {
+      return editor() && request.auth.token.email in ['quentinmorel1912@gmail.com', 'juliepotier2006@gmail.com'];
+    }
+    match /book_requests/{requestId} {
       function owner() {
         return request.auth != null && resource.data.requesterUid == request.auth.uid;
       }
@@ -24,7 +27,7 @@ service cloud.firestore {
       allow create: if request.auth != null &&
         request.resource.data.keys().hasOnly([
           'title','author','genre','subgenre','edition','publicationDate','price','isbn','referenceUrl','summary','details',
-          'requesterUid','requesterEmail','coverPath','coverUrl','status',
+          'requesterUid','requesterEmail','coverPath','coverUrl','pdfPath','pdfName','status',
           'reason','adminMessage','createdAt'
         ]) &&
         request.resource.data.requesterUid == request.auth.uid &&
@@ -36,6 +39,10 @@ service cloud.firestore {
         request.resource.data.details.size() <= 3000 &&
         request.resource.data.coverPath.matches('book-request-covers/' + request.auth.uid + '/.*') &&
         request.resource.data.coverUrl is string &&
+        request.resource.data.pdfPath is string &&
+        (request.resource.data.pdfPath == '' || request.resource.data.pdfPath.matches('book-request-pdfs/' + request.auth.uid + '/[A-Za-z0-9_-]+\\.pdf')) &&
+        request.resource.data.pdfName is string &&
+        request.resource.data.pdfName.size() <= 180 &&
         request.resource.data.status == 'pending' &&
         request.resource.data.reason == '' &&
         request.resource.data.adminMessage == '' &&
