@@ -3299,7 +3299,7 @@ catalogueControls(b)+(adminEnabled?'<p><a class="btn secondary" href="'+esc(site
 '<div class="book-reception-pair">'+externalReception(meta)+localReception(b)+'</div><details class="book-sources"><summary>Les sources et références ↘</summary><ul>'+sources.map(s=>'<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' ↗</a></li>').join('')+(meta.pdfPath?'<li><a data-pdf-link="'+esc(meta.pdfPath)+'" href="'+esc(meta.pdfPath)+'" target="_blank" rel="noopener">PDF fourni · contenu et mentions éditoriales ↗</a></li>':'')+(meta.external?.url?'<li><a href="'+esc(meta.external.url)+'" target="_blank" rel="noopener">Source de la note extérieure ↗</a> · '+esc(meta.external.scope)+'</li>':'')+'</ul></details><nav class="book-dossier-bottom" aria-label="Garder une trace"><a href="'+siteHref('fiches.html?livre='+encodeURIComponent(b.id))+'">'+smallCover(b)+'Ma fiche de lecture ↗</a><a href="'+siteHref('journaux.html?livre='+encodeURIComponent(b.id))+'"><img src="'+esc(assetHref('images/objets/journal.svg'))+'" alt="">Mon journal ↗</a>'+'<a class="book-review-link" href="'+bookLink(b,'avis')+'"><img src="'+esc(assetHref('images/objets/avis.svg'))+'" alt="">Ma critique sur ce livre ↗</a>'+(adminEnabled?'<a href="'+bookLink(b,'ajouter-livre')+'">Modifier la fiche du catalogue ↗</a>':'')+'</nav></div>';
 }
 function legend(){return {...LEGEND_DEFAULT,...state.legend};}
-function ensureBookSheet(b){let sheet=state.notes.find(n=>n.book===b.id&&n.kind==='fiches'&&n.auto);if(!sheet){sheet={id:'fiche-auto-'+b.id,book:b.id,kind:'fiches',title:b.title,body:'',page:'',auto:true,updated:new Date().toISOString()};state.notes.push(sheet);}return sheet;}
+function ensureBookSheet(b){let sheet=state.notes.find(n=>n.book===b.id&&n.kind==='fiches'&&n.auto);if(!sheet){sheet={id:uid(),book:b.id,kind:'fiches',title:b.title,body:'',page:'',auto:true,updated:new Date().toISOString()};state.notes.push(sheet);}return sheet;}
 function currentParams(){return new URLSearchParams(typeof previewAsset==='function'?location.hash.slice(1):location.search);}
 function jumpToHighlight(b,h){return siteHref('lire.html?id='+encodeURIComponent(b.id)+'&pdfpage='+Number(h.pageNumber||1)+'&highlight='+encodeURIComponent(h.id));}
 function traceMarkup(h){const b=state.books.find(x=>x.id===h.book);if(!b)return '';return '<article class="saved-fragment" style="--fragment-color:'+esc(h.color)+'"><header>'+smallCover(b)+'<div><a href="'+bookLink(b)+'">'+esc(b.title)+'</a><p>'+esc(h.page|| (h.pageNumber?'Page '+h.pageNumber:''))+' · '+esc(legend()[h.color]||'Passage choisi')+'</p></div></header><blockquote>'+esc(h.quote)+'</blockquote>'+(h.annotation?'<p class="fragment-note">'+esc(h.annotation)+'</p>':'')+'<div class="trace-actions"><a href="'+jumpToHighlight(b,h)+'">Revenir au passage ↗</a><button type="button" data-remove-highlight="'+esc(h.id)+'" class="text-button">Retirer</button></div></article>';}
@@ -3396,7 +3396,12 @@ function writeLocalState(pendingCarnet) {
   return new Promise((resolve, reject) => {
     const tx = db.transaction('data', 'readwrite');
     const records = tx.objectStore('data');
-    records.put(state, 'state');
+    const catalogue = {
+      ...state,
+      books:state.books.map(({position,pdfPage,...book})=>book),
+      notes:[],highlights:[],questions:[],reviews:{},profile:{},design:{},legend:{}
+    };
+    records.put(catalogue, 'state');
     if (pendingCarnet !== undefined) {
       if (pendingCarnet) records.put(pendingCarnet, 'pendingCarnet');
       else records.delete('pendingCarnet');
@@ -3527,7 +3532,7 @@ async function startBookReader(book) {
  let currentPage = Math.max(1, Math.floor(Number(requested.get('pdfpage') || book.pdfPage) || 1));
  let currentColor = Object.keys(legend())[0], active = null, draft = null;
  let textRoot, paintText, pageReady = false, hasText = true, mode = 'text', drag = null, mouseSelect = false, selectionTimer;
- const sheet = ensureBookSheet(book);
+ let sheet = ensureBookSheet(book);
  const history = [];
  const cleanup = () => {
   events.abort();
@@ -3566,8 +3571,8 @@ async function startBookReader(book) {
    <section class="reader-sheet" id="reader-sheet"><div class="reader-note-heading"><img src="${esc(assetHref('images/objets/fiches.svg'))}" alt=""><h2>Ma fiche de lecture</h2></div>
     <div class="sheet-fields"><div><label for="reader-sheet-title">Titre de la fiche</label><input id="reader-sheet-title" value="${esc(sheet.title||'')}" maxlength="160"></div><div><label for="reader-sheet-page">Page</label><input id="reader-sheet-page" value="${esc(sheet.page||'')}" maxlength="100" placeholder="Ex. 12"></div></div>
     <label for="reader-sheet-passage">Passage marquant</label><textarea id="reader-sheet-passage" maxlength="10000" placeholder="Recopie le passage ou ajoute-le depuis un surlignage.">${esc(sheet.passage||'')}</textarea>
-    <label for="reader-sheet-text">Mes notes</label><textarea id="reader-sheet-text" placeholder="Pourquoi ce passage compte pour moi…">${esc(sheet.body||'')}</textarea><a href="${esc(siteHref('fiches.html?livre='+encodeURIComponent(book.id)))}">Retrouver ma fiche de lecture ↗</a></section>
-   <section class="reader-comment"><div class="reader-note-heading"><img src="${esc(assetHref('images/objets/annotation.svg'))}" alt=""><h2>Mon passage choisi</h2></div><p id="chosen-excerpt">Choisis un surlignage pour ajouter une note.</p><label for="reader-annotation">Mon annotation</label><textarea id="reader-annotation" disabled placeholder="Pourquoi ce passage compte pour moi…"></textarea><div class="reader-excerpt-actions"><button id="copy-to-sheet" type="button" hidden>Ajouter à ma fiche</button><button id="remove-current-highlight" class="text-button" type="button" hidden>Enlever le surlignage</button></div>
+    <label for="reader-sheet-text">Mes notes</label><textarea id="reader-sheet-text" placeholder="Pourquoi ce passage compte pour moi…">${esc(sheet.body||'')}</textarea><button class="btn" id="save-reader-sheet" type="button">Enregistrer la fiche</button> <a href="${esc(siteHref('fiches.html?livre='+encodeURIComponent(book.id)))}">Retrouver mes fiches de lecture ↗</a></section>
+   <section class="reader-comment"><div class="reader-note-heading"><img src="${esc(assetHref('images/objets/annotation.svg'))}" alt=""><h2>Mon passage choisi</h2></div><p id="chosen-excerpt">Choisis un surlignage pour ajouter une note.</p><label for="reader-annotation">Mon annotation</label><textarea id="reader-annotation" disabled placeholder="Pourquoi ce passage compte pour moi…"></textarea><div class="reader-excerpt-actions"><button class="btn" id="save-reader-passage" type="button" disabled>Enregistrer le passage</button><button id="copy-to-sheet" type="button" hidden>Ajouter à ma fiche</button><button id="remove-current-highlight" class="text-button" type="button" hidden>Enlever le surlignage</button></div>
     <details><summary>Personnaliser mes légendes de couleurs ↘</summary>${Object.entries(legend()).map(([color,label],i)=>`<label class="legend-edit" style="--pencil:${color}" for="legend-${i}"><span class="legend-dot"></span><input id="legend-${i}" data-legend-color="${color}" value="${esc(label)}" maxlength="60" aria-label="Légende de couleur ${i+1}"></label>`).join('')}</details>
    </section>
   </div>
@@ -3614,6 +3619,7 @@ async function startBookReader(book) {
   setDraft(null);
   $('chosen-excerpt').textContent = highlight?.quote || 'Choisis un surlignage pour ajouter une note.';
   annotation.disabled = !highlight;
+  $('save-reader-passage').disabled=!highlight;
   annotation.value = highlight?.annotation || '';
   $('remove-current-highlight').hidden = !highlight;
   copyToSheet.hidden = !highlight || !!highlight.area || highlight.quote === 'Zone surlignée';
@@ -3787,6 +3793,7 @@ async function startBookReader(book) {
   if (!change) return;
   const index = state.highlights.findIndex(h => h.id === change.id);
   if (change.removed) state.highlights.splice(change.index,0,change.removed);
+  else if (index >= 0 && Object.hasOwn(change,'oldAnnotation')) state.highlights[index].annotation=change.oldAnnotation;
   else if (index >= 0 && change.oldColor) state.highlights[index].color = change.oldColor;
   else if (index >= 0) state.highlights.splice(index,1);
   openHighlight(null);
@@ -3839,7 +3846,28 @@ async function startBookReader(book) {
  paper.addEventListener('pointercancel', endArea);
  paper.addEventListener('lostpointercapture', endArea);
 
- annotation.oninput = () => { if (active) { active.annotation = annotation.value; void persist(); } };
+ let annotationEdit=null;
+ annotation.onblur=()=>{annotationEdit=null;};
+ annotation.oninput=()=>{
+  if(!active)return;
+  if(annotationEdit!==active.id||history.at(-1)?.id!==active.id||!Object.hasOwn(history.at(-1),'oldAnnotation')){
+   rememberChange({id:active.id,oldAnnotation:active.annotation||''});
+   annotationEdit=active.id;
+  }
+  active.annotation=annotation.value;
+  undo.disabled=false;
+  void persist();
+ };
+ $('save-reader-passage').onclick=async()=>{
+  if(!active)return;
+  const button=$('save-reader-passage');
+  button.disabled=true;
+  try{
+   await save();
+   openHighlight(null);
+   status('Passage enregistré pour « '+book.title+' ». Choisis un nouveau passage.');
+  }catch(error){status(error.message,true);button.disabled=!active;}
+ };
  $('remove-current-highlight').onclick = () => void removeHighlight(active);
  const sheetInputs = {'reader-sheet-title':'title','reader-sheet-page':'page','reader-sheet-passage':'passage','reader-sheet-text':'body'};
  function saveSheet() {
@@ -3849,6 +3877,19 @@ async function startBookReader(book) {
   void persist();
  }
  Object.keys(sheetInputs).forEach(input => $(input).oninput = saveSheet);
+ $('save-reader-sheet').onclick=async()=>{
+  const button=$('save-reader-sheet');
+  button.disabled=true;
+  const completed=sheet;
+  completed.auto=false;
+  try{
+   await save();
+   sheet=ensureBookSheet(book);
+   for(const [input,field] of Object.entries(sheetInputs))$(input).value=sheet[field]||'';
+   status('Fiche enregistrée. Une nouvelle fiche est prête.');
+  }catch(error){completed.auto=true;status(error.message,true);}
+  finally{button.disabled=false;}
+ };
  copyToSheet.onclick = () => {
   if (!active) return;
   const passage = $('reader-sheet-passage');
@@ -4151,6 +4192,21 @@ function renderRecommendations(){
  shelf.hidden=!picks.length;
  shelf.querySelector('.catalogue-results').innerHTML=picks.map(({book})=>card(book)).join('');
 }
+function addGenreCounts(){
+ for(const link of document.querySelectorAll('a.genre-plate, a.rayon-image')){
+  const file=new URL(link.href,location.href).pathname.split('/').pop();
+  const rayon=file.match(/^livres-(.+)-(\d+)\.html$/);
+  const genre=rayon?.[1]||file.replace(/\.html$/,'');
+  if(!Object.hasOwn(GENRES,genre))continue;
+  const count=state.books.filter(book=>book.genre===genre&&(!rayon||String(book.sub)===rayon[2])).length;
+  const badge=document.createElement('span');
+  badge.className='genre-book-count';
+  badge.textContent=count+(count===1?' livre':' livres');
+  badge.style.cssText='position:absolute;right:.55rem;bottom:.55rem;z-index:3;padding:.28rem .58rem;border-radius:2rem;background:#fff5fa;color:#64324e;font-size:.85rem;font-weight:700;box-shadow:0 1px 4px #63354c33';
+  if(getComputedStyle(link).position==='static')link.style.position='relative';
+  link.append(badge);
+ }
+}
 async function loadEditorialCatalogue(){
  try{
   const response=await fetch(ELL_URL+'/rest/v1/catalogue_editorial_books?select=id,ficha',{headers:{apikey:ELL_KEY},cache:'no-store'});
@@ -4171,21 +4227,18 @@ if(privatePages.has(currentPage)&&!ellUser){
  if(main){main.innerHTML='<section class="account-login-gate" style="max-width:800px;margin:3rem auto;padding:2rem;text-align:center"><img src="images/carnet-illustre/carnet-studieux.jpg" alt="Carnet de lecture illustré" style="width:100%;max-height:250px;object-fit:cover;border-radius:22px"><h1>Bienvenue dans ton carnet ♡</h1><p>Un espace rien qu’à toi pour tes lectures, annotations, fiches et journaux. Connecte-toi pour retrouver tes souvenirs de lecture.</p><div id="account-status" style="text-align:left"></div></section>';showAccount();}
  return;
 }
-try{db=await openDB();state=await load();}catch(storageError){state=blank();db=null;let warning=document.createElement('p');warning.className='note';warning.textContent='Le catalogue et ses PDF restent consultables. Le stockage de ce navigateur est indisponible : les nouveaux avis et notes ne pourront pas être conservés.';$('contenu').prepend(warning);}let changed=false;
+try{db=await openDB();state=await load();}catch(storageError){state=blank();db=null;let warning=document.createElement('p');warning.className='note';warning.textContent='Le catalogue et ses PDF restent consultables. Le stockage de ce navigateur est indisponible : les nouveaux avis et notes ne pourront pas être conservés.';$('contenu').prepend(warning);}
 for(const book of LIVRES_INITIAUX){
   const existing=state.books.find(item=>item.id===book.id);
   if(!existing){
     state.books.push({...book});
-    changed=true;
   }else if(book.catalogueRevision && existing.catalogueRevision!==book.catalogueRevision){
     const previous=ORIGINAL_CATALOGUE[book.id];
     const keep={};
     for(const key of ['title','author','presentation','summary','text','cover','genre','sub']) if(previous && existing[key] && existing[key]!==previous[key])keep[key]=existing[key];
     Object.assign(existing,book,keep);
-    changed=true;
   }else if(book.cover && existing.cover===book.cover.replace(/\.jpg$/,'.webp')){
     existing.cover=book.cover;
-    changed=true;
   }
 }
 try { await loadServiceState(); } catch(error) { showCarnetWarning('Impossible de charger ton carnet personnel : '+error.message); }
@@ -4198,8 +4251,9 @@ if(ellUser){
 await Promise.all([loadPublicCatalogue(),loadEditorialCatalogue()]);
 await applyCatalogueSuppressions();
 await applyCatalogueAccess();
+addGenreCounts();
 if(remoteCarnet&&ellUser)restoreCarnet(remoteCarnet);
-if(changed&&db)await writeLocalState();
+if(db)await writeLocalState(null);
 if(!document.body.isConnected)return;
 applyDesign();
 if($('search-year')){$('search-year').innerHTML='<option value="">Toutes les dates</option>'+[...new Set(state.books.map(b=>bookYear(b)).filter(Boolean))].sort((a,b)=>Number(b)-Number(a)).map(y=>'<option>'+esc(y)+'</option>').join('');}
