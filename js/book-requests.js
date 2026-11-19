@@ -14,20 +14,63 @@ async function refreshPriority(account){
   info.textContent=automatic?'Illimité · toutes tes propositions sont automatiquement prioritaires.':remaining+' crédit'+(remaining===1?'':'s')+' de priorité ce mois-ci.';
  }catch(error){info.textContent=error.message;}
 }
+let records=[],owner=null,requestSequence=0;
+const sort=$('request-history-sort');
+function drawHistory(account){
+ const order=sort?.value||'recent';
+ const ordered=[...records].sort((a,b)=>order==='title'?a.title.localeCompare(b.title,'fr'):order==='oldest'?new Date(a.created_at)-new Date(b.created_at):new Date(b.created_at)-new Date(a.created_at));
+ if(!ordered.length){list.textContent='Aucune proposition pour le moment.';return;}
+ const track=document.createElement('div');track.className='proposal-track';track.tabIndex=0;track.setAttribute('aria-label','Historique défilant des propositions');
+ const navigation=document.createElement('div');navigation.className='proposal-history-actions';
+ const position=document.createElement('span');position.setAttribute('aria-live','polite');
+ for(const record of ordered){
+  const slide=document.createElement('div');slide.className='proposal-slide';
+  const date=document.createElement('small');date.textContent='Proposée le '+new Date(record.created_at).toLocaleDateString('fr-FR');
+  slide.append(date,requestCard(record,{account}));track.append(slide);
+ }
+ const buttons=[-1,1].map((step,index)=>{
+  const button=document.createElement('button');button.type='button';button.className='btn secondary';
+  button.textContent=index?'Suivante →':'← Précédente';
+  button.onclick=()=>track.scrollBy({left:step*track.clientWidth,behavior:'smooth'});
+  return button;
+ });
+ function update(){
+  const index=Math.min(ordered.length-1,Math.max(0,Math.round(track.scrollLeft/track.clientWidth)||0));
+  position.textContent=(index+1)+' / '+ordered.length;
+  buttons[0].disabled=index===0;buttons[1].disabled=index===ordered.length-1;
+ }
+ track.addEventListener('scroll',update,{passive:true});
+ let drag=null;
+ track.addEventListener('pointerdown',event=>{
+  if(event.pointerType!=='mouse'||event.button!==0||event.target.closest('button,a,summary,input,textarea'))return;
+  drag={id:event.pointerId,x:event.clientX,left:track.scrollLeft};track.setPointerCapture(event.pointerId);track.classList.add('is-dragging');
+ });
+ track.addEventListener('pointermove',event=>{if(drag?.id===event.pointerId)track.scrollLeft=drag.left+drag.x-event.clientX;});
+ function finish(event){
+  if(drag?.id!==event.pointerId)return;
+  drag=null;track.classList.remove('is-dragging');
+  track.scrollTo({left:Math.round(track.scrollLeft/track.clientWidth)*track.clientWidth,behavior:'smooth'});
+ }
+ track.addEventListener('pointerup',finish);track.addEventListener('pointercancel',finish);
+ navigation.append(buttons[0],position,buttons[1]);navigation.hidden=ordered.length<2;
+ list.replaceChildren(track,navigation);update();
+}
+if(sort)sort.onchange=()=>{if(owner)drawHistory(owner);};
+let markSeen=new URLSearchParams(location.search).get('notifications')==='1';
 async function refresh(account){
-  void refreshPriority(account);
-  list.textContent='Chargement de tes propositions…';
-  try{
-    const {requests}=await requestService('requests-list',{},account);
-    if(auth.currentUser?.uid!==account.uid)return;
-    list.replaceChildren(...requests.map(record=>requestCard(record,{account})));
-    if(!requests.length)list.textContent='Aucune proposition pour le moment.';
-  }catch(error){
-    if(auth.currentUser?.uid===account.uid)list.textContent='Suivi indisponible. '+error.message;
-  }
+ const sequence=++requestSequence;
+ void refreshPriority(account);
+ if(!records.length)list.textContent='Chargement de tes propositions…';
+ try{
+  const {requests}=await requestService('requests-list',{},account);
+  if(auth.currentUser?.uid!==account.uid||sequence!==requestSequence)return;
+  records=requests;owner=account;drawHistory(account);
+  if(markSeen){markSeen=false;try{await requestService('requests-mark-seen',{},account);}catch(error){console.warn(error);}}
+ }catch(error){if(auth.currentUser?.uid===account.uid&&sequence===requestSequence)list.textContent='Suivi indisponible. '+error.message;}
 }
 window.addEventListener('focus',()=>{if(auth.currentUser)void refresh(auth.currentUser);});
 onAccount(account=>{
+  requestSequence++;records=[];owner=null;
   list.replaceChildren();
   $('request-success').hidden=true;
   $('request-member').hidden=!account;

@@ -1274,7 +1274,33 @@ const BOOK_ART={liv0003:['jardin-secret.jpg','Un passage secret'],liv0006:['trai
 function assetHref(path){return typeof previewAsset==='function'?previewAsset(path):path;}
 function smallCover(b){return b?.cover?'<img class="trace-cover" src="'+esc(assetHref(b.cover))+'" alt="Couverture de '+esc(b.title)+'">':'<img class="trace-cover trace-cover-drawing" src="'+esc(assetHref('images/objets/livre-ouvert.svg'))+'" alt="">';}
 function wordsInPaper(text){return String(text).split(/\s+/).map((w,i)=>'<span class="cut-word cut-word-'+i%3+'">'+esc(w)+'</span>').join(' ');}
-function localReception(b){const r=state.reviews[b.id],score=r?ratingValue(r):null;return '<section class="reader-reception scrapbook-rating"><img class="rating-drawing" src="'+esc(assetHref('images/objets/avis.svg'))+'" alt=""><p class="artist-kicker">Mon carnet de lecture</p><h2>'+wordsInPaper('Mes étoiles')+'</h2>'+(r?'<p class="rating-value">'+formatNumber(score)+' <small>/ 5</small></p>'+starLine(score)+'<p class="rating-counter">1 critique dans mon carnet</p>':'<p class="rating-invitation">À toi d’écrire la suite…</p><p>0 critique</p>')+'<a class="editorial-link" href="'+bookLink(b,'avis')+'">'+(r?'Modifier ma critique sur ce livre':'Ma critique sur ce livre')+' ↗</a>'+(r?'<details class="reader-opinion"><summary>'+(r.spoiler?'Lire ma critique · révélations':'Lire ma critique')+'</summary><p class="pre-wrap">'+esc(r.text)+'</p></details>':'')+'</section>';}
+function localReception(book){
+ return '<section class="reader-reception scrapbook-rating" data-reader-reviews><h2>'+wordsInPaper('Mes étoiles')+'</h2><p data-reader-reviews-content role="status">Chargement des critiques…</p><a class="editorial-link" href="'+bookLink(book,'avis')+'">Écrire ou modifier ma critique ↗</a></section>';
+}
+async function refreshReaderReviews(book){
+ const panels=Array.from(document.querySelectorAll('[data-reader-reviews-content]'));
+ if(!panels.length)return;
+ try{
+  const response=await fetch(ELL_URL+'/functions/v1/secure-account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'public-reader-reviews',bookId:book.id}),cache:'no-store'});
+  const data=await response.json();
+  if(!response.ok)throw Error(data.error||'Critiques indisponibles');
+  const {count,average,reviews}=data;
+  for(const panel of panels){
+   const list=document.createElement('div');
+   const score=count?Number(average):0;
+   list.innerHTML=(count?'<p class="rating-value">'+formatNumber(Math.round(score*10)/10)+' / 5</p>'+starLine(score):'')+'<p>'+count+' critique'+(Number(count)===1?'':'s')+'</p>';
+   for(const entry of reviews){
+    const card=document.createElement(entry.spoiler?'details':'article');
+    if(entry.spoiler){const summary=document.createElement('summary');summary.textContent='Lire la critique · contient des révélations';card.append(summary);}
+    const text=document.createElement('p');text.className='pre-wrap';text.textContent=entry.review;
+    const rating=document.createElement('strong');rating.textContent=formatNumber(Number(entry.rating))+' / 5';
+    card.append(rating,text);list.append(card);
+   }
+   panel.replaceWith(list);list.dataset.readerReviewsContent='';
+  }
+ }catch(error){for(const panel of panels)panel.textContent=error.message;}
+}
+
 function externalReception(b){const e=b.external;if(!e||!Number.isFinite(e.rating)||!Number.isFinite(e.count)||e.count<=0)return '';const scope={liv0006:'Édition 2020 · PDF 2019',liv0007:'Œuvre · plusieurs éditions',liv0009:'Œuvre · plusieurs éditions',liv0012:'Une fiche de ce titre',liv0013:'Édition 2022 · PDF 2015',liv0019:'Œuvre originale · PDF extrait',liv0021:'Œuvre · plusieurs éditions'}[b.id]||'';
 return '<section class="external-reception scrapbook-rating"><img class="rating-drawing" src="'+esc(assetHref('images/objets/medaillon.svg'))+'" alt=""><p class="artist-kicker">Les étoiles venues d’ailleurs</p><h2>'+esc(e.site)+'</h2><p class="rating-value">'+formatNumber(e.rating)+' <small>/ 5</small></p>'+starLine(e.rating)+'<div class="rating-tallies"><span><b>'+formatNumber(e.count)+'</b> '+(e.count===1?'note':'notes')+'</span>'+(e.comments!==null?'<span><b>'+formatNumber(e.comments)+'</b> '+(e.comments===1?'critique':'critiques')+'</span>':'')+'</div>'+(scope?'<small class="rating-scope">'+esc(scope)+'</small>':'')+'<a class="editorial-link" href="'+esc(e.url)+'" target="_blank" rel="noopener">Lire les avis sur '+esc(e.site.replace(' — avis clients',''))+' ↗</a><small class="rating-date">Relevé du '+esc(e.checked)+'</small></section>';}
 function bookFileActions(book, meta) {
@@ -4519,7 +4545,7 @@ $('book-form').onsubmit = async event => {
 };
 }
 
-if($('book-detail')){$('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();if(b)showDownloadCount(b);}
+if($('book-detail')){$('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();if(b){showDownloadCount(b);void refreshReaderReviews(b);}}
 document.querySelectorAll('[data-count-download]').forEach(link=>link.addEventListener('click',async event=>{
  if(typeof previewAsset==='function')return;
  event.preventDefault();
@@ -4544,14 +4570,53 @@ document.querySelectorAll('[data-private-download]').forEach(button=>button.oncl
   finally{button.disabled=false;}
 });
 if($('reader-content')){if(b)startBookReader(b).then(cleanup=>{if(pageReleased)cleanup?.();else readerController=cleanup;});else $('reader-content').textContent='Choisis un livre dans la bibliothèque.';}
-if($('review-form')){if(!b){$('review-book').textContent='Choisis d’abord un livre dans Critiques.';$('review-form').hidden=true;}else{
-$('review-book').innerHTML='<a href="'+bookLink(b)+'">'+esc(b.title)+'</a>';
-let review=state.reviews[id];if(review){if(!Array.from($('rating').options).some(o=>o.value===String(ratingValue(review))))$('rating').innerHTML+='<option value="'+ratingValue(review)+'">'+formatNumber(ratingValue(review))+' / 5</option>';$('rating').value=ratingValue(review);$('review').value=review.text;$('spoiler').checked=review.spoiler;}
-const paint=()=>document.querySelectorAll('[data-star]').forEach(button=>{button.setAttribute('aria-pressed',String(Number(button.dataset.star)===Number($('rating').value)));button.textContent=Number(button.dataset.star)<=Number($('rating').value)?'★':'☆';});
-document.querySelectorAll('[data-star]').forEach(button=>button.onclick=()=>{$('rating').value=button.dataset.star;paint();});$('rating').onchange=paint;paint();drawLocalReview(b);
-if($('delete-review')){$('delete-review').hidden=!review;$('delete-review').onclick=async()=>{if(!confirm('Supprimer ta critique enregistrée sur cet appareil ?'))return;delete state.reviews[id];await save();$('review-form').reset();paint();$('delete-review').hidden=true;drawLocalReview(b);};}
-$('review-form').onsubmit=async e=>{e.preventDefault();const score=Number($('rating').value);if(!Number.isFinite(score)||score<0||score>5||!$('review').value.trim()){message('Choisis une note sur cinq et rédige ta critique.',true);return;}
-state.reviews[id]={rating:score,scale:5,text:$('review').value.trim(),spoiler:$('spoiler').checked,date:new Date().toISOString()};try{await save();drawLocalReview(b);$('delete-review').hidden=false;}catch(err){message(err.message,true);}};}}
+if($('review-form')){
+ const form=$('review-form');
+ if(!b){$('review-book').textContent='Choisis d’abord un livre dans Critiques.';form.hidden=true;}
+ else{
+  $('review-book').innerHTML='<a href="'+bookLink(b)+'">'+esc(b.title)+'</a>';
+  const visibility=document.createElement('p');visibility.className='note';visibility.textContent='La critique et la note publiées seront visibles sur la fiche du livre.';
+  form.prepend(visibility);
+  const paint=()=>document.querySelectorAll('[data-star]').forEach(button=>{
+   const selected=Number(button.dataset.star)<=Number($('rating').value);
+   button.setAttribute('aria-pressed',String(Number(button.dataset.star)===Number($('rating').value)));
+   button.textContent=selected?'★':'☆';
+  });
+  const remove=$('delete-review');
+  let own=null;
+  const {auth,requestService}=await import('./request-service.js');
+  const account=auth.currentUser;
+  if(account){
+   try{own=(await requestService('review-own',{bookId:b.id},account)).review;}
+   catch(error){message(error.message,true);}
+  }
+  if(own){
+   const score=String(Number(own.rating));
+   if(!Array.from($('rating').options).some(option=>option.value===score))$('rating').add(new Option(score+' / 5',score));
+   $('rating').value=score;$('review').value=own.review;$('spoiler').checked=own.spoiler;
+  }
+  if(remove){
+   remove.hidden=!own;remove.onclick=async()=>{
+    if(!confirm('Retirer ta critique publique ?'))return;
+    try{await requestService('review-delete',{bookId:b.id},account);form.reset();paint();remove.hidden=true;drawLocalReview(b);await refreshReaderReviews(b);}
+    catch(error){message(error.message,true);}
+   };
+  }
+  document.querySelectorAll('[data-star]').forEach(button=>button.onclick=()=>{$('rating').value=button.dataset.star;paint();});
+  $('rating').onchange=paint;paint();drawLocalReview(b);void refreshReaderReviews(b);
+  form.onsubmit=async event=>{
+   event.preventDefault();const score=Number($('rating').value),review=$('review').value.trim();
+   if(!account){message('Connecte-toi pour publier ta critique.',true);return;}
+   if($('rating').value===''||!Number.isFinite(score)||score<0||score>5||!review){message('Choisis une note sur cinq et rédige ta critique.',true);return;}
+   try{
+    await requestService('review-publish',{bookId:b.id,rating:score,review,spoiler:$('spoiler').checked},account);
+    if(remove)remove.hidden=false;
+    message('Critique publiée sur la fiche du livre.');
+    drawLocalReview(b);await refreshReaderReviews(b);
+   }catch(error){message(error.message,true);}
+  };
+ }
+}
 if($('profile-form')){$('name').value=state.profile.name||'';$('bio').value=state.profile.bio||'';$('profile-form').onsubmit=async e=>{e.preventDefault();state.profile={name:$('name').value,bio:$('bio').value};await save();};}
 bindNoteForm();
 lockCatalog();showAccount();

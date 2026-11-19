@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mon espace · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
-<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/comptes.css"><link rel="stylesheet" href="css/mon-espace-refonte.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/cercle-banners.css"><link rel="stylesheet" href="css/favoris-listes.css?v=coeur-20261119-3"></head>
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/comptes.css"><link rel="stylesheet" href="css/mon-espace-refonte.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/cercle-banners.css"><link rel="stylesheet" href="css/favoris-listes.css?v=coeur-20261119-3"><link rel="stylesheet" href="css/propositions-suivi.css"></head>
 <body class="page-mon-espace atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <div class="site-header" role="banner">
@@ -21,30 +21,35 @@
 <a href="index.html">Accueil</a>
 <a href="mon-espace.html">Mon espace</a>
 <img class="journal-sticker margin-sticker" src="images/carnet-illustre/sticker-cle.svg" alt="" aria-hidden="true"></div>
-<aside id="proposal-notifications" class="note" hidden aria-live="polite"><a href="demander-un-livre.html#my-requests"></a></aside>
+<aside id="proposal-notifications" class="proposal-notifications" hidden>
+<details><summary><span class="proposal-bell" aria-hidden="true"><span class="proposal-bell-icon">🔔</span><b id="proposal-unread">0</b></span><span id="proposal-bell-label">Notifications</span></summary>
+<div class="proposal-latest" role="status"><strong id="proposal-latest-title"></strong><p id="proposal-latest-message"></p><a class="btn secondary" href="demander-un-livre.html?notifications=1#my-requests">Voir mes propositions ↗</a></div>
+</details></aside>
 <script type="module">
 import {auth,onAccount,requestService} from './js/request-service.js';
 const inbox=document.getElementById('proposal-notifications');
-const inboxLink=inbox.querySelector('a');
+let generation=0;
 async function refreshInbox(account){
-  inbox.hidden=true;
-  if(!account)return;
-  try{
-    const {unread}=await requestService('requests-unread',{},account);
-    if(auth.currentUser?.uid!==account.uid||!unread)return;
-    inboxLink.textContent=unread===1?'Une décision sur ta proposition ↗':unread+' propositions mises à jour ↗';
-    inbox.hidden=false;
-  }catch(error){console.warn('Notifications des propositions indisponibles',error);}
+ const turn=++generation;
+ inbox.hidden=!account;
+ inbox.dataset.size='0';
+ document.getElementById('proposal-unread').textContent='0';
+ document.getElementById('proposal-bell-label').textContent='Notifications';
+ document.getElementById('proposal-latest-title').textContent='';
+ document.getElementById('proposal-latest-message').textContent='';
+ if(!account)return;
+ try{
+  const {unread,latest}=await requestService('requests-unread',{},account);
+  if(turn!==generation||auth.currentUser?.uid!==account.uid)return;
+  document.getElementById('proposal-unread').textContent=unread;
+  inbox.dataset.size=String(Math.min(unread,3));
+  document.getElementById('proposal-bell-label').textContent=unread?unread+' notification'+(unread===1?'':'s'):'Notifications';
+  document.getElementById('proposal-latest-title').textContent=latest?latest.title+' · '+latest.status:'Aucune nouvelle notification';
+  document.getElementById('proposal-latest-message').textContent=latest?.message||'';
+ }catch(error){if(turn===generation)document.getElementById('proposal-latest-message').textContent='Notifications indisponibles pour le moment.';}
 }
 onAccount(refreshInbox);
 window.addEventListener('focus',()=>{if(auth.currentUser)void refreshInbox(auth.currentUser);});
-inboxLink.addEventListener('click',async event=>{
-  if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
-  event.preventDefault();
-  try{await requestService('requests-mark-seen',{},auth.currentUser);}
-  catch(error){console.warn(error);}
-  finally{location.assign(inboxLink.href);}
-});
 </script><section class="admin-shortcut" id="admin-proposals-shortcut" hidden style="margin:20px 0;padding:18px 25px;background:#e9daf6;border:1px solid #c5a6d6;border-radius:14px"><strong>✦ Atelier des propositions</strong> <a class="btn" href="admin-propositions.html">Gérer les propositions ↗</a> <a class="btn secondary" href="publier-livre.html">Ajouter un livre au catalogue ↗</a> <span id="proposals-count" role="status"></span></section>\n<section aria-labelledby="pocket-title"><header class="desk-opening">
   <div class="desk-heading"><h1 id="pocket-title">Mon <em>espace</em></h1><div class="banner-actions"><a href="#mes-traces">Retrouver mes traces <span aria-hidden="true">↓</span></a></div></div>
   <figure class="desk-composition" aria-hidden="true">
