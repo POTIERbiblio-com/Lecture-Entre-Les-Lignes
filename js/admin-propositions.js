@@ -38,7 +38,9 @@ function render(account=auth.currentUser){
 }
 $('admin-search').oninput=()=>render();
 $('admin-filter').onchange=()=>render();
-onAccount(async account=>{
+let refreshNumber=0;
+async function refresh(account){
+  const turn=++refreshNumber;
   records=[];workspace.hidden=true;$('admin-requests').replaceChildren();
   if(!account?.emailVerified||!managers.has(account.email?.toLowerCase())){
     status.textContent='Connecte-toi avec un compte administrateur dont l’adresse e-mail est vérifiée.';return;
@@ -46,7 +48,9 @@ onAccount(async account=>{
   status.textContent='Chargement des propositions…';
   try{
     const {requests}=await requestService('requests-list',{admin:true},account);
-    if(auth.currentUser?.uid!==account.uid)return;
+    if(turn!==refreshNumber||auth.currentUser?.uid!==account.uid)return;
     records=requests;render(account);workspace.hidden=false;status.textContent='Propositions reçues';
   }catch(error){if(auth.currentUser?.uid===account.uid)status.textContent=error.message;}
-});
+}
+onAccount(refresh);
+window.addEventListener('focus',()=>refresh(auth.currentUser));

@@ -1,10 +1,67 @@
-(()=>{'use strict';
-const ENDPOINT='https://cezgcoa nkoka.supabase.co/functions/v1/secure-account'.replace('cezgcoa nkoka','cezgcoaokwuobipwfffa');
-const empty=()=>({favorites:[],boards:[]});let user=null,auth=null,cache=empty(),ready=false,promise=null,queue=Promise.resolve();const listeners=new Set();
-const normalize=x=>({favorites:Array.isArray(x?.favorites)?x.favorites.filter(v=>typeof v==='string'):[],boards:Array.isArray(x?.boards)?x.boards.filter(b=>b&&typeof b.id==='string'&&Array.isArray(b.books)).map(b=>({...b,books:b.books.filter(v=>typeof v==='string')})):[]});
-const read=()=>normalize(cache);const emit=()=>{for(const fn of listeners)fn(read());dispatchEvent(new Event('ell-lists-change'))};
-async function request(action,data){if(!auth?.currentUser)throw Error('Connecte-toi pour accéder à tes favoris.');const r=await fetch(ENDPOINT,{method:'POST',headers:{Authorization:'Bearer '+await auth.currentUser.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,kind:'collections',data})});const j=await r.json();if(!r.ok)throw Error(j.error||'Sauvegarde indisponible');return j}
-async function init(){if(ready&&auth?.currentUser?.uid===user?.id)return user;if(ready&&!user&&!auth?.currentUser)return null;if(promise)return promise;promise=(async()=>{const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const app=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});auth=getAuth(app);const signed=await new Promise(resolve=>{const unsub=onAuthStateChanged(auth,u=>{unsub();resolve(u)},()=>resolve(null))});if(!signed){user=null;cache=empty();ready=true;emit();return null}user={id:signed.uid,email:signed.email};const result=await request('read');cache=normalize(result.data);ready=true;emit();onAuthStateChanged(auth,u=>{if((u?.uid||null)!==(user?.id||null)){user=null;ready=false;promise=null;cache=empty();emit();init().catch(console.error)}});return user})();try{return await promise}catch(e){promise=null;throw e}}
-async function save(next){await init();if(!user)throw Error('Connecte-toi pour enregistrer tes favoris.');const previous=cache;cache=normalize(next);emit();const snapshot=read(),owner=user.id;const task=queue.catch(()=>{}).then(()=>{if(!auth?.currentUser||auth.currentUser.uid!==owner)throw Error('Compte changé : sauvegarde annulée pour protéger les données.');return request('write',snapshot)});queue=task;try{await task}catch(e){cache=previous;emit();throw e}}
-window.ELLCollections={init,read,save,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn)},get user(){return user}};
+(()=>{
+'use strict';
+const empty=()=>({favorites:[],boards:[]});
+const normalize=data=>({
+ favorites:[...new Set(Array.isArray(data?.favorites)?data.favorites.filter(id=>typeof id==='string'):[])],
+ boards:Array.isArray(data?.boards)?data.boards.filter(b=>b&&typeof b.id==='string'&&Array.isArray(b.books)).map(b=>({...b,books:[...new Set(b.books.filter(id=>typeof id==='string'))]})):[]
+});
+let cache=empty(),owner=null,loaded=null,queue=Promise.resolve();
+const listeners=new Set();
+const read=()=>normalize(cache);
+const service=import('./request-service.js');
+function emit(){
+ for(const fn of listeners)fn(read());
+ dispatchEvent(new Event('ell-lists-change'));
+}
+const observing=service.then(({onAccount})=>onAccount(account=>{
+ if((account?.uid??null)===owner)return;
+ owner=account?.uid??null;
+ loaded=null;
+ cache=empty();
+ emit();
+ if(account)init().catch(console.error);
+}));
+async function init(){
+ const {auth,requestService}=await service;
+ await observing;
+ await auth.authStateReady();
+ const account=auth.currentUser;
+ if(!account)return null;
+ if(account.uid!==owner){owner=account.uid;loaded=null;cache=empty();emit();}
+ if(!loaded){
+  const pending=requestService('read',{kind:'collections'},account).then(result=>{
+   if(auth.currentUser?.uid!==account.uid||owner!==account.uid)throw Error('Le compte a changé.');
+   cache=normalize(result.data);
+   emit();
+  }).catch(error=>{if(loaded===pending)loaded=null;throw error;});
+  loaded=pending;
+ }
+ await loaded;
+ if(auth.currentUser?.uid!==account.uid)throw Error('Le compte a changé.');
+ return {id:account.uid,email:account.email};
+}
+async function change(update){
+ const {auth,requestService}=await service;
+ await auth.authStateReady();
+ const account=auth.currentUser;
+ if(!account)throw Error('Connecte-toi pour enregistrer tes collections.');
+ const next=queue.catch(()=>{}).then(async()=>{
+  if(auth.currentUser?.uid!==account.uid)throw Error('Le compte a changé.');
+  await init();
+  if(auth.currentUser?.uid!==account.uid)throw Error('Le compte a changé.');
+  const previous=read();
+  const updated=read();
+  const replacement=update(updated);
+  cache=normalize(replacement??updated);
+  emit();
+  try{await requestService('write',{kind:'collections',data:read()},account);}
+  catch(error){
+   if(owner===account.uid&&auth.currentUser?.uid===account.uid){cache=previous;emit();}
+   throw error;
+  }
+ });
+ queue=next;
+ return next;
+}
+window.ELLCollections={init,read,change,save:next=>change(()=>next),onChange(fn){listeners.add(fn);return()=>listeners.delete(fn)},get user(){return owner?{id:owner}:null}};
 })();
