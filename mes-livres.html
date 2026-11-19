@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Chercher un livre · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
-<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/livres-documentes.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/favoris-listes.css?v=coeur-20261119-3"></head>
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/livres-documentes.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/favoris-listes.css?v=coeur-20261119-3"><link rel="stylesheet" href="css/catalogue-recherche.css"></head>
 <body class="page-mes-livres atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <div class="site-header" role="banner">
@@ -25,13 +25,13 @@
   <div class="slip-heading"><div><h1>Chercher un livre</h1></div><div class="slip-collage" aria-hidden="true"><img src="images/carnet-illustre/loupe.jpg" alt="" class="slip-photo"><img src="images/atelier/revue-ouverte.jpg" alt="" class="slip-book"></div></div>
   <form id="catalogue-search" role="search">
       <div class="catalogue-field catalogue-query"><label for="search">Titre, auteur, année, ISBN ou thème</label>
-      <input id="search" name="q" type="search" placeholder="Un titre, un auteur, un thème…" maxlength="160" autocomplete="off"><p class="catalogue-search-help">Recherche dans tous les livres du catalogue, y compris les nouveaux ajouts.</p>
+      <input id="search" name="q" type="search" placeholder="Un titre, un auteur, un thème…" maxlength="160" autocomplete="off"><p class="catalogue-search-help">Utilise les filtres pour affiner ta recherche.</p>
       </div>
 <div class="search-controls">
         <button type="submit" class="cloud-link">Rechercher <span aria-hidden="true" class="artist-arrow-glyph">↗</span></button>
         <button type="reset" class="reset-link">Effacer</button>
       </div>
-<div class="catalogue-field"><label for="search-genre">Genre</label>
+<details class="catalogue-filter-panel"><summary>Filtres et tri</summary><div class="catalogue-filter-grid"><div class="catalogue-field"><label for="search-genre">Genre</label>
       <select id="search-genre" name="genre">
         <option value="">Tous les genres</option>
         <option value="fiction">Fiction</option>
@@ -40,15 +40,15 @@
         <option value="vie-et-societe">Vie et société</option>
         <option value="spiritualites">Spiritualités et religions</option>
         <option value="jeunesse">Jeunesse et pédagogie</option>
-      <option value="voyages">Voyages et nature</option><option value="creativite">Créativité et loisirs</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
+      <option value="voyages">Voyages et nature</option><option value="creativite">Créativité et loisirs</option><option value="a-classer">À classer</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
       </div>
 <div class="catalogue-field"><label for="search-year">Année de l’édition</label><select id="search-year"><option value="">Toutes les dates</option></select></div>
 <div class="catalogue-field"><label for="search-sort">Classer les résultats</label><select id="search-sort"><option value="title">Titre · A à Z</option><option value="author">Auteur · A à Z</option><option value="newest">Parution · récente d’abord</option><option value="oldest">Parution · ancienne d’abord</option></select></div>
 <label class="catalogue-pdf-filter"><input type="checkbox" id="pdf-only"> Avec un PDF disponible</label>
-<label class="catalogue-pdf-filter"><input type="checkbox" id="search-favorites"> Mes favoris</label>
+<label class="catalogue-pdf-filter"><input type="checkbox" id="search-favorites"> Mes favoris</label></div></details>
 
     </form>
-  <div class="catalogue-tabs" id="catalogue-tabs" role="group" aria-label="Filtrer par rayon" hidden>
+  <div class="catalogue-tabs" id="catalogue-tabs" role="group" aria-label="Filtrer par rayon">
     <span class="catalogue-tabs-label">Les rayons</span>
     <button type="button" data-genre="" aria-pressed="true">Tout</button>
     <button type="button" data-genre="fiction" aria-pressed="false">Fiction</button>
@@ -56,7 +56,7 @@
     <button type="button" data-genre="arts" aria-pressed="false">Arts</button>
     <button type="button" data-genre="vie-et-societe" aria-pressed="false">Vie et société</button>
     <button type="button" data-genre="spiritualites" aria-pressed="false">Spiritualités</button>
-    <button type="button" data-genre="jeunesse" aria-pressed="false">Jeunesse</button>
+    <button type="button" data-genre="jeunesse" aria-pressed="false">Jeunesse</button><button type="button" data-genre="voyages" aria-pressed="false">Voyages et nature</button><button type="button" data-genre="creativite" aria-pressed="false">Créativité et loisirs</button>
   </div>
 </div>
 <nav class="catalogue-shortcuts" aria-label="Accès rapide aux collections"><a href="favoris.html">♥ Mes favoris</a><a href="listes.html">✦ Mes listes</a><button type="button" class="ell-add-list" data-ell-new-list>Créer une liste</button><a href="lecture.html">📖 Espace lecture</a></nav>
@@ -74,7 +74,7 @@
 <section id="recommended-books" class="site-main catalogue-shelf" hidden><h2>À lire d’après tes favoris</h2><div class="catalogue-results"></div></section><script src="js/recommandations.js" defer></script><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
-<script type="text/javascript" src="js/app.js?v=catalogue-public-20261119">
+<script type="text/javascript" src="js/app.js?v=ergonomie-20261119">
 </script>
 <script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/collections-privees.js?v=coeur-20261119-3" defer></script><script src="js/favoris-catalogue.js?v=coeur-20261119-3" defer></script></body>
 </html>

@@ -7,7 +7,7 @@ async function ellPrivate(action,data){
  return requestService(action,{kind:'carnet',data},account);
 }
 function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};state.design={};state.legend={};for(const b of state.books){b.position='';b.pdfPage=1;}}
-const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]]};
+const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"a-classer":["À classer",["Sans sous-genre"]]};
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let db,state,objects=[];let id=new URLSearchParams(location.search).get('id')||$('book-detail')?.dataset.bookId||$('reader-content')?.dataset.bookId;
@@ -1245,7 +1245,7 @@ function bookFileActions(book, meta) {
   const readHint = pdf ? 'Lecteur intégré · surlignage et notes' : 'Lire et prendre des notes';
   const downloadHint = meta.pdfPages ? 'PDF · '+meta.pdfPages+' pages' : 'Enregistrer une copie sur ton appareil';
   const fileName = (meta.pdfPath?.startsWith('pdf/') ? meta.pdfPath.slice(4) : book.title.replace(/[\\/:*?"<>|]/g,'-')+'.pdf');
-  const download = pdf ? `<a class="book-file-action file-download" href="${esc(pdf)}" ${meta.pdfPath&&!meta.pdf?`data-pdf-link="${esc(meta.pdfPath)}"`:''} download="${esc(fileName)}">
+  const download = pdf ? `<a class="book-file-action file-download" data-count-download="${esc(book.id)}" href="${esc(pdf)}" ${meta.pdfPath&&!meta.pdf?`data-pdf-link="${esc(meta.pdfPath)}"`:''} download="${esc(fileName)}">
     <span class="file-glyph download-glyph" aria-hidden="true"></span><span><strong>Télécharger le PDF</strong><small>${esc(downloadHint)}</small></span></a>` : '';
   const reader = pdf || book.text ? `<a class="book-file-action file-open" href="${esc(siteHref('lire.html?id='+encodeURIComponent(book.id)+'#reader-content'))}">
     <img src="${esc(assetHref('images/objets/livre-ouvert.svg'))}" alt=""><span><strong>${readLabel}</strong><small>${readHint}</small></span></a>` : '';
@@ -3248,7 +3248,7 @@ ${unit === 'Repères d’après le sommaire' ? '<p class="book-chapter-context">
 }
 
 function detailMarkup(b){const meta={...b};const guide=Object.hasOwn(READING_GUIDES,b.id)?READING_GUIDES[b.id]:null;const sources=[...(guide?.edition.sources||[]),...(meta.sources||[])].filter((source,index,all)=>all.findIndex(item=>item.url===source.url)===index);const art=BOOK_ART[b.id]||({liv0015:['train-fleuri.jpg','Quel chemin prendre ?'],liv0016:['telephone-rose.jpg','Le premier appel'],liv0017:['lecteur-journal.jpg','Diriger une équipe'],liv0018:['chuchotement.jpg','Nos influences'],liv0019:['portrait-bulle.jpg','Prendre la parole'],liv0020:['telephone-pastel.jpg','Le téléphone côté atelier'],liv0021:['conversation-sur-canape.jpg','Le temps d’écouter'],liv0022:['televiseurs-roses.jpg','Derrière l’écran'],liv0023:['regard-curieux.jpg','De l’action à la pensée'],liv0024:['ampoule-etoiles.jpg','Ce que l’on croit possible']})[b.id]||['livre-paysage.jpg','Un monde entre les pages'];const tags=meta.themes||[];
-return '<div class="book-dossier album-book"><header class="album-opening"><div class="album-heading"><p class="album-rayon"><a href="'+siteHref('livres-'+b.genre+'-'+b.sub+'.html')+'">'+esc(GENRES[b.genre]?.[1][b.sub])+' ↗</a></p><h1>'+esc(b.title)+'</h1><p class="album-author">'+esc(b.author)+'</p></div><figure class="album-montage"><img class="album-landscape" src="'+esc(assetHref('images/atelier/'+art[0]))+'" alt=""><img class="album-endpaper" src="'+esc(assetHref('images/collage/papier-fleuri.jpg'))+'" alt=""><div class="album-cover-polaroid">'+smallCover({...b,cover:b.cover||meta.cover})+'<img class="album-cover-flower" src="'+esc(assetHref('images/carnet-illustre/sticker-fleur.svg'))+'" alt=""></div></figure>'+bookFileActions(b,meta)+'</header>'+
+return '<div class="book-dossier album-book"><header class="album-opening"><div class="album-heading"><p class="album-rayon"><a href="'+siteHref(b.genre==='a-classer'?'mes-livres.html?genre=a-classer':'livres-'+b.genre+'-'+b.sub+'.html')+'">'+esc(GENRES[b.genre]?.[1][b.sub])+' ↗</a></p><h1>'+esc(b.title)+'</h1><p class="album-author">'+esc(b.author)+'</p></div><figure class="album-montage"><img class="album-landscape" src="'+esc(assetHref('images/atelier/'+art[0]))+'" alt=""><img class="album-endpaper" src="'+esc(assetHref('images/collage/papier-fleuri.jpg'))+'" alt=""><div class="album-cover-polaroid">'+smallCover({...b,cover:b.cover||meta.cover})+'<img class="album-cover-flower" src="'+esc(assetHref('images/carnet-illustre/sticker-fleur.svg'))+'" alt=""></div></figure>'+bookFileActions(b,meta)+'</header>'+
 bookPassport(b,meta,guide)+bookGuideMarkup(b,guide)+
 (meta.reviewLinks?.length?'<section class="book-guides"><h2>Critiques et avis externes</h2><ul>'+meta.reviewLinks.filter(url=>typeof url==='string'&&/^https:\/\//.test(url)).map((url,i)=>'<li><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Consulter la source externe '+(i+1)+'</a></li>').join('')+'</ul></section>':'')+
 (editorialAdmin?'<p><a class="btn secondary" href="'+editorialControl(b)+'">Gérer ce livre</a></p>':'')+(adminEnabled?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
@@ -4090,12 +4090,12 @@ async function showDownloadCount(book){
  const id=book.accessBookId||book.id;
  try{
   const query=new URLSearchParams({select:'downloads',book_id:'eq.'+id});
-  const response=await fetch(ELL_URL+'/rest/v1/catalogue_download_totals?'+query,{headers:{apikey:ELL_KEY}});
+  const response=await fetch(ELL_URL+'/rest/v1/catalogue_download_totals?'+query,{headers:{apikey:ELL_KEY},cache:'no-store'});
   if(!response.ok)return;
   const [stat]=await response.json();
   const total=Number(stat?.downloads||0);
-  const count=document.createElement('p');
-  count.className='note';
+  const count=$('book-download-total')||document.createElement('p');
+  count.id='book-download-total';count.className='note';count.setAttribute('aria-live','polite');
   count.textContent=new Intl.NumberFormat('fr-FR').format(total)+' téléchargement'+(total===1?'':'s')+' enregistré'+(total===1?'':'s');
   (host.querySelector('.book-file-actions')||host.querySelector('.album-heading')||host).append(count);
  }catch(error){console.warn(error);}
@@ -4191,6 +4191,7 @@ if ($('catalogue-tabs')) {
   $('catalogue-tabs').querySelectorAll('[data-genre]').forEach(button => {
     button.onclick = () => {
       $('search-genre').value = button.dataset.genre;
+      $('search-genre').dispatchEvent(new Event('change'));
       renderBooks();
     };
   });
@@ -4331,11 +4332,19 @@ $('book-form').onsubmit = async event => {
 }
 
 if($('book-detail')){$('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();if(b)showDownloadCount(b);}
+document.querySelectorAll('[data-count-download]').forEach(link=>link.addEventListener('click',async()=>{
+ if(typeof previewAsset==='function')return;
+ try{
+  const response=await fetch(ELL_URL+'/functions/v1/secure-account',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'record-public-download',bookId:link.dataset.countDownload})});
+  if(response.ok&&b)await showDownloadCount(b);
+ }catch(error){console.warn(error);}
+}));
 document.querySelectorAll('[data-private-download]').forEach(button=>button.onclick=async()=>{
   button.disabled=true;
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
     location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true,publicAccess:button.dataset.publicDownload==='true'}));
+    if(b)void showDownloadCount(b);
   }catch(error){alert(error.message);}
   finally{button.disabled=false;}
 });

@@ -13,6 +13,7 @@ async function refresh(account){
     if(auth.currentUser?.uid===account.uid)list.textContent='Suivi indisponible. '+error.message;
   }
 }
+window.addEventListener('focus',()=>{if(auth.currentUser)void refresh(auth.currentUser);});
 onAccount(account=>{
   list.replaceChildren();
   $('request-success').hidden=true;

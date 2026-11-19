@@ -24,7 +24,8 @@ function render(account=auth.currentUser){
    card.append(publish);
   }
   const form=document.createElement('form');
-  form.innerHTML='<label>Décision<select name="decision"></select></label><fieldset><legend>Classement du livre</legend><label>Titre<input name="title" maxlength="180"></label><label>Auteur<input name="author" maxlength="150"></label><label>Genre<select name="genre"></select></label><label>Sous-genre<select name="sub"></select></label></fieldset><label>Message au lecteur<textarea name="message" maxlength="3000" rows="3"></textarea></label><button class="btn">Envoyer la décision</button><p role="status"></p>';
+  form.className='proposal-decision-form';
+  form.innerHTML='<label>Décision<select name="decision"></select></label><fieldset class="proposal-classification"><legend>Classement du livre</legend><label>Titre<input name="title" maxlength="180"></label><label>Auteur<input name="author" maxlength="150"></label><label>Genre<select name="genre"></select></label><label>Sous-genre<select name="sub"></select></label></fieldset><label class="proposal-message">Message au lecteur<textarea name="message" maxlength="3000" rows="3"></textarea></label><div class="proposal-send"><button class="btn" type="submit">Envoyer la décision</button><p role="status"></p></div>';
   const fields=form.elements;
   for(const [key,label] of Object.entries(decisions))if(key!=='published')fields.decision.add(new Option(label,key));
   fields.decision.value=workflow.decision==='published'?'accepted':decisionOf(record);
@@ -37,6 +38,7 @@ function render(account=auth.currentUser){
   fields.genre.onchange=setSubgenres;setSubgenres();fields.sub.value=workflow.sub??'';
   function updateRequirements(){
    const accepted=['accepted','queued'].includes(fields.decision.value);
+   form.querySelector('fieldset').hidden=!accepted;
    for(const name of ['title','author','genre','sub'])fields[name].required=accepted;
    fields.message.required=['rejected','more_info'].includes(fields.decision.value);
   }
@@ -44,16 +46,19 @@ function render(account=auth.currentUser){
   form.onsubmit=async event=>{
    event.preventDefault();
    const button=form.querySelector('button'),feedback=form.querySelector('[role=status]');
+   if(!window.confirm('Envoyer la décision « '+decisions[fields.decision.value]+' » pour « '+record.title+' » ? Le compte du lecteur recevra une notification.'))return;
    button.disabled=true;
+   feedback.textContent='Envoi en cours…';
    try{
     const response=await requestService('requests-reply',{id:record.id,...Object.fromEntries(new FormData(form))},account);
     if(auth.currentUser?.uid!==account.uid)return;
+    $('admin-decision-feedback').textContent=response.emailSent?'Décision envoyée · notification dans le compte et e-mail transmis.':'Décision envoyée · notification disponible dans le compte du lecteur.';
     await refresh();
-    status.prepend(response.emailSent?'Message déposé dans le compte et envoyé par e-mail. ':'Message déposé dans le compte du lecteur. ');
    }catch(error){feedback.textContent=error.message;}
    finally{button.disabled=false;}
   };
-  card.append(form);result.append(card);
+  const wrap=document.createElement('details');wrap.className='proposal-actions';
+  const summary=document.createElement('summary');summary.textContent='Traiter la proposition';wrap.append(summary,form);card.append(wrap);result.append(card);
  }
  if(!matches.length)result.textContent='Aucune proposition à afficher.';
 }

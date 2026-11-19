@@ -4,3 +4,16 @@
 .request-entry .status,.admin-request .status{border-radius:1rem;padding:.35rem .65rem;display:inline-block;font-weight:700}
 .admin-request fieldset{display:grid;gap:.5rem;border:1px solid #e8c8db;border-radius:.8rem;padding:.8rem}
 .request-history li{margin:.55rem 0}
+.page-proposer-livre:has(#admin-workspace) .request-wrap{width:min(94%,1240px);max-width:none}
+#admin-workspace .admin-list{display:grid;grid-template-columns:1fr;gap:1.4rem}
+#admin-workspace .admin-request{display:block;min-width:0;width:100%;box-sizing:border-box;padding:clamp(1rem,3vw,2rem);border-radius:1.3rem;background:#fffafd}
+.proposal-actions{margin-top:1rem;padding:.8rem 1rem;border:1px solid #e8c8db;border-radius:.9rem;background:#fff}
+.proposal-actions summary{cursor:pointer;font-weight:700;color:#743956}
+#admin-workspace .proposal-decision-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1rem}
+#admin-workspace .proposal-decision-form .proposal-classification{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
+#admin-workspace .proposal-classification[hidden]{display:none}
+.proposal-message,.proposal-send{grid-column:1/-1}
+#admin-workspace .proposal-decision-form input,#admin-workspace .proposal-decision-form select,#admin-workspace .proposal-decision-form textarea{box-sizing:border-box;width:100%;min-height:2.6rem}
+#admin-workspace .proposal-decision-form textarea{min-height:7rem}
+.proposal-confirmation:not(:empty){padding:1rem;background:#ddf3e3;border-radius:.9rem;color:#215439}
+@media(max-width:600px){#admin-workspace .proposal-decision-form,#admin-workspace .proposal-decision-form .proposal-classification{grid-template-columns:1fr}}

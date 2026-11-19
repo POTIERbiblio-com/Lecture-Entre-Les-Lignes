@@ -1,7 +1,7 @@
 import {watchAdministration} from './admin-session.js';
 import {auth,requestService} from './request-service.js?v=decisions-20261119';
 import {uploadCataloguePdf} from './catalogue-access.js';
-const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]]};
+const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"a-classer":["À classer",["Sans sous-genre"]]};
 const form=document.getElementById('publication-form');
 const message=document.getElementById('publication-message');
 const chapters=document.getElementById('publication-chapters');
@@ -11,6 +11,7 @@ const submit=form.querySelector('[type=submit]');
 let draft=null;
 
 for(const [slug,[label]] of Object.entries(GENRES))fields.genre.add(new Option(label,slug));
+fields.genre.value='a-classer';
 function subgenres(){
   fields.sub.replaceChildren(...GENRES[fields.genre.value][1].map((label,index)=>new Option(label,index)));
 }
@@ -31,6 +32,7 @@ addChapter.onclick=()=>{
 watchAdministration({status:message,onClosed(){
   form.hidden=true;
   form.reset();
+  fields.genre.value='a-classer';
   chapters.replaceChildren();
   addChapter.disabled=false;
   fields.reviewUrl.oninput();
@@ -52,7 +54,7 @@ form.onsubmit=async event=>{
   const values=new FormData(form);
   const cover=values.get('cover'),pdf=values.get('pdf');
   const coverType=cover.type;
-  if(!['image/jpeg','image/png','image/webp'].includes(coverType)||cover.size>8*1024*1024){
+  if(cover.size&&(!['image/jpeg','image/png','image/webp'].includes(coverType)||cover.size>8*1024*1024)){
     message.textContent='Choisis une couverture JPEG, PNG ou WebP de 8 Mo maximum.';
     return;
   }
@@ -68,7 +70,7 @@ form.onsubmit=async event=>{
   payload.edition=Object.fromEntries([...values].filter(([name])=>name.startsWith('edition-')).map(([name,value])=>[name.slice(8),value]));
   payload.chapters=Array.from(chapters.children,field=>Object.fromEntries(['title','page','summary'].map(name=>[name,field.querySelector('[name=chapter-'+name+']').value])));
   try{
-    if(publication.cover!==cover.name+'|'+cover.size+'|'+cover.lastModified){
+    if(cover.size&&publication.cover!==cover.name+'|'+cover.size+'|'+cover.lastModified){
       message.textContent='Envoi de la couverture…';
       const {path,token}=await requestService('editorial-cover-upload',{bookId:publication.id,coverType},account);
       const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
@@ -84,7 +86,7 @@ form.onsubmit=async event=>{
       publication.pdf=fileKey;
     }
     message.textContent='Publication dans le catalogue…';
-    const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType},account);
+    const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType:cover.size?coverType:''},account);
     if(auth.currentUser?.uid!==account.uid)return;
     const filters=new URLSearchParams({genre:payload.genre,sub:payload.sub,publie:id});
     const destination='mes-livres.html?'+filters+'#books';

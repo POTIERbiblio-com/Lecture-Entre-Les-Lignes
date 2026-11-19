@@ -1,0 +1,6 @@
+.catalogue-filter-panel{grid-column:1/-1;border:1px solid #e3bfd2;border-radius:1rem;background:#fff6fa;padding:.75rem 1rem}
+.catalogue-filter-panel summary{font-weight:700;cursor:pointer;color:#673a55}
+.catalogue-filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:.8rem;padding-top:.8rem}
+.catalogue-filter-grid select{width:100%;min-height:2.6rem}
+#catalogue-tabs{flex-wrap:wrap;margin-top:1rem;gap:.5rem}#catalogue-tabs button[aria-pressed=true]{background:#743956;color:#fff}
+#catalogue-tabs button{min-height:2.55rem}
