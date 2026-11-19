@@ -1287,13 +1287,12 @@ function bindReadingSearch(){
   const matches=entries.filter(item=>(!type||item.type===type)&&terms.every(term=>item.words.includes(term)));
   summary.textContent=matches.length?matches.length+' résultat'+(matches.length>1?'s':'')+(matches.length>50?' · 50 affichés. Affine la recherche pour voir les autres.':''):'Aucun résultat pour cette recherche.';
   output.innerHTML=matches.slice(0,50).map(item=>{
-   const page=String(item.page??'').trim(), pageNumber=page.match(/^(?:page\\s+)?([1-9]\\d*)$/i)?.[1];
+   const page=String(item.page??'').trim(), pageNumber=page.match(/^(?:page\s+)?([1-9]\d*)$/i)?.[1];
    const href=item.mark?jumpToHighlight(item.book,item.mark):pageNumber?siteHref('lire.html?id='+encodeURIComponent(item.book.id)+'&pdfpage='+pageNumber):bookLink(item.book);
    const excerpt=String(item.body??'').trim();
-   const position=excerpt.search(/[^\\s]/);
    const words=searchTerms(excerpt);
    let offset=0;
-   const rawWords=[...excerpt.matchAll(/[\\p{L}\\p{N}]+/gu)];
+   const rawWords=[...excerpt.matchAll(/[\p{L}\p{N}]+/gu)];
    const match=words.findIndex(word=>terms.some(term=>word.includes(term)));
    if(match>=0)offset=Math.max(0,(rawWords[match]?.index??0)-65);
    const snippet=(offset?'…':'')+excerpt.slice(offset,offset+250)+(excerpt.length>offset+250?'…':'');
