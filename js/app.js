@@ -3421,18 +3421,16 @@ function lockCatalog(){
 }
 function showAccount(){
  const box=$('account-status');if(!box)return;
- if(location.hash.includes('type=recovery')){box.innerHTML='<h2>Définir un nouveau mot de passe</h2><form id="ell-recovery"><input id="ell-new-pass" type="password" minlength="6" required autocomplete="new-password" placeholder="Nouveau mot de passe"><button type="submit">Enregistrer le mot de passe</button></form><p id="ell-recovery-msg" role="status"></p>'; $('ell-recovery').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.updateUser({password:$('ell-new-pass').value});$('ell-recovery-msg').textContent=error?error.message:'Mot de passe modifié. Recharge la page pour accéder à ton compte.';};return;}
- if(!ell){box.textContent='Connexion momentanément indisponible.';return;}
- if(ellUser){
- box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>. Tes carnets sont liés à ton compte.</p>'+(adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';
- $('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});await ell.auth.signOut();localStorage.removeItem('ell_account');location.reload();};return;
- }
- box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-reset">Mot de passe oublié ?</button><button type="button" id="ell-resend">Renvoyer le mail de confirmation</button><p id="ell-result" role="status"></p>';
+ if(!ellFirebaseAuth){box.textContent='Connexion Firebase indisponible. Réessaie après avoir rechargé la page.';return;}
+ if(ellUser){box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email||'ton compte Google')+'</strong>. Tes données restent liées à ce compte.</p>'+(adminEnabled?'<a class="btn" href="admin-moderation.html">Gérer les livres</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';$('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});const {signOut}=await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js');await signOut(ellFirebaseAuth);location.reload()};return;}
+ box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>Adresse e-mail<input id="ell-mail" type="email" autocomplete="email" required></label><label>Mot de passe<input id="ell-pass" type="password" autocomplete="current-password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-google">Continuer avec Google</button><button type="button" id="ell-reset">Mot de passe oublié ?</button><button type="button" id="ell-resend">Renvoyer la vérification</button><p id="ell-result" role="status"></p>';
  const cred=()=>({email:$('ell-mail').value.trim(),password:$('ell-pass').value}),msg=x=>$('ell-result').textContent=x;
- $('ell-form').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.signInWithPassword(cred());if(error)msg(error.message);else location.reload();};
- $('ell-create').onclick=async()=>{const {error}=await ell.auth.signUp({...cred(),options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Si cette adresse est nouvelle, un message de confirmation sera envoyé. Si tu possèdes déjà un compte, utilise « Se connecter » ou « Mot de passe oublié ? ».');};
- $('ell-resend').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail.');return;}const {error}=await ell.auth.resend({type:'signup',email,options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Si cette adresse attend une confirmation, un nouvel e-mail a été demandé.');};
- $('ell-reset').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail pour recevoir le lien de réinitialisation.');return;}const {error}=await ell.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});msg(error?error.message:'Si ce compte existe, un e-mail de réinitialisation a été envoyé.');};
+ const authLib=()=>import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js');
+ $('ell-form').onsubmit=async e=>{e.preventDefault();try{const {signInWithEmailAndPassword}=await authLib();const result=await signInWithEmailAndPassword(ellFirebaseAuth,cred().email,cred().password);if(!result.user.emailVerified){msg('Vérifie ton adresse e-mail avant de poursuivre.');return}location.reload()}catch(error){msg('Connexion impossible : '+error.message)}};
+ $('ell-create').onclick=async()=>{try{const {createUserWithEmailAndPassword,sendEmailVerification}=await authLib();const {user}=await createUserWithEmailAndPassword(ellFirebaseAuth,cred().email,cred().password);await sendEmailVerification(user,{url:location.origin+location.pathname,handleCodeInApp:false});msg('Compte créé. Un lien de vérification Entre les lignes a été envoyé à ton adresse. Vérifie aussi les courriers indésirables.')}catch(error){msg('Création impossible : '+error.message)}};
+ $('ell-google').onclick=async()=>{try{const {GoogleAuthProvider,signInWithPopup,signInWithRedirect}=await authLib();try{await signInWithPopup(ellFirebaseAuth,new GoogleAuthProvider())}catch(error){if(error.code==='auth/popup-blocked'){await signInWithRedirect(ellFirebaseAuth,new GoogleAuthProvider());return}throw error}location.reload()}catch(error){msg('Connexion Google impossible : '+error.message)}};
+ $('ell-reset').onclick=async()=>{try{const {sendPasswordResetEmail}=await authLib();await sendPasswordResetEmail(ellFirebaseAuth,$('ell-mail').value.trim());msg('Si le compte existe, un message de réinitialisation sera envoyé.')}catch(error){msg(error.message)}};
+ $('ell-resend').onclick=async()=>{try{const {sendEmailVerification}=await authLib();if(!ellFirebaseAuth.currentUser){msg('Connecte-toi au compte concerné pour demander un nouvel e-mail de vérification.');return}await sendEmailVerification(ellFirebaseAuth.currentUser,{url:location.origin+location.pathname});msg('E-mail de vérification demandé.')}catch(error){msg(error.message)}};
 }
 
 async function storeCatalogBook(book){throw Error('Utilise la page Administration du catalogue.');}
@@ -3846,8 +3844,9 @@ async function startBookReader(book) {
    pdfLibrary = await getPDFLibrary();
    if (events.signal.aborted) return cleanup;
    const source = pdfAddress(book);
-   const input = source.startsWith('data:') ? {data:decodeBinaryAsset(source)} : {url:source};
-   loading = pdfLibrary.getDocument({...input,isEvalSupported:false,useSystemFonts:true,disableAutoFetch:true,disableStream:true});
+   if(!source)throw Error('Aucun fichier PDF n’est associé à ce livre.');
+   const input = source.startsWith('data:') ? {data:decodeBinaryAsset(source)} : {url:new URL(source,location.href).href};
+   loading = pdfLibrary.getDocument({...input,isEvalSupported:false,useSystemFonts:true,disableAutoFetch:false,disableStream:false,rangeChunkSize:65536});
    pdf = await loading.promise;
    if (events.signal.aborted) return cleanup;
    $('pdf-total').textContent = '/ '+pdf.numPages;
@@ -3900,7 +3899,7 @@ async function startBookReader(book) {
 }
 
 let pdfLibraryPromise;
-function getPDFLibrary(){if(!pdfLibraryPromise)pdfLibraryPromise=(async()=>{if(location.protocol==='file:'&&typeof previewAsset!=='function'){if(!window.ELLPDFJs)await loadClassicScript('js/pdf-offline/engine.js');window.ELLPDFJs.GlobalWorkerOptions.workerSrc=binaryAssetURL(window.ELLPDFWorkerData,'text/javascript');return window.ELLPDFJs;}let moduleURL=assetHref('js/pdfjs/pdf.mjs'),workerURL=assetHref('js/pdfjs/pdf.worker.mjs');if(moduleURL.startsWith('data:'))moduleURL=binaryAssetURL(moduleURL,'text/javascript');if(workerURL.startsWith('data:'))workerURL=binaryAssetURL(workerURL,'text/javascript');const lib=await import(moduleURL.startsWith('blob:')?moduleURL:new URL(moduleURL,location.href).href);lib.GlobalWorkerOptions.workerSrc=workerURL.startsWith('blob:')?workerURL:new URL(workerURL,location.href).href;return lib;})();return pdfLibraryPromise;}
+function getPDFLibrary(){if(!pdfLibraryPromise)pdfLibraryPromise=(async()=>{if(location.protocol==='file:'&&typeof previewAsset!=='function'){if(!window.ELLPDFJs)await loadClassicScript('js/pdf-offline/engine.js');window.ELLPDFJs.GlobalWorkerOptions.workerSrc=binaryAssetURL(window.ELLPDFWorkerData,'text/javascript');return window.ELLPDFJs;}let moduleURL=assetHref('js/pdfjs/pdf.mjs'),workerURL=assetHref('js/pdfjs/pdf.worker.mjs');if(moduleURL.startsWith('data:'))moduleURL=binaryAssetURL(moduleURL,'text/javascript');if(workerURL.startsWith('data:'))workerURL=binaryAssetURL(workerURL,'text/javascript');const lib=await import(moduleURL.startsWith('blob:')?moduleURL:new URL(moduleURL,location.href).href);lib.GlobalWorkerOptions.workerSrc=workerURL.startsWith('blob:')?workerURL:new URL(workerURL,location.href).href;return lib;})();return pdfLibraryPromise.catch(error=>{pdfLibraryPromise=null;throw error});}
 function decodeBinaryAsset(data){
  const encoded=data.slice(data.indexOf(',')+1);
  if (typeof Uint8Array.fromBase64==='function') return Uint8Array.fromBase64(encoded);
