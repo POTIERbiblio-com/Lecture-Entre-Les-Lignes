@@ -3365,7 +3365,7 @@ async function save(){
 }
 async function connectService(){
  if(location.protocol==='file:')return null;
- try{await ellConnect();const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const user=fbuser?{id:fbuser.uid,email:fbuser.email}:null;ellUser=user;
+ try{await ellConnect().catch(error=>console.warn('Catalogue Supabase temporairement indisponible',error));const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const user=fbuser?{id:fbuser.uid,email:fbuser.email}:null;ellUser=user;
  adminEnabled=false;
  service={user:user?.id||null,admin:adminEnabled};return service;
  }catch(e){console.error(e);return null;}
@@ -3383,7 +3383,6 @@ function restoreCarnet(data) {
 }
 
 async function loadServiceState(){
- if(!ell)return;
  // Clear local data before loading: no notes/highlights from a prior session can flash on screen.
  ellClear();
  if(ellUser){
@@ -3395,6 +3394,7 @@ async function loadServiceState(){
  }else{
   localStorage.removeItem('ell_account');
  }
+ if(!ell)return;
  const {data:catalog,error:catalogError}=await ell.from('books').select('*').eq('published',true);
  if(catalogError){console.warn('Catalogue en ligne indisponible',catalogError);return;}
  for(const entry of catalog||[]){
