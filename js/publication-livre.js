@@ -9,6 +9,18 @@ const fields=form.elements;
 const addChapter=document.getElementById('add-chapter');
 const submit=form.querySelector('[type=submit]');
 let draft=null;
+const privateLevel='quentin-only';
+const isQuentin=account=>account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
+const coverLabel=fields.cover.closest('label');
+const audienceNote=document.getElementById('publication-private-note');
+function updateAudience(){
+  const privateSelection=fields.level.value===privateLevel;
+  fields.cover.disabled=privateSelection;
+  coverLabel.hidden=privateSelection;
+  audienceNote.hidden=!privateSelection;
+  submit.textContent=privateSelection?'Ajouter à ma sélection privée':'Publier le livre';
+}
+fields.level.addEventListener('change',updateAudience);
 
 for(const [slug,[label]] of Object.entries(GENRES))fields.genre.add(new Option(label,slug));
 fields.genre.value='a-classer';
@@ -31,7 +43,9 @@ addChapter.onclick=()=>{
 };
 watchAdministration({status:message,onClosed(){
   form.hidden=true;
+  fields.level.querySelector('option[value="quentin-only"]')?.remove();
   form.reset();
+  updateAudience();
   fields.genre.value='a-classer';
   chapters.replaceChildren();
   addChapter.disabled=false;
@@ -44,6 +58,10 @@ watchAdministration({status:message,onClosed(){
   if(Array.from(fields.sub.options).some(option=>option.value===query.get('sub')))fields.sub.value=query.get('sub');
   draft=null;
 },onReady(){
+  if(isQuentin(auth.currentUser)&&!fields.level.querySelector('option[value="quentin-only"]')){
+    fields.level.add(new Option('Sélection privée de Quentin',privateLevel));
+  }
+  updateAudience();
   form.hidden=false;
   message.textContent='Compte administrateur vérifié. Tu peux publier le livre.';
 }});
@@ -52,9 +70,11 @@ form.onsubmit=async event=>{
   event.preventDefault();
   const account=auth.currentUser;
   const values=new FormData(form);
+  const privateSelection=values.get('level')===privateLevel;
+  if(privateSelection&&!isQuentin(account))return;
   const cover=values.get('cover'),pdf=values.get('pdf');
-  const coverType=cover.type;
-  if(cover.size&&(!['image/jpeg','image/png','image/webp'].includes(coverType)||cover.size>8*1024*1024)){
+  const coverType=cover?.type||'';
+  if(cover?.size&&(!['image/jpeg','image/png','image/webp'].includes(coverType)||cover.size>8*1024*1024)){
     message.textContent='Choisis une couverture JPEG, PNG ou WebP de 8 Mo maximum.';
     return;
   }
@@ -63,14 +83,14 @@ form.onsubmit=async event=>{
     return;
   }
   if(!values.get('rights')||!account||auth.currentUser?.uid!==account.uid)return;
-  draft??={id:'edition-'+crypto.randomUUID(),pdf:null,cover:null};
+  if(!draft||draft.privateSelection!==privateSelection)draft={id:'edition-'+crypto.randomUUID(),pdf:null,cover:null,privateSelection};
   const publication=draft;
   submit.disabled=true;
   const payload=Object.fromEntries([...values].filter(([name,value])=>typeof value==='string'&&!/^(chapter-|edition-)/.test(name)));
   payload.edition=Object.fromEntries([...values].filter(([name])=>name.startsWith('edition-')).map(([name,value])=>[name.slice(8),value]));
   payload.chapters=Array.from(chapters.children,field=>Object.fromEntries(['title','page','summary'].map(name=>[name,field.querySelector('[name=chapter-'+name+']').value])));
   try{
-    if(cover.size&&publication.cover!==cover.name+'|'+cover.size+'|'+cover.lastModified){
+    if(cover?.size&&publication.cover!==cover.name+'|'+cover.size+'|'+cover.lastModified){
       message.textContent='Envoi de la couverture…';
       const {path,token}=await requestService('editorial-cover-upload',{bookId:publication.id,coverType},account);
       const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
@@ -85,9 +105,10 @@ form.onsubmit=async event=>{
       await uploadCataloguePdf(publication.id,pdf,account);
       publication.pdf=fileKey;
     }
-    message.textContent='Publication dans le catalogue…';
-    const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType:cover.size?coverType:''},account);
+    message.textContent=privateSelection?'Ajout à ta sélection privée…':'Publication dans le catalogue…';
+    const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType:cover?.size?coverType:''},account);
     if(auth.currentUser?.uid!==account.uid)return;
+    if(privateSelection){location.assign('mon-espace.html#quentin-selection');return;}
     const filters=new URLSearchParams({genre:payload.genre,sub:payload.sub,publie:id});
     const destination='mes-livres.html?'+filters+'#books';
     const proposal=new URLSearchParams(location.search).get('proposition');
