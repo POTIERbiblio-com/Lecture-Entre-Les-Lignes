@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Rechercher dans mes lectures · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/carnet-pages.css"><link rel="stylesheet" href="css/reader-fullscreen.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/plan-locks.css"></head>
+<body class="atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="site-header" role="banner">
+<a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<div class="site-nav" aria-label="Menu principal" role="navigation">
+<a href="index.html">Accueil</a>
+<a href="genres.html">Genres</a>
+<a href="lecture.html" >Lecture</a>
+<a href="mes-livres.html" class="nav-search">Chercher un livre</a>
+<a href="critiques.html">Critiques</a>
+<a href="mon-espace.html" class="active">Mon espace</a>
+</div>
+</div>
+<div class="site-main" role="main" id="contenu">
+<div class="crumb"><a href="mon-espace.html">Mon espace</a> / Recherche</div>
+<header class="carnet-affiche carnet-affiche-marges" aria-labelledby="carnet-page-title">
+  <div class="carnet-affiche-art" aria-hidden="true"></div>
+  <div class="carnet-affiche-titre"><h1 id="carnet-page-title">Rechercher dans mes lectures</h1><p>Retrouve une idée dans tes notes, tes fiches et tes passages surlignés, tous livres confondus.</p></div>
+  <img class="carnet-affiche-sticker" src="images/objets/loupe.svg" alt="">
+</header>
+<section id="reading-search" aria-label="Recherche dans le carnet">
+  <form class="trace-filters" id="reading-search-form" hidden>
+    <div><label for="reading-search-query">Mot ou expression</label><input id="reading-search-query" type="search" maxlength="160" placeholder="Ex. influence" required></div>
+    <div><label for="reading-search-type">Type de résultat</label><select id="reading-search-type"><option value="">Tout le carnet</option><option>Surlignage</option><option>Annotation</option><option>Fiche de lecture</option><option>Note</option><option>Journal</option></select></div>
+    <button type="submit" class="btn">Rechercher</button>
+  </form>
+  <p id="reading-search-status" role="status">Chargement de ton carnet…</p>
+  <p id="reading-search-offer" hidden><span class="plan-lock plan-lock-2">Passion</span> <span class="plan-lock plan-lock-3">Illimité</span> <a href="le-cercle.html#comparatif">Comparer les formules</a></p>
+  <div id="reading-search-results" class="trace-grid"></div>
+</section>
+</div>
+<style>#reading-search [hidden]{display:none!important}#reading-search-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1rem}#reading-search-results .saved-fragment{--fragment-color:#ead6ef;min-width:0;overflow-wrap:anywhere}</style>
+<script src="js/app.js?v=recherche-lectures-20261120"></script>
+</body></html>
