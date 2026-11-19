@@ -56,7 +56,7 @@ function card(b){
  +'<label><input type="checkbox" data-feature="bestseller" '+(choice.bestseller?'checked':'')+'> Best-seller (sélection éditoriale)</label>'
  +'<label><input type="checkbox" data-feature="editors_choice" '+(choice.editors_choice?'checked':'')+'> Sélection Entre les lignes</label>'
  +'<label><input type="checkbox" data-feature="purple_heart" '+(choice.purple_heart?'checked':'')+'> Cœur violet 💜</label>'
- +'<button type="button" class="am-feature-save">Enregistrer la sélection</button>'<p><strong>PDF privé :</strong> '+(privateFiles.get(b.id)?.rights_attested?'Fichier enregistré avec déclaration de droits':'Non disponible dans le stockage privé')+'</p>'
+ +'<button type="button" class="am-feature-save">Enregistrer la sélection</button><p><strong>PDF privé :</strong> '+(privateFiles.get(b.id)?.rights_attested?'Fichier enregistré avec déclaration de droits':'Non disponible dans le stockage privé')+'</p>'
  +'<label>Fichier PDF autorisé <input type="file" class="am-pdf-file" accept="application/pdf,.pdf"></label>'
  +'<label><input type="checkbox" class="am-pdf-license"> Je confirme détenir les droits permettant de diffuser ce PDF aux abonnés.</label>'
  +'<button type="button" class="am-pdf-upload">Déposer dans le stockage privé</button><p class="am-pdf-status" role="status"></p></section></div>';
