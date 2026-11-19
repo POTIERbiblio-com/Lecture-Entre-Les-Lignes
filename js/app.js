@@ -3607,6 +3607,7 @@ async function startBookReader(book) {
      <span class="palette-title">Couleur</span>
      <div class="reader-pencils" role="group" aria-label="Couleur du surligneur">${Object.entries(legend()).slice(0,readerLevel===0?6:readerLevel===1?8:readerLevel===2?10:Infinity).map(([color,label])=>`<button type="button" class="pencil" style="--pencil:${color}" data-pencil="${color}" title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${color===currentColor}"></button>`).join('')}</div>
      <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur ${readerLevel===3?'<input id="new-pencil" type="color" value="#ec849e">':'<select id="new-pencil"><option value="#ec849e">Rose framboise</option><option value="#8dc4ae">Vert menthe</option><option value="#a689c6">Violet</option><option value="#70b9d1">Bleu lagon</option><option value="#e2a56f">Abricot</option><option value="#d5ba69">Moutarde</option></select>'}</label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('🔒 Ajouter des couleurs','Découverte, Passion et Illimité')}
+     ${readerLevel<3?premiumPreview('🔒 Nuancier libre','Illimité'):''}
     </div>
     <div class="reader-actions"><button type="button" id="save-selection" disabled>Surligner la sélection</button></div>
    </div>
