@@ -34,6 +34,16 @@ Deno.serve(async(req)=>{
    if(action==='read'){const {data,error}=await db.from(table).select('data').eq('firebase_uid',uid).maybeSingle();if(error)throw error;return json({data:data?.data??null})}
    if(!body.data||typeof body.data!=='object'||Array.isArray(body.data)||JSON.stringify(body.data).length>500000)return json({error:'Invalid data'},400);
    // Le carnet personnel de base doit être accessible à tous les comptes, même gratuits.
+   if(body.kind==='collections'){
+     const boards=body.data.boards;
+     if(!Array.isArray(boards)||boards.length>500)return json({error:'Listes invalides'},400);
+     const {data:billing,error:billingError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;
+     const active=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
+     const plan=active?billing.plan:'free',limits:Record<string,number>={free:10,decouverte:20,passion:35,illimite:500};
+     const {data:previous,error:previousError}=await db.from('firebase_private_collections').select('data').eq('firebase_uid',uid).maybeSingle();if(previousError)throw previousError;
+     const previousCount=Array.isArray(previous?.data?.boards)?previous.data.boards.length:0;
+     if(boards.length>(limits[plan]??10)&&boards.length>previousCount)return json({error:'Limite de listes atteinte pour cette formule'},403);
+   }
    const {error}=await db.from(table).upsert({firebase_uid:uid,data:body.data,updated_at:new Date().toISOString()},{onConflict:'firebase_uid'});if(error)throw error;return json({ok:true});
   }
 
@@ -81,10 +91,13 @@ Deno.serve(async(req)=>{
     const coverPath=String(body.coverPath||''),pdfPath=String(body.pdfPath||''),pdfName=String(body.pdfName||'').slice(0,180);
     if(coverPath&&(!coverPath.startsWith(uid+'/')||!/\.(jpg|png|webp)$/.test(coverPath)))return json({error:'Chemin couverture invalide'},400);
     if(pdfPath&&(!pdfPath.startsWith(uid+'/')||!pdfPath.endsWith('.pdf')))return json({error:'Chemin PDF invalide'},400);
-    const dayAgo=new Date(Date.now()-86400000).toISOString();
-    const {count,error:countError}=await db.from('book_requests_v2').select('id',{head:true,count:'exact'}).eq('firebase_uid',uid).gte('created_at',dayAgo);
+    const {data:billing,error:billingError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;
+    const paid=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
+    const plan=paid?billing.plan:'free',monthLimits:Record<string,number>={free:3,decouverte:5,passion:10,illimite:999999};
+    const now=new Date(),monthStart=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),1)).toISOString();
+    const {count,error:countError}=await db.from('book_requests_v2').select('id',{head:true,count:'exact'}).eq('firebase_uid',uid).gte('created_at',monthStart);
     if(countError)throw countError;
-    if((count||0)>=15)return json({error:'Limite de 15 propositions par jour atteinte'},429);
+    if((count||0)>=(monthLimits[plan]??3))return json({error:'Quota mensuel de propositions atteint pour cette formule'},429);
     const {data,error}=await db.from('book_requests_v2').insert({
       firebase_uid:uid,requester_email:String(payload.email||''),requester_email_verified:payload.email_verified===true,title,author,details:clean,cover_path:coverPath,pdf_path:pdfPath,pdf_name:pdfName
     }).select('id').single();
@@ -161,6 +174,9 @@ Deno.serve(async(req)=>{
     const paid=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
     const accountLevel=paid?(tiers[billing?.plan]||0):0;
     if(accountLevel<Number(rule?.access_level||0))return json({error:'Abonnement requis pour cette lecture'},403);
+    const {data:reserved,error:quotaError}=await db.rpc('reserve_firebase_download',{p_uid:uid,p_book:bookId,p_plan:paid?billing.plan:'free'});
+    if(quotaError)throw quotaError;
+    if(!reserved)return json({error:'Quota mensuel de lectures atteint pour ce livre'},403);
     const {data:signed,error:signedError}=await db.storage.from('book-pdfs').createSignedUrl(file.storage_path,60);
     if(signedError)throw signedError;
     return json({url:signed.signedUrl,expiresIn:60});
