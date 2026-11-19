@@ -4198,5 +4198,5 @@ window.ELL_FAVORITES_BOOKS=LIVRES_INITIAUX.map(b=>({id:b.id,detailPath:b.detailP
 if(!document.querySelector('script[src*="collections-privees.js"]')){const script=document.createElement('script');script.src='js/collections-privees.js?v=20261119-fix';document.body.append(script);}
 if(!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='css/favoris-listes.css';document.head.append(sheet);
- const script=document.createElement('script');script.src='js/favoris-catalogue.js?v=20261118';document.body.append(script);
+ const script=document.createElement('script');script.src='js/favoris-catalogue.js?v=account-red-20261119';document.body.append(script);
 }
