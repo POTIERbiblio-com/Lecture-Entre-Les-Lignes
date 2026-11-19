@@ -41,6 +41,7 @@ async function refresh(){
   const {requests}=await call('requests-list');
   $('my-requests').replaceChildren(...(requests||[]).map(card));
   if(!requests?.length)$('my-requests').textContent='Aucune proposition pour le moment.';
+  if(document.visibilityState==='visible')await call('requests-mark-seen');
  }catch(e){$('my-requests').textContent='Impossible de charger les propositions : '+e.message;}
  finally{refreshing=false;}
 }
