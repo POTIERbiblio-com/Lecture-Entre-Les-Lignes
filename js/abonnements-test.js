@@ -31,7 +31,8 @@ function button(user,label,action,extras,allowedHosts,choice){
     if(redirecting) return;
     redirecting=true;
     b.setAttribute('aria-busy','true');
-    status.textContent='Ouverture du paiement sécurisé Stripe…';
+    const feedback=choice?.parentElement.querySelector('[data-subscribe-feedback]')||status;
+    feedback.textContent=action==='portal'?'Ouverture de la gestion Stripe…':'Ouverture du paiement sécurisé Stripe…';
     try{
       const {url}=await request(user,action,extras);
       if(auth.currentUser?.uid!==user.uid) return;
@@ -41,8 +42,7 @@ function button(user,label,action,extras,allowedHosts,choice){
       location.assign(destination.href);
     }catch(e){
       if(auth.currentUser?.uid===user.uid){
-        status.textContent=e.message;
-        status.focus();
+        feedback.textContent=e.message;
       }
     }finally{
       redirecting=false;
@@ -51,12 +51,26 @@ function button(user,label,action,extras,allowedHosts,choice){
   };
 }
 
+function showBlocked(message){
+  status.textContent=message;
+  for(const choice of choices)choice.onclick=event=>{
+    event.preventDefault();
+    const feedback=choice.parentElement.querySelector('[data-subscribe-feedback]');
+    if(feedback)feedback.textContent=message;
+  };
+}
+
 onAuthStateChanged(auth,async user=>{
   root.replaceChildren();
   choices.forEach(choice=>choice.textContent='Souscrire');
   for(const choice of choices){
-    choice.onclick=null;
-    choice.href=user?'#mon-abonnement':'connexion-firebase.html';
+    const feedback=choice.parentElement.querySelector('[data-subscribe-feedback]');
+    if(feedback)feedback.textContent='';
+    choice.onclick=user?event=>{
+      event.preventDefault();
+      if(feedback)feedback.textContent='Vérification de ton compte en cours…';
+    }:null;
+    choice.href='connexion-firebase.html';
   }
   if(!user){
     status.textContent='Connecte-toi pour consulter et gérer ton abonnement.';
@@ -88,23 +102,23 @@ onAuthStateChanged(auth,async user=>{
     if(subscription.complimentary){
       status.textContent='Toutes les fonctionnalités sont activées directement pour ton compte.';
       choices.forEach(choice=>choice.textContent='Voir mes accès');
+      showBlocked(status.textContent);
       return;
     }
     if(!user.emailVerified){
-      status.textContent='Vérifie ton adresse e-mail pour accéder à la souscription.';
-      return;
-    }
-    if(!liveCheckoutReady){
-      status.textContent+=' · Les paiements sont temporairement indisponibles.';
+      showBlocked('Vérifie ton adresse e-mail pour accéder à la souscription.');
       return;
     }
     if(returned==='success'&&!subscription.access_level){
-      status.textContent='Confirmation Stripe en attente. Recharge la page pour vérifier l’activation.';
+      showBlocked('Confirmation Stripe en attente. Recharge la page pour vérifier l’activation.');
       return;
     }
     if(returned==='cancel') status.textContent+=' · Souscription annulée.';
     if(subscription.access_level||['past_due','unpaid','incomplete','paused'].includes(subscription.status)){
-      button(user,'Gérer mon abonnement','portal',{},['billing.stripe.com']);
+      for(const choice of choices){
+        choice.textContent='Gérer mon abonnement';
+        button(user,'Gérer mon abonnement','portal',{},['billing.stripe.com'],choice);
+      }
       return;
     }
     for(const plan of plans){
@@ -113,6 +127,6 @@ onAuthStateChanged(auth,async user=>{
       button(user,'Choisir '+names[plan.plan]+' · '+euros.format(plan.monthly_eur_cents/100)+'/mois','checkout',{plan:plan.plan},['checkout.stripe.com'],choice);
     }
   }catch(e){
-    if(auth.currentUser?.uid===user.uid) status.textContent='Vérification impossible. '+e.message;
+    if(auth.currentUser?.uid===user.uid) showBlocked('Vérification impossible. '+e.message);
   }
 });
