@@ -46,10 +46,10 @@ Deno.serve(async(req)=>{
    }
    if(body.kind==='collections'){
      const boards=body.data.boards;
-     if(!Array.isArray(boards)||boards.length>500)return json({error:'Listes invalides'},400);
+     if(!Array.isArray(boards)||boards.length>5000)return json({error:'Nombre de listes trop élevé'},400);
      const {data:billing,error:billingError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;
      const active=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
-     const plan=isAdmin?'illimite':active?billing.plan:'free',limits:Record<string,number>={free:10,decouverte:35,passion:500,illimite:500};
+     const plan=isAdmin?'illimite':active?billing.plan:'free',limits:Record<string,number>={free:10,decouverte:35,passion:100,illimite:5000};
      const {data:previous,error:previousError}=await db.from('firebase_private_collections').select('data').eq('firebase_uid',uid).maybeSingle();if(previousError)throw previousError;
      const previousCount=Array.isArray(previous?.data?.boards)?previous.data.boards.length:0;
      if(boards.length>(limits[plan]??10)&&boards.length>previousCount)return json({error:'Limite de listes atteinte pour cette formule'},403);
