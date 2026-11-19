@@ -24,10 +24,12 @@ Deno.serve(async(req)=>{
   if(!uid||uid.length>128)return json({error:'Invalid account'},401);
   const db=createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false}});
   const body=await req.json();const action=body.action;
+  const isAdmin=payload.email_verified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(String(payload.email||'').toLowerCase());
+  const entitlement=async()=>{const {data,error}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(error)throw error;const valid=['active','trialing'].includes(data?.status)&&(!data?.current_period_end||new Date(data.current_period_end).getTime()>Date.now());return isAdmin?{level:3,plan:'illimite',admin:true}:{level:valid?({decouverte:1,passion:2,illimite:3} as Record<string,number>)[data?.plan]||0:0,plan:valid?data.plan:'free',admin:false}};
   if(action==='private-pdf'){const bookId=body.bookId;if(typeof bookId!=='string'||bookId.length>120)return json({error:'Livre invalide'},400);const bookQuery=db.from('books').select('id,pdf_path,published');const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(bookId);const {data:book,error:bookError}=await (uuid?bookQuery.eq('id',bookId):bookQuery.eq('original_page','livre-'+bookId+'.html')).maybeSingle();if(bookError)throw bookError;if(!book?.published||!book.pdf_path)return json({error:'PDF privé indisponible'},404);const {data:rule,error:ruleError}=await db.from('book_access_levels').select('access_level,hidden').eq('book_id',String(book.id)).maybeSingle();if(ruleError)throw ruleError;if(rule?.hidden)return json({error:'Livre indisponible'},404);
  const {data:moderation,error:moderationError}=await db.from('catalogue_moderation').select('access_level,hidden,deleted').eq('book_id','db-'+String(book.id)).maybeSingle();
  if(moderationError)throw moderationError;
- if(moderation?.hidden||moderation?.deleted)return json({error:'Livre masqué ou retiré'},404);const {data:billing,error:billingError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;const levels:Record<string,number>={free:0,decouverte:1,passion:2,illimite:3};const paidPeriodValid=!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now();const level=['active','trialing'].includes(billing?.status)&&paidPeriodValid?levels[billing?.plan]||0:0;if(level<Math.max(rule?.access_level??0,moderation?.access_level??0))return json({error:'Abonnement requis pour ce livre'},403);const {data:signed,error:signedError}=await db.storage.from('book-pdfs').createSignedUrl(book.pdf_path,60);if(signedError)throw signedError;const {data:reserved,error:quotaError}=await db.rpc('reserve_firebase_download',{p_uid:uid,p_book:String(book.id),p_plan:level===0?'free':billing!.plan});if(quotaError)throw quotaError;if(!reserved)return json({error:'Quota de téléchargements atteint pour ce livre'},403);return json({url:signed.signedUrl,expiresIn:60});}
+ if(moderation?.hidden||moderation?.deleted)return json({error:'Livre masqué ou retiré'},404);const {data:billing,error:billingError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;const levels:Record<string,number>={free:0,decouverte:1,passion:2,illimite:3};const paidPeriodValid=!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now();const level=isAdmin?3:['active','trialing'].includes(billing?.status)&&paidPeriodValid?levels[billing?.plan]||0:0;if(level<Math.max(rule?.access_level??0,moderation?.access_level??0))return json({error:'Abonnement requis pour ce livre'},403);const {data:signed,error:signedError}=await db.storage.from('book-pdfs').createSignedUrl(book.pdf_path,60);if(signedError)throw signedError;const {data:reserved,error:quotaError}=await db.rpc('reserve_firebase_download',{p_uid:uid,p_book:String(book.id),p_plan:isAdmin?'illimite':level===0?'free':billing!.plan});if(quotaError)throw quotaError;if(!reserved)return json({error:'Quota de téléchargements atteint pour ce livre'},403);return json({url:signed.signedUrl,expiresIn:60});}
   if(action==='read'||action==='write'){
    const table=body.kind==='carnet'?'firebase_private_carnets':body.kind==='collections'?'firebase_private_collections':body.kind==='reader'?'firebase_private_readers':body.kind==='premium'?'firebase_private_premium':null;
    if(!table)return json({error:'Unknown data type'},400);
@@ -39,16 +41,18 @@ Deno.serve(async(req)=>{
      if(!Array.isArray(boards)||boards.length>500)return json({error:'Listes invalides'},400);
      const {data:billing,error:billingError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;
      const active=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
-     const plan=active?billing.plan:'free',limits:Record<string,number>={free:10,decouverte:20,passion:35,illimite:500};
+     const plan=isAdmin?'illimite':active?billing.plan:'free',limits:Record<string,number>={free:10,decouverte:35,passion:500,illimite:500};
      const {data:previous,error:previousError}=await db.from('firebase_private_collections').select('data').eq('firebase_uid',uid).maybeSingle();if(previousError)throw previousError;
      const previousCount=Array.isArray(previous?.data?.boards)?previous.data.boards.length:0;
      if(boards.length>(limits[plan]??10)&&boards.length>previousCount)return json({error:'Limite de listes atteinte pour cette formule'},403);
+     const favorites=body.data.favorites;if(!Array.isArray(favorites)||favorites.length>10000)return json({error:'Favoris invalides'},400);
+     const previousFav=Array.isArray(previous?.data?.favorites)?previous.data.favorites.length:0;
+     if(plan==='free'&&favorites.length>100&&favorites.length>previousFav)return json({error:'100 favoris maximum en accès gratuit. Découvre les abonnements.'},403);
    }
    const {error}=await db.from(table).upsert({firebase_uid:uid,data:body.data,updated_at:new Date().toISOString()},{onConflict:'firebase_uid'});if(error)throw error;return json({ok:true});
   }
 
   // Livre proposé : stockage privé et suivi de la réponse sur le compte Firebase.
-  const isAdmin=payload.email_verified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(String(payload.email||'').toLowerCase());
   if(action==='requests-mark-seen'){
     const {error}=await db.from('book_request_notification_reads').upsert({firebase_uid:uid,last_read_at:new Date().toISOString()},{onConflict:'firebase_uid'});
     if(error)throw error;
@@ -93,7 +97,7 @@ Deno.serve(async(req)=>{
     if(pdfPath&&(!pdfPath.startsWith(uid+'/')||!pdfPath.endsWith('.pdf')))return json({error:'Chemin PDF invalide'},400);
     const {data:billing,error:billingError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;
     const paid=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
-    const plan=paid?billing.plan:'free',monthLimits:Record<string,number>={free:3,decouverte:5,passion:10,illimite:999999};
+    const plan=isAdmin?'illimite':paid?billing.plan:'free',monthLimits:Record<string,number>={free:3,decouverte:5,passion:10,illimite:999999};
     const now=new Date(),monthStart=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),1)).toISOString();
     const {count,error:countError}=await db.from('book_requests_v2').select('id',{head:true,count:'exact'}).eq('firebase_uid',uid).gte('created_at',monthStart);
     if(countError)throw countError;
@@ -172,9 +176,9 @@ Deno.serve(async(req)=>{
     if(billError)throw billError;
     const tiers:Record<string,number>={free:0,decouverte:1,passion:2,illimite:3};
     const paid=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
-    const accountLevel=paid?(tiers[billing?.plan]||0):0;
+    const accountLevel=isAdmin?3:paid?(tiers[billing?.plan]||0):0;
     if(accountLevel<Number(rule?.access_level||0))return json({error:'Abonnement requis pour cette lecture'},403);
-    const {data:reserved,error:quotaError}=await db.rpc('reserve_firebase_download',{p_uid:uid,p_book:bookId,p_plan:paid?billing.plan:'free'});
+    const {data:reserved,error:quotaError}=await db.rpc('reserve_firebase_download',{p_uid:uid,p_book:bookId,p_plan:isAdmin?'illimite':paid?billing.plan:'free'});
     if(quotaError)throw quotaError;
     if(!reserved)return json({error:'Quota mensuel de lectures atteint pour ce livre'},403);
     const {data:signed,error:signedError}=await db.storage.from('book-pdfs').createSignedUrl(file.storage_path,60);
@@ -192,7 +196,7 @@ Deno.serve(async(req)=>{
     return json({ok:true});
   }
 
-  if(action==='status'){const {data,error}=await db.from('firebase_billing').select('plan,status,current_period_end,cancel_at_period_end').eq('firebase_uid',uid).maybeSingle();if(error)throw error;const valid=data&&['active','trialing'].includes(data.status)&&(!data.current_period_end||new Date(data.current_period_end).getTime()>Date.now());return json({subscription:data?{...data,access_plan:valid?data.plan:'free',access_level:valid?({decouverte:1,passion:2,illimite:3} as Record<string,number>)[data.plan]||0:0}:{plan:'free',status:'inactive',access_plan:'free',access_level:0}})}
+  if(action==='status'){const {data,error}=await db.from('firebase_billing').select('plan,status,current_period_end,cancel_at_period_end').eq('firebase_uid',uid).maybeSingle();if(error)throw error;const valid=data&&['active','trialing'].includes(data.status)&&(!data.current_period_end||new Date(data.current_period_end).getTime()>Date.now());return json({subscription:data?{...data,access_plan:isAdmin?'illimite':valid?data.plan:'free',access_level:isAdmin?3:valid?({decouverte:1,passion:2,illimite:3} as Record<string,number>)[data.plan]||0:0,admin:isAdmin}:{plan:isAdmin?'illimite':'free',status:isAdmin?'active':'inactive',access_plan:isAdmin?'illimite':'free',access_level:isAdmin?3:0,admin:isAdmin}})}
   if(action==='checkout'||action==='portal'){
    const secret=Deno.env.get('STRIPE_SECRET_KEY');if(!secret||!secret.startsWith('sk_test_'))return json({error:'Paiement test non configuré sur le serveur'},503);
    const stripe=async(path:string,form:URLSearchParams)=>{const r=await fetch('https://api.stripe.com/v1/'+path,{method:'POST',headers:{Authorization:'Bearer '+secret,'Content-Type':'application/x-www-form-urlencoded'},body:form});const v=await r.json();if(!r.ok)throw Error(v.error?.message||'Stripe error');return v};
