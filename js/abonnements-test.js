@@ -68,7 +68,8 @@ onAuthStateChanged(auth,async user=>{
     }
     status.textContent='Formule active · '+(names[subscription.access_plan]||names.free);
     if(subscription.complimentary){
-      status.textContent='Accès Illimité permanent · Quentin.';
+      status.textContent='Toutes les fonctionnalités sont activées directement pour ton compte.';
+      document.querySelectorAll('.premium-hero, .feature-grid, #comparatif, .reassurance').forEach(section=>section.hidden=true);
       return;
     }
     if(!user.emailVerified){

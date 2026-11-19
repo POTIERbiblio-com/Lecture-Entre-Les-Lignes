@@ -8,10 +8,10 @@ async function refreshPriority(account){
  check.disabled=true;check.checked=false;
  if(!account)return;
  try{
-  const {remaining,automatic}=await requestService('requests-priority-status',{},account);
+  const {remaining,automatic,eligible,complimentary}=await requestService('requests-priority-status',{},account);
   if(auth.currentUser?.uid!==account.uid)return;
   check.checked=automatic;check.disabled=automatic||remaining===0;
-  info.textContent=automatic?'Illimité · toutes tes propositions sont automatiquement prioritaires.':remaining+' crédit'+(remaining===1?'':'s')+' de priorité ce mois-ci.';
+  info.textContent=automatic?(complimentary?'Tes propositions sont automatiquement prioritaires.':'Illimité · toutes tes propositions sont automatiquement prioritaires.') : !eligible?'Option réservée aux formules Découverte, Passion et Illimité.':remaining+' crédit'+(remaining===1?'':'s')+' de priorité restant'+(remaining===1?'':'s')+' ce mois-ci.';
  }catch(error){info.textContent=error.message;}
 }
 let records=[],owner=null,requestSequence=0;
