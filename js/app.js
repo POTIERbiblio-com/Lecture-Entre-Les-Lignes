@@ -4034,7 +4034,7 @@ for(const book of LIVRES_INITIAUX){
 }
 try { await loadServiceState(); } catch(error) { ellClear(); showCarnetWarning('Impossible de charger ton carnet personnel : '+error.message); }
 await loadPublicCatalogue();
-if(ellFirebaseAuth?.currentUser){try{const {subscription}=await ellPrivate('status');accountTier=Number(subscription?.access_level||0);}catch(error){console.warn('Statut abonnement indisponible',error);accountTier=0;}}
+if(ellFirebaseAuth?.currentUser){try{const {subscription}=await ellPrivate('status');accountTier=Number(subscription?.access_level||0);adminEnabled=subscription?.admin===true;}catch(error){console.warn('Statut abonnement indisponible',error);accountTier=0;}}
 await applyCatalogueSuppressions();
 if(changed&&db)await writeLocalState();
 if(!document.body.isConnected)return;
