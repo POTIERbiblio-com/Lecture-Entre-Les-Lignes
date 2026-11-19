@@ -1,0 +1,16 @@
+.circle-comparison{min-width:0}
+.circle-table-scroll{overflow-x:auto;border:1px solid #dfbdd2;border-radius:1.1rem;scrollbar-color:#a9688d #f5e3ee;background:#fffafd}
+.circle-table-scroll:focus-visible{outline:3px solid #875075;outline-offset:4px}
+.circle-table{width:100%;min-width:45rem;border-spacing:0;color:#512d44;text-align:left;table-layout:fixed}
+.circle-table th,.circle-table td{padding:.8rem .7rem;border-bottom:1px solid #eddae6;vertical-align:middle;line-height:1.35;font-size:.92rem;overflow-wrap:anywhere}
+.circle-table thead th{background:#f4e4ed;vertical-align:top}
+.circle-table thead strong,.circle-table thead span{display:block}.circle-table thead strong{font-size:1.05rem;margin-bottom:.3rem}
+.circle-table thead th:first-child,.circle-table th[scope=row]{width:25%;position:sticky;left:0;z-index:1;background:#fff7fb;box-shadow:1px 0 #e8cbdc}
+.circle-table thead th:first-child{background:#f4e4ed}
+.circle-table .circle-plan-decouverte{background:#fff5db}
+.circle-table .circle-plan-passion{background:#fdeade}
+.circle-table .circle-plan-illimite{background:#f7e7f1}
+.circle-table .circle-group th{background:#eacfe2;color:#572846;font-size:.9rem;font-weight:800}
+.circle-table tbody:last-child tr:last-child>*{border-bottom:0}
+.circle-swipe{display:none;margin:.75rem 0;color:#673854;font-size:.85rem}
+@media(max-width:800px){.circle-swipe{display:block}.circle-table thead th:first-child,.circle-table th[scope=row]{width:8rem}.circle-table th,.circle-table td{padding:.65rem .55rem}}

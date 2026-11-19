@@ -63,8 +63,9 @@ onAuthStateChanged(auth,async user=>{
     }
     if(auth.currentUser?.uid!==user.uid) return;
     for(const plan of plans){
-      const price=document.querySelector('[data-plan-price="'+plan.plan+'"]');
-      if(price) price.firstChild.textContent=euros.format(plan.monthly_eur_cents/100)+' ';
+      for(const price of document.querySelectorAll('[data-plan-price="'+plan.plan+'"]')){
+        price.firstChild.textContent=euros.format(plan.monthly_eur_cents/100)+' ';
+      }
     }
     status.textContent='Formule active · '+(names[subscription.access_plan]||names.free);
     if(subscription.complimentary){
