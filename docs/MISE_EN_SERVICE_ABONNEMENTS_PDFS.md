@@ -8,7 +8,7 @@
 - **0 PDF dans le stockage privé Supabase** au moment de cette mise à jour.
 - Le compartiment `book-pdfs` est privé. Une fiche de livre peut conserver librement couverture, présentation, résumé, bibliographie et critiques.
 - Gestion : `admin-moderation.html` ; audit : `admin-pdf-inventaire.html`.
-- L'administration peut attribuer 0 = gratuit ; 1 = cadenas **orange** Découverte ; 2 = **jaune** Passion ; 3 = **rouge** Illimité, masquer et retirer les fiches.
+- L'administration peut attribuer 0 = gratuit ; 1 = cadenas **jaune** Découverte ; 2 = **orange** Passion ; 3 = **rouge** Illimité, masquer et retirer les fiches.
 - Pour importer un PDF dans le compartiment privé, un administrateur doit fournir une copie et **attester disposer des droits de diffusion aux abonnés**. La déclaration de l'administrateur n'est pas une vérification juridique indépendante.
 - L'accès à un PDF privé utilise un jeton Firebase vérifié côté serveur, un niveau d'abonnement confirmé par Stripe et un lien signé expirant au bout de 60 secondes. Les quotas sont vérifiés avant l'émission du lien.
 - Le dépôt GitHub étant **public**, même une suppression du fichier dans la branche principale ne garantit pas la suppression de ses anciennes versions dans l'historique Git, les forks ni les caches. Ces copies ne sont pas protégées par le cadenas. Il faut revoir la diffusion publique et les droits de chaque ouvrage avant commercialisation.
