@@ -40,7 +40,8 @@ Deno.serve(async(req)=>{
      const access=await entitlement();
      const palette=body.data.legend&&typeof body.data.legend==='object'&&!Array.isArray(body.data.legend)?body.data.legend:{};
      const colors=Object.keys(palette),maxColors=access.level===3?200:access.level===2?20:access.level===1?10:6;
-     if(colors.length>maxColors)return json({error:'Ta formule permet '+maxColors+' couleurs personnalisées maximum'},403);
+     const defaultColors=['#f4df9c','#eed0de','#dbe8cf','#dfd4f0','#bcdfee','#f6cdb0'];
+     if(new Set([...defaultColors,...colors.map(color=>color.toLowerCase())]).size>maxColors)return json({error:'Ta formule permet '+maxColors+' couleurs maximum, palette de base comprise'},403);
      if(colors.some(color=>!/^#[0-9a-fA-F]{6}$/.test(color)))return json({error:'Code couleur invalide'},400);
    }
    if(body.kind==='collections'){
