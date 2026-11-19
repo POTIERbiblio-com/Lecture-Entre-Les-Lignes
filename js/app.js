@@ -3353,7 +3353,9 @@ function syncCarnet(){
  const snapshot=structuredClone(personalCarnet());
  pendingWrites++;
  autosaveQueue=autosaveQueue.catch(()=>{}).then(async()=>{
+  if(db)await writeLocalState({uid:userId,data:snapshot,createdAt:new Date().toISOString()});
   if(ellFirebaseAuth){if(ellFirebaseAuth.currentUser?.uid!==userId)throw Error('Compte modifié : sauvegarde annulée.');await ellPrivate('write',snapshot)}else{const {data:{user},error:authError}=await ell.auth.getUser();if(authError||user?.id!==userId)throw Error('Compte modifié : sauvegarde annulée.');const {error}=await ell.from('user_carnets').upsert({user_id:userId,data:snapshot,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;}
+  if(db)await writeLocalState(null);
   showCarnetWarning('');
  }).finally(()=>pendingWrites--);
  return autosaveQueue;
@@ -3390,6 +3392,7 @@ async function loadServiceState(){
   let data;if(ellFirebaseAuth?.currentUser?.uid===userId){const result=await ellPrivate('read');data={data:result.data}}else{const result=await ell.from('user_carnets').select('data').eq('user_id',userId).maybeSingle();if(result.error)throw result.error;data=result.data}
   if(ellUser?.id!==userId)throw Error('Le compte a changé pendant le chargement.');
   if(data?.data)restoreCarnet(data.data);
+  if(db){const pending=await readPendingCarnet().catch(()=>null);if(pending?.uid===userId&&pending.data){restoreCarnet(pending.data);await syncCarnet().catch(error=>showCarnetWarning('Synchronisation du brouillon en attente : '+error.message));}}
   localStorage.setItem('ell_account',userId);
  }else{
   localStorage.removeItem('ell_account');
