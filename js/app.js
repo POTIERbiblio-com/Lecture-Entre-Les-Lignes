@@ -3516,7 +3516,6 @@ async function startBookReader(book) {
    </div>
   </div>
   <p class="reader-help" id="reader-help-extra"></p>
-  <aside class="note"><strong>Mon carnet de lecture · gratuit</strong><br>Retrouve tes fiches, notes et passages sauvegardés dans ton compte. Les formules du Cercle ajoutent la palette personnalisée et, avec Passion ou Illimité, le classement des notes et passages. <a href="le-cercle.html#comparatif">Comparer les outils ↗</a></aside>
   <div class="pdf-scroll" id="pdf-scroll"><div class="pdf-paper" id="pdf-paper"><canvas id="pdf-canvas"></canvas><div class="pdf-ink" id="pdf-ink" aria-hidden="true"></div><div class="textLayer" id="pdf-text-layer"></div></div></div>
   <div id="page-traces" class="page-traces"></div>
   <div class="reader-bottom">
