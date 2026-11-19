@@ -28,7 +28,7 @@
 <p class="request-hint">Les champs marqués * sont obligatoires. La couverture et le PDF sont facultatifs. Plus tu donnes de détails, plus il sera facile de retrouver la bonne édition.</p>
 <div class="request-grid">
 <label>Titre du livre *<input name="title" maxlength="200" autocomplete="off" required placeholder="Le titre exact du livre"></label>
-<label>Auteur ou autrice *<input name="author" maxlength="160" required placeholder="Prénom et nom de l'auteur"></label>
+<label>Auteur ou autrice<input name="author" maxlength="160" placeholder="Prénom et nom de l'auteur"></label>
 <label>Genre <select name="genre"><option value="">Choisir un genre (facultatif)</option><option value="fiction">Fiction</option><option value="savoirs">Savoirs</option><option value="arts">Arts</option><option value="vie-et-societe">Vie et société</option><option value="spiritualites">Spiritualités et religions</option><option value="jeunesse">Jeunesse et pédagogie</option></select></label>
 <label>Sous-genre <input name="subgenre" maxlength="100" placeholder="Ex. Psychologie, philosophie…"></label>
 <label>Éditeur / édition <input name="edition" maxlength="160" placeholder="Ex. Éditions Gallimard"></label>
@@ -46,6 +46,6 @@
 <section class="request-card"><h2>Mes propositions</h2><p>Tu retrouveras ici les réponses de l'équipe, visibles uniquement depuis ton compte.</p><div id="my-requests"></div></section>
 </section>
 <p id="request-login" hidden class="request-login"><a href="connexion-firebase.html">Connecte-toi ou crée ton compte pour proposer un livre et suivre sa réponse ♡</a></p>
-</main></div><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a><a href="plan.html">Plan du site</a><a href="mon-espace.html">Mon espace</a></div><script type="module" src="js/book-requests.js?v=20261118-envoi-v4"></script>
+</main></div><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a><a href="plan.html">Plan du site</a><a href="mon-espace.html">Mon espace</a></div><script type="module" src="js/book-requests.js?v=propositions-v2"></script>
 <script>const pdfInput=document.getElementById('request-pdf'),pdfLabel=document.getElementById('request-pdf-label');pdfInput.addEventListener('change',()=>{const f=pdfInput.files?.[0];pdfLabel.textContent=f?'PDF sélectionné : '+f.name+' ('+(f.size/1048576).toFixed(1)+' Mo)':'Aucun PDF sélectionné.';});const cover=document.getElementById('request-cover'),preview=document.getElementById('request-preview'),lbl=document.getElementById('request-preview-label');let previewUrl='';cover.addEventListener('change',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);const file=cover.files&&cover.files[0];if(file&&file.type.startsWith('image/')){previewUrl=URL.createObjectURL(file);preview.src=previewUrl;lbl.textContent='Ta couverture sélectionnée ♡';}else{preview.src='images/atelier/revue-ouverte.jpg';lbl.textContent='Ta couverture apparaîtra ici ♡';}});</script>
 </body></html>

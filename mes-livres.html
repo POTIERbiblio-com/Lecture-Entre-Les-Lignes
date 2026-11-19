@@ -45,6 +45,7 @@
 <div class="catalogue-field"><label for="search-year">Année de l’édition</label><select id="search-year"><option value="">Toutes les dates</option></select></div>
 <div class="catalogue-field"><label for="search-sort">Classer les résultats</label><select id="search-sort"><option value="title">Titre · A à Z</option><option value="author">Auteur · A à Z</option><option value="newest">Parution · récente d’abord</option><option value="oldest">Parution · ancienne d’abord</option></select></div>
 <label class="catalogue-pdf-filter"><input type="checkbox" id="pdf-only"> Avec un PDF disponible</label>
+<label class="catalogue-pdf-filter"><input type="checkbox" id="search-favorites"> Mes favoris</label>
 
     </form>
   <div class="catalogue-tabs" id="catalogue-tabs" role="group" aria-label="Filtrer par rayon" hidden>
@@ -58,7 +59,7 @@
     <button type="button" data-genre="jeunesse" aria-pressed="false">Jeunesse</button>
   </div>
 </div>
-<nav class="catalogue-shortcuts" aria-label="Accès rapide aux collections"><a href="favoris.html">♥ Mes favoris</a><a href="listes.html">✦ Mes listes</a><a href="lecture.html">📖 Espace lecture</a></nav>
+<nav class="catalogue-shortcuts" aria-label="Accès rapide aux collections"><a href="favoris.html">♥ Mes favoris</a><a href="listes.html">✦ Mes listes</a><button type="button" class="ell-add-list" data-ell-new-list>Créer une liste</button><a href="lecture.html">📖 Espace lecture</a></nav>
 <div class="search-results catalogue-shelf">
   <div class="results-heading">
     <h2>Les livres du carnet</h2>
@@ -73,7 +74,7 @@
 <div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
-<script type="text/javascript" src="js/app.js?v=lot2-catalogue-20261118">
+<script type="text/javascript" src="js/app.js?v=catalogue-collections-v2">
 </script>
-<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/collections-privees.js?v=20261118-remote" defer></script><script src="js/favoris-catalogue.js?v=remote-20261118" defer></script></body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/collections-privees.js?v=20261118-remote" defer></script><script src="js/favoris-catalogue.js?v=catalogue-collections-v2" defer></script></body>
 </html>

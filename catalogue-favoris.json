@@ -404,5 +404,47 @@
     "author": "Aurélien Vezzani",
     "cover": "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/couvertures/liv0142.jpg",
     "genre": "savoirs"
+  },
+  {
+    "id": "liv0131",
+    "title": "Plus haut que mes rêves",
+    "author": "Nicolas Hulot",
+    "cover": "images/couvertures/liv0131.jpg",
+    "genre": "vie-et-societe"
+  },
+  {
+    "id": "liv0132",
+    "title": "Les survivants de l’Atlantide",
+    "author": "Albert Slosman",
+    "cover": "images/couvertures/liv0132.jpg",
+    "genre": "fiction"
+  },
+  {
+    "id": "liv0133",
+    "title": "Les secrets de la loi de l’attraction",
+    "author": "Xavier Cornette de Saint-Cyr",
+    "cover": "images/couvertures/liv0133.jpg",
+    "genre": "vie-et-societe"
+  },
+  {
+    "id": "liv0134",
+    "title": "L’idéologie néolibérale : ses fondements, ses dégâts",
+    "author": "Claude Simon",
+    "cover": "images/couvertures/liv0134.jpg",
+    "genre": "savoirs"
+  },
+  {
+    "id": "liv0135",
+    "title": "400 citations pour le manager stratège",
+    "author": "Luc Boyer et Romain Bureau",
+    "cover": "images/couvertures/liv0135.jpg",
+    "genre": "savoirs"
+  },
+  {
+    "id": "liv0136",
+    "title": "L’Ego est l’ennemi",
+    "author": "Ryan Holiday",
+    "cover": "images/couvertures/liv0136.jpg",
+    "genre": "vie-et-societe"
   }
 ]
