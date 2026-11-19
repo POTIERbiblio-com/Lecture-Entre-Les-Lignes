@@ -1130,7 +1130,7 @@ function horrorMark(book) {
   if (!isHorror(book)) return '';
   return '<span class="horror-book-mark"><img class="horror-book-sticker" src="images/carnet-illustre/frisson-rose.jpg" alt="">Rayon Horreur</span>';
 }
-function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
+function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+(b.requiredTier>0?'<p class="ell-access-label">🔒 Niveau '+b.requiredTier+' · '+(b.requiredTier>accountTier?'Abonnement requis':'Accès inclus')+'</p>':'')+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
 function searchTerms(value) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/œ/g, 'oe').replace(/æ/g, 'ae').match(/[\p{L}\p{N}]+/gu) || [];
@@ -1196,7 +1196,7 @@ function wirePDFLinks(){document.querySelectorAll('[data-pdf-link]').forEach(a=>
 function drawLocalReview(b){if($('review-local'))$('review-local').innerHTML=localReception(b);}
 
 // Carnet illustré : les notes personnelles restent séparées du catalogue.
-let service=null,remoteVersion=null,pendingWrites=0,adminEnabled=false,readerController=null,autosaveQueue=Promise.resolve(),lastSyncedCarnet='',pageReleased=false;
+let service=null,remoteVersion=null,pendingWrites=0,adminEnabled=false,accountTier=0,readerController=null,autosaveQueue=Promise.resolve(),lastSyncedCarnet='',pageReleased=false;
 const LEGEND_DEFAULT={'#f4df9c':'Idée importante','#eed0de':'Ressenti','#dbe8cf':'À approfondir','#dfd4f0':'Question','#bcdfee':'À retenir','#f6cdb0':'Citation'};
 const BOOK_ART={liv0003:['jardin-secret.jpg','Un passage secret'],liv0006:['train-fleuri.jpg','L’envie de se lancer'],liv0007:['telephone-rose.jpg','Parlons argent'],liv0008:['chuchotement.jpg','Trouver sa voix'],liv0009:['regard-curieux.jpg','Entre les lignes'],liv0010:['ampoule-etoiles.jpg','Faire un premier pas'],liv0011:['lecteur-journal.jpg','À plusieurs, plus loin'],liv0012:['carnets-et-monde.jpg','Un équilibre à inventer'],liv0013:['soucoupes-pastel.jpg','D’où vient notre monde ?'],liv0014:['tiroir-imaginaire.jpg','Ce que l’on fait grandir']};
 function assetHref(path){return typeof previewAsset==='function'?previewAsset(path):path;}
@@ -1206,6 +1206,7 @@ function localReception(b){const r=state.reviews[b.id],score=r?ratingValue(r):nu
 function externalReception(b){const e=b.external;if(!e||!Number.isFinite(e.rating)||!Number.isFinite(e.count)||e.count<=0)return '';const scope={liv0006:'Édition 2020 · PDF 2019',liv0007:'Œuvre · plusieurs éditions',liv0009:'Œuvre · plusieurs éditions',liv0012:'Une fiche de ce titre',liv0013:'Édition 2022 · PDF 2015',liv0019:'Œuvre originale · PDF extrait',liv0021:'Œuvre · plusieurs éditions'}[b.id]||'';
 return '<section class="external-reception scrapbook-rating"><img class="rating-drawing" src="'+esc(assetHref('images/objets/medaillon.svg'))+'" alt=""><p class="artist-kicker">Les étoiles venues d’ailleurs</p><h2>'+esc(e.site)+'</h2><p class="rating-value">'+formatNumber(e.rating)+' <small>/ 5</small></p>'+starLine(e.rating)+'<div class="rating-tallies"><span><b>'+formatNumber(e.count)+'</b> '+(e.count===1?'note':'notes')+'</span>'+(e.comments!==null?'<span><b>'+formatNumber(e.comments)+'</b> '+(e.comments===1?'critique':'critiques')+'</span>':'')+'</div>'+(scope?'<small class="rating-scope">'+esc(scope)+'</small>':'')+'<a class="editorial-link" href="'+esc(e.url)+'" target="_blank" rel="noopener">Lire les avis sur '+esc(e.site.replace(' — avis clients',''))+' ↗</a><small class="rating-date">Relevé du '+esc(e.checked)+'</small></section>';}
 function bookFileActions(book, meta) {
+  if(book.requiredTier>accountTier)return '<div class="book-file-actions ell-locked-book"><p>🔒 Ce livre est réservé au niveau '+book.requiredTier+'.</p><a class="btn" href="le-cercle.html#formules">Découvrir les abonnements</a></div>';
   const pdf = meta.pdf || meta.pdfPath;
   const readLabel = pdf ? 'Lire le PDF ici' : 'Ouvrir le texte';
   const readHint = pdf ? 'Lecteur intégré · surlignage et notes' : 'Lire et prendre des notes';
@@ -3356,7 +3357,7 @@ async function save(){
 }
 async function connectService(){
  if(location.protocol==='file:')return null;
- try{await ellConnect();const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const user=fbuser?{id:fbuser.uid,email:fbuser.email}:null;ellUser=user;
+ try{await ellConnect();const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const user=fbuser?{id:fbuser.uid,email:fbuser.email}:null;ellUser=user;
  adminEnabled=false;
  service={user:user?.id||null,admin:adminEnabled};return service;
  }catch(e){console.error(e);return null;}
@@ -3917,10 +3918,20 @@ async function applyCatalogueSuppressions(){
  if(location.protocol==='file:')return;
  try{
   const client=await ellConnect();
-  const {data,error}=await client.from('catalogue_suppressions').select('book_id');
-  if(error)throw error;
-  const removed=new Set((data||[]).map(item=>item.book_id));
-  state.books=state.books.filter(book=>!removed.has(book.id)&&!removed.has(String(book.externalCatalogId||'')));
+  const [oldRules,newRules]=await Promise.all([
+   client.from('catalogue_suppressions').select('book_id'),
+   client.from('catalogue_moderation').select('book_id,hidden,deleted,access_level')
+  ]);
+  if(oldRules.error)console.warn('Anciens retraits indisponibles',oldRules.error);
+  if(newRules.error)throw newRules.error;
+  const removed=new Set((oldRules.data||[]).map(item=>item.book_id));
+  const rules=new Map((newRules.data||[]).map(item=>[item.book_id,item]));
+  state.books=state.books.filter(book=>{
+   const rule=rules.get(book.id)||rules.get(String(book.externalCatalogId||''))||rules.get('db-'+String(book.externalCatalogId||''));
+   if(removed.has(book.id)||removed.has(String(book.externalCatalogId||''))||rule?.deleted||rule?.hidden)return false;
+   book.requiredTier=Number(rule?.access_level||0);
+   return true;
+  });
  }catch(error){console.warn('Suppression catalogue : chargement indisponible',error);}
 }
 async function loadPublicCatalogue(){
@@ -4004,6 +4015,7 @@ for(const book of LIVRES_INITIAUX){
 }
 try { await loadServiceState(); } catch(error) { ellClear(); showCarnetWarning('Impossible de charger ton carnet personnel : '+error.message); }
 await loadPublicCatalogue();
+if(ellFirebaseAuth?.currentUser){try{const {subscription}=await ellPrivate('status');const tiers={free:0,decouverte:1,passion:2,illimite:3};accountTier=['active','trialing'].includes(subscription?.status)?(tiers[subscription?.plan]||0):0;}catch(error){console.warn('Statut abonnement indisponible',error);accountTier=0;}}
 await applyCatalogueSuppressions();
 if(changed&&db)await writeLocalState();
 if(!document.body.isConnected)return;
@@ -4146,8 +4158,8 @@ $('book-form').onsubmit = async event => {
 };
 }
 
-if($('book-detail')){$('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();}
-if($('reader-content')){if(b)startBookReader(b).then(cleanup=>{if(pageReleased)cleanup?.();else readerController=cleanup;});else $('reader-content').textContent='Choisis un livre dans la bibliothèque.';}
+if($('book-detail')){$('book-detail').innerHTML=b?(b.requiredTier>accountTier?'<section class="ell-locked-book"><h2>🔒 Livre réservé aux abonnés</h2><p>Cette lecture nécessite le niveau '+b.requiredTier+'.</p><a class="btn" href="le-cercle.html#formules">Découvrir les formules</a></section>':detailMarkup(b)):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();}
+if($('reader-content')){if(b&&b.requiredTier>accountTier){$('reader-content').innerHTML='<section class="ell-locked-book"><h2>🔒 Lecture réservée</h2><p>Ce livre nécessite un abonnement de niveau '+b.requiredTier+'.</p><a class="btn" href="le-cercle.html#formules">Voir les abonnements</a></section>';}else if(b)startBookReader(b).then(cleanup=>{if(pageReleased)cleanup?.();else readerController=cleanup;});else $('reader-content').textContent='Choisis un livre dans la bibliothèque.';}
 if($('review-form')){if(!b){$('review-book').textContent='Choisis d’abord un livre dans Critiques.';$('review-form').hidden=true;}else{
 $('review-book').innerHTML='<a href="'+bookLink(b)+'">'+esc(b.title)+'</a>';
 let review=state.reviews[id];if(review){if(!Array.from($('rating').options).some(o=>o.value===String(ratingValue(review))))$('rating').innerHTML+='<option value="'+ratingValue(review)+'">'+formatNumber(ratingValue(review))+' / 5</option>';$('rating').value=ratingValue(review);$('review').value=review.text;$('spoiler').checked=review.spoiler;}
@@ -4183,6 +4195,7 @@ start();
 
 window.ELL_FAVORITES_BOOKS=LIVRES_INITIAUX.map(b=>({id:b.id,detailPath:b.detailPath||''}));
 // Actions Favoris et Listes disponibles sur toutes les fiches et cartes du catalogue.
+if(!document.querySelector('script[src*="collections-privees.js"]')){const script=document.createElement('script');script.src='js/collections-privees.js?v=20261119-fix';document.body.append(script);}
 if(!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='css/favoris-listes.css';document.head.append(sheet);
  const script=document.createElement('script');script.src='js/favoris-catalogue.js?v=20261118';document.body.append(script);
