@@ -1,0 +1,19 @@
+.request-priority{margin:1.35rem 0;padding:clamp(1rem,3vw,1.65rem);border:1px solid #e0a9c7;border-radius:1.35rem;background:radial-gradient(ellipse at 100% 0,#eadcf8 0,transparent 60%),#fff1f8;color:#59334c;box-shadow:0 8px 24px #8e537518;min-inline-size:0}
+.request-priority legend{padding:0 .55rem;font-weight:700;color:#77425f}
+.priority-intro{display:grid;grid-template-columns:1fr minmax(110px,30%);gap:1rem;align-items:center}
+.priority-intro h3{margin:.15rem 0 .5rem;font-size:clamp(1.35rem,4vw,2rem);line-height:1.1}
+.priority-intro p{margin:.4rem 0}.priority-kicker{font-weight:800;font-size:.74rem;letter-spacing:.07em;color:#803a63}
+.priority-stack{position:relative;isolation:isolate;min-height:5rem;display:grid;place-items:center}
+.priority-stack span,.priority-stack i{grid-area:1/1;border:1px solid #e3a9cd;border-radius:.75rem;width:100%;box-sizing:border-box}
+.priority-stack span{z-index:2;background:#87365e;color:#fff;font-weight:700;font-size:.85rem;padding:.8rem .45rem;text-align:center;transform:rotate(-5deg);box-shadow:0 5px 12px #7e315440;transition:transform .2s}
+.priority-stack i{height:2.5rem;background:#f8d9ec;transform:translateY(.75rem) rotate(4deg)}
+.priority-stack i:last-child{z-index:-1;background:#e9dcf4;transform:translateY(1.25rem) rotate(9deg)}
+.request-priority:has(input:checked) .priority-stack span{transform:translateY(-.4rem) rotate(-5deg)}
+.request-priority .priority-choice{display:flex;align-items:center;gap:.85rem;margin:1.15rem 0 .8rem;padding:.8rem;border:1px solid #e9b6d2;border-radius:.9rem;background:#fffafd}
+.request-priority .priority-choice:has(input:not(:disabled)){cursor:pointer}
+.request-priority .priority-choice:has(input:checked){border-color:#87365e;background:#ffedf8}
+.priority-choice small{display:block;margin-top:.25rem}.request-priority input[type=checkbox]{width:1.15rem;height:1.15rem;flex:none;accent-color:#87365e}
+.priority-footer{display:flex;flex-wrap:wrap;gap:.55rem 1rem;align-items:center;justify-content:space-between}
+.priority-footer p{margin:0;font-weight:700}.priority-footer a{color:#703356;text-decoration:underline}.priority-footer a[hidden]{display:none}
+@media(max-width:410px){.priority-intro{grid-template-columns:1fr}.priority-stack{max-width:10rem;min-height:4.2rem;margin-left:auto}}
+@media(prefers-reduced-motion:reduce){.priority-stack span{transition:none}}

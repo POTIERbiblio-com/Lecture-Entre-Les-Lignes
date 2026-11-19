@@ -2,17 +2,30 @@ import {auth,onAccount,requestService,uploadAttachment,requestCard} from './requ
 
 const $=id=>document.getElementById(id);
 const form=$('request-form'), status=$('request-status'), list=$('my-requests');
+let priorityOwner=null,priorityRefresh=0;
 async function refreshPriority(account){
- const info=$('request-priority-info'),check=$('request-boost');
- if(!info||!check)return;
- check.disabled=true;check.checked=false;
+ const info=$('request-priority-info'),check=$('request-boost'),card=$('priority-card');
+ if(!info||!check||!card)return;
+ const turn=++priorityRefresh;
+ const owner=account?.uid??null;
+ const selected=owner&&priorityOwner===owner&&check.checked&&card.dataset.state!=='automatic';
+ priorityOwner=owner;
+ const cost=$('priority-cost'),plans=$('priority-plans');
+ check.disabled=true;check.checked=Boolean(selected);
+ card.dataset.state=account?'loading':'guest';
+ cost.textContent='1 crédit utilisé à l’envoi';plans.hidden=false;
+ info.textContent=account?'Vérification de tes crédits…':'Connecte-toi pour voir tes crédits.';
  if(!account)return;
  try{
-  const {remaining,automatic,eligible,complimentary}=await requestService('requests-priority-status',{},account);
-  if(auth.currentUser?.uid!==account.uid)return;
-  check.checked=automatic;check.disabled=automatic||remaining===0;
-  info.textContent=automatic?(complimentary?'Tes propositions sont automatiquement prioritaires.':'Illimité · toutes tes propositions sont automatiquement prioritaires.') : !eligible?'Option réservée aux formules Découverte, Passion et Illimité.':remaining+' crédit'+(remaining===1?'':'s')+' de priorité restant'+(remaining===1?'':'s')+' ce mois-ci.';
- }catch(error){info.textContent=error.message;}
+  const {remaining,automatic,eligible}=await requestService('requests-priority-status',{},account);
+  if(turn!==priorityRefresh||auth.currentUser?.uid!==owner)return;
+  check.checked=automatic||Boolean(selected&&eligible&&remaining>0);
+  check.disabled=automatic||!eligible||remaining===0;
+  card.dataset.state=automatic?'automatic':!eligible?'locked':remaining===0?'empty':'ready';
+  plans.hidden=automatic||(eligible&&remaining>0);
+  cost.textContent=automatic?'Priorité appliquée à chaque envoi':eligible?'1 crédit utilisé à l’envoi':'Fonctionnalité des formules payantes';
+  info.textContent=automatic?'Priorité automatique activée':!eligible?'Incluse avec Découverte, Passion et Illimité.':remaining===0?'Aucun crédit restant ce mois-ci.':remaining+' crédit'+(remaining===1?' restant':'s restants')+' ce mois-ci';
+ }catch(error){if(turn===priorityRefresh&&auth.currentUser?.uid===owner)info.textContent=error.message;}
 }
 let records=[],owner=null,requestSequence=0;
 const sort=$('request-history-sort');
@@ -70,6 +83,7 @@ async function refresh(account){
 }
 window.addEventListener('focus',()=>{if(auth.currentUser)void refresh(auth.currentUser);});
 onAccount(account=>{
+  if(!account)void refreshPriority(null);
   requestSequence++;records=[];owner=null;
   list.replaceChildren();
   $('request-success').hidden=true;
@@ -82,6 +96,7 @@ form.onsubmit=async event=>{
   event.preventDefault();
   const account=auth.currentUser,button=$('send-request'),fields=new FormData(form);
   if(!account||button.disabled)return;
+  const boost=$('request-boost')?.checked===true;
   $('request-success').hidden=true;
   button.disabled=true;
   try{
@@ -93,10 +108,10 @@ form.onsubmit=async event=>{
     status.textContent=cover.size||pdf.size?'Envoi des pièces jointes…':'Enregistrement…';
     const [coverPath,pdfPath]=await Promise.all([uploadAttachment(cover,'cover',account),uploadAttachment(pdf,'pdf',account)]);
     status.textContent='Enregistrement…';
-    await requestService('requests-create',{data,coverPath,pdfPath,pdfName:pdf.name,boost:$('request-boost')?.checked===true},account);
+    const {boosted}=await requestService('requests-create',{data,coverPath,pdfPath,pdfName:pdf.name,boost},account);
     if(auth.currentUser?.uid!==account.uid)return;
     form.reset();
-    status.textContent='Proposition enregistrée.';
+    status.textContent=boosted?'Proposition enregistrée en tête de liste.':'Proposition enregistrée.';
     $('request-success').hidden=false;
     await refresh(account);
   }catch(error){
