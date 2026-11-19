@@ -2,7 +2,7 @@ import {auth,requestService} from './request-service.js';
 const project='https://cezgcoaokwuobipwfffa.supabase.co';
 const publicKey='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';
 export async function catalogueRules(){
-  const response=await fetch(project+'/rest/v1/catalogue_moderation?select=book_id,access_level,hidden,deleted',{
+  const response=await fetch(project+'/rest/v1/catalogue_moderation?select=book_id,access_level,pending_access_level,hidden,deleted',{
     headers:{apikey:publicKey},cache:'no-store'
   });
   if(!response.ok)throw Error('Le statut du catalogue est indisponible.');

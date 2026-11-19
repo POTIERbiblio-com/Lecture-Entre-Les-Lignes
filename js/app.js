@@ -1182,7 +1182,12 @@ function bindCatalogueControls(){
    const {auth,requestService}=await import('./request-service.js');
    const account=auth.currentUser;
    if(account?.uid!==ellUser?.id)throw Error('Le compte a changé. Recharge la page.');
-   await requestService('catalogue-moderate',{bookId:book.accessBookId||book.id,level,hidden:false,deleted:remove},account);
+   if(!remove&&level&&!window.confirm('Préparer le cadenas pour « '+book.title+' » en conservant la fiche existante ?'))return;
+   const result=await requestService('catalogue-moderate',{bookId:book.accessBookId||book.id,level,hidden:false,deleted:remove},account);
+   if(result.pending){
+    status.textContent='Cadenas préparé. La fiche est conservée. Le PDF public doit encore être retiré.';
+    return;
+   }
    if(remove&&$('book-detail')){location.assign(siteHref('mes-livres.html'));return;}
    if(remove){
     state.books=state.books.filter(item=>item.id!==book.id);
