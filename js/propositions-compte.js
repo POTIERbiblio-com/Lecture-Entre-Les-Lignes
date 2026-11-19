@@ -1,12 +1,13 @@
-import {auth,onAccount,requestService} from './request-service.js';
+import {auth,onAccount,requestService} from './request-service.js?v=decisions-20261119';
 const panel=document.getElementById('admin-proposals-shortcut');
 const count=document.getElementById('proposals-count');
 let generation=0;
 onAccount(async account=>{
  const turn=++generation;
  panel.hidden=true;
- if(!account?.emailVerified||!['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(account.email?.toLowerCase()))return;
+ if(account?.email?.toLowerCase()!=='quentinmorel1912@gmail.com')return;
  panel.hidden=false;
+ if(!account.emailVerified)return;
  try{
   const {requests}=await requestService('requests-list',{admin:true},account);
   if(turn!==generation||auth.currentUser?.uid!==account.uid||!count)return;

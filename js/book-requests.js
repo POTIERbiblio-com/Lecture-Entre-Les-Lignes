@@ -1,4 +1,4 @@
-import {auth,onAccount,requestService,uploadAttachment,requestCard} from './request-service.js';
+import {auth,onAccount,requestService,uploadAttachment,requestCard} from './request-service.js?v=decisions-20261119';
 
 const $=id=>document.getElementById(id);
 const form=$('request-form'), status=$('request-status'), list=$('my-requests');

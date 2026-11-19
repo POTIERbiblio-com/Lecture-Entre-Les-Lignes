@@ -35,7 +35,9 @@ export function requestCard(record,{admin=false,account}={}){
   node.className=admin?'admin-request':'request-entry';
   const add=(tag,value)=>{const element=document.createElement(tag);element.textContent=value;node.append(element);return element;};
   add('h3',record.title);
-  add('p',labels[record.status]||labels.pending).className='status '+(labels[record.status]?record.status:'pending');
+  const workflow=record.review_workflow||{};
+  if(workflow.decision)add('p',workflow.label).className='status decision-'+workflow.decision;
+  else add('p',labels[record.status]||labels.pending).className='status '+(labels[record.status]?record.status:'pending');
   if(record.author)add('p',record.author);
   if(admin&&record.requester_email)add('p',record.requester_email);
   const detailLabels={genre:'Genre',subgenre:'Sous-genre',edition:'Édition',publicationDate:'Parution',price:'Prix',isbn:'ISBN',referenceUrl:'Référence',summary:'Résumé',details:'Informations complémentaires'};
@@ -56,6 +58,18 @@ export function requestCard(record,{admin=false,account}={}){
       }catch(error){add('p',error.message);button.disabled=false;}
     };
   }
+  if(workflow.genreLabel)add('p',[workflow.title,workflow.author,workflow.genreLabel,workflow.subLabel].filter(Boolean).join(' · '));
   if(record.admin_message)add('p',record.admin_message).className='response';
+  if(!admin&&/^edition-[0-9a-f-]{36}$/.test(workflow.bookId||'')){
+    const link=add('a','Voir le livre publié ↗');link.href='livre.html?id='+encodeURIComponent(workflow.bookId);
+  }
+  if(!admin&&workflow.history?.length>1){
+    const log=add('details','');const summary=document.createElement('summary');summary.textContent='Historique des décisions';log.append(summary);
+    const list=document.createElement('ol');list.className='request-history';log.append(list);
+    for(const event of [...workflow.history].reverse()){
+      const item=document.createElement('li');
+      item.textContent=new Date(event.at).toLocaleDateString('fr-FR')+' · '+event.label+' · '+event.message;list.append(item);
+    }
+  }
   return node;
 }

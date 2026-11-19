@@ -21,7 +21,7 @@
 <a href="index.html">Accueil</a>
 <a href="mon-espace.html">Mon espace</a>
 <img class="journal-sticker margin-sticker" src="images/carnet-illustre/sticker-cle.svg" alt="" aria-hidden="true"></div>
-<section class="admin-shortcut" id="admin-proposals-shortcut" hidden style="margin:20px 0;padding:18px 25px;background:#e9daf6;border:1px solid #c5a6d6;border-radius:14px"><strong>✦ Atelier des propositions</strong> <a href="admin-propositions.html">Gérer les demandes de livres ↗</a> <span id="proposals-count" role="status"></span></section>\n<section aria-labelledby="pocket-title"><header class="desk-opening">
+<section class="admin-shortcut" id="admin-proposals-shortcut" hidden style="margin:20px 0;padding:18px 25px;background:#e9daf6;border:1px solid #c5a6d6;border-radius:14px"><strong>✦ Atelier des propositions</strong> <a class="btn" href="admin-propositions.html">Gérer les propositions ↗</a> <a class="btn secondary" href="publier-livre.html">Ajouter un livre au catalogue ↗</a> <span id="proposals-count" role="status"></span></section>\n<section aria-labelledby="pocket-title"><header class="desk-opening">
   <div class="desk-heading"><h1 id="pocket-title">Mon <em>espace</em></h1><div class="banner-actions"><a href="#mes-traces">Retrouver mes traces <span aria-hidden="true">↓</span></a></div></div>
   <figure class="desk-composition" aria-hidden="true">
     <img class="desk-photo" src="images/atelier/carnets-sous-les-pieds.jpg" alt="">
@@ -47,5 +47,5 @@ onAuthStateChanged(auth,async user=>{const link=$f('firebase-admin-link'),premiu
 $f('firebase-logout').onclick=async()=>{try{await signOut(auth);location.assign('connexion-firebase.html');}catch(e){$f('firebase-status').textContent='Déconnexion impossible : '+(e.code||'erreur inconnue');}};
 </script>
 
-<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script type="module" src="js/propositions-compte.js"></script><p style="text-align:center"><a href="admin-catalogue.html">Gestion du catalogue (administrateurs)</a></p></body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script type="module" src="js/propositions-compte.js?v=decisions-20261119"></script><p style="text-align:center"><a href="admin-catalogue.html">Gestion du catalogue (administrateurs)</a></p></body>
 </html>

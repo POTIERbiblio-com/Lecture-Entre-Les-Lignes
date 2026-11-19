@@ -1,5 +1,5 @@
 import {watchAdministration} from './admin-session.js';
-import {auth,requestService} from './request-service.js';
+import {auth,requestService} from './request-service.js?v=decisions-20261119';
 import {uploadCataloguePdf} from './catalogue-access.js';
 const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]]};
 const form=document.getElementById('publication-form');
@@ -35,6 +35,8 @@ watchAdministration({status:message,onClosed(){
   addChapter.disabled=false;
   fields.reviewUrl.oninput();
   const query=new URLSearchParams(location.search);
+  fields.title.value=(query.get('title')||'').slice(0,180);
+  fields.author.value=(query.get('author')||'').slice(0,150);
   if(Object.hasOwn(GENRES,query.get('genre')))fields.genre.value=query.get('genre');
   subgenres();
   if(Array.from(fields.sub.options).some(option=>option.value===query.get('sub')))fields.sub.value=query.get('sub');
@@ -85,7 +87,18 @@ form.onsubmit=async event=>{
     const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType},account);
     if(auth.currentUser?.uid!==account.uid)return;
     const filters=new URLSearchParams({genre:payload.genre,sub:payload.sub,publie:id});
-    location.assign('mes-livres.html?'+filters+'#books');
+    const destination='mes-livres.html?'+filters+'#books';
+    const proposal=new URLSearchParams(location.search).get('proposition');
+    if(proposal){
+      try{
+        await requestService('requests-reply',{id:proposal,decision:'published',bookId:id,title:payload.title,author:payload.author,genre:payload.genre,sub:payload.sub},account);
+      }catch(error){
+        const link=document.createElement('a');link.href=destination;link.textContent='Voir le livre publié';
+        message.replaceChildren('Livre publié. Mise à jour de la proposition indisponible · '+error.message+' ',link);
+        return;
+      }
+    }
+    location.assign(destination);
   }catch(error){if(auth.currentUser?.uid===account.uid)message.textContent=error.message;}
   finally{submit.disabled=false;}
 };

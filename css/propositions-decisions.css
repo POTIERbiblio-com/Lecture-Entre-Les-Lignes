@@ -1,0 +1,6 @@
+.decision-accepted,.decision-published{background:#ddf3e3!important;color:#215439!important}
+.decision-queued,.decision-more_info{background:#ffedce!important;color:#774816!important}
+.decision-rejected{background:#fbe0e5!important;color:#842437!important}
+.request-entry .status,.admin-request .status{border-radius:1rem;padding:.35rem .65rem;display:inline-block;font-weight:700}
+.admin-request fieldset{display:grid;gap:.5rem;border:1px solid #e8c8db;border-radius:.8rem;padding:.8rem}
+.request-history li{margin:.55rem 0}
