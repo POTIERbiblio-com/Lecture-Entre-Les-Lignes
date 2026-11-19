@@ -1152,12 +1152,14 @@ function renderBooks() {
   if ($('review-search')) { renderReviewBooks(el); return; }
   const genre = $('search-genre')?.value || el.dataset.genre;
   const terms = searchTerms($('search')?.value || '');
+  const favorites=window.ELLCollections?.read().favorites||[];
   const items = state.books.filter(book => {
+    if(book.id==='liv0127'&&!genre&&!el.dataset.sub&&state.books.some(candidate=>candidate.id==='liv0139'))return false;
     if (genre && book.genre !== genre) return false;
     if (el.dataset.sub && String(book.sub) !== el.dataset.sub) return false;
-    if ($('search-favorites')?.checked && !window.ELLCollections?.read().favorites.includes(book.id)) return false;
+    if ($('search-favorites')?.checked && !favorites.includes(book.id) && !(book.id==='liv0139'&&favorites.includes('liv0127'))) return false;
     if ($('search-year')?.value && bookYear(book)!==$('search-year').value) return false;
-    if ($('pdf-only')?.checked && !book.pdfPath && !book.pdf) return false;
+    if ($('pdf-only')?.checked && !book.pdfPath && !book.pdf && !book.privatePdf && !book.accessLevel) return false;
     if (!terms.length) return true;
     const edition = book.edition && typeof book.edition==='object' ? Object.values(book.edition) : [book.edition, ...Object.values(READING_GUIDES[book.id]?.edition || {}).filter(value=>typeof value==='string')];
     const words = searchTerms([book.title,book.author,book.year,book.publisher,book.isbn,...edition,...(book.themes||[])].join(' ')).join(' ');
@@ -3372,10 +3374,15 @@ async function save(){
 }
 async function connectService(){
  if(location.protocol==='file:')return null;
- try{await ellConnect();const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const user=fbuser?{id:fbuser.uid,email:fbuser.email}:null;ellUser=user;
- adminEnabled=false;
- service={user:user?.id||null,admin:adminEnabled};return service;
- }catch(e){console.error(e);return null;}
+ try{
+  const {auth}=await import('./request-service.js');
+  ellFirebaseAuth=auth;
+  await auth.authStateReady();
+  const account=auth.currentUser;
+  ellUser=account?{id:account.uid,email:account.email}:null;
+  service={user:ellUser?.id||null,admin:false};
+  return service;
+ }catch(error){console.error('Connexion indisponible',error);return null;}
 }
 let remoteCarnet=null,carnetLoaded=false;
 function restoreCarnet(data) {
@@ -3404,7 +3411,7 @@ async function loadServiceState(){
  }else{
   localStorage.removeItem('ell_account');
  }
- if(!ell)return;
+ await ellConnect();
  const {data:catalog,error:catalogError}=await ell.from('books').select('*').eq('published',true);
  if(catalogError){console.warn('Catalogue en ligne indisponible',catalogError);return;}
  for(const entry of catalog||[]){
@@ -3432,19 +3439,16 @@ function lockCatalog(){
  if($('admin-access'))$('admin-access').innerHTML=adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'<p>Réservé au compte administrateur. <a href="mon-espace.html">Se connecter</a></p>';
 }
 function showAccount(){
- const box=$('account-status');if(!box)return;
- if(location.hash.includes('type=recovery')){box.innerHTML='<h2>Définir un nouveau mot de passe</h2><form id="ell-recovery"><input id="ell-new-pass" type="password" minlength="6" required autocomplete="new-password" placeholder="Nouveau mot de passe"><button type="submit">Enregistrer le mot de passe</button></form><p id="ell-recovery-msg" role="status"></p>'; $('ell-recovery').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.updateUser({password:$('ell-new-pass').value});$('ell-recovery-msg').textContent=error?error.message:'Mot de passe modifié. Recharge la page pour accéder à ton compte.';};return;}
- if(!ell){box.textContent='Connexion momentanément indisponible.';return;}
- if(ellUser){
- box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>. Tes carnets sont liés à ton compte.</p>'+(adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';
- $('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});await ellFirebaseAuth.signOut();localStorage.removeItem('ell_account');location.reload();};return;
- }
- box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-reset">Mot de passe oublié ?</button><button type="button" id="ell-resend">Renvoyer le mail de confirmation</button><p id="ell-result" role="status"></p>';
- const cred=()=>({email:$('ell-mail').value.trim(),password:$('ell-pass').value}),msg=x=>$('ell-result').textContent=x;
- $('ell-form').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.signInWithPassword(cred());if(error)msg(error.message);else location.reload();};
- $('ell-create').onclick=async()=>{const {error}=await ell.auth.signUp({...cred(),options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Si cette adresse est nouvelle, un message de confirmation sera envoyé. Si tu possèdes déjà un compte, utilise « Se connecter » ou « Mot de passe oublié ? ».');};
- $('ell-resend').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail.');return;}const {error}=await ell.auth.resend({type:'signup',email,options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Si cette adresse attend une confirmation, un nouvel e-mail a été demandé.');};
- $('ell-reset').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail pour recevoir le lien de réinitialisation.');return;}const {error}=await ell.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});msg(error?error.message:'Si ce compte existe, un e-mail de réinitialisation a été envoyé.');};
+ const box=$('account-status');
+ if(!box)return;
+ if(!ellUser){box.innerHTML='<a class="btn" href="connexion-firebase.html">Se connecter ou créer un compte</a>';return;}
+ box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>.</p><button type="button" id="ell-out">Se déconnecter</button>';
+ $('ell-out').onclick=async()=>{
+   await autosaveQueue.catch(()=>{});
+   await ellFirebaseAuth.signOut();
+   localStorage.removeItem('ell_account');
+   location.replace('connexion-firebase.html');
+ };
 }
 
 async function storeCatalogBook(book){throw Error('Utilise la page Administration du catalogue.');}
@@ -3938,13 +3942,13 @@ async function applyCatalogueAccess(){
     const {catalogueRules}=await import('./catalogue-access.js');
     const rules=await catalogueRules();
     const byTitle=new Map();
-    const titleKey=title=>searchTerms(title).join(' ');
+    const titleKey=book=>searchTerms(book.title).join(' ')+'|'+searchTerms(book.author||'').join(' ');
     for(const b of state.books){
       const rule=rules.get(b.id)||rules.get('db-'+b.externalCatalogId);
-      if(rule)byTitle.set(titleKey(b.title),rule);
+      if(rule)byTitle.set(titleKey(b),rule);
     }
     state.books=state.books.filter(b=>{
-      const rule=rules.get(b.id)||rules.get('db-'+b.externalCatalogId)||byTitle.get(titleKey(b.title));
+      const rule=rules.get(b.id)||rules.get('db-'+b.externalCatalogId)||byTitle.get(titleKey(b));
       if(rule?.hidden||rule?.deleted)return false;
       b.accessLevel=Number(rule?.access_level||0);
       b.accessBookId=rule?.book_id||b.id;

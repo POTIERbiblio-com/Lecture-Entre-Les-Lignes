@@ -1,6 +1,6 @@
 /* Accès aux PDF protégés : aucune clé serveur dans le navigateur. */
 export async function ouvrirPdfPrive(bookId,{download=false}={}){
- const [{initializeApp,getApps},{getAuth}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js')]);
+ const [{initializeApp,getApps},{getAuth}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);
  const app=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});
  const user=getAuth(app).currentUser;if(!user)throw Error('Connecte-toi pour accéder à ce livre.');
  const response=await fetch('https://cezgcoa nkoka.supabase.co/functions/v1/secure-account'.replace('cezgcoa nkoka','cezgcoaokwuobipwfffa'),{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+await user.getIdToken()},body:JSON.stringify({action:'private-pdf',bookId:String(bookId)})});
