@@ -13,6 +13,12 @@ async function update(){
   if(!response.ok)throw Error(data.error||'Service indisponible');
   if(user.uid!==auth.currentUser?.uid)return;
   const answered=(data.requests||[]).filter(x=>x.admin_message||x.status!=='pending');
+  const unreadResult=await fetch(ROOT,{method:'POST',headers:{Authorization:'Bearer '+await user.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action:'requests-unread'})});
+  const unreadData=unreadResult.ok?await unreadResult.json():{unread:0};
+  if(user.uid!==auth.currentUser?.uid)return;
+  let badge=host.querySelector('[data-ell-proposal-badge]');
+  if(!badge){badge=document.createElement('strong');badge.dataset.ellProposalBadge='1';badge.style.cssText='display:inline-block;margin:8px;padding:6px 12px;border-radius:22px;background:#f7d8e8;color:#6e3b58';host.prepend(badge)}
+  badge.textContent=unreadData.unread>0?unreadData.unread+' nouvelle(s) réponse(s) à tes propositions':'Tes réponses et propositions';
   host.hidden=answered.length===0;area.replaceChildren();
   answered.slice(0,8).forEach(x=>{
    const article=document.createElement('article');
