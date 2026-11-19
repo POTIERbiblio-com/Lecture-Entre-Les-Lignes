@@ -40,7 +40,7 @@
         <option value="vie-et-societe">Vie et société</option>
         <option value="spiritualites">Spiritualités et religions</option>
         <option value="jeunesse">Jeunesse et pédagogie</option>
-      <option value="voyages">Voyages et nature</option><option value="creativite">Créativité et loisirs</option></select>
+      <option value="voyages">Voyages et nature</option><option value="creativite">Créativité et loisirs</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
       </div>
 <div class="catalogue-field"><label for="search-year">Année de l’édition</label><select id="search-year"><option value="">Toutes les dates</option></select></div>
 <div class="catalogue-field"><label for="search-sort">Classer les résultats</label><select id="search-sort"><option value="title">Titre · A à Z</option><option value="author">Auteur · A à Z</option><option value="newest">Parution · récente d’abord</option><option value="oldest">Parution · ancienne d’abord</option></select></div>
@@ -63,7 +63,7 @@
 <div class="search-results catalogue-shelf">
   <div class="results-heading">
     <h2>Les livres du carnet</h2>
-    <p id="search-count" aria-live="polite" aria-atomic="true"></p>
+    <p id="search-publication" role="status"></p><p id="search-count" aria-live="polite" aria-atomic="true"></p>
   </div>
   <p><a class="btn" id="editorial-publish-link" href="publier-livre.html" hidden>Ajouter un livre</a></p><div id="books" class="catalogue-results"></div>
   <noscript><p>Pour filtrer le catalogue, active JavaScript ou <a href="genres.html">parcours les genres</a>.</p></noscript>
@@ -74,7 +74,7 @@
 <section id="recommended-books" class="site-main catalogue-shelf" hidden><h2>À lire d’après tes favoris</h2><div class="catalogue-results"></div></section><script src="js/recommandations.js" defer></script><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
-<script type="text/javascript" src="js/app.js?v=coeur-20261119-3">
+<script type="text/javascript" src="js/app.js?v=atelier-cercle-20261119">
 </script>
 <script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/collections-privees.js?v=coeur-20261119-3" defer></script><script src="js/favoris-catalogue.js?v=coeur-20261119-3" defer></script></body>
 </html>

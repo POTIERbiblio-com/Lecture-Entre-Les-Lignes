@@ -6,7 +6,9 @@ const config={apiKey:"AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY",authDomain:"lectu
 const auth=getAuth(initializeApp(config)), el=id=>document.getElementById(id), msg=t=>el('message').textContent=t;
 const errors={'auth/operation-not-allowed':"Active Adresse e-mail/Mot de passe dans Firebase Authentication.",'auth/unauthorized-domain':"Ajoute potierbiblio-com.github.io aux domaines autorisés dans Firebase Authentication.",'auth/email-already-in-use':"Cette adresse possède déjà un compte Firebase.",'auth/invalid-credential':"Adresse e-mail ou mot de passe incorrect.",'auth/weak-password':"Choisis un mot de passe plus long.",'auth/too-many-requests':"Trop de tentatives. Réessaie plus tard."};
 const run=async fn=>{msg('Un instant…');try{await fn()}catch(e){msg(errors[e.code]||'Erreur de connexion : '+(e.code||'inconnue'))}};
-const go=()=>location.assign('mon-espace.html');el('continue').onclick=go;
+const requested=new URLSearchParams(location.search).get('retour');
+const destination=['publier-livre.html','admin-propositions.html'].includes(requested)?requested:'mon-espace.html';
+const go=()=>location.assign(destination);el('continue').onclick=go;
 onAuthStateChanged(auth,u=>{el('signed').hidden=!u;el('auth-form').hidden=!!u;el('resend').hidden=!u||u.emailVerified;el('who').textContent=u?'Connecté : '+u.email:'';if(u)msg(u.emailVerified?'Session active. Tu peux accéder à ton espace ou changer de compte.':'Session active, mais ton adresse e-mail n’est pas encore vérifiée.');else msg('');});
 el('auth-form').onsubmit=e=>{e.preventDefault();run(async()=>{await signInWithEmailAndPassword(auth,el('email').value.trim(),el('password').value);go()})};
 el('register').onclick=()=>run(async()=>{if(!el('auth-form').reportValidity())return;const r=await createUserWithEmailAndPassword(auth,el('email').value.trim(),el('password').value);try{await sendEmailVerification(r.user);msg('Compte créé. E-mail de vérification demandé.')}catch(e){msg('Compte créé, mais l’e-mail de vérification n’a pas été envoyé : '+(errors[e.code]||e.code))}});

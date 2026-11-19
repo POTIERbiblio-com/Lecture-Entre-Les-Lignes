@@ -1144,6 +1144,15 @@ function horrorMark(book) {
 const accessLabels=['','Jaune · Découverte','Orange · Passion','Rouge · Illimité'];
 const accessColors=['','#fbec9a','#ffcc9f','#f4a7b0'];
 function lockBadge(book){const level=book.accessLevel;return level?'<span class="book-access" style="background:'+accessColors[level]+';color:#412b35;border-radius:1em;padding:.2em .6em">🔒 '+accessLabels[level]+'</span>':'';}
+function bookSubscriptionOffer(book){
+ const level=Number(book.accessLevel);
+ const plans=['','Découverte','Passion','Illimité'];
+ if(!plans[level])return '';
+ if(!document.querySelector('link[href*="livres-cercle.css"]')){
+  const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=siteHref('css/livres-cercle.css');document.head.append(sheet);
+ }
+ return '<aside class="cercle-book-offer cercle-book-offer-'+level+'"><img src="'+esc(assetHref('images/atelier/revue-ouverte.jpg'))+'" alt=""><div><span class="cercle-book-tier">🔒 '+plans[level]+'</span><h2>Ce livre fait partie du Cercle</h2><p>Retrouve cette lecture dans la formule <strong>'+plans[level]+'</strong>'+(level<3?' et les formules supérieures':'')+'.</p><a class="btn" href="'+siteHref('le-cercle.html#comparatif')+'">Découvrir les formules ↗</a></div></aside>';
+}
 function editorialControl(book){return siteHref('admin-catalogue.html?livre='+encodeURIComponent(book.accessBookId||book.id)+'#catalogue-access-admin');}
 function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+lockBadge(b)+''+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.privatePdf?'<p class="book-pdf-label">PDF disponible</p>':b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(editorialAdmin?'<a class="btn secondary" href="'+editorialControl(b)+'">Gérer ce livre</a>':'')+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
 function searchTerms(value) {
@@ -1157,12 +1166,13 @@ function renderBooks() {
   if (!el) return;
   if ($('review-search')) { renderReviewBooks(el); return; }
   const genre = $('search-genre')?.value || el.dataset.genre;
+  const subgenre = $('search-subgenre')?.value || el.dataset.sub;
   const terms = searchTerms($('search')?.value || '');
   const favorites=window.ELLCollections?.read().favorites||[];
   const items = state.books.filter(book => {
     if(book.id==='liv0127'&&!genre&&!el.dataset.sub&&state.books.some(candidate=>candidate.id==='liv0139'))return false;
     if (genre && book.genre !== genre) return false;
-    if (el.dataset.sub && String(book.sub) !== el.dataset.sub) return false;
+    if (subgenre && String(book.sub) !== subgenre) return false;
     if ($('search-favorites')?.checked && !favorites.includes(book.id) && !(book.id==='liv0139'&&favorites.includes('liv0127'))) return false;
     if ($('search-year')?.value && bookYear(book)!==$('search-year').value) return false;
     if ($('pdf-only')?.checked && !book.pdfPath && !book.pdf && !book.privatePdf && !book.accessLevel) return false;
@@ -1182,6 +1192,8 @@ function renderBooks() {
       button.setAttribute('aria-pressed', String(button.dataset.genre === $('search-genre').value));
     });
   }
+  const published=$('search-publication');
+  if(published){const book=items.find(item=>item.id===new URLSearchParams(location.search).get('publie'));published.textContent=book?'« '+book.title+' » est publié dans '+GENRES[book.genre][0]+' · '+GENRES[book.genre][1][book.sub]+'.':'';}
   const count = $('search-count');
   const shelfCount = $('shelf-count');
   if (shelfCount) shelfCount.textContent = items.length + (items.length === 1 ? ' livre dans ce rayon' : ' livres dans ce rayon');
@@ -1224,6 +1236,7 @@ function localReception(b){const r=state.reviews[b.id],score=r?ratingValue(r):nu
 function externalReception(b){const e=b.external;if(!e||!Number.isFinite(e.rating)||!Number.isFinite(e.count)||e.count<=0)return '';const scope={liv0006:'Édition 2020 · PDF 2019',liv0007:'Œuvre · plusieurs éditions',liv0009:'Œuvre · plusieurs éditions',liv0012:'Une fiche de ce titre',liv0013:'Édition 2022 · PDF 2015',liv0019:'Œuvre originale · PDF extrait',liv0021:'Œuvre · plusieurs éditions'}[b.id]||'';
 return '<section class="external-reception scrapbook-rating"><img class="rating-drawing" src="'+esc(assetHref('images/objets/medaillon.svg'))+'" alt=""><p class="artist-kicker">Les étoiles venues d’ailleurs</p><h2>'+esc(e.site)+'</h2><p class="rating-value">'+formatNumber(e.rating)+' <small>/ 5</small></p>'+starLine(e.rating)+'<div class="rating-tallies"><span><b>'+formatNumber(e.count)+'</b> '+(e.count===1?'note':'notes')+'</span>'+(e.comments!==null?'<span><b>'+formatNumber(e.comments)+'</b> '+(e.comments===1?'critique':'critiques')+'</span>':'')+'</div>'+(scope?'<small class="rating-scope">'+esc(scope)+'</small>':'')+'<a class="editorial-link" href="'+esc(e.url)+'" target="_blank" rel="noopener">Lire les avis sur '+esc(e.site.replace(' — avis clients',''))+' ↗</a><small class="rating-date">Relevé du '+esc(e.checked)+'</small></section>';}
 function bookFileActions(book, meta) {
+  if(book.accessLevel>readerLevel)return bookSubscriptionOffer(book);
   if(book.accessLevel||book.privatePdf){
     const read='lire.html?id='+encodeURIComponent(book.id)+'#reader-content';
     return '<div class="book-file-actions">'+lockBadge(book)+' <a class="btn" href="'+read+'">Ouvrir le lecteur</a> <button class="btn" type="button" data-private-download="'+esc(book.accessBookId||book.id)+'">Télécharger le PDF</button></div>';
@@ -3388,7 +3401,7 @@ async function connectService(){
   ellUser=account?{id:account.uid,email:account.email}:null;
   editorialAdmin=account?.emailVerified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(account.email?.toLowerCase());
   service={user:ellUser?.id||null,admin:false};
-  if(account&&($('reader-content')||$('highlights'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
+  if(account&&($('reader-content')||$('highlights')||$('book-detail'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
   return service;
  }catch(error){console.error('Connexion indisponible',error);return null;}
 }
@@ -3504,6 +3517,7 @@ async function startBookReader(book) {
    </div>
   </div>
   <p class="reader-help" id="reader-help-extra"></p>
+  <aside class="note"><strong>Mon carnet de lecture · gratuit</strong><br>Retrouve tes fiches, notes et passages sauvegardés dans ton compte. Les formules du Cercle ajoutent la palette personnalisée et, avec Passion ou Illimité, le classement des notes et passages. <a href="le-cercle.html#comparatif">Comparer les outils ↗</a></aside>
   <div class="pdf-scroll" id="pdf-scroll"><div class="pdf-paper" id="pdf-paper"><canvas id="pdf-canvas"></canvas><div class="pdf-ink" id="pdf-ink" aria-hidden="true"></div><div class="textLayer" id="pdf-text-layer"></div></div></div>
   <div id="page-traces" class="page-traces"></div>
   <div class="reader-bottom">
@@ -4137,6 +4151,20 @@ for(const field of ['search-year','search-sort','pdf-only','search-favorites'])i
 if(($('books')||$('book-detail'))&&!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const hearts=document.createElement('script');hearts.src='js/favoris-catalogue.js?v=coeur-20261119-3';document.head.append(hearts);
 }
+if($('search-subgenre')){
+ const genre=$('search-genre'),sub=$('search-subgenre');
+ const updateSubgenres=()=>{
+  sub.replaceChildren(new Option('Tous les sous-genres',''),...(GENRES[genre.value]?.[1]||[]).map((name,index)=>new Option(name,String(index))));
+  sub.disabled=!genre.value;
+ };
+ const query=new URLSearchParams(location.search);
+ if(Object.hasOwn(GENRES,query.get('genre')))genre.value=query.get('genre');
+ updateSubgenres();
+ if(Array.from(sub.options).some(option=>option.value===query.get('sub')))sub.value=query.get('sub');
+ genre.addEventListener('change',()=>{updateSubgenres();renderBooks();});
+ sub.addEventListener('change',renderBooks);
+ $('catalogue-search')?.addEventListener('reset',()=>requestAnimationFrame(()=>{updateSubgenres();renderBooks();}));
+}
 renderBooks();renderRecommendations();if($('recommended-books'))addEventListener('ell-lists-change',renderRecommendations);if($('search-favorites'))addEventListener('ell-lists-change',()=>{if($('search-favorites').checked)renderBooks()});selects();bindTraceFilters();renderHighlights();renderNotes();renderQuestions();if ($('search')) $('search').oninput = renderBooks;
 if ($('search-genre')) $('search-genre').onchange = renderBooks;
 if ($('catalogue-tabs')) {
@@ -4157,6 +4185,7 @@ if ($('catalogue-search')) {
 }
 let b=state.books.find(b=>b.id===id);
 if(b&&(b.accessLevel||b.privatePdf)&&$('reader-content')){
+  if(b.accessLevel>readerLevel){$('reader-content').innerHTML=bookSubscriptionOffer(b);return;}
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
     b={...b,pdf:await cataloguePdf(b.accessBookId||b.id)};

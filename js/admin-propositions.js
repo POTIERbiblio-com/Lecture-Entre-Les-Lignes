@@ -1,7 +1,7 @@
-import {auth,onAccount,requestService,requestCard,labels} from './request-service.js';
+import {watchAdministration} from './admin-session.js';
+import {auth,requestService,requestCard,labels} from './request-service.js';
 
 const $=id=>document.getElementById(id), workspace=$('admin-workspace'), status=$('admin-access');
-const managers=new Set(['quentinmorel1912@gmail.com','juliepotier2006@gmail.com']);
 let records=[];
 function render(account=auth.currentUser){
   const term=$('admin-search').value.trim().toLocaleLowerCase('fr');
@@ -38,19 +38,14 @@ function render(account=auth.currentUser){
 }
 $('admin-search').oninput=()=>render();
 $('admin-filter').onchange=()=>render();
-let refreshNumber=0;
-async function refresh(account){
-  const turn=++refreshNumber;
-  records=[];workspace.hidden=true;$('admin-requests').replaceChildren();
-  if(!account?.emailVerified||!managers.has(account.email?.toLowerCase())){
-    status.textContent='Connecte-toi avec un compte administrateur dont l’adresse e-mail est vérifiée.';return;
-  }
-  status.textContent='Chargement des propositions…';
-  try{
-    const {requests}=await requestService('requests-list',{admin:true},account);
-    if(turn!==refreshNumber||auth.currentUser?.uid!==account.uid)return;
-    records=requests;render(account);workspace.hidden=false;status.textContent='Propositions reçues';
-  }catch(error){if(auth.currentUser?.uid===account.uid)status.textContent=error.message;}
-}
-onAccount(refresh);
-window.addEventListener('focus',()=>refresh(auth.currentUser));
+const refresh=watchAdministration({status,onClosed(){
+ records=[];workspace.hidden=true;$('admin-requests').replaceChildren();
+},async onReady(account,changed,isCurrent){
+ status.textContent='Chargement des propositions…';
+ const {requests}=await requestService('requests-list',{admin:true},account);
+ if(!isCurrent())return;
+ records=requests;render(account);workspace.hidden=false;status.textContent='Propositions reçues';
+ const button=document.createElement('button');
+ button.type='button';button.className='btn secondary';button.textContent='Actualiser';button.onclick=refresh;
+ status.append(' ',button);
+}});

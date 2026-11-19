@@ -1,4 +1,5 @@
-import {auth,onAccount,requestService} from './request-service.js';
+import {watchAdministration} from './admin-session.js';
+import {auth,requestService} from './request-service.js';
 import {uploadCataloguePdf} from './catalogue-access.js';
 const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]]};
 const form=document.getElementById('publication-form');
@@ -27,7 +28,7 @@ addChapter.onclick=()=>{
   addChapter.disabled=chapters.childElementCount>=100;
   field.querySelector('input').focus();
 };
-onAccount(async account=>{
+watchAdministration({status:message,onClosed(){
   form.hidden=true;
   form.reset();
   chapters.replaceChildren();
@@ -38,15 +39,10 @@ onAccount(async account=>{
   subgenres();
   if(Array.from(fields.sub.options).some(option=>option.value===query.get('sub')))fields.sub.value=query.get('sub');
   draft=null;
-  message.textContent='Connecte-toi avec un compte administrateur vérifié.';
-  if(!account)return;
-  try{
-    const {subscription}=await requestService('status',{},account);
-    if(auth.currentUser?.uid!==account.uid||!subscription.admin)return;
-    form.hidden=false;
-    message.textContent='Complète la fiche et ajoute les fichiers pour publier le livre.';
-  }catch(error){if(auth.currentUser?.uid===account.uid)message.textContent=error.message;}
-});
+},onReady(){
+  form.hidden=false;
+  message.textContent='Compte administrateur vérifié. Tu peux publier le livre.';
+}});
 
 form.onsubmit=async event=>{
   event.preventDefault();
@@ -88,16 +84,8 @@ form.onsubmit=async event=>{
     message.textContent='Publication dans le catalogue…';
     const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType},account);
     if(auth.currentUser?.uid!==account.uid)return;
-    const link=document.createElement('a');
-    link.href='livre.html?id='+encodeURIComponent(id);
-    link.textContent='Ouvrir la fiche publiée';
-    message.replaceChildren('Le livre a été publié. ',link);
-    draft=null;
-    form.reset();
-    fields.reviewUrl.oninput();
-    chapters.replaceChildren();
-    addChapter.disabled=false;
-    subgenres();
+    const filters=new URLSearchParams({genre:payload.genre,sub:payload.sub,publie:id});
+    location.assign('mes-livres.html?'+filters+'#books');
   }catch(error){if(auth.currentUser?.uid===account.uid)message.textContent=error.message;}
   finally{submit.disabled=false;}
 };
