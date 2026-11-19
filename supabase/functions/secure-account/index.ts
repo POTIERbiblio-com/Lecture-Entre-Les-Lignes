@@ -193,6 +193,18 @@ Deno.serve(async(req)=>{
     if(signedError)throw signedError;
     return json({url:signed.signedUrl,expiresIn:60});
   }
+  if(action==='catalogue-featured'){
+    if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
+    const bookId=String(body.bookId||'');
+    if(!/^[a-zA-Z0-9_-]{1,120}$/.test(bookId))return json({error:'Livre invalide'},400);
+    const values={book_id:bookId,homepage:body.homepage===true,bestseller:body.bestseller===true,editors_choice:body.editorsChoice===true,purple_heart:body.purpleHeart===true,updated_by:uid,updated_at:new Date().toISOString()};
+    const {error}=await db.from('catalogue_featured').upsert(values,{onConflict:'book_id'});if(error)throw error;return json({ok:true});
+  }
+  if(action==='book-access-counts'){
+    const {data,error}=await db.from('book_download_events').select('book_id').limit(20000);if(error)throw error;
+    const counts:Record<string,number>={};for(const item of data||[])counts[item.book_id]=(counts[item.book_id]||0)+1;
+    return json({counts,metric:'successful_private_pdf_access_requests',partial:(data||[]).length===20000});
+  }
   if(action==='catalogue-moderate'){
     if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
     const bookId=String(body.bookId||'').trim();
