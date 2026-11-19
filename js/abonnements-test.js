@@ -51,9 +51,9 @@ onAuthStateChanged(auth,async user=>{
   }
   status.textContent='Vérification de ton compte…';
   try{
-    const [{plans,testCheckoutReady},initial]=await Promise.all([request(user,'pricing-list'),request(user,'status')]);
+    const [{plans,liveCheckoutReady},initial]=await Promise.all([request(user,'pricing-list'),request(user,'status')]);
     let {subscription}=initial;
-    if(returned==='success'&&testCheckoutReady&&!subscription.access_level){
+    if(returned==='success'&&liveCheckoutReady&&!subscription.access_level){
       status.textContent='En attente de la confirmation Stripe…';
       for(let attempt=0;attempt<10&&!subscription.access_level;attempt++){
         await new Promise(resolve=>setTimeout(resolve,1500));
@@ -77,8 +77,8 @@ onAuthStateChanged(auth,async user=>{
       status.textContent='Vérifie ton adresse e-mail pour accéder à la souscription.';
       return;
     }
-    if(!testCheckoutReady){
-      status.textContent+=' · La confirmation des paiements de test est indisponible.';
+    if(!liveCheckoutReady){
+      status.textContent+=' · Les paiements sont temporairement indisponibles.';
       return;
     }
     if(returned==='success'&&!subscription.access_level){
@@ -92,7 +92,7 @@ onAuthStateChanged(auth,async user=>{
     }
     for(const plan of plans){
       if(!names[plan.plan]) continue;
-      button(user,'Tester '+names[plan.plan]+' · '+euros.format(plan.monthly_eur_cents/100)+'/mois','checkout',{plan:plan.plan},['checkout.stripe.com']);
+      button(user,'Choisir '+names[plan.plan]+' · '+euros.format(plan.monthly_eur_cents/100)+'/mois','checkout',{plan:plan.plan},['checkout.stripe.com']);
     }
   }catch(e){
     if(auth.currentUser?.uid===user.uid) status.textContent='Vérification impossible. '+e.message;
