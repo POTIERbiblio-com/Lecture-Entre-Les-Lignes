@@ -1,3 +1,4 @@
+document.addEventListener('click',async event=>{const button=event.target.closest('[data-ell-private-read]');if(!button)return;event.preventDefault();if(button.disabled)return;const message=button.parentElement.querySelector('.ell-private-message');button.disabled=true;if(message)message.textContent='Vérification de ton abonnement et du fichier privé…';try{const user=ellFirebaseAuth?.currentUser;if(!user)throw Error('Connecte-toi pour lire ce livre.');const response=await fetch('https://cezgcoaokwuobipwfffa.supabase.co/functions/v1/secure-account',{method:'POST',headers:{Authorization:'Bearer '+await user.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action:'catalogue-pdf',bookId:button.dataset.ellPrivateRead})});const body=await response.json().catch(()=>({}));if(!response.ok)throw Error(body.error||'PDF privé indisponible');if(!body.url)throw Error('Fichier non disponible');location.assign(body.url);}catch(error){if(message)message.textContent=error.message;}finally{button.disabled=false;} });
 const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null,ellFirebaseAuth=null;
 async function ellConnect(){if(!ell){const m=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');ell=m.createClient(ELL_URL,ELL_KEY);}return ell;}
 async function ellPrivate(action,data){if(!ellFirebaseAuth?.currentUser)throw Error('Connexion Firebase requise.');const response=await fetch('https://cezgcoa nkoka.supabase.co/functions/v1/secure-account'.replace('cezgcoa nkoka','cezgcoaokwuobipwfffa'),{method:'POST',headers:{Authorization:'Bearer '+await ellFirebaseAuth.currentUser.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,kind:'carnet',data})});const result=await response.json();if(!response.ok)throw Error(result.error||'Sauvegarde impossible');return result}
@@ -1130,7 +1131,9 @@ function horrorMark(book) {
   if (!isHorror(book)) return '';
   return '<span class="horror-book-mark"><img class="horror-book-sticker" src="images/carnet-illustre/frisson-rose.jpg" alt="">Rayon Horreur</span>';
 }
-function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
+const ELL_LOCK_NAMES=['Libre','Découverte','Passion','Illimité'];
+if(!document.querySelector('link[href*="cadenas-abonnements.css"]')){const css=document.createElement('link');css.rel='stylesheet';css.href='css/cadenas-abonnements.css?v=20261119';document.head.appendChild(css);}
+function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+(b.requiredTier>0?'<p class="ell-access-label" data-level="'+b.requiredTier+'">🔒 '+ELL_LOCK_NAMES[b.requiredTier]+' · '+(b.requiredTier>accountTier?'Abonnement requis':'Abonnement actif')+'</p>':'')+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
 function searchTerms(value) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/œ/g, 'oe').replace(/æ/g, 'ae').match(/[\p{L}\p{N}]+/gu) || [];
@@ -1196,7 +1199,7 @@ function wirePDFLinks(){document.querySelectorAll('[data-pdf-link]').forEach(a=>
 function drawLocalReview(b){if($('review-local'))$('review-local').innerHTML=localReception(b);}
 
 // Carnet illustré : les notes personnelles restent séparées du catalogue.
-let service=null,remoteVersion=null,pendingWrites=0,adminEnabled=false,readerController=null,autosaveQueue=Promise.resolve(),lastSyncedCarnet='',pageReleased=false;
+let service=null,remoteVersion=null,pendingWrites=0,adminEnabled=false,accountTier=0,readerController=null,autosaveQueue=Promise.resolve(),lastSyncedCarnet='',pageReleased=false;
 const LEGEND_DEFAULT={'#f4df9c':'Idée importante','#eed0de':'Ressenti','#dbe8cf':'À approfondir','#dfd4f0':'Question','#bcdfee':'À retenir','#f6cdb0':'Citation'};
 const BOOK_ART={liv0003:['jardin-secret.jpg','Un passage secret'],liv0006:['train-fleuri.jpg','L’envie de se lancer'],liv0007:['telephone-rose.jpg','Parlons argent'],liv0008:['chuchotement.jpg','Trouver sa voix'],liv0009:['regard-curieux.jpg','Entre les lignes'],liv0010:['ampoule-etoiles.jpg','Faire un premier pas'],liv0011:['lecteur-journal.jpg','À plusieurs, plus loin'],liv0012:['carnets-et-monde.jpg','Un équilibre à inventer'],liv0013:['soucoupes-pastel.jpg','D’où vient notre monde ?'],liv0014:['tiroir-imaginaire.jpg','Ce que l’on fait grandir']};
 function assetHref(path){return typeof previewAsset==='function'?previewAsset(path):path;}
@@ -1206,6 +1209,10 @@ function localReception(b){const r=state.reviews[b.id],score=r?ratingValue(r):nu
 function externalReception(b){const e=b.external;if(!e||!Number.isFinite(e.rating)||!Number.isFinite(e.count)||e.count<=0)return '';const scope={liv0006:'Édition 2020 · PDF 2019',liv0007:'Œuvre · plusieurs éditions',liv0009:'Œuvre · plusieurs éditions',liv0012:'Une fiche de ce titre',liv0013:'Édition 2022 · PDF 2015',liv0019:'Œuvre originale · PDF extrait',liv0021:'Œuvre · plusieurs éditions'}[b.id]||'';
 return '<section class="external-reception scrapbook-rating"><img class="rating-drawing" src="'+esc(assetHref('images/objets/medaillon.svg'))+'" alt=""><p class="artist-kicker">Les étoiles venues d’ailleurs</p><h2>'+esc(e.site)+'</h2><p class="rating-value">'+formatNumber(e.rating)+' <small>/ 5</small></p>'+starLine(e.rating)+'<div class="rating-tallies"><span><b>'+formatNumber(e.count)+'</b> '+(e.count===1?'note':'notes')+'</span>'+(e.comments!==null?'<span><b>'+formatNumber(e.comments)+'</b> '+(e.comments===1?'critique':'critiques')+'</span>':'')+'</div>'+(scope?'<small class="rating-scope">'+esc(scope)+'</small>':'')+'<a class="editorial-link" href="'+esc(e.url)+'" target="_blank" rel="noopener">Lire les avis sur '+esc(e.site.replace(' — avis clients',''))+' ↗</a><small class="rating-date">Relevé du '+esc(e.checked)+'</small></section>';}
 function bookFileActions(book, meta) {
+  if(book.requiredTier>0){const needed=ELL_LOCK_NAMES[book.requiredTier]||'Abonnement';
+    if(book.requiredTier>accountTier)return '<div class="book-file-actions ell-locked-book" data-level="'+book.requiredTier+'"><p>🔒 PDF réservé à la formule '+needed+' (ou supérieure). La présentation et le résumé restent accessibles.</p><a class="btn" href="le-cercle.html#formules">Découvrir les abonnements</a></div>';
+    return '<div class="book-file-actions ell-locked-book" data-level="'+book.requiredTier+'"><p>🔒 Accès '+needed+' : lecture par lien privé, sous réserve de disponibilité et des droits de diffusion.</p><button type="button" class="btn" data-ell-private-read="'+esc(book.id)+'">Ouvrir la lecture privée</button><p class="ell-private-message" role="status"></p></div>';
+  }
   const pdf = meta.pdf || meta.pdfPath;
   const readLabel = pdf ? 'Lire le PDF ici' : 'Ouvrir le texte';
   const readHint = pdf ? 'Lecteur intégré · surlignage et notes' : 'Lire et prendre des notes';
@@ -3226,7 +3233,9 @@ function ensureBookSheet(b){let sheet=state.notes.find(n=>n.book===b.id&&n.kind=
 function currentParams(){return new URLSearchParams(typeof previewAsset==='function'?location.hash.slice(1):location.search);}
 function jumpToHighlight(b,h){return siteHref('lire.html?id='+encodeURIComponent(b.id)+'&pdfpage='+Number(h.pageNumber||1)+'&highlight='+encodeURIComponent(h.id));}
 function traceMarkup(h){const b=state.books.find(x=>x.id===h.book);if(!b)return '';return '<article class="saved-fragment" style="--fragment-color:'+esc(h.color)+'"><header>'+smallCover(b)+'<div><a href="'+bookLink(b)+'">'+esc(b.title)+'</a><p>'+esc(h.page|| (h.pageNumber?'Page '+h.pageNumber:''))+' · '+esc(legend()[h.color]||'Passage choisi')+'</p></div></header><blockquote>'+esc(h.quote)+'</blockquote>'+(h.annotation?'<p class="fragment-note">'+esc(h.annotation)+'</p>':'')+'<div class="trace-actions"><a href="'+jumpToHighlight(b,h)+'">Revenir au passage ↗</a><button type="button" data-remove-highlight="'+esc(h.id)+'" class="text-button">Retirer</button></div></article>';}
-function renderHighlights(){const el=$('highlights');if(!el)return;const terms=searchTerms($('highlight-search')?.value||'');const color=$('highlight-color')?.value||'';const book=$('highlight-book')?.value||'';let items=state.highlights.filter(h=>{const b=state.books.find(b=>b.id===h.book);return (el.dataset.mode!=='annotations'||h.annotation)&&(!book||h.book===book)&&(!color||h.color===color)&&terms.every(t=>searchTerms((b?.title||'')+' '+(b?.author||'')).join(' ').includes(t));});items.sort((a,b)=>($('highlight-order')?.value==='color'?(legend()[a.color]||'').localeCompare(legend()[b.color]||'','fr'):(state.books.find(x=>x.id===a.book)?.title||'').localeCompare(state.books.find(x=>x.id===b.book)?.title||'','fr'))||(a.pageNumber||0)-(b.pageNumber||0));el.innerHTML=items.map(traceMarkup).join('')||'<p class="empty">Aucun passage pour ces filtres.</p>';if($('highlight-count'))$('highlight-count').textContent=items.length+' passage'+(items.length>1?'s':'');el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
+function renderHighlights(){const el=$('highlights');if(!el)return;
+ if(accountTier<2){for(const id of ['highlight-book','highlight-color','highlight-order']){const input=$(id);if(input){input.disabled=true;input.title='Tri avancé réservé aux abonnements Passion et Illimité'}}let tip=$('highlight-premium-note');if(!tip){tip=document.createElement('p');tip.id='highlight-premium-note';tip.innerHTML='Le tri par livre, couleur et ordre est disponible avec <a href="le-cercle.html#formules">Passion ou Illimité</a>. Tes surlignages restent enregistrés et visibles.';el.before(tip)}}
+ const terms=searchTerms($('highlight-search')?.value||'');const color=$('highlight-color')?.value||'';const book=$('highlight-book')?.value||'';let items=state.highlights.filter(h=>{const b=state.books.find(b=>b.id===h.book);return (el.dataset.mode!=='annotations'||h.annotation)&&(!book||h.book===book)&&(!color||h.color===color)&&terms.every(t=>searchTerms((b?.title||'')+' '+(b?.author||'')).join(' ').includes(t));});items.sort((a,b)=>($('highlight-order')?.value==='color'?(legend()[a.color]||'').localeCompare(legend()[b.color]||'','fr'):(state.books.find(x=>x.id===a.book)?.title||'').localeCompare(state.books.find(x=>x.id===b.book)?.title||'','fr'))||(a.pageNumber||0)-(b.pageNumber||0));el.innerHTML=items.map(traceMarkup).join('')||'<p class="empty">Aucun passage pour ces filtres.</p>';if($('highlight-count'))$('highlight-count').textContent=items.length+' passage'+(items.length>1?'s':'');el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
 function renderNotes(){const el=$('notes');if(!el)return;const term=searchTerms($('notes-search')?.value||'');let notes=state.notes.filter(n=>n.kind===el.dataset.kind&&term.every(t=>searchTerms((state.books.find(b=>b.id===n.book)?.title||'')+' '+n.title).join(' ').includes(t)));el.innerHTML=notes.map(n=>{const b=state.books.find(b=>b.id===n.book);if(!b)return '';const traces=n.auto?state.highlights.filter(h=>h.book===b.id):[];return '<article class="reading-sheet"><header>'+smallCover(b)+'<div><p class="artist-kicker">'+(n.auto?'Fiche du livre':'Page du carnet')+'</p><h2>'+esc(n.title)+'</h2><a href="'+bookLink(b)+'">'+esc(b.title)+' ↗</a><p>'+esc(n.page?'Page / chapitre '+n.page:'')+'</p></div><img class="sheet-sticker" src="'+esc(assetHref('images/objets/fiches.svg'))+'" alt=""></header>'+(n.passage?'<blockquote class="sheet-quotation"><strong>Passage marquant</strong><p>'+esc(n.passage)+'</p></blockquote>':'')+(n.body?'<p class="pre-wrap">'+esc(n.body)+'</p>':'')+(traces.length?'<details><summary>'+traces.length+' passage'+(traces.length>1?'s':'')+' de ce livre ↘</summary>'+traces.map(traceMarkup).join('')+'</details>':'')+'<div class="trace-actions"><button type="button" data-edit-note="'+esc(n.id)+'">Continuer ma fiche</button>'+(n.auto?'':'<button type="button" class="text-button" data-delete-note="'+esc(n.id)+'">Retirer</button>')+'</div></article>';}).join('')||'<p class="empty">Les fiches créées pendant ta lecture se rangeront ici, avec la couverture du livre.</p>';el.querySelectorAll('[data-edit-note]').forEach(btn=>btn.onclick=()=>{const n=state.notes.find(n=>n.id===btn.dataset.editNote);chooseBook(n.book,n);$('note-body').focus();});el.querySelectorAll('[data-delete-note]').forEach(btn=>btn.onclick=async()=>{state.notes=state.notes.filter(n=>n.id!==btn.dataset.deleteNote);await save();renderNotes();});el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderNotes();});}
 function selects(){if(!$('book-select'))return;if($('book-title-search')){$('book-title-search').oninput=()=>{const terms=searchTerms($('book-title-search').value);$('book-select').value='';const found=terms.length?state.books.filter(b=>terms.every(t=>searchTerms(b.title+' '+b.author).join(' ').includes(t))):[];$('book-search-results').innerHTML=found.slice(0,8).map(b=>'<button type="button" data-choose-book="'+esc(b.id)+'">'+smallCover(b)+'<span>'+esc(b.title)+'<small>'+esc(b.author)+'</small></span></button>').join('')||(terms.length?'<p>Aucun livre trouvé.</p>':'');$('book-search-results').querySelectorAll('[data-choose-book]').forEach(btn=>btn.onclick=()=>chooseBook(btn.dataset.chooseBook));};const requested=currentParams().get('livre');if(requested)chooseBook(requested);}else{$('book-select').innerHTML=state.books.map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');}}
 function bindTraceFilters(){if($('highlight-order'))$('highlight-order').onchange=renderHighlights;if($('highlight-book')){$('highlight-book').innerHTML='<option value="">Tous les livres</option>'+state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');$('highlight-book').onchange=renderHighlights;}if($('highlight-color')){$('highlight-color').innerHTML='<option value="">Toutes les couleurs</option>'+Object.entries(legend()).map(([color,label])=>'<option value="'+color+'">'+esc(label)+'</option>').join('');$('highlight-color').onchange=renderHighlights;}if($('highlight-search'))$('highlight-search').oninput=renderHighlights;if($('notes-search'))$('notes-search').oninput=renderNotes;}
@@ -3344,7 +3353,9 @@ function syncCarnet(){
  const snapshot=structuredClone(personalCarnet());
  pendingWrites++;
  autosaveQueue=autosaveQueue.catch(()=>{}).then(async()=>{
+  if(db)await writeLocalState({uid:userId,data:snapshot,createdAt:new Date().toISOString()});
   if(ellFirebaseAuth){if(ellFirebaseAuth.currentUser?.uid!==userId)throw Error('Compte modifié : sauvegarde annulée.');await ellPrivate('write',snapshot)}else{const {data:{user},error:authError}=await ell.auth.getUser();if(authError||user?.id!==userId)throw Error('Compte modifié : sauvegarde annulée.');const {error}=await ell.from('user_carnets').upsert({user_id:userId,data:snapshot,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;}
+  if(db)await writeLocalState(null);
   showCarnetWarning('');
  }).finally(()=>pendingWrites--);
  return autosaveQueue;
@@ -3356,7 +3367,7 @@ async function save(){
 }
 async function connectService(){
  if(location.protocol==='file:')return null;
- try{await ellConnect();const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const user=fbuser?{id:fbuser.uid,email:fbuser.email}:null;ellUser=user;
+ try{await ellConnect().catch(error=>console.warn('Catalogue Supabase temporairement indisponible',error));const [{initializeApp,getApps},{getAuth,onAuthStateChanged}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js')]);const fbapp=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});ellFirebaseAuth=getAuth(fbapp);const fbuser=await new Promise(resolve=>{const unsub=onAuthStateChanged(ellFirebaseAuth,u=>{unsub();resolve(u)},()=>resolve(null))});const user=fbuser?{id:fbuser.uid,email:fbuser.email}:null;ellUser=user;
  adminEnabled=false;
  service={user:user?.id||null,admin:adminEnabled};return service;
  }catch(e){console.error(e);return null;}
@@ -3374,7 +3385,6 @@ function restoreCarnet(data) {
 }
 
 async function loadServiceState(){
- if(!ell)return;
  // Clear local data before loading: no notes/highlights from a prior session can flash on screen.
  ellClear();
  if(ellUser){
@@ -3382,10 +3392,12 @@ async function loadServiceState(){
   let data;if(ellFirebaseAuth?.currentUser?.uid===userId){const result=await ellPrivate('read');data={data:result.data}}else{const result=await ell.from('user_carnets').select('data').eq('user_id',userId).maybeSingle();if(result.error)throw result.error;data=result.data}
   if(ellUser?.id!==userId)throw Error('Le compte a changé pendant le chargement.');
   if(data?.data)restoreCarnet(data.data);
+  if(db){const pending=await readPendingCarnet().catch(()=>null);if(pending?.uid===userId&&pending.data){restoreCarnet(pending.data);await syncCarnet().catch(error=>showCarnetWarning('Synchronisation du brouillon en attente : '+error.message));}}
   localStorage.setItem('ell_account',userId);
  }else{
   localStorage.removeItem('ell_account');
  }
+ if(!ell)return;
  const {data:catalog,error:catalogError}=await ell.from('books').select('*').eq('published',true);
  if(catalogError){console.warn('Catalogue en ligne indisponible',catalogError);return;}
  for(const entry of catalog||[]){
@@ -3414,18 +3426,16 @@ function lockCatalog(){
 }
 function showAccount(){
  const box=$('account-status');if(!box)return;
- if(location.hash.includes('type=recovery')){box.innerHTML='<h2>Définir un nouveau mot de passe</h2><form id="ell-recovery"><input id="ell-new-pass" type="password" minlength="6" required autocomplete="new-password" placeholder="Nouveau mot de passe"><button type="submit">Enregistrer le mot de passe</button></form><p id="ell-recovery-msg" role="status"></p>'; $('ell-recovery').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.updateUser({password:$('ell-new-pass').value});$('ell-recovery-msg').textContent=error?error.message:'Mot de passe modifié. Recharge la page pour accéder à ton compte.';};return;}
- if(!ell){box.textContent='Connexion momentanément indisponible.';return;}
- if(ellUser){
- box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email)+'</strong>. Tes carnets sont liés à ton compte.</p>'+(adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';
- $('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});await ell.auth.signOut();localStorage.removeItem('ell_account');location.reload();};return;
- }
- box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>E-mail <input id="ell-mail" type="email" required></label><label>Mot de passe <input id="ell-pass" type="password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-reset">Mot de passe oublié ?</button><button type="button" id="ell-resend">Renvoyer le mail de confirmation</button><p id="ell-result" role="status"></p>';
+ if(!ellFirebaseAuth){box.textContent='Connexion Firebase indisponible. Réessaie après avoir rechargé la page.';return;}
+ if(ellUser){box.innerHTML='<p>Connecté avec <strong>'+esc(ellUser.email||'ton compte Google')+'</strong>. Tes données restent liées à ce compte.</p>'+(adminEnabled?'<a class="btn" href="admin-moderation.html">Gérer les livres</a>':'')+'<button type="button" id="ell-out">Me déconnecter</button>';$('ell-out').onclick=async()=>{await autosaveQueue.catch(()=>{});const {signOut}=await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js');await signOut(ellFirebaseAuth);location.reload()};return;}
+ box.innerHTML='<h2>Se connecter ou créer un compte</h2><form id="ell-form"><label>Adresse e-mail<input id="ell-mail" type="email" autocomplete="email" required></label><label>Mot de passe<input id="ell-pass" type="password" autocomplete="current-password" minlength="6" required></label><button type="submit">Se connecter</button><button type="button" id="ell-create">Créer mon compte</button></form><button type="button" id="ell-google">Continuer avec Google</button><button type="button" id="ell-reset">Mot de passe oublié ?</button><button type="button" id="ell-resend">Renvoyer la vérification</button><p id="ell-result" role="status"></p>';
  const cred=()=>({email:$('ell-mail').value.trim(),password:$('ell-pass').value}),msg=x=>$('ell-result').textContent=x;
- $('ell-form').onsubmit=async e=>{e.preventDefault();const {error}=await ell.auth.signInWithPassword(cred());if(error)msg(error.message);else location.reload();};
- $('ell-create').onclick=async()=>{const {error}=await ell.auth.signUp({...cred(),options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Si cette adresse est nouvelle, un message de confirmation sera envoyé. Si tu possèdes déjà un compte, utilise « Se connecter » ou « Mot de passe oublié ? ».');};
- $('ell-resend').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail.');return;}const {error}=await ell.auth.resend({type:'signup',email,options:{emailRedirectTo:location.origin+location.pathname}});msg(error?error.message:'Si cette adresse attend une confirmation, un nouvel e-mail a été demandé.');};
- $('ell-reset').onclick=async()=>{const email=$('ell-mail').value.trim();if(!email){msg('Indique ton adresse e-mail pour recevoir le lien de réinitialisation.');return;}const {error}=await ell.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});msg(error?error.message:'Si ce compte existe, un e-mail de réinitialisation a été envoyé.');};
+ const authLib=()=>import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js');
+ $('ell-form').onsubmit=async e=>{e.preventDefault();try{const {signInWithEmailAndPassword}=await authLib();const result=await signInWithEmailAndPassword(ellFirebaseAuth,cred().email,cred().password);if(!result.user.emailVerified){msg('Vérifie ton adresse e-mail avant de poursuivre.');return}location.reload()}catch(error){msg('Connexion impossible : '+error.message)}};
+ $('ell-create').onclick=async()=>{try{const {createUserWithEmailAndPassword,sendEmailVerification}=await authLib();const {user}=await createUserWithEmailAndPassword(ellFirebaseAuth,cred().email,cred().password);await sendEmailVerification(user,{url:location.origin+location.pathname,handleCodeInApp:false});msg('Compte créé. Un lien de vérification Entre les lignes a été envoyé à ton adresse. Vérifie aussi les courriers indésirables.')}catch(error){msg('Création impossible : '+error.message)}};
+ $('ell-google').onclick=async()=>{try{const {GoogleAuthProvider,signInWithPopup,signInWithRedirect}=await authLib();try{await signInWithPopup(ellFirebaseAuth,new GoogleAuthProvider())}catch(error){if(error.code==='auth/popup-blocked'){await signInWithRedirect(ellFirebaseAuth,new GoogleAuthProvider());return}throw error}location.reload()}catch(error){msg('Connexion Google impossible : '+error.message)}};
+ $('ell-reset').onclick=async()=>{try{const {sendPasswordResetEmail}=await authLib();await sendPasswordResetEmail(ellFirebaseAuth,$('ell-mail').value.trim());msg('Si le compte existe, un message de réinitialisation sera envoyé.')}catch(error){msg(error.message)}};
+ $('ell-resend').onclick=async()=>{try{const {sendEmailVerification}=await authLib();if(!ellFirebaseAuth.currentUser){msg('Connecte-toi au compte concerné pour demander un nouvel e-mail de vérification.');return}await sendEmailVerification(ellFirebaseAuth.currentUser,{url:location.origin+location.pathname});msg('E-mail de vérification demandé.')}catch(error){msg(error.message)}};
 }
 
 async function storeCatalogBook(book){throw Error('Utilise la page Administration du catalogue.');}
@@ -3433,6 +3443,15 @@ async function storeCatalogBook(book){throw Error('Utilise la page Administratio
 async function startBookReader(book) {
  const host = $('reader-content');
  if (!host) return;
+ // Le cadenas est visible sur la recherche ; l'ouverture doit aussi refuser le contenu verrouillé.
+ if(Number(book.requiredTier||0)>Number(accountTier||0)){
+  const level=Number(book.requiredTier),name=(typeof ELL_LOCK_NAMES!=='undefined'&&ELL_LOCK_NAMES[level])||('niveau '+level);
+  host.replaceChildren();const section=document.createElement('section');section.className='panel ell-reader-locked';
+  const h=document.createElement('h2');h.textContent='🔒 Ce livre est réservé à la formule '+name;section.append(h);
+  const p=document.createElement('p');p.textContent='Tu peux consulter la fiche du livre, mais la lecture, le téléchargement et les résumés chapitre par chapitre nécessitent la formule correspondante.';section.append(p);
+  const link=document.createElement('a');link.href='le-cercle.html';link.className='btn';link.textContent='Découvrir les abonnements';section.append(link);host.append(section);return;
+ }
+
  const events = new AbortController();
  const requested = currentParams();
  let pdf, pageTask, textTask, loading, pdfLibrary, renderSequence = 0;
@@ -3499,7 +3518,21 @@ async function startBookReader(book) {
  const traceList = $('page-traces'), help = $('reader-help-extra'), annotation = $('reader-annotation');
  const saveSelection = $('save-selection'), areaButton = $('area-mode');
  const textButton = $('text-mode'), eraser = $('erase-mode'), undo = $('undo-mark'), copyToSheet = $('copy-to-sheet');
- const pencils = host.querySelectorAll('[data-pencil]');
+ let pencils = host.querySelectorAll('[data-pencil]');
+ const palette=host.querySelector('.reader-palette'),paletteButtons=host.querySelector('.reader-pencils');
+ const presets=['#f6b3c4','#e9b5f6','#b7dcff','#a8ebde','#ffcc8a','#d2d2d2','#f8a5a5','#c2f4b1','#bbafe9','#ffd8e7','#a9c9f4','#e6e2a4','#eab4b4','#b0d3ce','#f5d2aa','#c9b4e8','#c0e7f0','#e5a6cf','#a6c8a1','#e6c5f4'];
+ if(accountTier>=1&&palette&&paletteButtons){
+   const extra=document.createElement('div');extra.className='ell-extra-palette';
+   const label=document.createElement('strong');label.textContent=accountTier>=3?'Nuancier personnalisé · Illimité':accountTier===2?'20 couleurs · Passion':'10 couleurs · Découverte';extra.append(label);
+   const add=document.createElement('button');add.type='button';add.textContent='Ajouter une couleur';add.className='btn secondary';extra.append(add);
+   const picker=document.createElement('input');picker.type='color';picker.value='#a8ebde';picker.setAttribute('aria-label','Choisir une couleur de surlignage');if(accountTier===3)extra.append(picker);
+   palette.append(extra);
+   const appendColor=async color=>{if(legend()[color]){currentColor=color;paintPencils();return}const max=accountTier===3?200:accountTier===2?20:10;
+    if(Object.keys(legend()).length>=max){status('La palette de ta formule est complète.',true);return}
+    const name='Couleur '+(Object.keys(legend()).length+1);state.legend[color]=name;
+    const button=document.createElement('button');button.type='button';button.className='pencil';button.style.setProperty('--pencil',color);button.dataset.pencil=color;button.title=name;button.setAttribute('aria-label',name);paletteButtons.append(button);button.onclick=()=>{currentColor=color;paintPencils()};pencils=host.querySelectorAll('[data-pencil]');currentColor=color;paintPencils();await persist();};
+   add.onclick=()=>{const next=accountTier===3?picker.value:presets.find(color=>!legend()[color]);if(!next){status('Aucune autre couleur prédéfinie.',true);return}appendColor(next)};
+ }
 
  function status(text, error = false) {
   if (events.signal.aborted) return;
@@ -3839,8 +3872,9 @@ async function startBookReader(book) {
    pdfLibrary = await getPDFLibrary();
    if (events.signal.aborted) return cleanup;
    const source = pdfAddress(book);
-   const input = source.startsWith('data:') ? {data:decodeBinaryAsset(source)} : {url:source};
-   loading = pdfLibrary.getDocument({...input,isEvalSupported:false,useSystemFonts:true,disableAutoFetch:true,disableStream:true});
+   if(!source)throw Error('Aucun fichier PDF n’est associé à ce livre.');
+   const input = source.startsWith('data:') ? {data:decodeBinaryAsset(source)} : {url:new URL(source,location.href).href};
+   loading = pdfLibrary.getDocument({...input,isEvalSupported:false,useSystemFonts:true,disableAutoFetch:false,disableStream:false,rangeChunkSize:65536});
    pdf = await loading.promise;
    if (events.signal.aborted) return cleanup;
    $('pdf-total').textContent = '/ '+pdf.numPages;
@@ -3893,7 +3927,8 @@ async function startBookReader(book) {
 }
 
 let pdfLibraryPromise;
-function getPDFLibrary(){if(!pdfLibraryPromise)pdfLibraryPromise=(async()=>{if(location.protocol==='file:'&&typeof previewAsset!=='function'){if(!window.ELLPDFJs)await loadClassicScript('js/pdf-offline/engine.js');window.ELLPDFJs.GlobalWorkerOptions.workerSrc=binaryAssetURL(window.ELLPDFWorkerData,'text/javascript');return window.ELLPDFJs;}let moduleURL=assetHref('js/pdfjs/pdf.mjs'),workerURL=assetHref('js/pdfjs/pdf.worker.mjs');if(moduleURL.startsWith('data:'))moduleURL=binaryAssetURL(moduleURL,'text/javascript');if(workerURL.startsWith('data:'))workerURL=binaryAssetURL(workerURL,'text/javascript');const lib=await import(moduleURL.startsWith('blob:')?moduleURL:new URL(moduleURL,location.href).href);lib.GlobalWorkerOptions.workerSrc=workerURL.startsWith('blob:')?workerURL:new URL(workerURL,location.href).href;return lib;})();return pdfLibraryPromise;}
+function getPDFLibrary(){if(!pdfLibraryPromise)pdfLibraryPromise=(async()=>{if(location.protocol==='file:'&&typeof previewAsset!=='function'){if(!window.ELLPDFJs)await loadClassicScript('js/pdf-offline/engine.js');window.ELLPDFJs.GlobalWorkerOptions.workerSrc=binaryAssetURL(window.ELLPDFWorkerData,'text/javascript');return window.ELLPDFJs;}// Le fichier worker du dépôt est vide (0 octet) : utiliser le worker officiel de la même version que pdf.mjs (5.6.205).
+ let moduleURL=assetHref('js/pdfjs/pdf.mjs'),workerURL='https://cdn.jsdelivr.net/npm/pdfjs-dist@5.6.205/build/pdf.worker.mjs';if(moduleURL.startsWith('data:'))moduleURL=binaryAssetURL(moduleURL,'text/javascript');if(workerURL.startsWith('data:'))workerURL=binaryAssetURL(workerURL,'text/javascript');const lib=await import(moduleURL.startsWith('blob:')?moduleURL:new URL(moduleURL,location.href).href);lib.GlobalWorkerOptions.workerSrc=workerURL.startsWith('blob:')?workerURL:new URL(workerURL,location.href).href;return lib;})();return pdfLibraryPromise.catch(error=>{pdfLibraryPromise=null;throw error});}
 function decodeBinaryAsset(data){
  const encoded=data.slice(data.indexOf(',')+1);
  if (typeof Uint8Array.fromBase64==='function') return Uint8Array.fromBase64(encoded);
@@ -3917,10 +3952,20 @@ async function applyCatalogueSuppressions(){
  if(location.protocol==='file:')return;
  try{
   const client=await ellConnect();
-  const {data,error}=await client.from('catalogue_suppressions').select('book_id');
-  if(error)throw error;
-  const removed=new Set((data||[]).map(item=>item.book_id));
-  state.books=state.books.filter(book=>!removed.has(book.id)&&!removed.has(String(book.externalCatalogId||'')));
+  const [oldRules,newRules]=await Promise.all([
+   client.from('catalogue_suppressions').select('book_id'),
+   client.from('catalogue_moderation').select('book_id,hidden,deleted,access_level')
+  ]);
+  if(oldRules.error)console.warn('Anciens retraits indisponibles',oldRules.error);
+  if(newRules.error)throw newRules.error;
+  const removed=new Set((oldRules.data||[]).map(item=>item.book_id));
+  const rules=new Map((newRules.data||[]).map(item=>[item.book_id,item]));
+  state.books=state.books.filter(book=>{
+   const rule=rules.get(book.id)||rules.get(String(book.externalCatalogId||''))||rules.get('db-'+String(book.externalCatalogId||''));
+   if(removed.has(book.id)||removed.has(String(book.externalCatalogId||''))||rule?.deleted||rule?.hidden)return false;
+   book.requiredTier=Number(rule?.access_level||0);
+   return true;
+  });
  }catch(error){console.warn('Suppression catalogue : chargement indisponible',error);}
 }
 async function loadPublicCatalogue(){
@@ -4004,6 +4049,7 @@ for(const book of LIVRES_INITIAUX){
 }
 try { await loadServiceState(); } catch(error) { ellClear(); showCarnetWarning('Impossible de charger ton carnet personnel : '+error.message); }
 await loadPublicCatalogue();
+if(ellFirebaseAuth?.currentUser){try{const {subscription}=await ellPrivate('status');accountTier=Number(subscription?.access_level||0);adminEnabled=subscription?.admin===true;}catch(error){console.warn('Statut abonnement indisponible',error);accountTier=0;}}
 await applyCatalogueSuppressions();
 if(changed&&db)await writeLocalState();
 if(!document.body.isConnected)return;
@@ -4147,7 +4193,7 @@ $('book-form').onsubmit = async event => {
 }
 
 if($('book-detail')){$('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();}
-if($('reader-content')){if(b)startBookReader(b).then(cleanup=>{if(pageReleased)cleanup?.();else readerController=cleanup;});else $('reader-content').textContent='Choisis un livre dans la bibliothèque.';}
+if($('reader-content')){if(b&&b.requiredTier>0){const name=ELL_LOCK_NAMES[b.requiredTier]||'abonné';$('reader-content').innerHTML='<section class="ell-locked-book" data-level="'+b.requiredTier+'"><h2>🔒 Lecture '+esc(name)+'</h2><p>Le PDF est réservé à cette formule (ou supérieure). Il n’est distribué que depuis un stockage privé, sous réserve d’autorisation.</p>'+(b.requiredTier>accountTier?'<a class="btn" href="le-cercle.html#formules">Voir les abonnements</a>':'<button type="button" class="btn" data-ell-private-read="'+esc(b.id)+'">Lire le PDF privé</button><p class="ell-private-message" role="status"></p>')+'</section>';}else if(b)startBookReader(b).then(cleanup=>{if(pageReleased)cleanup?.();else readerController=cleanup;});else $('reader-content').textContent='Choisis un livre dans la bibliothèque.';}
 if($('review-form')){if(!b){$('review-book').textContent='Choisis d’abord un livre dans Critiques.';$('review-form').hidden=true;}else{
 $('review-book').innerHTML='<a href="'+bookLink(b)+'">'+esc(b.title)+'</a>';
 let review=state.reviews[id];if(review){if(!Array.from($('rating').options).some(o=>o.value===String(ratingValue(review))))$('rating').innerHTML+='<option value="'+ratingValue(review)+'">'+formatNumber(ratingValue(review))+' / 5</option>';$('rating').value=ratingValue(review);$('review').value=review.text;$('spoiler').checked=review.spoiler;}
@@ -4183,7 +4229,11 @@ start();
 
 window.ELL_FAVORITES_BOOKS=LIVRES_INITIAUX.map(b=>({id:b.id,detailPath:b.detailPath||''}));
 // Actions Favoris et Listes disponibles sur toutes les fiches et cartes du catalogue.
+if(!document.querySelector('script[src*="collections-privees.js"]')){const script=document.createElement('script');script.src='js/collections-privees.js?v=20261119-fix';document.body.append(script);}
 if(!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='css/favoris-listes.css';document.head.append(sheet);
- const script=document.createElement('script');script.src='js/favoris-catalogue.js?v=20261118';document.body.append(script);
+ const script=document.createElement('script');script.src='js/favoris-catalogue.js?v=account-red-20261119';document.body.append(script);
 }
+
+// Afficher les compteurs de demandes d'accès aux PDF privés, sans chiffres inventés.
+if(!document.querySelector('script[src*="compteurs-acces-livres.js"]')){const script=document.createElement('script');script.src='js/compteurs-acces-livres.js?v=20261119';document.body.append(script)}

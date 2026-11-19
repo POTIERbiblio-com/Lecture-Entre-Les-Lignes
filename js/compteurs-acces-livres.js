@@ -1,0 +1,7 @@
+// Indicateur public : demandes de liens PDF privés validées, et non téléchargements réseau garantis.
+(async()=>{'use strict';const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm');const client=createClient('https://cezgcoaokwuobipwfffa.supabase.co','sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3');
+const {data,error}=await client.from('book_access_metrics').select('book_id,successful_private_access_requests');if(error){console.warn('Compteurs PDF indisponibles',error);return}
+const counts=new Map((data||[]).map(row=>[row.book_id,Number(row.successful_private_access_requests)||0]));
+function update(){document.querySelectorAll('[data-ell-book-id]').forEach(card=>{if(card.querySelector('.ell-access-counter'))return;const id=card.dataset.ellBookId;if(!id)return;const p=document.createElement('p');p.className='ell-access-counter';p.textContent=(counts.get(id)||0).toLocaleString('fr-FR')+' accès au PDF privé enregistrés';p.title='Compteur lancé avec le stockage privé : il comptabilise les liens autorisés, pas les anciens téléchargements GitHub.';card.querySelector('div:last-child')?.append(p)})}
+update();const observer=new MutationObserver(()=>update());observer.observe(document.body,{subtree:true,childList:true});
+})().catch(e=>console.warn('Statistiques livres',e));

@@ -1,0 +1,34 @@
+name: Vérifications bibliothèque
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript et JSON
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const files=['js/app.js','js/admin-moderation.js','js/recommandations-personnelles.js','js/compteurs-acces-livres.js','js/collections-privees.js','js/favoris-catalogue.js','js/book-requests.js','js/admin-propositions.js','js/notifications-propositions.js','js/reader-premium-firebase.js'];
+          for(const f of files){const source=fs.readFileSync(f,'utf8').replace(/^import\s.*?;\s*$/gm,'');new Function(source);console.log('JS OK',f)}
+          for(const f of ['catalogue-documente.json','catalogue-moderation-index.json','catalogue-pdf-inventaire.json']){JSON.parse(fs.readFileSync(f,'utf8'));console.log('JSON OK',f)}
+          NODE
+      - name: Vérifier la structure des liens PDF
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const data=JSON.parse(fs.readFileSync('catalogue-pdf-inventaire.json','utf8'));
+          for(const item of data.items)for(const path of item.files)if(!fs.existsSync(path))throw Error('PDF absent : '+path);
+          console.log(data.summary.totalPdfFiles+' fichiers PDF répertoriés');
+          const pdfEngine=fs.readFileSync('js/pdfjs/pdf.mjs','utf8');
+          if(!pdfEngine.includes('pdfjsVersion = 5.6.205'))throw Error('Version PDF.js inattendue : contrôler le worker CDN');
+          const app=fs.readFileSync('js/app.js','utf8');
+          if(!app.includes('pdfjs-dist@5.6.205/build/pdf.worker.mjs'))throw Error('Worker PDF.js non configuré');
+          console.log('Moteur PDF.js et version du worker cohérents');
+          NODE

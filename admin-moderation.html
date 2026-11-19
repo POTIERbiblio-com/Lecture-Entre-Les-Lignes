@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gestion des livres · Entre les lignes</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/admin-moderation.css"><link rel="stylesheet" href="css/cadenas-abonnements.css">
+</head><body class="atelier-page">
+<header class="site-header"><a class="brand" href="index.html">Entre les lignes<span>.</span></a><nav class="site-nav"><a href="index.html">Accueil</a><a href="mon-espace.html">Mon espace</a><a href="admin-catalogue.html">Éditer les fiches</a><a href="admin-propositions.html">Propositions</a><a href="admin-pdf-inventaire.html">Inventaire PDF</a></nav></header>
+<main class="am-main"><div class="crumb"><a href="mon-espace.html">Mon espace</a> / Gestion des livres</div>
+<section class="am-intro"><div><span class="am-kicker">✦ ATELIER DES ÉTAGÈRES</span><h1>La vie <em>de nos livres</em></h1><p>Gère la visibilité des livres, les cadenas et l’accès par abonnement. Chaque action est enregistrée sur le serveur.</p><p class="am-clarity">Masquer et retirer du catalogue ne suppriment pas les fichiers PDF qui auraient déjà été publiés ailleurs : leur retrait de l’hébergement reste une opération distincte. L’import privé nécessite une autorisation de diffusion.</p></div><img src="images/atelier/revue-ouverte.jpg" alt="Carnet ouvert"></section>
+<p id="am-status" role="status">Vérification des autorisations…</p>
+<section id="am-panel" hidden><div class="am-toolbar"><label>Rechercher un livre<input id="am-search" type="search" placeholder="Titre, auteur…"></label><label>Afficher<select id="am-filter"><option value="all">Tous les livres</option><option value="visible">Livres visibles</option><option value="hidden">Livres masqués</option><option value="deleted">Retirés du catalogue</option><option value="locked">Livres verrouillés</option></select></label></div><p id="am-count"></p><div id="am-books" class="am-grid"></div></section>
+</main><script type="module" src="js/admin-moderation.js?v=20261119"></script></body></html>

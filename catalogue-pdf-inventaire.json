@@ -1,0 +1,836 @@
+{
+  "summary": {
+    "totalPdfFiles": 97,
+    "distinctPdfContents": 52,
+    "withMetadata": 52,
+    "withoutMetadata": 0
+  },
+  "items": [
+    {
+      "sha": "b12d8240266f4bda9ccd7a249701f487124b309a",
+      "files": [
+        "10-bonnes-raisons-entrepreneur.pdf",
+        "pdf/10-bonnes-raisons-entrepreneur.pdf"
+      ],
+      "bytes": 1223054,
+      "bookIds": [
+        "liv0006"
+      ],
+      "title": "10 bonnes raisons de devenir entrepreneur",
+      "author": "Philippe Simo (attribution de la notice Goodreads)",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "1b1803dd73dfd5f0f7c79f5472a15f51f0767c2a",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-01.pdf"
+      ],
+      "bytes": 6967212,
+      "bookIds": [
+        "liv0121"
+      ],
+      "title": "600 citations pour réfléchir avant d’agir",
+      "author": "Luc Boyer et Romain Bureau",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "47f740fd828dfec827c4ae1e7711913c9133a83e",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-02.pdf"
+      ],
+      "bytes": 1710908,
+      "bookIds": [
+        "liv0122"
+      ],
+      "title": "L’Ego est l’ennemi : maîtrisez votre plus grand adversaire",
+      "author": "Ryan Holiday",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "e4eebe36b976143a533fd1d5db8bc3f17ac5d965",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-03.pdf"
+      ],
+      "bytes": 951083,
+      "bookIds": [
+        "liv0123"
+      ],
+      "title": "Comment attirer le meilleur dans votre vie",
+      "author": "Votre Efficacité Personnelle (éditeur indiqué sur le PDF ; auteur individuel non identifié)",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "ed3cc206bfdb72edacc8398e66e10fcbe8080482",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-04.pdf"
+      ],
+      "bytes": 2500624,
+      "bookIds": [
+        "liv0124"
+      ],
+      "title": "Faire face aux émotions",
+      "author": "Christine Chevalier",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "786cf418e14e8ff46228e778c5ca55743f667952",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-05.pdf"
+      ],
+      "bytes": 3439072,
+      "bookIds": [
+        "liv0125"
+      ],
+      "title": "Histoire de la psychologie : des origines à nos jours",
+      "author": "Clément Rizet",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "10d0622b11e299ef1cd93956bfac4be6fdb6dd71",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-06.pdf"
+      ],
+      "bytes": 575060,
+      "bookIds": [
+        "liv0126"
+      ],
+      "title": "L’Art de la séduction",
+      "author": "Robert Greene",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "d0d6c37562f90e099a3435d0492eb8f6965ec544",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-07.pdf",
+        "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/pdf/liv0139.pdf"
+      ],
+      "bytes": 1730759,
+      "bookIds": [
+        "liv0127",
+        "liv0139"
+      ],
+      "title": "La puissance de votre subconscient",
+      "author": "Joseph Murphy",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "d7fe0ccedd6b9421792e91b94634a5db025f2196",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-08.pdf"
+      ],
+      "bytes": 4501189,
+      "bookIds": [
+        "liv0128"
+      ],
+      "title": "Les lois de la nature humaine",
+      "author": "Robert Greene",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "57099eb639e377b715b43243c07b56f9d9217f63",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-09.pdf"
+      ],
+      "bytes": 979636,
+      "bookIds": [
+        "liv0129"
+      ],
+      "title": "Qui es-tu ?",
+      "author": "Lise Bourbeau",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "d57ed51096807de73a65d2906f6db010a4ee2514",
+      "files": [
+        "10-livres/Entre_les_lignes_10_livres/pdf/nouveau-10.pdf"
+      ],
+      "bytes": 2624333,
+      "bookIds": [
+        "liv0130"
+      ],
+      "title": "Stratégie : les 33 lois de la guerre",
+      "author": "Robert Greene",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "79991af769c58c5be23659307870b2d80c02690d",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/avoir-le-courage-de-ne-pas-etre-aime/livre.pdf",
+        "Entre_les_lignes_LOT_1_BIBLIOTHEQUE_PRIVEE_VERIFIEE/livres/avoir-le-courage-de-ne-pas-etre-aime/livre.pdf",
+        "livres/avoir-le-courage-de-ne-pas-etre-aime/livre.pdf",
+        "pdf/nouveau-courage.pdf"
+      ],
+      "bytes": 1726865,
+      "bookIds": [
+        "liv0101"
+      ],
+      "title": "Avoir le courage de ne pas être aimé",
+      "author": "Ichiro Kishimi et Fumitake Koga",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "76a68434d654d1d496b9ce85af95b733deeed424",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/comment-retrouver-toute-son-energie/livre.pdf",
+        "Entre_les_lignes_LOT_1_BIBLIOTHEQUE_PRIVEE_VERIFIEE/livres/comment-retrouver-toute-son-energie/livre.pdf",
+        "livres/comment-retrouver-toute-son-energie/livre.pdf",
+        "lot_01/pdf/new11-retrouver-energie.pdf"
+      ],
+      "bytes": 968950,
+      "bookIds": [
+        "liv0120"
+      ],
+      "title": "Comment retrouver toute son énergie : la fatigue n’est pas une fatalité",
+      "author": "Maurice Tran Dinh Can et Juliette Jarre",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "0d7ec980b004d07b1cbb00a3a221fe968768a543",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/divorcer-d-un-manipulateur/livre.pdf",
+        "Entre_les_lignes_LOT_1_BIBLIOTHEQUE_PRIVEE_VERIFIEE/livres/divorcer-d-un-manipulateur/livre.pdf",
+        "livres/divorcer-d-un-manipulateur/livre.pdf",
+        "lot_01/pdf/new11-divorcer-manipulateur.pdf"
+      ],
+      "bytes": 1171399,
+      "bookIds": [
+        "liv0119"
+      ],
+      "title": "Divorcer d’un manipulateur : un emploi à plein-temps",
+      "author": "Christel Petitcollin",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "709a96f8f496a9aea64d97a14c137afdcc26f71f",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/guide-apprenti-millionnaire/livre.pdf",
+        "Entre_les_lignes_LOT_1_BIBLIOTHEQUE_PRIVEE_VERIFIEE/livres/guide-apprenti-millionnaire/livre.pdf",
+        "livres/guide-apprenti-millionnaire/livre.pdf",
+        "pdf/nouveau-millionnaire.pdf"
+      ],
+      "bytes": 2099085,
+      "bookIds": [
+        "liv0104"
+      ],
+      "title": "Le guide de l’apprenti millionnaire",
+      "author": "Christopher Sojtarov",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "90b13269b3134c3fbdc3052c8cbd4fb12206c4a9",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/la-pensee-positive/livre.pdf",
+        "livres/la-pensee-positive/livre.pdf",
+        "pdf/nouveau-positive.pdf"
+      ],
+      "bytes": 853262,
+      "bookIds": [
+        "liv0103"
+      ],
+      "title": "La pensée positive",
+      "author": "Marcello Borelli",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "9a952c4667a154f0b4451c7568413d671f9bb637",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/le-manuscrit-inacheve/livre.pdf",
+        "livres/le-manuscrit-inacheve/livre.pdf",
+        "pdf/nouveau-manuscrit.pdf"
+      ],
+      "bytes": 1520611,
+      "bookIds": [
+        "liv0105"
+      ],
+      "title": "Le Manuscrit inachevé",
+      "author": "Franck Thilliez",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "0cd17d74d91dbc7c9a2dbd9c6f5f9166da9fd6dc",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/les-bons-leaders/livre.pdf",
+        "livres/les-bons-leaders/livre.pdf",
+        "pdf/nouveau-leaders.pdf"
+      ],
+      "bytes": 2202547,
+      "bookIds": [
+        "liv0106"
+      ],
+      "title": "Les bons leaders se posent les bonnes questions",
+      "author": "John C. Maxwell",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "4a8a16aefb15bb8d5de485c8fd7be70620133d53",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/petit-traite-sagesse-bouddhiste/livre.pdf",
+        "livres/petit-traite-sagesse-bouddhiste/livre.pdf",
+        "lot_01/pdf/new11-sagesse-bouddhiste.pdf"
+      ],
+      "bytes": 1554591,
+      "bookIds": [
+        "liv0117"
+      ],
+      "title": "Petit traité de sagesse bouddhiste à l’usage des Occidentaux",
+      "author": "Xavier Cornette de Saint Cyr",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "964753530d450cb45bb9585df98590325123f02a",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/surmonter-ses-complexes/livre.pdf",
+        "livres/surmonter-ses-complexes/livre.pdf",
+        "lot_01/pdf/new11-surmonter-complexes.pdf"
+      ],
+      "bytes": 1379781,
+      "bookIds": [
+        "liv0118"
+      ],
+      "title": "Surmonter ses complexes : les comprendre pour les assumer",
+      "author": "Bénédicte Nadaud et Karine Zagaroli",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "66a343cc5ce3432db69694ad47b3beee6e25b5f7",
+      "files": [
+        "Entre_les_lignes_10_livres_lecteur_critiques_PRIVE/livres/une-histoire-populaire-de-l-humanite/livre.pdf",
+        "livres/une-histoire-populaire-de-l-humanite/livre.pdf",
+        "pdf/nouveau-harman.pdf"
+      ],
+      "bytes": 5131175,
+      "bookIds": [
+        "liv0102"
+      ],
+      "title": "Une histoire populaire de l’humanité",
+      "author": "Chris Harman",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "af7179f17dc5f2878e54db91bc5223ce1599da11",
+      "files": [
+        "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/pdf/liv0137.pdf"
+      ],
+      "bytes": 1220790,
+      "bookIds": [
+        "liv0137"
+      ],
+      "title": "Vendre ou perdre",
+      "author": "Grant Cardone",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "7ae1c0f768ebb9663200c35881f927f025740c93",
+      "files": [
+        "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/pdf/liv0138.pdf"
+      ],
+      "bytes": 744332,
+      "bookIds": [
+        "liv0138"
+      ],
+      "title": "10 points clés pour réussir",
+      "author": "Jean-Philippe Tixier",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "5b460eac21ca749fa790dacb6c87256556b36d13",
+      "files": [
+        "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/pdf/liv0140.pdf"
+      ],
+      "bytes": 1716317,
+      "bookIds": [
+        "liv0140"
+      ],
+      "title": "À la poursuite du Soleil",
+      "author": "Linda Geddes",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "488b6a3cf3f615a2164eb6181668497370239289",
+      "files": [
+        "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/pdf/liv0141.pdf"
+      ],
+      "bytes": 1284069,
+      "bookIds": [
+        "liv0141"
+      ],
+      "title": "Soigner avec l’énergie : les thérapies quantiques et psycho-énergétiques",
+      "author": "Luc Bodin",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "02dea0f4cba1434beb45e611d2a240d19eb1eda9",
+      "files": [
+        "Entre_les_lignes_lot_02_6_livres_favoris_listes/lot_02_6_livres/pdf/liv0142.pdf"
+      ],
+      "bytes": 730567,
+      "bookIds": [
+        "liv0142"
+      ],
+      "title": "Optimiser son temps facilement",
+      "author": "Aurélien Vezzani",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "690c41b5aed94d68d3c028be19a1653d8867d34c",
+      "files": [
+        "art-confiance-en-soi.pdf",
+        "pdf/art-confiance-en-soi.pdf"
+      ],
+      "bytes": 233182,
+      "bookIds": [
+        "liv0019"
+      ],
+      "title": "L’Art de la confiance en soi",
+      "author": "Katty Kay et Claire Shipman",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "98c5c2b7e3f78766fb24d87c626ad3e948d0e3c8",
+      "files": [
+        "astuces-deblocage.pdf",
+        "pdf/astuces-deblocage.pdf"
+      ],
+      "bytes": 1225619,
+      "bookIds": [
+        "liv0020"
+      ],
+      "title": "Astuces & Déblocage · V.1",
+      "author": "Traumato (signature du document)",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "143b4d85c2becbc82f4242d28963db58fff5f9ea",
+      "files": [
+        "boite-outils-leadership.pdf",
+        "pdf/boite-outils-leadership.pdf"
+      ],
+      "bytes": 2561440,
+      "bookIds": [
+        "liv0011"
+      ],
+      "title": "La Boîte à outils du leadership",
+      "author": "Jean-Pierre Testa, Jérôme Lafargue et Virginie Tilhet-Coartet",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "36214646bd6050ef6d4ab56e953d1876a9bca3ce",
+      "files": [
+        "chevre-de-ma-mere.pdf",
+        "pdf/chevre-de-ma-mere.pdf"
+      ],
+      "bytes": 4050711,
+      "bookIds": [
+        "liv0014"
+      ],
+      "title": "La Chèvre de ma mère",
+      "author": "Ricardo Kaniama",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "68fa6cf1f9f51b593e4e74d20a922863cdf688e8",
+      "files": [
+        "comment-se-faire-des-amis.pdf",
+        "pdf/comment-se-faire-des-amis.pdf"
+      ],
+      "bytes": 833551,
+      "bookIds": [
+        "liv0021"
+      ],
+      "title": "Comment se faire des amis",
+      "author": "Dale Carnegie",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "1aec01824ff97c00d34c626b840a1ebb19ceeb73",
+      "files": [
+        "devenez-riche.pdf",
+        "pdf/devenez-riche.pdf"
+      ],
+      "bytes": 2485465,
+      "bookIds": [
+        "liv0007"
+      ],
+      "title": "Devenez riche",
+      "author": "Ramit Sethi",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "ea4c23b99097e2ad565010e05836a3d83d0c3672",
+      "files": [
+        "doublez-vos-contacts.pdf",
+        "pdf/doublez-vos-contacts.pdf"
+      ],
+      "bytes": 963771,
+      "bookIds": [
+        "liv0016"
+      ],
+      "title": "Doublez vos contacts",
+      "author": "Michael J. Durkin",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "d4cdc44b5a295cab0bd9a403f984fe2b392e9506",
+      "files": [
+        "grand-livre-des-metiers.pdf",
+        "pdf/grand-livre-des-metiers.pdf"
+      ],
+      "bytes": 22357686,
+      "bookIds": [
+        "liv0015"
+      ],
+      "title": "Le Grand Livre des métiers",
+      "author": "La rédaction de L’Étudiant",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "e58b0808018fec62dd32df2b586484c08dee180f",
+      "files": [
+        "guide-du-leadership.pdf",
+        "pdf/guide-du-leadership.pdf"
+      ],
+      "bytes": 6819563,
+      "bookIds": [
+        "liv0017"
+      ],
+      "title": "Guide du leadership",
+      "author": "Bernard Radon",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "8c00def94399ea045b8338fbb29aaf311cb98d7f",
+      "files": [
+        "introduction-psychologie-sociale.pdf",
+        "pdf/introduction-psychologie-sociale.pdf"
+      ],
+      "bytes": 2761070,
+      "bookIds": [
+        "liv0018"
+      ],
+      "title": "Introduction à la psychologie sociale · Tome I",
+      "author": "Serge Moscovici (dir.)",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "0cb679316bfd700c8ce9b944248ec15fc7c67a67",
+      "files": [
+        "je-ne-sais-pas-dire-non.pdf",
+        "pdf/je-ne-sais-pas-dire-non.pdf"
+      ],
+      "bytes": 1031477,
+      "bookIds": [
+        "liv0008"
+      ],
+      "title": "Je ne sais pas dire non…",
+      "author": "Karine Danan",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "8fda6545ffbb89944b99ca0a779d586785448c5a",
+      "files": [
+        "je-sais-que-vous-mentez.pdf",
+        "pdf/je-sais-que-vous-mentez.pdf"
+      ],
+      "bytes": 4178738,
+      "bookIds": [
+        "liv0009"
+      ],
+      "title": "Je sais que vous mentez !",
+      "author": "Paul Ekman",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "250839cf6719f49a41a312c1cb54d00028c05f7f",
+      "files": [
+        "lot_01/pdf/new11-la-chute.pdf"
+      ],
+      "bytes": 588454,
+      "bookIds": [
+        "liv0111"
+      ],
+      "title": "La Chute",
+      "author": "Albert Camus",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "a16935a4c2d6ca0648cd584b6d7f4cd7b61efd3f",
+      "files": [
+        "lot_01/pdf/new11-loi-attraction.pdf"
+      ],
+      "bytes": 506747,
+      "bookIds": [
+        "liv0110"
+      ],
+      "title": "Les Secrets de la Loi d’Attraction",
+      "author": "Sié Issa",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "b76b4af620ec03ab1a3237a419ce6dc75f70d3d1",
+      "files": [
+        "lot_01/pdf/new11-lois-succes-1.pdf"
+      ],
+      "bytes": 2794652,
+      "bookIds": [
+        "liv0113"
+      ],
+      "title": "Les Lois du succès — Tome 1 (leçons 1 à 4)",
+      "author": "Napoleon Hill",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "25fd68cd1356052fcf4bdb9b50243c3ed00e8545",
+      "files": [
+        "lot_01/pdf/new11-lois-succes-2.pdf"
+      ],
+      "bytes": 3699691,
+      "bookIds": [
+        "liv0114"
+      ],
+      "title": "Les Lois du succès — Tome 2 (leçons 5 à 8)",
+      "author": "Napoleon Hill",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "346c7cf27a5b015b6fb0c0be3b0f9a203294d9a3",
+      "files": [
+        "lot_01/pdf/new11-lois-succes-3.pdf"
+      ],
+      "bytes": 2956618,
+      "bookIds": [
+        "liv0115"
+      ],
+      "title": "Les Lois du succès — Tome 3 (leçons 9 à 12)",
+      "author": "Napoleon Hill",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "2791dd67845aec15875092d67012df04578d804f",
+      "files": [
+        "lot_01/pdf/new11-lois-succes-4.pdf"
+      ],
+      "bytes": 2514389,
+      "bookIds": [
+        "liv0116"
+      ],
+      "title": "Les Lois du succès — Tome 4 (leçons 13 à 17)",
+      "author": "Napoleon Hill",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "d0ed26b610a8babbf291722e398b1a2983fe9686",
+      "files": [
+        "lot_01/pdf/new11-machine-vendre.pdf"
+      ],
+      "bytes": 3920086,
+      "bookIds": [
+        "liv0112"
+      ],
+      "title": "La prodigieuse machine à vendre",
+      "author": "Chet Holmes",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "cf26b96727b14892cf6b1be13454ebd19812e91b",
+      "files": [
+        "pdf/petit-livre-developpement-personnel.pdf",
+        "petit-livre-developpement-personnel.pdf"
+      ],
+      "bytes": 1596039,
+      "bookIds": [
+        "liv0012"
+      ],
+      "title": "Le Petit Livre de Développement Personnel",
+      "author": "Rami Mestiri",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "cf0fc345244b405558777c73d5f7e34c9383a414",
+      "files": [
+        "pdf/philosophie-du-succes.pdf",
+        "philosophie-du-succes.pdf"
+      ],
+      "bytes": 3036505,
+      "bookIds": [
+        "liv0010"
+      ],
+      "title": "La Philosophie du succès de Napoleon Hill",
+      "author": "Napoleon Hill",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "152a5954a4b05140131c9c27541af973a8da1669",
+      "files": [
+        "pdf/psychologie-de-l-intelligence.pdf",
+        "psychologie-de-l-intelligence.pdf"
+      ],
+      "bytes": 1118053,
+      "bookIds": [
+        "liv0023"
+      ],
+      "title": "La Psychologie de l’intelligence",
+      "author": "Jean Piaget",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "bfc36e1d1cfa5085ee80fad7bba5a705e8fce559",
+      "files": [
+        "pdf/reprogrammez-votre-cerveau.pdf",
+        "reprogrammez-votre-cerveau.pdf"
+      ],
+      "bytes": 602814,
+      "bookIds": [
+        "liv0024"
+      ],
+      "title": "Reprogrammez votre cerveau pour le succès",
+      "author": "Slavica Bogdanov",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "f414f6686731f79f2a2c109d4ee98dae974c6b7b",
+      "files": [
+        "pdf/sapiens.pdf",
+        "sapiens.pdf"
+      ],
+      "bytes": 6882214,
+      "bookIds": [
+        "liv0013"
+      ],
+      "title": "Sapiens — Une brève histoire de l’humanité",
+      "author": "Yuval Noah Harari",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "1636ed77be6ea1060d8dffe19c9610888b10d283",
+      "files": [
+        "pdf/science-secrete.pdf",
+        "science-secrete.pdf"
+      ],
+      "bytes": 819587,
+      "bookIds": [
+        "liv0003"
+      ],
+      "title": "La Science secrète",
+      "author": "Dr Ferran, Papus, Eugène Nus, Julien Lejay et S. de Guaïta",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    },
+    {
+      "sha": "e3fcc073b521657c5c9c72324632a45adfb27cfa",
+      "files": [
+        "pdf/virus-informatiques.pdf",
+        "virus-informatiques.pdf"
+      ],
+      "bytes": 1175204,
+      "bookIds": [
+        "liv0022"
+      ],
+      "title": "Les Virus informatiques",
+      "author": "Meye Protect Lab",
+      "rightsStatus": "a_verifier",
+      "privateStoragePath": null,
+      "privateAccessReady": false
+    }
+  ]
+}

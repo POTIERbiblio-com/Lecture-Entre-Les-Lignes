@@ -1,0 +1,27 @@
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.49.4';
+const reply=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{'content-type':'application/json'}});
+const plans:Record<string,string>={'price_1UdDq83kaCHShBmDpPAaPTNA':'decouverte','price_1UdDqC3kaCHShBmD2QT86CeB':'passion','price_1UdDqG3kaCHShBmDZZpASTUf':'illimite'};
+async function welcomeEmail(db:any,sub:any,uid:string,plan:string){
+ const key=Deno.env.get('RESEND_API_KEY'),from=Deno.env.get('BOOK_REQUEST_FROM_EMAIL'),stripe=Deno.env.get('STRIPE_SECRET_KEY');
+ if(!key||!from||!stripe||!sub.id||!sub.customer)return;
+ const {data:existing}=await db.from('subscription_welcome_emails').select('sent_at').eq('stripe_subscription_id',sub.id).maybeSingle();if(existing?.sent_at)return;
+ const response=await fetch('https://api.stripe.com/v1/customers/'+encodeURIComponent(String(sub.customer)),{headers:{Authorization:'Bearer '+stripe}});if(!response.ok)return;
+ const customer=await response.json();if(typeof customer.email!=='string'||!customer.email.includes('@'))return;
+ const names:Record<string,string>={decouverte:'Découverte',passion:'Passion',illimite:'Illimité'};const name=names[plan]||'Le Cercle';
+ const html='<div style="background:#fff1f7;padding:32px;font-family:Arial,sans-serif;color:#683d59"><div style="max-width:620px;margin:auto;background:#fffafc;border:2px solid #edc9da;border-radius:26px;padding:32px"><img src="https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/images/niveau-1-accueil/logo/carnet.png" width="64" alt="Logo Entre les lignes"><h1 style="color:#8f4d74">Bienvenue dans Le Cercle ♡</h1><p style="font-size:17px;line-height:1.6">Merci d’avoir rejoint Entre les lignes avec la formule '+name+'. Nous sommes ravis de partager ce nouveau chapitre avec toi !</p><p>Tes livres et tes outils de lecture t’attendent dans ton espace personnel. Tes favoris et tes annotations restent liés à ton compte.</p><p style="margin:30px 0"><a href="https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/mon-espace.html" style="background:#ae6a91;color:#fff;padding:15px 22px;border-radius:20px;text-decoration:none">Découvrir mon espace</a></p><p>À bientôt entre les lignes,<br>L’équipe Entre les lignes ✦</p></div></div>';
+ const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({from,to:[customer.email],subject:'Bienvenue dans Le Cercle · '+name+' ♡',html})});if(!sent.ok){console.warn('Welcome email not delivered',sent.status);return}
+ await db.from('subscription_welcome_emails').upsert({stripe_subscription_id:sub.id,firebase_uid:uid,sent_at:new Date().toISOString()},{onConflict:'stripe_subscription_id'});
+}
+Deno.serve(async(req)=>{
+ if(req.method!=='POST')return reply({error:'Method not allowed'},405);
+ const secret=Deno.env.get('STRIPE_WEBHOOK_SECRET');if(!secret)return reply({error:'Webhook not configured'},503);
+ const header=req.headers.get('stripe-signature')||'';const ts=header.match(/(?:^|,)t=(\d+)/)?.[1];const signatures=[...header.matchAll(/(?:^|,)v1=([a-f0-9]+)/g)].map(x=>x[1]);if(!ts||!signatures.length||Math.abs(Date.now()/1000-Number(ts))>300)return reply({error:'Invalid signature'},400);
+ const raw=await req.text();const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);const digest=new Uint8Array(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(ts+'.'+raw)));const hex=[...digest].map(b=>b.toString(16).padStart(2,'0')).join('');if(!signatures.some(sig=>sig.length===hex.length&&[...sig].reduce((acc,c,i)=>acc|(c.charCodeAt(0)^hex.charCodeAt(i)),0)===0))return reply({error:'Invalid signature'},400);
+ try{
+  const event=JSON.parse(raw);if(!['customer.subscription.created','customer.subscription.updated','customer.subscription.deleted'].includes(event.type))return reply({received:true});
+  const sub=event.data.object;const uid=sub.metadata?.firebase_uid;if(typeof uid!=='string'||!uid||uid.length>128)return reply({error:'Missing authenticated account binding'},422);
+  const priceId=sub.items?.data?.[0]?.price?.id;const db=createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false}});
+  const {data:configuredPrice,error:priceLookupError}=await db.from('subscription_plan_prices').select('plan').eq('stripe_test_price_id',String(priceId||'')).maybeSingle();if(priceLookupError)throw priceLookupError;
+  const plan=configuredPrice?.plan||plans[priceId]||'free';const active=['active','trialing'].includes(sub.status);const {data:result,error}=await db.rpc('apply_firebase_stripe_event',{p_event_id:event.id,p_event_created:event.created,p_firebase_uid:uid,p_customer:sub.customer,p_subscription:sub.id,p_plan:active?plan:'free',p_status:sub.status,p_period_end:sub.current_period_end?new Date(sub.current_period_end*1000).toISOString():null,p_cancel:!!sub.cancel_at_period_end});if(error)throw error;if(active&&event.type!=='customer.subscription.deleted')await welcomeEmail(db,sub,uid,plan).catch(()=>console.warn('Welcome mail unavailable'));return reply({received:true,result});
+ }catch(e){console.error('webhook processing failed',e);return reply({error:'Processing failed'},500)}
+});

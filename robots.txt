@@ -1,3 +1,14 @@
 User-agent: *
 Allow: /Lecture-Entre-Les-Lignes/
+Disallow: /Lecture-Entre-Les-Lignes/mon-espace.html
+Disallow: /Lecture-Entre-Les-Lignes/admin-moderation.html
+Disallow: /Lecture-Entre-Les-Lignes/admin-propositions.html
+Disallow: /Lecture-Entre-Les-Lignes/admin-pdf-inventaire.html
+Disallow: /Lecture-Entre-Les-Lignes/connexion-firebase.html
+Disallow: /Lecture-Entre-Les-Lignes/surlignages.html
+Disallow: /Lecture-Entre-Les-Lignes/annotations.html
+Disallow: /Lecture-Entre-Les-Lignes/fiches.html
+Disallow: /Lecture-Entre-Les-Lignes/journaux.html
+Disallow: /Lecture-Entre-Les-Lignes/profil.html
+Disallow: /Lecture-Entre-Les-Lignes/sauvegardes.html
 Sitemap: https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/sitemap.xml
