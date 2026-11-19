@@ -1,0 +1,7 @@
+.book-moderation{margin:.8rem 0 0;padding:.85rem;border:1px solid #e2b6cb;border-radius:.85rem;background:#fff6fb;color:#69344f;text-align:left}
+.book-moderation summary{font-weight:700;cursor:pointer}
+.book-moderation label{display:block;margin:.65rem 0}
+.book-moderation select{display:block;width:100%;min-height:2.5rem}
+.book-moderation-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.65rem}
+.book-moderation [data-moderation-action=delete]{color:#922a47}
+.book-moderation [role=status]:empty{display:none}

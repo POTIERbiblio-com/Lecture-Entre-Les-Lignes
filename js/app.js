@@ -1,4 +1,4 @@
-const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null,ellFirebaseAuth=null,editorialAdmin=false,readerLevel=0;
+const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null,ellFirebaseAuth=null,editorialAdmin=false,catalogueManager=false,readerLevel=0;
 async function ellConnect(){if(!ell){const m=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');ell=m.createClient(ELL_URL,ELL_KEY);}return ell;}
 async function ellPrivate(action,data){
  const {auth,requestService}=await import('./request-service.js');
@@ -1154,7 +1154,50 @@ function bookSubscriptionOffer(book){
  return '<aside class="cercle-book-offer cercle-book-offer-'+level+'"><img src="'+esc(assetHref('images/atelier/revue-ouverte.jpg'))+'" alt=""><div><span class="cercle-book-tier">🔒 '+plans[level]+'</span><h2>Ce livre fait partie du Cercle</h2><p>Retrouve cette lecture dans la formule <strong>'+plans[level]+'</strong>'+(level<3?' et les formules supérieures':'')+'.</p><a class="btn" href="'+siteHref('le-cercle.html#comparatif')+'">Découvrir les formules ↗</a></div></aside>';
 }
 function editorialControl(book){return siteHref('admin-catalogue.html?livre='+encodeURIComponent(book.accessBookId||book.id)+'#catalogue-access-admin');}
-function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+lockBadge(b)+''+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.privatePdf?'<p class="book-pdf-label">PDF disponible</p>':b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(editorialAdmin?'<a class="btn secondary" href="'+editorialControl(b)+'">Gérer ce livre</a>':'')+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
+function catalogueControls(book){
+ if(!catalogueManager)return '';
+ const labels=['Gratuit','Jaune · Découverte','Orange · Passion','Rouge · Illimité'];
+ const options=labels.map((label,level)=>'<option value="'+level+'"'+(Number(book.accessLevel||0)===level?' selected':'')+'>'+label+'</option>').join('');
+ return '<details class="book-moderation" data-moderation-book="'+esc(book.id)+'"><summary>Gérer ce livre</summary><label>Accès PDF <select data-moderation-level>'+options+'</select></label><div class="book-moderation-actions"><button class="btn secondary" type="button" data-moderation-action="lock">'+(book.accessLevel?'Modifier le cadenas':'Ajouter un cadenas')+'</button><button class="btn secondary" type="button" data-moderation-action="delete">Supprimer le livre</button></div><a href="'+esc(editorialControl(book))+'">Importer un PDF privé ↗</a><p role="status"></p></details>';
+}
+function bindCatalogueControls(){
+ if(!catalogueManager)return;
+ if(!document.querySelector('link[href*="book-moderation.css"]')){
+  const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=siteHref('css/book-moderation.css');document.head.append(sheet);
+ }
+ document.addEventListener('click',async event=>{
+  const button=event.target.closest('[data-moderation-action]');
+  if(!button||button.disabled)return;
+  const panel=button.closest('[data-moderation-book]');
+  const book=state.books.find(item=>item.id===panel.dataset.moderationBook);
+  if(!book)return;
+  const remove=button.dataset.moderationAction==='delete';
+  if(remove&&!window.confirm('Es-tu sûr de vouloir supprimer « '+book.title+' » du catalogue pour tout le monde ?'))return;
+  const level=remove?Number(book.accessLevel||0):Number(panel.querySelector('[data-moderation-level]').value);
+  const status=panel.querySelector('[role="status"]');
+  const buttons=Array.from(panel.querySelectorAll('button'));
+  buttons.forEach(item=>item.disabled=true);
+  status.textContent=remove?'Suppression en cours…':'Enregistrement du cadenas…';
+  try{
+   const {auth,requestService}=await import('./request-service.js');
+   const account=auth.currentUser;
+   if(account?.uid!==ellUser?.id)throw Error('Le compte a changé. Recharge la page.');
+   await requestService('catalogue-moderate',{bookId:book.accessBookId||book.id,level,hidden:false,deleted:remove},account);
+   if(remove&&$('book-detail')){location.assign(siteHref('mes-livres.html'));return;}
+   if(remove){
+    state.books=state.books.filter(item=>item.id!==book.id);
+    renderBooks();renderRecommendations();
+    const results=$('search-count')||$('shelf-count');
+    if(results)results.textContent='« '+book.title+' » a été retiré. '+results.textContent;
+    return;
+   }
+   status.textContent=level?'Cadenas enregistré.':'Le livre est en accès gratuit.';
+   location.reload();
+  }catch(error){status.textContent=error.message;}
+  finally{buttons.forEach(item=>item.disabled=false);}
+ });
+}
+function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+lockBadge(b)+''+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.privatePdf?'<p class="book-pdf-label">PDF disponible</p>':b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+catalogueControls(b)+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
 function searchTerms(value) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/œ/g, 'oe').replace(/æ/g, 'ae').match(/[\p{L}\p{N}]+/gu) || [];
@@ -3251,7 +3294,7 @@ function detailMarkup(b){const meta={...b};const guide=Object.hasOwn(READING_GUI
 return '<div class="book-dossier album-book"><header class="album-opening"><div class="album-heading"><p class="album-rayon"><a href="'+siteHref(b.genre==='a-classer'?'mes-livres.html?genre=a-classer':'livres-'+b.genre+'-'+b.sub+'.html')+'">'+esc(GENRES[b.genre]?.[1][b.sub])+' ↗</a></p><h1>'+esc(b.title)+'</h1><p class="album-author">'+esc(b.author)+'</p></div><figure class="album-montage"><img class="album-landscape" src="'+esc(assetHref('images/atelier/'+art[0]))+'" alt=""><img class="album-endpaper" src="'+esc(assetHref('images/collage/papier-fleuri.jpg'))+'" alt=""><div class="album-cover-polaroid">'+smallCover({...b,cover:b.cover||meta.cover})+'<img class="album-cover-flower" src="'+esc(assetHref('images/carnet-illustre/sticker-fleur.svg'))+'" alt=""></div></figure>'+bookFileActions(b,meta)+'</header>'+
 bookPassport(b,meta,guide)+bookGuideMarkup(b,guide)+
 (meta.reviewLinks?.length?'<section class="book-guides"><h2>Critiques et avis externes</h2><ul>'+meta.reviewLinks.filter(url=>typeof url==='string'&&/^https:\/\//.test(url)).map((url,i)=>'<li><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Consulter la source externe '+(i+1)+'</a></li>').join('')+'</ul></section>':'')+
-(editorialAdmin?'<p><a class="btn secondary" href="'+editorialControl(b)+'">Gérer ce livre</a></p>':'')+(adminEnabled?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
+catalogueControls(b)+(adminEnabled?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
 (tags.length?'<section class="album-threads"><h2>Les fils du livre</h2><div>'+tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div><img src="'+esc(assetHref('images/objets/annotation.svg'))+'" alt=""></section>':'')+
 '<div class="book-reception-pair">'+externalReception(meta)+localReception(b)+'</div><details class="book-sources"><summary>Les sources et références ↘</summary><ul>'+sources.map(s=>'<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' ↗</a></li>').join('')+(meta.pdfPath?'<li><a data-pdf-link="'+esc(meta.pdfPath)+'" href="'+esc(meta.pdfPath)+'" target="_blank" rel="noopener">PDF fourni · contenu et mentions éditoriales ↗</a></li>':'')+(meta.external?.url?'<li><a href="'+esc(meta.external.url)+'" target="_blank" rel="noopener">Source de la note extérieure ↗</a> · '+esc(meta.external.scope)+'</li>':'')+'</ul></details><nav class="book-dossier-bottom" aria-label="Garder une trace"><a href="'+siteHref('fiches.html?livre='+encodeURIComponent(b.id))+'">'+smallCover(b)+'Ma fiche de lecture ↗</a><a href="'+siteHref('journaux.html?livre='+encodeURIComponent(b.id))+'"><img src="'+esc(assetHref('images/objets/journal.svg'))+'" alt="">Mon journal ↗</a>'+'<a class="book-review-link" href="'+bookLink(b,'avis')+'"><img src="'+esc(assetHref('images/objets/avis.svg'))+'" alt="">Ma critique sur ce livre ↗</a>'+(adminEnabled?'<a href="'+bookLink(b,'ajouter-livre')+'">Modifier la fiche du catalogue ↗</a>':'')+'</nav></div>';
 }
@@ -3399,6 +3442,7 @@ async function connectService(){
   const account=auth.currentUser;
   ellUser=account?{id:account.uid,email:account.email}:null;
   editorialAdmin=account?.emailVerified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(account.email?.toLowerCase());
+  catalogueManager=account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
   service={user:ellUser?.id||null,admin:false};
   if(account&&($('reader-content')||$('highlights')||$('book-detail'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
   return service;
@@ -4183,6 +4227,7 @@ if($('search-subgenre')){
  sub.addEventListener('change',renderBooks);
  $('catalogue-search')?.addEventListener('reset',()=>requestAnimationFrame(()=>{updateSubgenres();renderBooks();}));
 }
+bindCatalogueControls();
 renderBooks();renderRecommendations();if($('recommended-books'))addEventListener('ell-lists-change',renderRecommendations);if($('search-favorites'))addEventListener('ell-lists-change',()=>{if($('search-favorites').checked)renderBooks()});selects();bindTraceFilters();renderHighlights();renderNotes();renderQuestions();if ($('search')) $('search').oninput = renderBooks;
 if ($('search-genre')) $('search-genre').onchange = renderBooks;
 if ($('catalogue-tabs')) {

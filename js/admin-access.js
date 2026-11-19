@@ -4,7 +4,7 @@ import {catalogueRules,uploadCataloguePdf} from './catalogue-access.js';
 const panel=document.getElementById('catalogue-access-admin');
 const form=panel.querySelector('form'), status=panel.querySelector('[role=status]');
 const fields=form.elements;
-const administrators=new Set(['quentinmorel1912@gmail.com','juliepotier2006@gmail.com']);
+const administrators=new Set(['quentinmorel1912@gmail.com']);
 let rules=new Map();
 let privateBooks=new Set();
 function selectBook(){
