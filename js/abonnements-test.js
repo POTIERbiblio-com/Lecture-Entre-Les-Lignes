@@ -5,6 +5,7 @@ const app=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOC
 const auth=getAuth(app);
 const root=document.getElementById('ell-billing-actions');
 const status=document.getElementById('ell-subscription-status');
+const choices=[...document.querySelectorAll('[data-subscribe-plan]')];
 const names={decouverte:'Découverte',passion:'Passion',illimite:'Illimité',free:'Gratuit'};
 const euros=new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'});
 const returned=new URLSearchParams(location.search).get('checkout');
@@ -16,14 +17,21 @@ async function request(user,action,extras={}){
   if(!response.ok) throw Error(data.error||'Service indisponible');
   return data;
 }
-function button(user,label,action,extras,allowedHosts){
-  const b=document.createElement('button');
-  b.type='button';
-  b.textContent=label;
-  b.style.cssText='margin:8px;padding:12px 18px;border-radius:20px;background:#924d75;color:white;border:0;cursor:pointer';
-  b.onclick=async()=>{
-    const buttons=Array.from(root.querySelectorAll('button'));
-    buttons.forEach(item=>item.disabled=true);
+let redirecting=false;
+function button(user,label,action,extras,allowedHosts,choice){
+  const b=choice||document.createElement('button');
+  if(!choice){
+    b.type='button';
+    b.textContent=label;
+    b.className='subscribe-button';
+    root.append(b);
+  }
+  b.onclick=async event=>{
+    event.preventDefault();
+    if(redirecting) return;
+    redirecting=true;
+    b.setAttribute('aria-busy','true');
+    status.textContent='Ouverture du paiement sécurisé Stripe…';
     try{
       const {url}=await request(user,action,extras);
       if(auth.currentUser?.uid!==user.uid) return;
@@ -32,15 +40,24 @@ function button(user,label,action,extras,allowedHosts){
       if(destination.protocol!=='https:'||!allowedHosts.includes(destination.hostname)) throw Error('Lien Stripe indisponible.');
       location.assign(destination.href);
     }catch(e){
-      if(auth.currentUser?.uid===user.uid) status.textContent=e.message;
-      buttons.forEach(item=>item.disabled=false);
+      if(auth.currentUser?.uid===user.uid){
+        status.textContent=e.message;
+        status.focus();
+      }
+    }finally{
+      redirecting=false;
+      b.removeAttribute('aria-busy');
     }
   };
-  root.append(b);
 }
 
 onAuthStateChanged(auth,async user=>{
   root.replaceChildren();
+  choices.forEach(choice=>choice.textContent='Souscrire');
+  for(const choice of choices){
+    choice.onclick=null;
+    choice.href=user?'#mon-abonnement':'connexion-firebase.html';
+  }
   if(!user){
     status.textContent='Connecte-toi pour consulter et gérer ton abonnement.';
     const link=document.createElement('a');
@@ -70,7 +87,7 @@ onAuthStateChanged(auth,async user=>{
     status.textContent='Formule active · '+(names[subscription.access_plan]||names.free);
     if(subscription.complimentary){
       status.textContent='Toutes les fonctionnalités sont activées directement pour ton compte.';
-      document.querySelectorAll('.premium-hero, .feature-grid, #comparatif, .reassurance').forEach(section=>section.hidden=true);
+      choices.forEach(choice=>choice.textContent='Voir mes accès');
       return;
     }
     if(!user.emailVerified){
@@ -92,7 +109,8 @@ onAuthStateChanged(auth,async user=>{
     }
     for(const plan of plans){
       if(!names[plan.plan]) continue;
-      button(user,'Choisir '+names[plan.plan]+' · '+euros.format(plan.monthly_eur_cents/100)+'/mois','checkout',{plan:plan.plan},['checkout.stripe.com']);
+      const choice=choices.find(link=>link.dataset.subscribePlan===plan.plan);
+      button(user,'Choisir '+names[plan.plan]+' · '+euros.format(plan.monthly_eur_cents/100)+'/mois','checkout',{plan:plan.plan},['checkout.stripe.com'],choice);
     }
   }catch(e){
     if(auth.currentUser?.uid===user.uid) status.textContent='Vérification impossible. '+e.message;
