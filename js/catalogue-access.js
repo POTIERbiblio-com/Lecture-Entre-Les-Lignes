@@ -8,8 +8,8 @@ export async function catalogueRules(){
   if(!response.ok)throw Error('Le statut du catalogue est indisponible.');
   return new Map((await response.json()).map(rule=>[rule.book_id,rule]));
 }
-export async function cataloguePdf(bookId){
-  const {url}=await requestService('catalogue-pdf',{bookId});
+export async function cataloguePdf(bookId,{download=false}={}){
+  const {url}=await requestService('catalogue-pdf',{bookId,purpose:download?'download':'read'});
   const signed=new URL(url);
   if(signed.origin!==project||!signed.pathname.startsWith('/storage/v1/object/sign/book-pdfs/'))throw Error('Lien de lecture invalide.');
   return signed.href;

@@ -4217,9 +4217,7 @@ document.querySelectorAll('[data-private-download]').forEach(button=>button.oncl
   button.disabled=true;
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
-    const link=new URL(await cataloguePdf(button.dataset.privateDownload));
-    link.searchParams.set('download','');
-    location.assign(link.href);
+    location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true}));
   }catch(error){alert(error.message);}
   finally{button.disabled=false;}
 });
