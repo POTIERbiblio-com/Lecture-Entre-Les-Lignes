@@ -4221,3 +4221,6 @@ if(!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='css/favoris-listes.css';document.head.append(sheet);
  const script=document.createElement('script');script.src='js/favoris-catalogue.js?v=account-red-20261119';document.body.append(script);
 }
+
+// Afficher les compteurs de demandes d'accès aux PDF privés, sans chiffres inventés.
+if(!document.querySelector('script[src*="compteurs-acces-livres.js"]')){const script=document.createElement('script');script.src='js/compteurs-acces-livres.js?v=20261119';document.body.append(script)}
