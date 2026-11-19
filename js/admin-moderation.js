@@ -48,8 +48,8 @@ function card(b){
  const c=document.createElement('article');c.className='am-book';
  const safeCover=/^(?:images\/|livres\/|Entre_les_lignes_)[^?#]+\.(?:jpg|jpeg|png|webp)$/i.test(b.cover)?b.cover:'';
  c.innerHTML='<div class="am-cover">'+(safeCover?'<img src="'+safe(safeCover)+'" alt="Couverture de '+safe(b.title)+'" loading="lazy">':'<span aria-hidden="true">📚</span>')+'</div>'
- +'<div class="am-book-body"><p class="am-source">'+safe(b.source)+'</p><h2>'+safe(b.title)+'</h2><p>'+safe(b.author)+'</p><p class="am-current">'+(rule.deleted?'Retiré du catalogue':rule.hidden?'Masqué':rule.access_level?'🔒 '+(['Libre','Orange · Découverte','Jaune · Passion','Rouge · Illimité'][rule.access_level]):'Visible · gratuit')+'</p>'
- +'<label>Accès<select class="am-tier"><option value="0">Libre / gratuit</option><option value="1">🟠 Orange · Découverte · niveau 1</option><option value="2">🟡 Jaune · Passion · niveau 2</option><option value="3">🔴 Rouge · Illimité · niveau 3</option></select></label>'
+ +'<div class="am-book-body"><p class="am-source">'+safe(b.source)+'</p><h2>'+safe(b.title)+'</h2><p>'+safe(b.author)+'</p><p class="am-current">'+(rule.deleted?'Retiré du catalogue':rule.hidden?'Masqué':rule.access_level?'🔒 '+(['Libre','Jaune · Découverte','Orange · Passion','Rouge · Illimité'][rule.access_level]):'Visible · gratuit')+'</p>'
+ +'<label>Accès<select class="am-tier"><option value="0">Libre / gratuit</option><option value="1">🟡 Jaune · Découverte · niveau 1</option><option value="2">🟠 Orange · Passion · niveau 2</option><option value="3">🔴 Rouge · Illimité · niveau 3</option></select></label>'
  +'<div class="am-actions"><button type="button" class="am-save">Enregistrer le cadenas</button><button type="button" class="am-hide">'+(rule.hidden?'Réafficher':'Masquer')+'</button><button type="button" class="am-delete">'+(rule.deleted?'Restaurer':'Supprimer du catalogue')+'</button></div>'
  +'<section class="am-private-upload"><p><strong>Éditorial :</strong> choisir les mises en avant visibles sur l’accueil</p>'
  +'<label><input type="checkbox" data-feature="homepage" '+(choice.homepage?'checked':'')+'> Mettre en avant en accueil</label>'
