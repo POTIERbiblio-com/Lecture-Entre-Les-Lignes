@@ -3504,7 +3504,21 @@ async function startBookReader(book) {
  const traceList = $('page-traces'), help = $('reader-help-extra'), annotation = $('reader-annotation');
  const saveSelection = $('save-selection'), areaButton = $('area-mode');
  const textButton = $('text-mode'), eraser = $('erase-mode'), undo = $('undo-mark'), copyToSheet = $('copy-to-sheet');
- const pencils = host.querySelectorAll('[data-pencil]');
+ let pencils = host.querySelectorAll('[data-pencil]');
+ const palette=host.querySelector('.reader-palette'),paletteButtons=host.querySelector('.reader-pencils');
+ const presets=['#f6b3c4','#e9b5f6','#b7dcff','#a8ebde','#ffcc8a','#d2d2d2','#f8a5a5','#c2f4b1','#bbafe9','#ffd8e7','#a9c9f4','#e6e2a4','#eab4b4','#b0d3ce','#f5d2aa','#c9b4e8','#c0e7f0','#e5a6cf','#a6c8a1','#e6c5f4'];
+ if(accountTier>=1&&palette&&paletteButtons){
+   const extra=document.createElement('div');extra.className='ell-extra-palette';
+   const label=document.createElement('strong');label.textContent=accountTier>=3?'Nuancier personnalisé · Illimité':accountTier===2?'20 couleurs · Passion':'10 couleurs · Découverte';extra.append(label);
+   const add=document.createElement('button');add.type='button';add.textContent='Ajouter une couleur';add.className='btn secondary';extra.append(add);
+   const picker=document.createElement('input');picker.type='color';picker.value='#a8ebde';picker.setAttribute('aria-label','Choisir une couleur de surlignage');if(accountTier===3)extra.append(picker);
+   palette.append(extra);
+   const appendColor=async color=>{if(legend()[color]){currentColor=color;paintPencils();return}const max=accountTier===3?200:accountTier===2?20:10;
+    if(Object.keys(legend()).length>=max){status('La palette de ta formule est complète.',true);return}
+    const name='Couleur '+(Object.keys(legend()).length+1);state.legend[color]=name;
+    const button=document.createElement('button');button.type='button';button.className='pencil';button.style.setProperty('--pencil',color);button.dataset.pencil=color;button.title=name;button.setAttribute('aria-label',name);paletteButtons.append(button);button.onclick=()=>{currentColor=color;paintPencils()};pencils=host.querySelectorAll('[data-pencil]');currentColor=color;paintPencils();await persist();};
+   add.onclick=()=>{const next=accountTier===3?picker.value:presets.find(color=>!legend()[color]);if(!next){status('Aucune autre couleur prédéfinie.',true);return}appendColor(next)};
+ }
 
  function status(text, error = false) {
   if (events.signal.aborted) return;
