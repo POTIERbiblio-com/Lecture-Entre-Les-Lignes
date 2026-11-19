@@ -7,7 +7,7 @@ const json=(x:any,status=200)=>new Response(JSON.stringify(x),{status,headers:co
 // CORS permits cross-origin clients, while JWT verification is mandatory for every action.
 async function notifyEmail(to:string,subject:string,message:string){
  const key=Deno.env.get('RESEND_API_KEY'),from=Deno.env.get('BOOK_REQUEST_FROM_EMAIL');
- if(!key||!from||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(to))return false;
+ if(!key||!from||!/^[^ @]+@[^ @]+\.[^ @]+$/.test(to))return false;
  try{const response=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({from,to:[to],subject,text:message})});
  if(!response.ok){console.warn('book email delivery returned',response.status);return false}return true;
  }catch(e){console.warn('book email notification unavailable');return false}
