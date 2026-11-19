@@ -67,8 +67,8 @@ onAuthStateChanged(auth,async user=>{
       if(price) price.firstChild.textContent=euros.format(plan.monthly_eur_cents/100)+' ';
     }
     status.textContent='Formule active · '+(names[subscription.access_plan]||names.free);
-    if(subscription.admin){
-      status.textContent='Compte administrateur · Tous les avantages sont accessibles.';
+    if(subscription.complimentary){
+      status.textContent='Accès Illimité permanent · Quentin.';
       return;
     }
     if(!user.emailVerified){

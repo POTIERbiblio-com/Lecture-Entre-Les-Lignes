@@ -1,0 +1,9 @@
+.reader-trace-pair{display:inline-flex;align-items:center;gap:.3rem;max-width:100%;margin:.2rem}
+.reader-trace-pair button:first-child{min-width:0;overflow-wrap:anywhere}
+.reader-trace-pair .reader-trace-delete{display:grid;place-items:center;width:2.75rem;height:2.75rem;flex:none;border:1px solid #e6afc3;border-radius:50%;background:#fff2f6;color:#862b4f;font-size:1.35rem;line-height:1}
+.reader-trace-pair .reader-trace-delete:hover,.reader-trace-pair .reader-trace-delete:focus-visible{background:#862b4f;color:#fff}
+.reader-erase-mode{cursor:crosshair}
+.reader-erase-mode .erase-target{outline:2px dashed #842349;outline-offset:2px}
+.premium-preview{padding:.55rem .75rem;border:1px solid #e3b6cd;border-radius:.75rem;background:#fff4fb;color:#63334c}
+.premium-preview summary{cursor:pointer;font-weight:700}
+.premium-preview p{margin:.45rem 0}

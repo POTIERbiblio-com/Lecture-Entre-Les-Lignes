@@ -3306,7 +3306,10 @@ function traceMarkup(h){const b=state.books.find(x=>x.id===h.book);if(!b)return 
 function renderHighlights(){const el=$('highlights');if(!el)return;const terms=searchTerms($('highlight-search')?.value||'');const color=$('highlight-color')?.value||'';const book=$('highlight-book')?.value||'';let items=state.highlights.filter(h=>{const b=state.books.find(b=>b.id===h.book);return (el.dataset.mode!=='annotations'||h.annotation)&&(!book||h.book===book)&&(!color||h.color===color)&&terms.every(t=>searchTerms((b?.title||'')+' '+(b?.author||'')).join(' ').includes(t));});items.sort((a,b)=>($('highlight-order')?.value==='color'?(legend()[a.color]||'').localeCompare(legend()[b.color]||'','fr'):(state.books.find(x=>x.id===a.book)?.title||'').localeCompare(state.books.find(x=>x.id===b.book)?.title||'','fr'))||(a.pageNumber||0)-(b.pageNumber||0));el.innerHTML=items.map(traceMarkup).join('')||'<p class="empty">Aucun passage pour ces filtres.</p>';if($('highlight-count'))$('highlight-count').textContent=items.length+' passage'+(items.length>1?'s':'');el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
 function renderNotes(){const el=$('notes');if(!el)return;const term=searchTerms($('notes-search')?.value||'');let notes=state.notes.filter(n=>n.kind===el.dataset.kind&&term.every(t=>searchTerms((state.books.find(b=>b.id===n.book)?.title||'')+' '+n.title).join(' ').includes(t)));el.innerHTML=notes.map(n=>{const b=state.books.find(b=>b.id===n.book);if(!b)return '';const traces=n.auto?state.highlights.filter(h=>h.book===b.id):[];return '<article class="reading-sheet"><header>'+smallCover(b)+'<div><p class="artist-kicker">'+(n.auto?'Fiche du livre':'Page du carnet')+'</p><h2>'+esc(n.title)+'</h2><a href="'+bookLink(b)+'">'+esc(b.title)+' ↗</a><p>'+esc(n.page?'Page / chapitre '+n.page:'')+'</p></div><img class="sheet-sticker" src="'+esc(assetHref('images/objets/fiches.svg'))+'" alt=""></header>'+(n.passage?'<blockquote class="sheet-quotation"><strong>Passage marquant</strong><p>'+esc(n.passage)+'</p></blockquote>':'')+(n.body?'<p class="pre-wrap">'+esc(n.body)+'</p>':'')+(traces.length?'<details><summary>'+traces.length+' passage'+(traces.length>1?'s':'')+' de ce livre ↘</summary>'+traces.map(traceMarkup).join('')+'</details>':'')+'<div class="trace-actions"><button type="button" data-edit-note="'+esc(n.id)+'">Continuer ma fiche</button>'+(n.auto?'':'<button type="button" class="text-button" data-delete-note="'+esc(n.id)+'">Retirer</button>')+'</div></article>';}).join('')||'<p class="empty">Les fiches créées pendant ta lecture se rangeront ici, avec la couverture du livre.</p>';el.querySelectorAll('[data-edit-note]').forEach(btn=>btn.onclick=()=>{const n=state.notes.find(n=>n.id===btn.dataset.editNote);chooseBook(n.book,n);$('note-body').focus();});el.querySelectorAll('[data-delete-note]').forEach(btn=>btn.onclick=async()=>{state.notes=state.notes.filter(n=>n.id!==btn.dataset.deleteNote);await save();renderNotes();});el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderNotes();});}
 function selects(){if(!$('book-select'))return;if($('book-title-search')){$('book-title-search').oninput=()=>{const terms=searchTerms($('book-title-search').value);$('book-select').value='';const found=terms.length?state.books.filter(b=>terms.every(t=>searchTerms(b.title+' '+b.author).join(' ').includes(t))):[];$('book-search-results').innerHTML=found.slice(0,8).map(b=>'<button type="button" data-choose-book="'+esc(b.id)+'">'+smallCover(b)+'<span>'+esc(b.title)+'<small>'+esc(b.author)+'</small></span></button>').join('')||(terms.length?'<p>Aucun livre trouvé.</p>':'');$('book-search-results').querySelectorAll('[data-choose-book]').forEach(btn=>btn.onclick=()=>chooseBook(btn.dataset.chooseBook));};const requested=currentParams().get('livre');if(requested)chooseBook(requested);}else{$('book-select').innerHTML=state.books.map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');}}
-function bindTraceFilters(){if(readerLevel<2){for(const id of ['highlight-book','highlight-color','highlight-order']){const field=$(id);if(field){field.disabled=true;field.parentElement.hidden=true;}}}if($('highlight-order'))$('highlight-order').onchange=renderHighlights;if($('highlight-book')){$('highlight-book').innerHTML='<option value="">Tous les livres</option>'+state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');$('highlight-book').onchange=renderHighlights;}if($('highlight-color')){$('highlight-color').innerHTML='<option value="">Toutes les couleurs</option>'+Object.entries(legend()).map(([color,label])=>'<option value="'+color+'">'+esc(label)+'</option>').join('');$('highlight-color').onchange=renderHighlights;}if($('highlight-search'))$('highlight-search').oninput=renderHighlights;if($('notes-search'))$('notes-search').oninput=renderNotes;}
+function premiumPreview(title,plans){
+ return '<details class="premium-preview"><summary>'+esc(title)+'</summary><p>Disponible avec '+esc(plans)+'.</p><a class="btn secondary" href="'+siteHref('le-cercle.html#comparatif')+'">Comparer les formules ↗</a></details>';
+}
+function bindTraceFilters(){if(readerLevel<2){for(const id of ['highlight-book','highlight-color','highlight-order']){const field=$(id);if(field){field.disabled=true;if(id==='highlight-order')field.parentElement.insertAdjacentHTML('beforeend',premiumPreview('🔒 Tri par livre ou couleur','Passion et Illimité'));}}}if($('highlight-order'))$('highlight-order').onchange=renderHighlights;if($('highlight-book')){$('highlight-book').innerHTML='<option value="">Tous les livres</option>'+state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');$('highlight-book').onchange=renderHighlights;}if($('highlight-color')){$('highlight-color').innerHTML='<option value="">Toutes les couleurs</option>'+Object.entries(legend()).map(([color,label])=>'<option value="'+color+'">'+esc(label)+'</option>').join('');$('highlight-color').onchange=renderHighlights;}if($('highlight-search'))$('highlight-search').oninput=renderHighlights;if($('notes-search'))$('notes-search').oninput=renderNotes;}
 const NOTE_FIELDS = ['title','page','body','passage'];
 
 function noteFormValues() {
@@ -3559,7 +3562,7 @@ async function startBookReader(book) {
     <div class="reader-palette">
      <span class="palette-title">Couleur</span>
      <div class="reader-pencils" role="group" aria-label="Couleur du surligneur">${Object.entries(legend()).map(([color,label])=>`<button type="button" class="pencil" style="--pencil:${color}" data-pencil="${color}" title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${color===currentColor}"></button>`).join('')}</div>
-     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur <input id="new-pencil" type="color" value="#ec849e"></label><button type="button" id="add-pencil">Ajouter</button>`:''}
+     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur <input id="new-pencil" type="color" value="#ec849e"></label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('🔒 Ajouter des couleurs','Découverte, Passion et Illimité')}
     </div>
     <div class="reader-actions"><button type="button" id="save-selection" disabled>Surligner la sélection</button></div>
    </div>
@@ -3636,11 +3639,13 @@ async function startBookReader(book) {
   const list = pageHighlights();
   for (const h of list) for (const rect of h.rects || []) {
    const mark = document.createElement('span');
+   mark.dataset.eraseMark=h.id;
    mark.className = 'pdf-highlight' + (active?.id === h.id ? ' is-active' : '');
    mark.style.cssText = `left:${rect.x*100}%;top:${rect.y*100}%;width:${rect.w*100}%;height:${rect.h*100}%;background:${h.color}`;
    ink.appendChild(mark);
   }
-  traceList.innerHTML = list.length ? `<h2>Mes surlignages <small>Page ${currentPage}</small></h2>` + list.map(h => `<button type="button" aria-pressed="${h.id===active?.id}" data-open-trace="${esc(h.id)}" style="--pencil:${esc(h.color)}">${esc(h.quote.length>95?h.quote.slice(0,95)+'…':h.quote)}</button>`).join('') : '';
+  traceList.innerHTML = list.length ? `<h2>Mes surlignages <small>Page ${currentPage}</small></h2>` + list.map(h => `<span class="reader-trace-pair"><button type="button" aria-pressed="${h.id===active?.id}" data-open-trace="${esc(h.id)}" style="--pencil:${esc(h.color)}">${esc(h.quote.length>95?h.quote.slice(0,95)+'…':h.quote)}</button><button type="button" class="reader-trace-delete" data-delete-trace="${esc(h.id)}" aria-label="Effacer ce surlignage" title="Effacer ce surlignage">×</button></span>`).join('') : '';
+  traceList.querySelectorAll('[data-delete-trace]').forEach(button=>button.onclick=()=>removeHighlight(list.find(h=>h.id===button.dataset.deleteTrace)));
   traceList.querySelectorAll('[data-open-trace]').forEach(button => button.onclick = () => {
    const h = list.find(h => h.id === button.dataset.openTrace);
    if (mode === 'erase') { void removeHighlight(h); return; }
@@ -3766,7 +3771,7 @@ async function startBookReader(book) {
   }
   textButton.disabled = !hasText;
   if (mode === 'area') help.textContent = 'Fais glisser sur la page pour surligner une zone.';
-  else if (mode === 'erase') help.textContent = 'Clique sur un surlignage dans la page ou dans la liste pour l’enlever. Annuler le remet en place.';
+  else if (mode === 'erase') help.textContent = 'Clique près du surlignage à effacer, ou utilise le × dans la liste. Annuler le remet en place.';
   else if (!hasText) help.textContent = 'Page scannée. Choisis « Zone » pour surligner un endroit de la page.';
   else help.textContent = 'Sélectionne le texte à surligner. Sur téléphone, touche ensuite « Surligner la sélection ».';
  }
@@ -3788,6 +3793,22 @@ async function startBookReader(book) {
   paintMarks();
   await persist();
  }
+ const eraseTarget=(event,list)=>{
+  const textId=event.target.closest('mark')?.dataset.highlightId;
+  if(textId)return list.find(item=>item.id===textId);
+  if(!paper.contains(event.target))return null;
+  const box=paper.getBoundingClientRect();
+  if(!box.width||!box.height)return null;
+  const x=event.clientX-box.left,y=event.clientY-box.top;
+  let closest=null,distance=12;
+  for(const mark of [...list].reverse())for(const rect of mark.rects||[]){
+   const dx=Math.max(rect.x*box.width-x,x-(rect.x+rect.w)*box.width,0);
+   const dy=Math.max(rect.y*box.height-y,y-(rect.y+rect.h)*box.height,0);
+   const gap=Math.hypot(dx,dy);
+   if(gap<distance){distance=gap;closest=mark;}
+  }
+  return closest;
+ };
  undo.onclick = async () => {
   const change = history.pop();
   if (!change) return;
@@ -3800,19 +3821,16 @@ async function startBookReader(book) {
   paintMarks();
   await persist();
  };
- $('pdf-scroll').addEventListener('click', event => {
-  if (mode !== 'erase' || !pageReady) return;
-  const list = pageHighlights();
-  if (textRoot !== layer) {
-   const id = event.target.closest('mark')?.dataset.highlightId;
-   if (id) void removeHighlight(list.find(h => h.id === id));
-   return;
-  }
-  if (!paper.contains(event.target)) return;
-  const box = paper.getBoundingClientRect();
-  const x = (event.clientX-box.left)/box.width, y = (event.clientY-box.top)/box.height;
-  void removeHighlight(list.reverse().find(h => h.rects?.some(r => x >= r.x && x <= r.x+r.w && y >= r.y && y <= r.y+r.h)));
- }, options);
+ const scroller=$('pdf-scroll');
+ scroller.addEventListener('pointermove',event=>{
+  if(mode!=='erase'||!pageReady)return;
+  const target=eraseTarget(event,pageHighlights());
+  for(const mark of scroller.querySelectorAll('[data-erase-mark]'))mark.classList.toggle('erase-target',mark.dataset.eraseMark===target?.id);
+ },options);
+ scroller.addEventListener('pointerleave',()=>scroller.querySelectorAll('.erase-target').forEach(mark=>mark.classList.remove('erase-target')),options);
+ scroller.addEventListener('click', event => {
+  if(mode==='erase'&&pageReady)void removeHighlight(eraseTarget(event,pageHighlights()));
+ },options);
 
  function areaRect(event) {
   return normalizedRect({left:Math.min(drag.x,event.clientX),right:Math.max(drag.x,event.clientX),
@@ -4086,7 +4104,8 @@ function mergeCatalogueDuplicates(rules){
   const {book,rule}=rows[0];
   for(const {book:other} of rows.slice(1)){
    catalogueAliases.set(other.id,book.id);
-   if(!book.cover&&other.cover)book.cover=other.cover;
+   for(const field of ['cover','presentation','summary','external','edition'])if(!book[field]&&other[field])book[field]=other[field];
+   for(const field of ['chapters','reviewLinks','sources'])if(!book[field]?.length&&other[field]?.length)book[field]=other[field];
   }
   book.accessLevel=Number(rule?.access_level||0);
   book.accessBookId=rule?.book_id||book.id;
@@ -4251,6 +4270,7 @@ if(ellUser){
 await Promise.all([loadPublicCatalogue(),loadEditorialCatalogue()]);
 await applyCatalogueSuppressions();
 await applyCatalogueAccess();
+if($('reader-content')||$('highlights')){const css=document.createElement('link');css.rel='stylesheet';css.href=siteHref('css/reader-interactions.css');document.head.append(css);}
 addGenreCounts();
 if(remoteCarnet&&ellUser)restoreCarnet(remoteCarnet);
 if(db)await writeLocalState(null);
