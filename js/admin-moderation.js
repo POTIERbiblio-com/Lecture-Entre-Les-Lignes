@@ -89,6 +89,7 @@ function render(){
  $('am-count').textContent=list.length+' livre(s) dans cette sélection · '+books.length+' fiches référencées';
  $('am-books').replaceChildren(...list.map(card));
 }
+$('am-search').value=(new URLSearchParams(location.search).get('search')||'').slice(0,150);
 $('am-search').addEventListener('input',render);
 $('am-filter').addEventListener('change',render);
 onAuthStateChanged(auth,async u=>{
