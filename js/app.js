@@ -1131,7 +1131,7 @@ function horrorMark(book) {
   if (!isHorror(book)) return '';
   return '<span class="horror-book-mark"><img class="horror-book-sticker" src="images/carnet-illustre/frisson-rose.jpg" alt="">Rayon Horreur</span>';
 }
-const ELL_LOCK_NAMES=['Libre','Découverte','Passion','Illimité'];
+const ELL_LOCK_NAMES=['Libre','Découverte · cadenas jaune','Passion · cadenas orange','Illimité · cadenas rouge'];
 if(!document.querySelector('link[href*="cadenas-abonnements.css"]')){const css=document.createElement('link');css.rel='stylesheet';css.href='css/cadenas-abonnements.css?v=20261119';document.head.appendChild(css);}
 function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+(b.requiredTier>0?'<p class="ell-access-label" data-level="'+b.requiredTier+'">🔒 '+ELL_LOCK_NAMES[b.requiredTier]+' · '+(b.requiredTier>accountTier?'Abonnement requis':'Abonnement actif')+'</p>':'')+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
 function searchTerms(value) {
