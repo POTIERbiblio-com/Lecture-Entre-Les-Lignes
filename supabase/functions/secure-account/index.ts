@@ -191,6 +191,8 @@ Deno.serve(async(req)=>{
     if(!reserved)return json({error:'Quota mensuel de lectures atteint pour ce livre'},403);
     const {data:signed,error:signedError}=await db.storage.from('book-pdfs').createSignedUrl(file.storage_path,60);
     if(signedError)throw signedError;
+    const {error:countError}=await db.from('book_download_events').insert({book_id:bookId,firebase_uid:uid});
+    if(countError)console.warn('Book access metric could not be recorded');
     return json({url:signed.signedUrl,expiresIn:60});
   }
   if(action==='catalogue-featured'){
