@@ -1,10 +1,12 @@
-import {initializeApp,getApps} from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js';
-import {getAuth,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js';
+import {initializeApp,getApps} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js';
+import {getAuth,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js';
 
 const config={apiKey:"AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY",authDomain:"lecture-entre-les-lignes.firebaseapp.com",projectId:"lecture-entre-les-lignes",appId:"1:876044393565:web:da359169bccbfc709081b4"};
 export const auth=getAuth(getApps()[0]||initializeApp(config));
 export const onAccount=callback=>onAuthStateChanged(auth,callback);
-export async function requestService(action, fields={}, account=auth.currentUser){
+export async function requestService(action, fields={}, account){
+  await auth.authStateReady();
+  account??=auth.currentUser;
   if(!account||auth.currentUser?.uid!==account.uid)throw Error('Connecte-toi pour continuer.');
   const token=await account.getIdToken();
   if(auth.currentUser?.uid!==account.uid)throw Error('Le compte a changé. Réessaie.');
