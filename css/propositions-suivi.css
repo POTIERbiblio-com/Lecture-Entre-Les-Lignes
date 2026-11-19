@@ -14,3 +14,6 @@
 .proposal-history-actions[hidden]{display:none}
 .proposal-history-sort{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
 @media(prefers-reduced-motion:reduce){.proposal-bell{transition:none}}
+.request-card.request-history-card{background:#ead2e1;border-color:#c898b7;color:#4f2f45}
+.request-history-card .proposal-slide .request-entry{background:#f9eaf3;border-color:#d3a4c1;color:#503044}
+.request-history-card .proposal-slide>small{display:block;color:#60334e;font-weight:700;margin-bottom:.45rem}

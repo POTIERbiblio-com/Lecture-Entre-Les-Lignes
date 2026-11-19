@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Proposer un livre · Entre les lignes</title>
 <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css"><link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css">
-<link rel="stylesheet" href="css/titre-dynapuff.css?v=20261117b"><link rel="stylesheet" href="css/book-requests.css?v=20261118-collage-v3"><link rel="stylesheet" href="css/propositions-decisions.css"><link rel="stylesheet" href="css/propositions-suivi.css"><link rel="stylesheet" href="css/request-priority.css"></head>
+<link rel="stylesheet" href="css/titre-dynapuff.css?v=20261117b"><link rel="stylesheet" href="css/book-requests.css?v=20261118-collage-v3"><link rel="stylesheet" href="css/propositions-decisions.css"><link rel="stylesheet" href="css/propositions-suivi.css?v=profil-20261119"><link rel="stylesheet" href="css/request-priority.css?v=profil-20261119"></head>
 <body class="page-proposer-livre atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <header class="site-header"><a class="brand" href="index.html">Entre les lignes<span>.</span></a>
@@ -43,13 +43,13 @@
 <label>Pourquoi nous le proposer ? / Informations complémentaires <textarea name="details" rows="5" maxlength="3000" placeholder="Ce qui t'a plu, une édition précise, un détail utile…"></textarea></label>
 <fieldset class="request-priority" id="priority-card" data-state="guest">
 <legend>Priorité des propositions</legend>
-<div class="priority-intro"><div><p class="priority-kicker">↑ EN TÊTE DE LISTE</p><h3>Fais remonter ton livre dans la pile</h3><p>Ta proposition rejoint les demandes que Quentin voit en premier.</p></div>
+<div class="priority-intro"><div><h3>En haut de la pile</h3><p>Donne à ta proposition une place parmi les premières que Quentin voit.</p></div>
 <div class="priority-stack" aria-hidden="true"><span>↑ Ta proposition</span><i></i><i></i></div></div>
-<label class="priority-choice"><input type="checkbox" id="request-boost" disabled><span><strong>Donner la priorité à ma proposition</strong><small id="priority-cost">1 crédit utilisé à l’envoi</small></span></label>
+<label class="priority-choice"><input type="checkbox" id="request-boost" disabled><span><strong>Prioriser ma proposition</strong><small id="priority-cost">1 crédit utilisé à l’envoi</small></span></label>
 <div class="priority-footer"><p id="request-priority-info" role="status">Connecte-toi pour voir tes crédits.</p><a id="priority-plans" href="le-cercle.html#comparatif">Découvrir les formules ↗</a></div>
 </fieldset><button type="submit" id="send-request">Envoyer ma proposition ♡</button>
 </form>
-<section class="request-card"><h2>Mes propositions</h2><p>Tu retrouveras ici les réponses de l'équipe, visibles uniquement depuis ton compte.</p><label class="proposal-history-sort">Trier mes propositions <select id="request-history-sort"><option value="recent">Plus récentes</option><option value="oldest">Plus anciennes</option><option value="title">Titre du livre</option></select></label><div id="my-requests"></div></section>
+<section class="request-card request-history-card"><h2>Mes propositions</h2><p>Tu retrouveras ici les réponses de l'équipe, visibles uniquement depuis ton compte.</p><label class="proposal-history-sort">Trier mes propositions <select id="request-history-sort"><option value="recent">Plus récentes</option><option value="oldest">Plus anciennes</option><option value="title">Titre du livre</option></select></label><div id="my-requests"></div></section>
 </section>
 <p id="request-login" hidden class="request-login"><a href="connexion-firebase.html">Connecte-toi ou crée ton compte pour proposer un livre et suivre sa réponse ♡</a></p>
 </main></div><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a><a href="plan.html">Plan du site</a><a href="mon-espace.html">Mon espace</a></div><script type="module" src="js/book-requests.js?v=priorite-visuelle-20261119"></script>

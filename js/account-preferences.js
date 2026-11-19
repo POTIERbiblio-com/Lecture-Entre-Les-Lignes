@@ -1,6 +1,6 @@
 import {auth,onAccount,requestService} from './request-service.js';
 const $=id=>document.getElementById(id);
-const inbox=$('proposal-notifications'),settings=$('parametres-compte'),form=$('notification-settings');
+const inbox=$('proposal-notifications'),form=$('notification-settings'),settings=form?.closest('section');
 const label=$('proposal-bell-label'),count=$('proposal-unread'),releases=$('catalogue-notifications');
 const date=new Intl.DateTimeFormat('fr-FR',{dateStyle:'long',timeZone:'Europe/Paris'});
 const plans={decouverte:'Découverte',passion:'Passion',illimite:'Illimité'};
@@ -22,20 +22,22 @@ function showBooks(notices){
 }
 async function refresh(account,{loadSettings=false}={}){
  const turn=++generation;
- inbox.hidden=settings.hidden=!account;
- count.textContent='0';inbox.dataset.size='0';label.textContent='Notifications';
- $('proposal-latest-title').textContent='';$('proposal-latest-message').textContent='';showBooks([]);
+ if(settings)settings.hidden=!account;
+ if(inbox){
+  inbox.hidden=!account;count.textContent='0';inbox.dataset.size='0';label.textContent='Notifications';
+  $('proposal-latest-title').textContent='';$('proposal-latest-message').textContent='';showBooks([]);
+ }
  if(loadSettings){
   form.elements.app.checked=false;form.elements.email.checked=false;form.querySelector('button').disabled=true;
   $('notification-settings-status').textContent='';
   $('account-subscription-status').textContent='';$('account-subscription-link').hidden=true;$('account-subscription-dates').replaceChildren();
  }
  if(!account)return;
- const checks=[requestService('requests-unread',{},account),requestService('notification-preferences',{},account)];
+ const checks=[inbox?requestService('requests-unread',{},account):null,requestService('notification-preferences',{},account)];
  if(loadSettings)checks.push(requestService('status',{},account));
  const [proposals,preferences,billing]=await Promise.allSettled(checks);
  if(turn!==generation||auth.currentUser?.uid!==account.uid)return;
- if(proposals.status==='fulfilled'){
+ if(inbox&&proposals.status==='fulfilled'){
   const latest=proposals.value.latest;
   $('proposal-latest-title').textContent=latest?latest.title+' · '+latest.status:'Aucune mise à jour de proposition';
   $('proposal-latest-message').textContent=latest?.message||'';
@@ -43,13 +45,13 @@ async function refresh(account,{loadSettings=false}={}){
  if(preferences.status==='fulfilled'){
   const data=preferences.value;
   if(loadSettings){form.elements.app.checked=data.app;form.elements.email.checked=data.email;form.querySelector('button').disabled=false;}
-  showBooks(data.notices||[]);
+  if(inbox)showBooks(data.notices||[]);
  }else if(loadSettings)$('notification-settings-status').textContent='Préférences indisponibles pour le moment.';
  const total=(proposals.value?.unread||0)+(preferences.value?.unread||0);
- count.textContent=total;inbox.dataset.size=String(Math.min(total,3));label.textContent=total?total+' notification'+(total===1?'':'s'):'Notifications';
+ if(inbox){count.textContent=total;inbox.dataset.size=String(Math.min(total,3));label.textContent=total?total+' notification'+(total===1?'':'s'):'Notifications';}
  if(billing?.status==='fulfilled'){
   const info=billing.value.subscription,link=$('account-subscription-link'),dates=$('account-subscription-dates');
-  $('abonnement-compte').querySelector('summary').textContent=info.complimentary?'Mes accès':'Mon abonnement et mes accès';
+  $('account-subscription-heading').textContent=info.complimentary?'Mes accès':'Mon abonnement et mes accès';
   $('account-subscription-status').textContent=info.complimentary?'Toutes les fonctionnalités sont activées directement pour ton compte.':info.access_level?'Formule '+(plans[info.access_plan]||info.access_plan):'Aucun abonnement actif';
   link.hidden=info.complimentary;
   link.textContent=info.access_level?'Gérer mon abonnement ↗':'Voir les formules ↗';
@@ -62,9 +64,9 @@ async function refresh(account,{loadSettings=false}={}){
   }
  }else if(loadSettings)$('account-subscription-status').textContent='Informations d’abonnement indisponibles.';
 }
-onAccount(account=>refresh(account,{loadSettings:true}));
-window.addEventListener('focus',()=>{if(auth.currentUser&&!form.querySelector('button').disabled)void refresh(auth.currentUser);});
-form.onsubmit=async event=>{
+onAccount(account=>refresh(account,{loadSettings:!!form}));
+window.addEventListener('focus',()=>{if(auth.currentUser&&inbox)void refresh(auth.currentUser);});
+if(form)form.onsubmit=async event=>{
  event.preventDefault();
  const account=auth.currentUser,button=form.querySelector('button');if(!account||button.disabled)return;
  button.disabled=true;
@@ -76,7 +78,7 @@ form.onsubmit=async event=>{
  }catch(error){if(auth.currentUser?.uid===account.uid)$('notification-settings-status').textContent=error.message;}
  finally{if(auth.currentUser?.uid===account.uid)button.disabled=false;}
 };
-$('catalogue-notices-seen').onclick=async()=>{
+if(inbox)$('catalogue-notices-seen').onclick=async()=>{
  const account=auth.currentUser;if(!account)return;
  try{await requestService('catalogue-notifications-seen',{},account);await refresh(account);}
  catch(error){if(auth.currentUser?.uid===account.uid)label.textContent=error.message;}

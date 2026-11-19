@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mon profil · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
-<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/comptes.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"></head>
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/comptes.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/app-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/profile-account-settings.css"></head>
 <body class="atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <div class="site-header" role="banner">
@@ -28,6 +28,16 @@
 <p id="status" role="status" class="status">
 </p>
 </form>
+<section id="parametres-compte" class="profile-account-settings" hidden>
+<details class="profile-setting-card"><summary><img src="images/objets/medaillon.svg" alt=""><span><strong>Paramètres du compte</strong><small>Choisis comment recevoir les nouveautés.</small></span></summary>
+<form id="notification-settings"><fieldset><legend>Quand un livre rejoint le catalogue</legend>
+<p><label><input type="checkbox" name="app"> Une notification dans ma cloche</label></p>
+<p><label><input type="checkbox" name="email"> Un e-mail avec le nouveau livre</label></p>
+<button type="submit" class="btn">Enregistrer mes préférences</button><p id="notification-settings-status" role="status"></p></fieldset></form>
+</details>
+<details class="profile-setting-card" id="abonnement-compte"><summary><img src="images/objets/fiches.svg" alt=""><span><strong id="account-subscription-heading">Mon abonnement et mes accès</strong><small>Ta formule et les dates utiles.</small></span></summary><p id="account-subscription-status" role="status"></p><dl id="account-subscription-dates"></dl><a id="account-subscription-link" class="btn secondary" href="le-cercle.html">Voir les formules ↗</a></details>
+</section>
+<script src="js/account-preferences.js?v=profil-20261119" type="module"></script>
 <aside class="artist-colophon" aria-label="Continuer dans le carnet">
  <img src="images/atelier/tiroir-imaginaire.jpg" alt="" loading="lazy"><div><div class="artist-colophon-links"><a href="mon-espace.html">Mon espace <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a><a href="sauvegardes.html">Garder une copie du carnet <span aria-hidden="true" class="artist-arrow-glyph">↗</span></a></div></div></aside></div>
 <div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>

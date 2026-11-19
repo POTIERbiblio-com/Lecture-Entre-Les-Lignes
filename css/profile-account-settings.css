@@ -1,0 +1,15 @@
+.profile-account-settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1rem;margin:1.5rem 0;align-items:start}
+.profile-account-settings[hidden]{display:none}
+.profile-setting-card{padding:1rem;border:1px solid #d9a1bf;border-radius:1.25rem;background:#fff0f8;color:#59334c;box-shadow:0 6px 16px #7c40521a}
+.profile-setting-card:nth-child(2){background:#f1e8f9;border-color:#c9afd9}
+.profile-setting-card summary{display:flex;align-items:center;gap:.8rem;cursor:pointer;list-style:none}
+.profile-setting-card summary::after{content:'+';margin-left:auto;font-weight:700}
+.profile-setting-card[open] summary::after{content:'−'}
+.profile-setting-card summary img{width:2.45rem;height:2.45rem;padding:.25rem;border-radius:.7rem;background:#fff8fc}
+.profile-setting-card summary strong,.profile-setting-card summary small{display:block}
+.profile-setting-card summary small{margin-top:.25rem}
+.profile-setting-card fieldset{margin-top:1rem;border:0;padding:0}
+.profile-setting-card label{display:flex;align-items:center;gap:.55rem}
+.profile-setting-card dl{display:grid;grid-template-columns:1fr auto;gap:.45rem .7rem}
+.profile-setting-card dd{margin:0;font-weight:700}
+.profile-setting-card [hidden]{display:none}
