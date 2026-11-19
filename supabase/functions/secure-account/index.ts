@@ -116,6 +116,75 @@ Deno.serve(async(req)=>{
     if(signedError)throw signedError;
     return json({url:signed.signedUrl});
   }
+
+  // Paid PDF access is granted ONLY for an authorized file in private Supabase Storage.
+  // Static GitHub-hosted copies remain public until they are separately removed/rehosted.
+  if(action==='catalogue-pdf-upload'){
+    if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
+    const bookId=String(body.bookId||'');
+    if(!/^[a-zA-Z0-9_-]{1,120}$/.test(bookId))return json({error:'Identifiant invalide'},400);
+    const path=bookId+'/'+crypto.randomUUID()+'.pdf';
+    const {data,error}=await db.storage.from('book-pdfs').createSignedUploadUrl(path);
+    if(error)throw error;
+    return json({path,token:data.token});
+  }
+  if(action==='catalogue-pdf-activate'){
+    if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
+    const bookId=String(body.bookId||''),path=String(body.path||'');
+    if(!/^[a-zA-Z0-9_-]{1,120}$/.test(bookId)||!new RegExp('^'+bookId.replace(/[.*+?^${}()|[\]\\]/g,'\\  if(action==='catalogue-moderate'){')+'/[0-9a-f-]{36}\\.pdf
+    if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
+    const bookId=String(body.bookId||'').trim();
+    if(!bookId||bookId.length>150||!(/^[a-zA-Z0-9_-]+$/.test(bookId)))return json({error:'Identifiant livre invalide'},400);
+    const level=Number(body.level);
+    if(!Number.isInteger(level)||level<0||level>3||typeof body.hidden!=='boolean'||typeof body.deleted!=='boolean')return json({error:'Paramètres invalides'},400);
+    const {error}=await db.from('catalogue_moderation').upsert({book_id:bookId,hidden:body.hidden,deleted:body.deleted,access_level:level,updated_by:uid,updated_at:new Date().toISOString()},{onConflict:'book_id'});
+    if(error)throw error;
+    return json({ok:true});
+  }
+
+  if(action==='status'){const {data,error}=await db.from('firebase_billing').select('plan,status,current_period_end,cancel_at_period_end').eq('firebase_uid',uid).maybeSingle();if(error)throw error;const valid=data&&['active','trialing'].includes(data.status)&&(!data.current_period_end||new Date(data.current_period_end).getTime()>Date.now());return json({subscription:data?{...data,access_plan:valid?data.plan:'free',access_level:valid?({decouverte:1,passion:2,illimite:3} as Record<string,number>)[data.plan]||0:0}:{plan:'free',status:'inactive',access_plan:'free',access_level:0}})}
+  if(action==='checkout'||action==='portal'){
+   const secret=Deno.env.get('STRIPE_SECRET_KEY');if(!secret||!secret.startsWith('sk_test_'))return json({error:'Paiement test non configuré sur le serveur'},503);
+   const stripe=async(path:string,form:URLSearchParams)=>{const r=await fetch('https://api.stripe.com/v1/'+path,{method:'POST',headers:{Authorization:'Bearer '+secret,'Content-Type':'application/x-www-form-urlencoded'},body:form});const v=await r.json();if(!r.ok)throw Error(v.error?.message||'Stripe error');return v};
+   const {data:existing,error:lookupError}=await db.from('firebase_billing').select('stripe_customer_id').eq('firebase_uid',uid).maybeSingle();if(lookupError)throw lookupError;
+   let customer=existing?.stripe_customer_id;
+   if(!customer){const f=new URLSearchParams({description:'Entre les lignes account', 'metadata[firebase_uid]':uid});if(typeof payload.email==='string')f.set('email',payload.email);const created=await stripe('customers',f);customer=created.id;const {error}=await db.from('firebase_billing').upsert({firebase_uid:uid,stripe_customer_id:customer},{onConflict:'firebase_uid'});if(error)throw error}
+   if(action==='portal'){const result=await stripe('billing_portal/sessions',new URLSearchParams({customer,return_url:'https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/le-cercle.html'}));return json({url:result.url})}
+   const price=prices[body.plan];if(!price)return json({error:'Unknown plan'},400);const {data:billing,error:billingError}=await db.from('firebase_billing').select('status,stripe_subscription_id').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;if(billing?.stripe_subscription_id&&['active','trialing','past_due','unpaid','incomplete','paused'].includes(billing.status))return json({error:'Un abonnement existe déjà. Utilise « Gérer mon abonnement » pour éviter une double souscription.'},409);
+   const f=new URLSearchParams({mode:'subscription',customer,'line_items[0][price]':price,'line_items[0][quantity]':'1',success_url:'https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/le-cercle.html?checkout=success',cancel_url:'https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/le-cercle.html?checkout=cancel','client_reference_id':uid,'subscription_data[metadata][firebase_uid]':uid,'allow_promotion_codes':'true'});
+   const session=await stripe('checkout/sessions',f);return json({url:session.url});
+  }
+  return json({error:'Unknown action'},400);
+ }catch(e){console.error('secure-account',e);return json({error:'Action impossible. Vérifie ta connexion ou réessaie.'},500)}
+});,'i').test(path))return json({error:'Fichier invalide'},400);
+    if(body.rightsAttested!==true)return json({error:'La preuve du droit de mise à disposition est nécessaire'},403);
+    const filename=path.split('/').pop()!;
+    const {data:objects,error:storageError}=await db.storage.from('book-pdfs').list(bookId,{search:filename});
+    if(storageError)throw storageError;
+    if(!(objects||[]).some(item=>item.name===filename))return json({error:'Fichier privé absent'},404);
+    const {error}=await db.from('catalogue_private_files').upsert({book_id:bookId,storage_path:path,rights_attested:true,attested_by:uid,updated_at:new Date().toISOString()},{onConflict:'book_id'});
+    if(error)throw error;
+    return json({ok:true});
+  }
+  if(action==='catalogue-pdf'){
+    const bookId=String(body.bookId||'');
+    if(!/^[a-zA-Z0-9_-]{1,120}$/.test(bookId))return json({error:'Livre invalide'},400);
+    const {data:rule,error:ruleError}=await db.from('catalogue_moderation').select('access_level,hidden,deleted').eq('book_id',bookId).maybeSingle();
+    if(ruleError)throw ruleError;
+    if(rule?.hidden||rule?.deleted)return json({error:'Livre indisponible'},404);
+    const {data:file,error:fileError}=await db.from('catalogue_private_files').select('storage_path,rights_attested').eq('book_id',bookId).maybeSingle();
+    if(fileError)throw fileError;
+    if(!file?.rights_attested||!file.storage_path)return json({error:'Aucun PDF privé autorisé pour ce livre'},404);
+    const {data:billing,error:billError}=await db.from('firebase_billing').select('plan,status,current_period_end').eq('firebase_uid',uid).maybeSingle();
+    if(billError)throw billError;
+    const tiers:Record<string,number>={free:0,decouverte:1,passion:2,illimite:3};
+    const hasPaidAccess=['active','trialing'].includes(billing?.status)&&(!billing?.current_period_end||new Date(billing.current_period_end).getTime()>Date.now());
+    const accountLevel=hasPaidAccess?(tiers[billing?.plan]||0):0;
+    if(accountLevel<Number(rule?.access_level||0))return json({error:'Abonnement requis pour cette lecture'},403);
+    const {data:signed,error:signedError}=await db.storage.from('book-pdfs').createSignedUrl(file.storage_path,60);
+    if(signedError)throw signedError;
+    return json({url:signed.signedUrl,expiresIn:60});
+  }
   if(action==='catalogue-moderate'){
     if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
     const bookId=String(body.bookId||'').trim();
