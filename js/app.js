@@ -3443,6 +3443,15 @@ async function storeCatalogBook(book){throw Error('Utilise la page Administratio
 async function startBookReader(book) {
  const host = $('reader-content');
  if (!host) return;
+ // Le cadenas est visible sur la recherche ; l'ouverture doit aussi refuser le contenu verrouillé.
+ if(Number(book.requiredTier||0)>Number(accountTier||0)){
+  const level=Number(book.requiredTier),name=(typeof ELL_LOCK_NAMES!=='undefined'&&ELL_LOCK_NAMES[level])||('niveau '+level);
+  host.replaceChildren();const section=document.createElement('section');section.className='panel ell-reader-locked';
+  const h=document.createElement('h2');h.textContent='🔒 Ce livre est réservé à la formule '+name;section.append(h);
+  const p=document.createElement('p');p.textContent='Tu peux consulter la fiche du livre, mais la lecture, le téléchargement et les résumés chapitre par chapitre nécessitent la formule correspondante.';section.append(p);
+  const link=document.createElement('a');link.href='le-cercle.html';link.className='btn';link.textContent='Découvrir les abonnements';section.append(link);host.append(section);return;
+ }
+
  const events = new AbortController();
  const requested = currentParams();
  let pdf, pageTask, textTask, loading, pdfLibrary, renderSequence = 0;
