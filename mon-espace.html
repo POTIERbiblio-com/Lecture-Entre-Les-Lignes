@@ -56,5 +56,44 @@ onAuthStateChanged(auth,async user=>{const link=$f('firebase-admin-link'),premiu
 $f('firebase-logout').onclick=async()=>{try{await signOut(auth);location.assign('connexion-firebase.html');}catch(e){$f('firebase-status').textContent='Déconnexion impossible : '+(e.code||'erreur inconnue');}};
 </script>
 
-<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script type="module" src="js/propositions-compte.js?v=decisions-20261119"></script></body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script type="module" src="js/propositions-compte.js?v=decisions-20261119"></script><section id="quentin-selection" class="trace-filters" hidden style="display:none;max-width:1100px;margin:18px auto;padding:18px">
+<h2>Sélection privée de Quentin</h2><p id="quentin-selection-status" role="status"></p><ul id="quentin-selection-books"></ul>
+</section>
+<script type="module">
+import {auth,requestService} from './js/request-service.js';
+await auth.authStateReady();
+const panel=document.getElementById('quentin-selection');
+const status=document.getElementById('quentin-selection-status');
+const list=document.getElementById('quentin-selection-books');
+const account=auth.currentUser;
+const isOwner=user=>user?.uid===account?.uid&&user?.emailVerified===true&&user.email?.toLowerCase()==='quentinmorel1912@gmail.com';
+auth.onAuthStateChanged(user=>{if(!isOwner(user)){panel.hidden=true;panel.style.display='none';list.replaceChildren();}});
+if(isOwner(account)){
+ try{
+  const {books}=await requestService('quentin-private-selection',{},account);
+  if(isOwner(auth.currentUser)){
+   status.textContent=books.length?'':'Aucun livre dans cette sélection.';
+   for(const book of books){
+    const item=document.createElement('li');
+    const button=document.createElement('button');
+    button.type='button';button.className='btn secondary';
+    button.textContent='Lire · '+[book.title,book.author].filter(Boolean).join(' — ');
+    button.onclick=async()=>{
+     button.disabled=true;
+     try{
+      const {url}=await requestService('catalogue-pdf',{bookId:book.id,purpose:'read'},account);
+      if(isOwner(auth.currentUser))location.assign(url);
+     }catch(error){status.textContent=error.message;}
+     finally{button.disabled=false;}
+    };
+    item.append(button);list.append(item);
+   }
+   panel.hidden=false;panel.style.display='block';
+  }
+ }catch(error){
+  if(isOwner(auth.currentUser)){status.textContent=error.message;panel.hidden=false;panel.style.display='block';}
+ }
+}
+</script>
+</body>
 </html>
