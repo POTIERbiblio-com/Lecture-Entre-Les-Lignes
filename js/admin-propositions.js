@@ -38,8 +38,8 @@ function createCard(r){
   e.preventDefault();const b=form.querySelector('button'),msg=form.querySelector('.admin-save-status');
   b.disabled=true;msg.textContent='Enregistrement…';
   try{
-   await call('requests-reply',{id:r.id,status:form.elements.status.value,reason:form.elements.reason.value,message:form.elements.message.value.trim()});
-   msg.textContent='Réponse enregistrée et disponible dans les propositions du lecteur.';
+   const result=await call('requests-reply',{id:r.id,status:form.elements.status.value,reason:form.elements.reason.value,message:form.elements.message.value.trim()});
+   msg.textContent='Réponse enregistrée sur le compte du lecteur. '+(result.emailSent?'E-mail transmis.':'E-mail non confirmé : configure RESEND_API_KEY et BOOK_REQUEST_FROM_EMAIL, puis vérifie le destinataire.');
    await refresh();
   }catch(err){msg.textContent='Échec : '+err.message;}finally{b.disabled=false;}
  };
