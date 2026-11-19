@@ -3645,8 +3645,8 @@ async function startBookReader(book) {
     </div>
     <div class="reader-palette">
      <span class="palette-title">Couleur</span>
-     <div class="reader-pencils" role="group" aria-label="Couleur du surligneur">${Object.entries(legend()).slice(0,readerLevel===0?6:readerLevel===1?8:readerLevel===2?10:Infinity).map(([color,label])=>`<button type="button" class="pencil" style="--pencil:${color}" data-pencil="${color}" title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${color===currentColor}"></button>`).join('')}</div>
-     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur ${readerLevel===3?'<input id="new-pencil" type="color" value="#ec849e">':'<select id="new-pencil"><option value="#ec849e">Rose framboise</option><option value="#8dc4ae">Vert menthe</option><option value="#a689c6">Violet</option><option value="#70b9d1">Bleu lagon</option><option value="#e2a56f">Abricot</option><option value="#d5ba69">Moutarde</option></select>'}</label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('Ajouter des couleurs',1)}
+     <div class="reader-pencils" role="group" aria-label="Couleur du surligneur">${Object.entries(legend()).slice(0,readerLevel===0?6:readerLevel===1?8:readerLevel===2?30:Infinity).map(([color,label])=>`<button type="button" class="pencil" style="--pencil:${color}" data-pencil="${color}" title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${color===currentColor}"></button>`).join('')}</div>
+     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur ${readerLevel===3?'<input id="new-pencil" type="color" value="#ec849e">':`<select id="new-pencil"><option value="#ec849e">Rose framboise</option><option value="#8dc4ae">Vert menthe</option><option value="#a689c6">Violet</option><option value="#70b9d1">Bleu lagon</option><option value="#e2a56f">Abricot</option><option value="#d5ba69">Moutarde</option>${readerLevel===2?`<option value="#e884b2">Rose orchidée</option><option value="#eea2ac">Rose pétale</option><option value="#f77876">Corail</option><option value="#f9b29d">Saumon</option><option value="#ef9261">Mandarine</option><option value="#f0c25f">Ambre</option><option value="#ffe783">Citron</option><option value="#d9de79">Tilleul</option><option value="#afcf78">Pistache</option><option value="#93bd87">Sauge</option><option value="#77b68c">Jade</option><option value="#7cd6c6">Turquoise</option><option value="#9adfdb">Aqua</option><option value="#8ac0ed">Bleu ciel</option><option value="#98a7e7">Bleu pervenche</option><option value="#b6a6eb">Lavande</option><option value="#d3a6e0">Lilas</option><option value="#c978ad">Mauve</option>`:''}</select>`}</label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('Ajouter des couleurs',1)}
      ${readerLevel<3?premiumPreview('Nuancier libre',3):''}
     </div>
     <div class="reader-actions"><button type="button" id="save-selection" disabled>Surligner la sélection</button></div>
@@ -3840,7 +3840,7 @@ async function startBookReader(book) {
  pencils.forEach(bindPencil);
  if($('add-pencil'))$('add-pencil').onclick=async()=>{
   const button=$('add-pencil');
-  const color=$('new-pencil').value.toLowerCase(),colors=legend(),limit=readerLevel===1?8:readerLevel===2?10:Infinity;
+  const color=$('new-pencil').value.toLowerCase(),colors=legend(),limit=readerLevel===1?8:readerLevel===2?30:Infinity;
   if(Object.hasOwn(colors,color)){status('Cette couleur est déjà dans ta palette.',true);return;}
   if(Object.keys(colors).length>=limit){status('Ta palette a atteint '+limit+' couleurs.',true);return;}
   const previous=state.legend;
