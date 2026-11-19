@@ -219,6 +219,21 @@ Deno.serve(async(req)=>{
   }
 
   if(action==='status'){const {data,error}=await db.from('firebase_billing').select('plan,status,current_period_end,cancel_at_period_end').eq('firebase_uid',uid).maybeSingle();if(error)throw error;const valid=data&&['active','trialing'].includes(data.status)&&(!data.current_period_end||new Date(data.current_period_end).getTime()>Date.now());return json({subscription:data?{...data,access_plan:isAdmin?'illimite':valid?data.plan:'free',access_level:isAdmin?3:valid?({decouverte:1,passion:2,illimite:3} as Record<string,number>)[data.plan]||0:0,admin:isAdmin}:{plan:isAdmin?'illimite':'free',status:isAdmin?'active':'inactive',access_plan:isAdmin?'illimite':'free',access_level:isAdmin?3:0,admin:isAdmin}})}
+  if(action==='pricing-list'){
+    const {data,error}=await db.from('subscription_plan_prices').select('plan,monthly_eur_cents').order('monthly_eur_cents');if(error)throw error;return json({plans:data||[]});
+  }
+  if(action==='pricing-update'){
+    if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
+    const plan=String(body.plan||''),amount=Number(body.monthlyEurCents);
+    const products:Record<string,string>={decouverte:'prod_VeWt7oJB7TH0WM',passion:'prod_VeWt1haFWhdayc',illimite:'prod_VeWu8nDMVj7BtO'};
+    if(!products[plan]||!Number.isInteger(amount)||amount<99||amount>50000)return json({error:'Prix invalide (0,99 € à 500 €)'},400);
+    const secret=Deno.env.get('STRIPE_SECRET_KEY');if(!secret?.startsWith('sk_test_'))return json({error:'Stripe test non configuré'},503);
+    const form=new URLSearchParams({product:products[plan],currency:'eur',unit_amount:String(amount),'recurring[interval]':'month'});
+    const response=await fetch('https://api.stripe.com/v1/prices',{method:'POST',headers:{Authorization:'Bearer '+secret,'Content-Type':'application/x-www-form-urlencoded'},body:form});
+    const price=await response.json();if(!response.ok||!price.id)return json({error:'Création du prix Stripe impossible'},502);
+    const {error}=await db.from('subscription_plan_prices').upsert({plan,monthly_eur_cents:amount,stripe_test_price_id:price.id,updated_by:uid,updated_at:new Date().toISOString()},{onConflict:'plan'});if(error)throw error;
+    return json({ok:true,plan,monthlyEurCents:amount,priceId:price.id});
+  }
   if(action==='checkout'||action==='portal'){
    const secret=Deno.env.get('STRIPE_SECRET_KEY');if(!secret||!secret.startsWith('sk_test_'))return json({error:'Paiement test non configuré sur le serveur'},503);
    const stripe=async(path:string,form:URLSearchParams)=>{const r=await fetch('https://api.stripe.com/v1/'+path,{method:'POST',headers:{Authorization:'Bearer '+secret,'Content-Type':'application/x-www-form-urlencoded'},body:form});const v=await r.json();if(!r.ok)throw Error(v.error?.message||'Stripe error');return v};
@@ -226,7 +241,8 @@ Deno.serve(async(req)=>{
    let customer=existing?.stripe_customer_id;
    if(!customer){const f=new URLSearchParams({description:'Entre les lignes account', 'metadata[firebase_uid]':uid});if(typeof payload.email==='string')f.set('email',payload.email);const created=await stripe('customers',f);customer=created.id;const {error}=await db.from('firebase_billing').upsert({firebase_uid:uid,stripe_customer_id:customer},{onConflict:'firebase_uid'});if(error)throw error}
    if(action==='portal'){const result=await stripe('billing_portal/sessions',new URLSearchParams({customer,return_url:'https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/le-cercle.html'}));return json({url:result.url})}
-   const price=prices[body.plan];if(!price)return json({error:'Unknown plan'},400);const {data:billing,error:billingError}=await db.from('firebase_billing').select('status,stripe_subscription_id').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;if(billing?.stripe_subscription_id&&['active','trialing','past_due','unpaid','incomplete','paused'].includes(billing.status))return json({error:'Un abonnement existe déjà. Utilise « Gérer mon abonnement » pour éviter une double souscription.'},409);
+   const {data:configuredPrice,error:priceError}=await db.from('subscription_plan_prices').select('stripe_test_price_id').eq('plan',String(body.plan||'')).maybeSingle();if(priceError)throw priceError;
+   const price=configuredPrice?.stripe_test_price_id;if(!price)return json({error:'Formule inconnue'},400);const {data:billing,error:billingError}=await db.from('firebase_billing').select('status,stripe_subscription_id').eq('firebase_uid',uid).maybeSingle();if(billingError)throw billingError;if(billing?.stripe_subscription_id&&['active','trialing','past_due','unpaid','incomplete','paused'].includes(billing.status))return json({error:'Un abonnement existe déjà. Utilise « Gérer mon abonnement » pour éviter une double souscription.'},409);
    const f=new URLSearchParams({mode:'subscription',customer,'line_items[0][price]':price,'line_items[0][quantity]':'1',success_url:'https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/le-cercle.html?checkout=success',cancel_url:'https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/le-cercle.html?checkout=cancel','client_reference_id':uid,'subscription_data[metadata][firebase_uid]':uid,'allow_promotion_codes':'true'});
    const session=await stripe('checkout/sessions',f);return json({url:session.url});
   }
