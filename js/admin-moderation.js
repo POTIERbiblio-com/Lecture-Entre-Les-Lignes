@@ -7,7 +7,7 @@ const app=getApps()[0]||initializeApp(config),auth=getAuth(app),db=getFirestore(
 const url='https://cezgcoaokwuobipwfffa.supabase.co',supabase=createClient(url,'sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3',{auth:{persistSession:false,autoRefreshToken:false}});
 const allowed=['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'];
 const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let books=[],moderation=new Map(),privateFiles=new Map();
+let books=[],moderation=new Map(),privateFiles=new Map(),featured=new Map();
 async function api(action,params={}){
  const user=auth.currentUser;if(!user)throw Error('Connexion requise');
  const res=await fetch(url+'/functions/v1/secure-account',{method:'POST',headers:{Authorization:'Bearer '+await user.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,...params})});
@@ -30,6 +30,9 @@ async function load(){
  moderation=new Map((m.data||[]).map(x=>[x.book_id,x]));
  const privateIndex=await api('catalogue-private-index');
  privateFiles=new Map((privateIndex.files||[]).map(x=>[x.book_id,x]));
+ const selected=await supabase.from('catalogue_featured').select('book_id,homepage,bestseller,editors_choice,purple_heart');
+ if(selected.error)throw selected.error;
+ featured=new Map((selected.data||[]).map(x=>[x.book_id,x]));
  render();
 }
 async function change(book,patch){
@@ -41,13 +44,19 @@ async function change(book,patch){
 }
 function card(b){
  const rule=moderation.get(b.id)||{hidden:false,deleted:false,access_level:0};
+ const choice=featured.get(b.id)||{};
  const c=document.createElement('article');c.className='am-book';
  const safeCover=/^(?:images\/|livres\/|Entre_les_lignes_)[^?#]+\.(?:jpg|jpeg|png|webp)$/i.test(b.cover)?b.cover:'';
  c.innerHTML='<div class="am-cover">'+(safeCover?'<img src="'+safe(safeCover)+'" alt="Couverture de '+safe(b.title)+'" loading="lazy">':'<span aria-hidden="true">📚</span>')+'</div>'
  +'<div class="am-book-body"><p class="am-source">'+safe(b.source)+'</p><h2>'+safe(b.title)+'</h2><p>'+safe(b.author)+'</p><p class="am-current">'+(rule.deleted?'Retiré du catalogue':rule.hidden?'Masqué':rule.access_level?'🔒 '+(['Libre','Orange · Découverte','Jaune · Passion','Rouge · Illimité'][rule.access_level]):'Visible · gratuit')+'</p>'
  +'<label>Accès<select class="am-tier"><option value="0">Libre / gratuit</option><option value="1">🟠 Orange · Découverte · niveau 1</option><option value="2">🟡 Jaune · Passion · niveau 2</option><option value="3">🔴 Rouge · Illimité · niveau 3</option></select></label>'
  +'<div class="am-actions"><button type="button" class="am-save">Enregistrer le cadenas</button><button type="button" class="am-hide">'+(rule.hidden?'Réafficher':'Masquer')+'</button><button type="button" class="am-delete">'+(rule.deleted?'Restaurer':'Supprimer du catalogue')+'</button></div>'
- +'<section class="am-private-upload"><p><strong>PDF privé :</strong> '+(privateFiles.get(b.id)?.rights_attested?'Fichier enregistré avec déclaration de droits':'Non disponible dans le stockage privé')+'</p>'
+ +'<section class="am-private-upload"><p><strong>Éditorial :</strong> choisir les mises en avant visibles sur l’accueil</p>'
+ +'<label><input type="checkbox" data-feature="homepage" '+(choice.homepage?'checked':'')+'> Mettre en avant en accueil</label>'
+ +'<label><input type="checkbox" data-feature="bestseller" '+(choice.bestseller?'checked':'')+'> Best-seller (sélection éditoriale)</label>'
+ +'<label><input type="checkbox" data-feature="editors_choice" '+(choice.editors_choice?'checked':'')+'> Sélection Entre les lignes</label>'
+ +'<label><input type="checkbox" data-feature="purple_heart" '+(choice.purple_heart?'checked':'')+'> Cœur violet 💜</label>'
+ +'<button type="button" class="am-feature-save">Enregistrer la sélection</button>'<p><strong>PDF privé :</strong> '+(privateFiles.get(b.id)?.rights_attested?'Fichier enregistré avec déclaration de droits':'Non disponible dans le stockage privé')+'</p>'
  +'<label>Fichier PDF autorisé <input type="file" class="am-pdf-file" accept="application/pdf,.pdf"></label>'
  +'<label><input type="checkbox" class="am-pdf-license"> Je confirme détenir les droits permettant de diffuser ce PDF aux abonnés.</label>'
  +'<button type="button" class="am-pdf-upload">Déposer dans le stockage privé</button><p class="am-pdf-status" role="status"></p></section></div>';
@@ -59,6 +68,7 @@ function card(b){
   if(!rule.deleted&&!confirm('Attention : supprimer « '+b.title+' » du catalogue le rendra invisible aux lecteurs. Les PDF et fichiers hébergés ne seront pas effacés. Confirmer ?'))return;
   act(e.currentTarget,{deleted:!rule.deleted});
  };
+ c.querySelector('.am-feature-save').onclick=async()=>{const btn=c.querySelector('.am-feature-save');btn.disabled=true;try{const flags={};for(const x of c.querySelectorAll('[data-feature]'))flags[x.dataset.feature]=x.checked;await api('catalogue-featured',{bookId:b.id,homepage:flags.homepage,bestseller:flags.bestseller,editorsChoice:flags.editors_choice,purpleHeart:flags.purple_heart});featured.set(b.id,{book_id:b.id,...flags});btn.textContent='Sélection enregistrée ✓';}catch(e){btn.textContent='Erreur : '+e.message}finally{btn.disabled=false}};
  const uploadButton=c.querySelector('.am-pdf-upload');
  uploadButton.onclick=async()=>{
   const file=c.querySelector('.am-pdf-file').files?.[0],consent=c.querySelector('.am-pdf-license').checked,feedback=c.querySelector('.am-pdf-status');
