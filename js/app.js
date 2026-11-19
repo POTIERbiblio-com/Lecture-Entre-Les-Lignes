@@ -3303,13 +3303,57 @@ function ensureBookSheet(b){let sheet=state.notes.find(n=>n.book===b.id&&n.kind=
 function currentParams(){return new URLSearchParams(typeof previewAsset==='function'?location.hash.slice(1):location.search);}
 function jumpToHighlight(b,h){return siteHref('lire.html?id='+encodeURIComponent(b.id)+'&pdfpage='+Number(h.pageNumber||1)+'&highlight='+encodeURIComponent(h.id));}
 function traceMarkup(h){const b=state.books.find(x=>x.id===h.book);if(!b)return '';return '<article class="saved-fragment" style="--fragment-color:'+esc(h.color)+'"><header>'+smallCover(b)+'<div><a href="'+bookLink(b)+'">'+esc(b.title)+'</a><p>'+esc(h.page|| (h.pageNumber?'Page '+h.pageNumber:''))+' · '+esc(legend()[h.color]||'Passage choisi')+'</p></div></header><blockquote>'+esc(h.quote)+'</blockquote>'+(h.annotation?'<p class="fragment-note">'+esc(h.annotation)+'</p>':'')+'<div class="trace-actions"><a href="'+jumpToHighlight(b,h)+'">Revenir au passage ↗</a><button type="button" data-remove-highlight="'+esc(h.id)+'" class="text-button">Retirer</button></div></article>';}
-function renderHighlights(){const el=$('highlights');if(!el)return;const terms=searchTerms($('highlight-search')?.value||'');const color=$('highlight-color')?.value||'';const book=$('highlight-book')?.value||'';let items=state.highlights.filter(h=>{const b=state.books.find(b=>b.id===h.book);return (el.dataset.mode!=='annotations'||h.annotation)&&(!book||h.book===book)&&(!color||h.color===color)&&terms.every(t=>searchTerms((b?.title||'')+' '+(b?.author||'')).join(' ').includes(t));});items.sort((a,b)=>($('highlight-order')?.value==='color'?(legend()[a.color]||'').localeCompare(legend()[b.color]||'','fr'):(state.books.find(x=>x.id===a.book)?.title||'').localeCompare(state.books.find(x=>x.id===b.book)?.title||'','fr'))||(a.pageNumber||0)-(b.pageNumber||0));el.innerHTML=items.map(traceMarkup).join('')||'<p class="empty">Aucun passage pour ces filtres.</p>';if($('highlight-count'))$('highlight-count').textContent=items.length+' passage'+(items.length>1?'s':'');el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
+function renderHighlights(){
+ const el=$('highlights');if(!el)return;
+ const value=id=>{const input=$(id);return input&&!input.disabled?input.value:'';};
+ const terms=searchTerms(value('highlight-search')),color=value('highlight-color'),book=value('highlight-book'),author=value('highlight-author'),page=value('highlight-page');
+ const byId=new Map(state.books.map(item=>[item.id,item]));
+ const items=state.highlights.filter(mark=>{
+  const record=byId.get(mark.book);
+  return record&&(el.dataset.mode!=='annotations'||mark.annotation)&&(!book||mark.book===book)&&(!color||mark.color===color)
+   &&(!author||record.author===author)&&(!page||Number(mark.pageNumber||1)===Number(page))
+   &&terms.every(term=>searchTerms(record.title+' '+(record.author||'')).join(' ').includes(term));
+ });
+ const order=value('highlight-order');
+ const key=mark=>order==='color'?(legend()[mark.color]||''):order==='author'?(byId.get(mark.book)?.author||''):(byId.get(mark.book)?.title||'');
+ const pageOf=mark=>Number(mark.pageNumber||1);
+ items.sort((a,b)=>order==='page'?pageOf(a)-pageOf(b):key(a).localeCompare(key(b),'fr')||pageOf(a)-pageOf(b));
+ el.innerHTML=items.map(traceMarkup).join('')||'<p class="empty">Aucun passage pour ces filtres.</p>';if($('highlight-count'))$('highlight-count').textContent=items.length+' passage'+(items.length>1?'s':'');el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
 function renderNotes(){const el=$('notes');if(!el)return;const term=searchTerms($('notes-search')?.value||'');let notes=state.notes.filter(n=>n.kind===el.dataset.kind&&term.every(t=>searchTerms((state.books.find(b=>b.id===n.book)?.title||'')+' '+n.title).join(' ').includes(t)));el.innerHTML=notes.map(n=>{const b=state.books.find(b=>b.id===n.book);if(!b)return '';const traces=n.auto?state.highlights.filter(h=>h.book===b.id):[];return '<article class="reading-sheet"><header>'+smallCover(b)+'<div><p class="artist-kicker">'+(n.auto?'Fiche du livre':'Page du carnet')+'</p><h2>'+esc(n.title)+'</h2><a href="'+bookLink(b)+'">'+esc(b.title)+' ↗</a><p>'+esc(n.page?'Page / chapitre '+n.page:'')+'</p></div><img class="sheet-sticker" src="'+esc(assetHref('images/objets/fiches.svg'))+'" alt=""></header>'+(n.passage?'<blockquote class="sheet-quotation"><strong>Passage marquant</strong><p>'+esc(n.passage)+'</p></blockquote>':'')+(n.body?'<p class="pre-wrap">'+esc(n.body)+'</p>':'')+(traces.length?'<details><summary>'+traces.length+' passage'+(traces.length>1?'s':'')+' de ce livre ↘</summary>'+traces.map(traceMarkup).join('')+'</details>':'')+'<div class="trace-actions"><button type="button" data-edit-note="'+esc(n.id)+'">Continuer ma fiche</button>'+(n.auto?'':'<button type="button" class="text-button" data-delete-note="'+esc(n.id)+'">Retirer</button>')+'</div></article>';}).join('')||'<p class="empty">Les fiches créées pendant ta lecture se rangeront ici, avec la couverture du livre.</p>';el.querySelectorAll('[data-edit-note]').forEach(btn=>btn.onclick=()=>{const n=state.notes.find(n=>n.id===btn.dataset.editNote);chooseBook(n.book,n);$('note-body').focus();});el.querySelectorAll('[data-delete-note]').forEach(btn=>btn.onclick=async()=>{state.notes=state.notes.filter(n=>n.id!==btn.dataset.deleteNote);await save();renderNotes();});el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderNotes();});}
 function selects(){if(!$('book-select'))return;if($('book-title-search')){$('book-title-search').oninput=()=>{const terms=searchTerms($('book-title-search').value);$('book-select').value='';const found=terms.length?state.books.filter(b=>terms.every(t=>searchTerms(b.title+' '+b.author).join(' ').includes(t))):[];$('book-search-results').innerHTML=found.slice(0,8).map(b=>'<button type="button" data-choose-book="'+esc(b.id)+'">'+smallCover(b)+'<span>'+esc(b.title)+'<small>'+esc(b.author)+'</small></span></button>').join('')||(terms.length?'<p>Aucun livre trouvé.</p>':'');$('book-search-results').querySelectorAll('[data-choose-book]').forEach(btn=>btn.onclick=()=>chooseBook(btn.dataset.chooseBook));};const requested=currentParams().get('livre');if(requested)chooseBook(requested);}else{$('book-select').innerHTML=state.books.map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');}}
 function premiumPreview(title,plans){
  return '<details class="premium-preview"><summary>'+esc(title)+'</summary><p>Disponible avec '+esc(plans)+'.</p><a class="btn secondary" href="'+siteHref('le-cercle.html#comparatif')+'">Comparer les formules ↗</a></details>';
 }
-function bindTraceFilters(){if(readerLevel<2){for(const id of ['highlight-book','highlight-color','highlight-order']){const field=$(id);if(field){field.disabled=true;if(id==='highlight-order')field.parentElement.insertAdjacentHTML('beforeend',premiumPreview('🔒 Tri par livre ou couleur','Passion et Illimité'));}}}if($('highlight-order'))$('highlight-order').onchange=renderHighlights;if($('highlight-book')){$('highlight-book').innerHTML='<option value="">Tous les livres</option>'+state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');$('highlight-book').onchange=renderHighlights;}if($('highlight-color')){$('highlight-color').innerHTML='<option value="">Toutes les couleurs</option>'+Object.entries(legend()).map(([color,label])=>'<option value="'+color+'">'+esc(label)+'</option>').join('');$('highlight-color').onchange=renderHighlights;}if($('highlight-search'))$('highlight-search').oninput=renderHighlights;if($('notes-search'))$('notes-search').oninput=renderNotes;}
+function bindTraceFilters(){
+ const order=$('highlight-order');
+ if(!order)return;
+ const filters=[['highlight-search',1],['highlight-book',1],['highlight-author',2],['highlight-color',2],['highlight-page',3]];
+ const enabled=[];
+ for(const [id,level] of filters){
+  const field=$(id);if(!field)continue;
+  if(readerLevel<level){field.disabled=true;field.parentElement.insertAdjacentHTML('beforeend',premiumPreview('🔒 '+field.labels[0].textContent,level===1?'Découverte, Passion et Illimité':level===2?'Passion et Illimité':'Illimité'));continue;}
+  enabled.push(field);
+  field.addEventListener('input',()=>{
+   const limit=readerLevel===1?1:readerLevel===2?2:Infinity;
+   const active=enabled.filter(other=>other!==field&&other.value);
+   if(field.value&&active.length>=limit){
+    active[0].value='';
+    const status=$('highlight-filter-status');
+    if(status)status.textContent='Le filtre précédent a été retiré · maximum '+limit+' filtre'+(limit===1?'':'s')+' avec ta formule.';
+   }
+   renderHighlights();
+  });
+ }
+ const fill=(id,options)=>{const select=$(id);if(select)select.append(...options.map(([value,label])=>new Option(label,value)));};
+ fill('highlight-book',state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>[b.id,b.title]));
+ fill('highlight-author',[...new Set(state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>b.author).filter(Boolean))].sort().map(author=>[author,author]));
+ fill('highlight-color',Object.entries(legend()));
+ for(const option of order.options)option.disabled=readerLevel<({book:1,author:2,color:2,page:3}[option.value]||1);
+ order.disabled=readerLevel<1;
+ order.onchange=renderHighlights;
+ const feedback=document.createElement('p');feedback.id='highlight-filter-status';feedback.setAttribute('role','status');order.parentElement.append(feedback);
+}
+
 const NOTE_FIELDS = ['title','page','body','passage'];
 
 function noteFormValues() {
@@ -3561,14 +3605,15 @@ async function startBookReader(book) {
     </div>
     <div class="reader-palette">
      <span class="palette-title">Couleur</span>
-     <div class="reader-pencils" role="group" aria-label="Couleur du surligneur">${Object.entries(legend()).map(([color,label])=>`<button type="button" class="pencil" style="--pencil:${color}" data-pencil="${color}" title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${color===currentColor}"></button>`).join('')}</div>
-     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur <input id="new-pencil" type="color" value="#ec849e"></label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('🔒 Ajouter des couleurs','Découverte, Passion et Illimité')}
+     <div class="reader-pencils" role="group" aria-label="Couleur du surligneur">${Object.entries(legend()).slice(0,readerLevel===0?6:readerLevel===1?8:readerLevel===2?10:Infinity).map(([color,label])=>`<button type="button" class="pencil" style="--pencil:${color}" data-pencil="${color}" title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${color===currentColor}"></button>`).join('')}</div>
+     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur ${readerLevel===3?'<input id="new-pencil" type="color" value="#ec849e">':'<select id="new-pencil"><option value="#ec849e">Rose framboise</option><option value="#8dc4ae">Vert menthe</option><option value="#a689c6">Violet</option><option value="#70b9d1">Bleu lagon</option><option value="#e2a56f">Abricot</option><option value="#d5ba69">Moutarde</option></select>'}</label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('🔒 Ajouter des couleurs','Découverte, Passion et Illimité')}
     </div>
     <div class="reader-actions"><button type="button" id="save-selection" disabled>Surligner la sélection</button></div>
    </div>
   </div>
   <p class="reader-help" id="reader-help-extra"></p>
   <div class="pdf-scroll" id="pdf-scroll"><div class="pdf-paper" id="pdf-paper"><canvas id="pdf-canvas"></canvas><div class="pdf-ink" id="pdf-ink" aria-hidden="true"></div><div class="textLayer" id="pdf-text-layer"></div></div></div>
+  <div class="reader-exports">${readerLevel>=2?'<button class="btn secondary" type="button" data-annotated-export="pdf">Exporter le PDF annoté</button> <button class="btn secondary" type="button" data-annotated-export="docx">Exporter en Word</button>':premiumPreview('🔒 Exporter le livre avec tes surlignages','Passion et Illimité')}</div>
   <div id="page-traces" class="page-traces"></div>
   <div class="reader-bottom">
    <section class="reader-sheet" id="reader-sheet"><div class="reader-note-heading"><img src="${esc(assetHref('images/objets/fiches.svg'))}" alt=""><h2>Ma fiche de lecture</h2></div>
@@ -3576,7 +3621,7 @@ async function startBookReader(book) {
     <label for="reader-sheet-passage">Passage marquant</label><textarea id="reader-sheet-passage" maxlength="10000" placeholder="Recopie le passage ou ajoute-le depuis un surlignage.">${esc(sheet.passage||'')}</textarea>
     <label for="reader-sheet-text">Mes notes</label><textarea id="reader-sheet-text" placeholder="Pourquoi ce passage compte pour moi…">${esc(sheet.body||'')}</textarea><button class="btn" id="save-reader-sheet" type="button">Enregistrer la fiche</button> <a href="${esc(siteHref('fiches.html?livre='+encodeURIComponent(book.id)))}">Retrouver mes fiches de lecture ↗</a></section>
    <section class="reader-comment"><div class="reader-note-heading"><img src="${esc(assetHref('images/objets/annotation.svg'))}" alt=""><h2>Mon passage choisi</h2></div><p class="reader-passage-book">${esc(book.title)}</p><p id="chosen-excerpt">Choisis un surlignage pour ajouter une note.</p><label for="reader-annotation">Mon annotation</label><textarea id="reader-annotation" disabled placeholder="Pourquoi ce passage compte pour moi…"></textarea><div class="reader-excerpt-actions"><button class="btn" id="save-reader-passage" type="button" disabled>Enregistrer le passage</button><button id="copy-to-sheet" type="button" hidden>Ajouter à ma fiche</button><button id="remove-current-highlight" class="text-button" type="button" hidden>Enlever le surlignage</button></div>
-    <details><summary>Personnaliser mes légendes de couleurs ↘</summary>${Object.entries(legend()).map(([color,label],i)=>`<label class="legend-edit" style="--pencil:${color}" for="legend-${i}"><span class="legend-dot"></span><input id="legend-${i}" data-legend-color="${color}" value="${esc(label)}" maxlength="60" aria-label="Légende de couleur ${i+1}"></label>`).join('')}</details>
+    <details id="reader-legends"><summary>Légendes des couleurs ↘</summary>${readerLevel?'':premiumPreview('🔒 Modifier les légendes','Découverte, Passion et Illimité')}${Object.entries(legend()).map(([color,label],i)=>`<label class="legend-edit" style="--pencil:${color}" for="legend-${i}"><span class="legend-dot"></span><input id="legend-${i}" data-legend-color="${color}" ${readerLevel?'':'disabled'} value="${esc(label)}" maxlength="60" aria-label="Légende de couleur ${i+1}"></label>`).join('')}</details>
    </section>
   </div>
  </section>`;
@@ -3596,6 +3641,23 @@ async function startBookReader(book) {
  const saveSelection = $('save-selection'), areaButton = $('area-mode');
  const textButton = $('text-mode'), eraser = $('erase-mode'), undo = $('undo-mark'), copyToSheet = $('copy-to-sheet');
  const pencils = Array.from(host.querySelectorAll('[data-pencil]'));
+ host.querySelectorAll('[data-annotated-export]').forEach(button=>button.onclick=async()=>{
+  if(!pdf){status('Ouvre un PDF avant de lancer un export.',true);return;}
+  const buttons=Array.from(host.querySelectorAll('[data-annotated-export]'));buttons.forEach(item=>item.disabled=true);
+  try{
+   const {exportAnnotated}=await import('./annotated-export.js');
+   const marks=structuredClone(state.highlights.filter(mark=>mark.book===book.id));
+   const format=button.dataset.annotatedExport;
+   const result=await exportAnnotated(pdf,marks,format,message=>status(message));
+   const {requestService}=await import('./request-service.js');
+   await requestService('reserve-annotated-export',{bookId:book.accessBookId||book.id});
+   const url=URL.createObjectURL(result),link=document.createElement('a');
+   link.href=url;link.download=book.title.replace(/[\\/:*?"<>|]/g,'-')+' - surlignages.'+format;
+   link.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
+   status('Export annoté prêt.');
+  }catch(error){status(error.message,true);}
+  finally{buttons.forEach(item=>item.disabled=false);}
+ });
 
  function status(text, error = false) {
   if (events.signal.aborted) return;
@@ -3737,7 +3799,7 @@ async function startBookReader(book) {
  pencils.forEach(bindPencil);
  if($('add-pencil'))$('add-pencil').onclick=async()=>{
   const button=$('add-pencil');
-  const color=$('new-pencil').value.toLowerCase(),colors=legend(),limit=readerLevel===1?10:readerLevel===2?20:Infinity;
+  const color=$('new-pencil').value.toLowerCase(),colors=legend(),limit=readerLevel===1?8:readerLevel===2?10:Infinity;
   if(Object.hasOwn(colors,color)){status('Cette couleur est déjà dans ta palette.',true);return;}
   if(Object.keys(colors).length>=limit){status('Ta palette a atteint '+limit+' couleurs.',true);return;}
   const previous=state.legend;
@@ -3752,6 +3814,12 @@ async function startBookReader(book) {
    host.querySelector('.reader-pencils').append(pencil);
    pencils.push(pencil);
    bindPencil(pencil);currentColor=color;paintPencils();
+   const legends=$('reader-legends');
+   const label=document.createElement('label');
+   label.className='legend-edit';label.style.setProperty('--pencil',color);
+   const dot=document.createElement('span');dot.className='legend-dot';
+   const input=document.createElement('input');input.dataset.legendColor=color;input.value=legend()[color];input.maxLength=60;input.setAttribute('aria-label','Légende de la nouvelle couleur');
+   label.append(dot,input);legends.append(label);bindLegend(input);legends.open=true;input.focus();input.select();
    status('Couleur enregistrée dans ton espace.');
   }catch(error){state.legend=previous;status(error.message,true);}
   finally{button.disabled=false;}
@@ -3918,15 +3986,16 @@ async function startBookReader(book) {
   saveSheet();
   passage.focus();
  };
- host.querySelectorAll('[data-legend-color]').forEach(input => input.onchange = async () => {
-  state.legend = {...legend(),[input.dataset.legendColor]:input.value.trim() || LEGEND_DEFAULT[input.dataset.legendColor]};
+ function bindLegend(input){input.onchange = async () => {
+  state.legend = {...legend(),[input.dataset.legendColor]:input.value.trim() || legend()[input.dataset.legendColor] || 'Couleur personnalisée'};
   pencils.forEach(button => {
    button.title = legend()[button.dataset.pencil];
    button.setAttribute('aria-label',button.title);
   });
   paintPencils();
   await persist();
- });
+ };}
+ host.querySelectorAll('[data-legend-color]').forEach(bindLegend);
 
  async function showPage(number) {
   currentPage = Math.max(1,Math.min(pdf.numPages,Math.floor(Number(number) || 1)));
@@ -4450,18 +4519,25 @@ $('book-form').onsubmit = async event => {
 }
 
 if($('book-detail')){$('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();if(b)showDownloadCount(b);}
-document.querySelectorAll('[data-count-download]').forEach(link=>link.addEventListener('click',async()=>{
+document.querySelectorAll('[data-count-download]').forEach(link=>link.addEventListener('click',async event=>{
  if(typeof previewAsset==='function')return;
+ event.preventDefault();
+ if(link.dataset.pending)return;
+ if(!ellUser){location.assign(siteHref('connexion-firebase.html'));return;}
+ link.dataset.pending='true';
  try{
-  const response=await fetch(ELL_URL+'/functions/v1/secure-account',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'record-public-download',bookId:link.dataset.countDownload})});
-  if(response.ok&&b)await showDownloadCount(b);
- }catch(error){console.warn(error);}
+  const {requestService}=await import('./request-service.js');
+  await requestService('record-public-download',{bookId:link.dataset.countDownload});
+  const download=document.createElement('a');download.href=link.href;download.download=link.download;download.click();
+  if(b)await showDownloadCount(b);
+ }catch(error){alert(error.message);}
+ finally{delete link.dataset.pending;}
 }));
 document.querySelectorAll('[data-private-download]').forEach(button=>button.onclick=async()=>{
   button.disabled=true;
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
-    location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true,publicAccess:button.dataset.publicDownload==='true'}));
+    location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true,publicAccess:false}));
     if(b)void showDownloadCount(b);
   }catch(error){alert(error.message);}
   finally{button.disabled=false;}

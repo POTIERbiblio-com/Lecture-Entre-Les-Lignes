@@ -14,9 +14,11 @@ function render(account=auth.currentUser){
  const matches=records.filter(record=>(filter==='all'||decisionOf(record)===filter)&&[record.title,record.author,record.requester_email].join(' ').toLocaleLowerCase('fr').includes(term));
  if($('admin-sort').value==='title')matches.sort((a,b)=>a.title.localeCompare(b.title,'fr'));
  if($('admin-sort').value==='oldest')matches.reverse();
+ matches.sort((a,b)=>Number(b.boosted)-Number(a.boosted));
  result.replaceChildren();
  for(const record of matches){
   const card=requestCard(record,{admin:true,account}), workflow=record.review_workflow||{};
+  if(record.boosted){const badge=document.createElement('p');badge.className='status decision-queued';badge.textContent='↑ Proposition prioritaire';card.prepend(badge);}
   if(['accepted','queued'].includes(workflow.decision)){
    const publish=document.createElement('a');
    publish.className='btn';publish.textContent='Préparer la publication ↗';

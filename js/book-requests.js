@@ -2,7 +2,20 @@ import {auth,onAccount,requestService,uploadAttachment,requestCard} from './requ
 
 const $=id=>document.getElementById(id);
 const form=$('request-form'), status=$('request-status'), list=$('my-requests');
+async function refreshPriority(account){
+ const info=$('request-priority-info'),check=$('request-boost');
+ if(!info||!check)return;
+ check.disabled=true;check.checked=false;
+ if(!account)return;
+ try{
+  const {remaining,automatic}=await requestService('requests-priority-status',{},account);
+  if(auth.currentUser?.uid!==account.uid)return;
+  check.checked=automatic;check.disabled=automatic||remaining===0;
+  info.textContent=automatic?'Illimité · toutes tes propositions sont automatiquement prioritaires.':remaining+' crédit'+(remaining===1?'':'s')+' de priorité ce mois-ci.';
+ }catch(error){info.textContent=error.message;}
+}
 async function refresh(account){
+  void refreshPriority(account);
   list.textContent='Chargement de tes propositions…';
   try{
     const {requests}=await requestService('requests-list',{},account);
@@ -37,7 +50,7 @@ form.onsubmit=async event=>{
     status.textContent=cover.size||pdf.size?'Envoi des pièces jointes…':'Enregistrement…';
     const [coverPath,pdfPath]=await Promise.all([uploadAttachment(cover,'cover',account),uploadAttachment(pdf,'pdf',account)]);
     status.textContent='Enregistrement…';
-    await requestService('requests-create',{data,coverPath,pdfPath,pdfName:pdf.name},account);
+    await requestService('requests-create',{data,coverPath,pdfPath,pdfName:pdf.name,boost:$('request-boost')?.checked===true},account);
     if(auth.currentUser?.uid!==account.uid)return;
     form.reset();
     status.textContent='Proposition enregistrée.';
