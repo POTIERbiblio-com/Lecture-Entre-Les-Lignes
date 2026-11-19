@@ -10,7 +10,7 @@ function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.
 const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]]};
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let db,state,objects=[];const id=new URLSearchParams(location.search).get('id')||$('book-detail')?.dataset.bookId||$('reader-content')?.dataset.bookId;
+let db,state,objects=[];let id=new URLSearchParams(location.search).get('id')||$('book-detail')?.dataset.bookId||$('reader-content')?.dataset.bookId;
 const LIVRES_INITIAUX=[
 {"id":"liv0131","privatePdf":true,"title":"Plus haut que mes rêves","author":"Nicolas Hulot","genre":"vie-et-societe","summary":"Récit personnel dans lequel Nicolas Hulot revient sur son parcours, ses engagements et les liens entre expériences de vie, nature et écologie.","presentation":"Récit personnel dans lequel Nicolas Hulot revient sur son parcours, ses engagements et les liens entre expériences de vie, nature et écologie.","cover":"images/couvertures/liv0131.jpg","pdfPages":259,"chapters":[{"title":"1. EN REGARDANT LES MARÉES","page":4,"summary":"Cette section aborde « 1. EN REGARDANT LES MARÉES ». Les pages correspondantes développent notamment les thèmes de campagne, village, toutes, ainsi que aurait, années. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"2. MA MAISON EST LE MONDE","page":87,"summary":"Cette section aborde « 2. MA MAISON EST LE MONDE ». Les pages correspondantes développent notamment les thèmes de jamais, maison, appris, ainsi que années, peut-être. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"3. USHUAÏA, L’EXTRÊME","page":125,"summary":"Cette section aborde « 3. USHUAÏA, L’EXTRÊME ». Les pages correspondantes développent notamment les thèmes de ushuaïa, émission, jamais, ainsi que aventure, moment. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"4. J’AI VU…","page":217,"summary":"Cette section aborde « 4. J’AI VU… ». Les pages correspondantes développent notamment les thèmes de nature, planète, aujourd, ainsi que autres, beauté. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"5. UNE COMMUNAUTÉ DE CŒUR ET D’ESPRIT","page":234,"summary":"Cette section aborde « 5. UNE COMMUNAUTÉ DE CŒUR ET D’ESPRIT ». Les pages correspondantes développent notamment les thèmes de fondation, quelques, théodore, ainsi que encore, parfois. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"6. L’ESSENTIEL","page":252,"summary":"Cette section aborde « 6. L’ESSENTIEL ». Les pages correspondantes développent notamment les thèmes de enfants, planète, souvent, ainsi que beauté, lorsque. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."}]},
 {"id":"liv0132","privatePdf":true,"title":"Les survivants de l’Atlantide","author":"Albert Slosman","genre":"fiction","summary":"Récit d’Albert Slosman qui développe une interprétation légendaire des survivants de l’Atlantide et de leurs liens supposés avec l’Égypte ancienne ; ses affirmations historiques ne constituent pas un consensus scientifique.","presentation":"Récit d’Albert Slosman qui développe une interprétation légendaire des survivants de l’Atlantide et de leurs liens supposés avec l’Égypte ancienne ; ses affirmations historiques ne constituent pas un consensus scientifique.","cover":"images/couvertures/liv0132.jpg","pdfPages":289,"chapters":[{"title":"LES PORTES DE L’ÉTRANGE - Collection dirigée par Francis Mazière","page":4,"summary":"Cette section aborde « LES PORTES DE L’ÉTRANGE - Collection dirigée par Francis Mazière ». Les pages correspondantes développent notamment les thèmes de mouvement, platon, trouve, ainsi que centre, fausse. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"... EN GUISE DE PROLÉGOMÈNE","page":5,"summary":"Cette section aborde « ... EN GUISE DE PROLÉGOMÈNE ». Les pages correspondantes développent notamment les thèmes de egypte, atlantide, mouvement, ainsi que platon, trouve. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"Introduction","page":7,"summary":"Cette section aborde « Introduction ». Les pages correspondantes développent notamment les thèmes de furent, egypte, rescapés, ainsi que sirius, cataclysme. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE PREMIER - TA MANA ! (Lieu-du-soleil-couchant)","page":28,"summary":"Cette section aborde « Chapitre PREMIER - TA MANA ! (Lieu-du-soleil-couchant) ». Les pages correspondantes développent notamment les thèmes de avaient, rescapés, premier, ainsi que toutes, nouvelle. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE DEUXIÈME - LA VIE REPREND","page":47,"summary":"Cette section aborde « Chapitre DEUXIÈME - LA VIE REPREND ». Les pages correspondantes développent notamment les thèmes de encore, étaient, survivants, ainsi que soleil, durant. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE TROISIÈME - OUSIR-LE-RESSUSCITE","page":64,"summary":"Cette section aborde « Chapitre TROISIÈME - OUSIR-LE-RESSUSCITE ». Les pages correspondantes développent notamment les thèmes de nek-bet, encore, pontife, ainsi que devait, toutes. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE QUATRIÈME - HORUS-LE-PUR","page":81,"summary":"Cette section aborde « Chapitre QUATRIÈME - HORUS-LE-PUR ». Les pages correspondantes développent notamment les thèmes de autres, protection, chacun, ainsi que peuple, toujours. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE CINQUIÈME - L’ALLIANCE AVEC DIEU","page":99,"summary":"Cette section aborde « Chapitre CINQUIÈME - L’ALLIANCE AVEC DIEU ». Les pages correspondantes développent notamment les thèmes de pontife, épouse, soleil, ainsi que serait, enseignement. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE SIXIÈME - LA PARABOLIQUE DES NOMBRES","page":114,"summary":"Cette section aborde « Chapitre SIXIÈME - LA PARABOLIQUE DES NOMBRES ». Les pages correspondantes développent notamment les thèmes de soleil, pontife, nouveau, ainsi que ancêtres, dynastie. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE SEPTIÈME - LES RA-SIT-OU (Les rebelles de Sit-Soleil)","page":132,"summary":"Cette section aborde « Chapitre SEPTIÈME - LES RA-SIT-OU (Les rebelles de Sit-Soleil) ». Les pages correspondantes développent notamment les thèmes de soleil, rebelles, arrière, ainsi que encore, pourtant. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE HUITIÈME - « TA OUZ » (La « Demeure » d’Ousir)","page":149,"summary":"Cette section aborde « Chapitre HUITIÈME - « TA OUZ » (La « Demeure » d’Ousir) ». Les pages correspondantes développent notamment les thèmes de avaient, étaient, cuivre, ainsi que premières, ouvertes. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE NEUVIÈME - LE GRAND DEUIL","page":165,"summary":"Cette section aborde « Chapitre NEUVIÈME - LE GRAND DEUIL ». Les pages correspondantes développent notamment les thèmes de encore, soleil, premier, ainsi que anepou, avaient. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE DIXIÈME - « LES FORGERONS D’HORUS » (Les masnitiou-hor)","page":179,"summary":"Cette section aborde « Chapitre DIXIÈME - « LES FORGERONS D’HORUS » (Les masnitiou-hor) ». Les pages correspondantes développent notamment les thèmes de forgerons, pêr-ahâ, hor-ou-tit, ainsi que conseil, hommes. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE ONZIÈME - LE « SA-AHA-RA » (La terre « Brûlée-par-le-Soleil-Ancien »)","page":194,"summary":"Cette section aborde « Chapitre ONZIÈME - LE « SA-AHA-RA » (La terre « Brûlée-par-le-Soleil-Ancien ») ». Les pages correspondantes développent notamment les thèmes de serait, pontife, familles, ainsi que endroit, méri-net. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE DOUZIÈME - LES TREPANEURS (L’école des « serk-kers », les « ouvreurs-de-crânes ! »)","page":211,"summary":"Cette section aborde « Chapitre DOUZIÈME - LES TREPANEURS (L’école des « serk-kers », les « ouvreurs-de-crânes ! ») ». Les pages correspondantes développent notamment les thèmes de encore, étaient, anepou-sen, ainsi que autres, outils. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE TREIZIÈME - CHRONOLOGIE DES « QUATRE TEMPS »","page":229,"summary":"Cette section aborde « Chapitre TREIZIÈME - CHRONOLOGIE DES « QUATRE TEMPS » ». Les pages correspondantes développent notamment les thèmes de dynasties, royales, annales, ainsi que manéthon, celles. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"CHAPITRE QUATORZIÈME - L’ERE DES GEMEAUX (... ou la lutte prédynastique des « Deux Frères »)","page":247,"summary":"Cette section aborde « Chapitre QUATORZIÈME - L’ERE DES GEMEAUX (... ou la lutte prédynastique des « Deux Frères ») ». Les pages correspondantes développent notamment les thèmes de durant, soleil, dynastie, ainsi que premiers, siècles. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"NOTE A : A PROPOS DU TIMÉE DE PLATON.","page":265,"summary":"Cette section aborde « NOTE A : A PROPOS DU TIMÉE DE PLATON ». Les pages correspondantes développent notamment les thèmes de platon, sicile, lettres, ainsi que philosophe, république. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"NOTE B : SUR L’ANTIQUITÉ DU ZODIAQUE DE DENDÉRAH","page":267,"summary":"Cette section aborde « NOTE B : SUR L’ANTIQUITÉ DU ZODIAQUE DE DENDÉRAH ». Les pages correspondantes développent notamment les thèmes de dendérah, afrique, histoire, ainsi que solaire, secondes. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"Achevé de numériser","page":283,"summary":"Cette section aborde « Achevé de numériser ». Les pages correspondantes développent notamment les thèmes de chapitre, édition, numérique, ainsi que société, support. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."},{"title":"Quatrième de couverture","page":286,"summary":"Cette section aborde « Quatrième de couverture ». Les pages correspondantes développent notamment les thèmes de z-library, gateway, knowledge, ainsi que culture, accessible. Ce repérage thématique sert de guide de lecture ; il ne prétend pas restituer tous les arguments de la section."}]},
@@ -1170,10 +1170,9 @@ function renderBooks() {
   const terms = searchTerms($('search')?.value || '');
   const favorites=window.ELLCollections?.read().favorites||[];
   const items = state.books.filter(book => {
-    if(book.id==='liv0127'&&!genre&&!el.dataset.sub&&state.books.some(candidate=>candidate.id==='liv0139'))return false;
     if (genre && book.genre !== genre) return false;
     if (subgenre && String(book.sub) !== subgenre) return false;
-    if ($('search-favorites')?.checked && !favorites.includes(book.id) && !(book.id==='liv0139'&&favorites.includes('liv0127'))) return false;
+    if ($('search-favorites')?.checked && !favorites.some(favorite=>(catalogueAliases.get(favorite)||favorite)===book.id)) return false;
     if ($('search-year')?.value && bookYear(book)!==$('search-year').value) return false;
     if ($('pdf-only')?.checked && !book.pdfPath && !book.pdf && !book.privatePdf && !book.accessLevel) return false;
     if (!terms.length) return true;
@@ -1239,7 +1238,7 @@ function bookFileActions(book, meta) {
   if(book.accessLevel>readerLevel)return bookSubscriptionOffer(book);
   if(book.accessLevel||book.privatePdf){
     const read='lire.html?id='+encodeURIComponent(book.id)+'#reader-content';
-    return '<div class="book-file-actions">'+lockBadge(book)+' <a class="btn" href="'+read+'">Ouvrir le lecteur</a> <button class="btn" type="button" data-private-download="'+esc(book.accessBookId||book.id)+'">Télécharger le PDF</button></div>';
+    return '<div class="book-file-actions">'+lockBadge(book)+' <a class="btn" href="'+read+'">Ouvrir le lecteur</a> <button class="btn" type="button" data-private-download="'+esc(book.accessBookId||book.id)+'" data-public-download="'+String(!book.accessLevel)+'">Télécharger le PDF</button></div>';
   }
   const pdf = meta.pdf || meta.pdfPath;
   const readLabel = pdf ? 'Lire le PDF ici' : 'Ouvrir le texte';
@@ -3981,26 +3980,46 @@ function pdfAddress(b){if(b.pdf)return b.pdf;if(location.protocol==='file:'&&typ
 
 /* Catalogue partagé : fiches GitHub validées et fiches publiées par l'atelier Firebase. */
 
+const catalogueAliases=new Map();
+function catalogueIdentity(book){
+ const title=searchTerms(String(book.title||'').split(/[:：]/)[0]).join(' ');
+ const author=searchTerms(String(book.author||'')).join(' ');
+ return title&&author?title+'|'+author:book.id;
+}
+function mergeCatalogueDuplicates(rules){
+ const groups=new Map();
+ for(const book of state.books){
+  const key=catalogueIdentity(book);
+  if(!groups.has(key))groups.set(key,[]);
+  groups.get(key).push(book);
+ }
+ const selected=[];
+ for(const group of groups.values()){
+  const rows=group.map(book=>({book,rule:rules.get(book.id)||rules.get('db-'+book.externalCatalogId)}));
+  if(rows.some(({rule})=>rule?.deleted||rule?.hidden))continue;
+  rows.sort((a,b)=>Number(b.rule?.access_level||0)-Number(a.rule?.access_level||0)
+   ||Number(Boolean(b.book.pdfPath||b.book.pdf))-Number(Boolean(a.book.pdfPath||a.book.pdf)));
+  const {book,rule}=rows[0];
+  for(const {book:other} of rows.slice(1)){
+   catalogueAliases.set(other.id,book.id);
+   if(!book.cover&&other.cover)book.cover=other.cover;
+  }
+  book.accessLevel=Number(rule?.access_level||0);
+  book.accessBookId=rule?.book_id||book.id;
+  if(book.accessLevel){delete book.pdf;delete book.pdfPath;}
+  // Only the inventory, rather than the presence of a catalogue entry, confirms a PDF.
+  if(book.pdfPath||book.pdf)book.privatePdf=false;
+  selected.push(book);
+ }
+ state.books=selected;
+ id=catalogueAliases.get(id)||id;
+}
 async function applyCatalogueAccess(){
-  if(location.protocol==='file:')return;
-  try{
-    const {catalogueRules}=await import('./catalogue-access.js');
-    const rules=await catalogueRules();
-    const byTitle=new Map();
-    const titleKey=book=>searchTerms(book.title).join(' ')+'|'+searchTerms(book.author||'').join(' ');
-    for(const b of state.books){
-      const rule=rules.get(b.id)||rules.get('db-'+b.externalCatalogId);
-      if(rule)byTitle.set(titleKey(b),rule);
-    }
-    state.books=state.books.filter(b=>{
-      const rule=rules.get(b.id)||rules.get('db-'+b.externalCatalogId)||byTitle.get(titleKey(b));
-      if(rule?.hidden||rule?.deleted)return false;
-      b.accessLevel=Number(rule?.access_level||0);
-      b.accessBookId=rule?.book_id||b.id;
-      if(b.accessLevel){delete b.pdf;delete b.pdfPath;}
-      return true;
-    });
-  }catch(error){console.warn(error);}
+ if(location.protocol==='file:')return;
+ try{
+  const {catalogueRules}=await import('./catalogue-access.js');
+  mergeCatalogueDuplicates(await catalogueRules());
+ }catch(error){console.warn(error);}
 }
 async function applyCatalogueSuppressions(){
  if(location.protocol==='file:')return;
@@ -4188,10 +4207,11 @@ if(b&&(b.accessLevel||b.privatePdf)&&$('reader-content')){
   if(b.accessLevel>readerLevel){$('reader-content').innerHTML=bookSubscriptionOffer(b);return;}
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
-    b={...b,pdf:await cataloguePdf(b.accessBookId||b.id)};
+    b={...b,pdf:await cataloguePdf(b.accessBookId||b.id,{publicAccess:!b.accessLevel})};
   }catch(error){
     const reader=$('reader-content');
     reader.replaceChildren(document.createTextNode(error.message+' '));
+    if(!b.accessLevel)return;
     const link=document.createElement('a');
     link.href=ellUser?'le-cercle.html':'connexion-firebase.html';
     link.textContent=ellUser?'Voir les abonnements':'Se connecter';
@@ -4315,7 +4335,7 @@ document.querySelectorAll('[data-private-download]').forEach(button=>button.oncl
   button.disabled=true;
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
-    location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true}));
+    location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true,publicAccess:button.dataset.publicDownload==='true'}));
   }catch(error){alert(error.message);}
   finally{button.disabled=false;}
 });
