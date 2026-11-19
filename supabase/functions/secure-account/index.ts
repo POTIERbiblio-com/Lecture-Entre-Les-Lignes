@@ -118,6 +118,12 @@ Deno.serve(async(req)=>{
   }
 
   // Paid PDF access only for files attested and held in private Supabase storage.
+  if(action==='catalogue-private-index'){
+    if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
+    const {data,error}=await db.from('catalogue_private_files').select('book_id,rights_attested,updated_at').limit(1000);
+    if(error)throw error;
+    return json({files:data??[]});
+  }
   if(action==='catalogue-pdf-upload'){
     if(!isAdmin)return json({error:'Accès administrateur refusé'},403);
     const bookId=String(body.bookId||'');
