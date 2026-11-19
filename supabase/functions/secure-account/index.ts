@@ -36,6 +36,13 @@ Deno.serve(async(req)=>{
    if(action==='read'){const {data,error}=await db.from(table).select('data').eq('firebase_uid',uid).maybeSingle();if(error)throw error;return json({data:data?.data??null})}
    if(!body.data||typeof body.data!=='object'||Array.isArray(body.data)||JSON.stringify(body.data).length>500000)return json({error:'Invalid data'},400);
    // Le carnet personnel de base doit être accessible à tous les comptes, même gratuits.
+   if(body.kind==='carnet'){
+     const access=await entitlement();
+     const palette=body.data.legend&&typeof body.data.legend==='object'&&!Array.isArray(body.data.legend)?body.data.legend:{};
+     const colors=Object.keys(palette),maxColors=access.level===3?200:access.level===2?20:access.level===1?10:6;
+     if(colors.length>maxColors)return json({error:'Ta formule permet '+maxColors+' couleurs personnalisées maximum'},403);
+     if(colors.some(color=>!/^#[0-9a-fA-F]{6}$/.test(color)))return json({error:'Code couleur invalide'},400);
+   }
    if(body.kind==='collections'){
      const boards=body.data.boards;
      if(!Array.isArray(boards)||boards.length>500)return json({error:'Listes invalides'},400);
