@@ -7,7 +7,7 @@ const app=getApps()[0]||initializeApp(config),auth=getAuth(app),db=getFirestore(
 const url='https://cezgcoaokwuobipwfffa.supabase.co',supabase=createClient(url,'sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3',{auth:{persistSession:false,autoRefreshToken:false}});
 const allowed=['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'];
 const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let books=[],moderation=new Map();
+let books=[],moderation=new Map(),privateFiles=new Map();
 async function api(action,params={}){
  const user=auth.currentUser;if(!user)throw Error('Connexion requise');
  const res=await fetch(url+'/functions/v1/secure-account',{method:'POST',headers:{Authorization:'Bearer '+await user.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,...params})});
@@ -28,6 +28,8 @@ async function load(){
  const m=await supabase.from('catalogue_moderation').select('book_id,hidden,deleted,access_level');
  if(m.error)throw m.error;
  moderation=new Map((m.data||[]).map(x=>[x.book_id,x]));
+ const privateIndex=await api('catalogue-private-index');
+ privateFiles=new Map((privateIndex.files||[]).map(x=>[x.book_id,x]));
  render();
 }
 async function change(book,patch){
@@ -42,9 +44,13 @@ function card(b){
  const c=document.createElement('article');c.className='am-book';
  const safeCover=/^(?:images\/|livres\/|Entre_les_lignes_)[^?#]+\.(?:jpg|jpeg|png|webp)$/i.test(b.cover)?b.cover:'';
  c.innerHTML='<div class="am-cover">'+(safeCover?'<img src="'+safe(safeCover)+'" alt="Couverture de '+safe(b.title)+'" loading="lazy">':'<span aria-hidden="true">📚</span>')+'</div>'
- +'<div class="am-book-body"><p class="am-source">'+safe(b.source)+'</p><h2>'+safe(b.title)+'</h2><p>'+safe(b.author)+'</p><p class="am-current">'+(rule.deleted?'Retiré du catalogue':rule.hidden?'Masqué':rule.access_level?'🔒 Niveau '+rule.access_level:'Visible · gratuit')+'</p>'
- +'<label>Accès<select class="am-tier"><option value="0">Libre / gratuit</option><option value="1">🔒 Découverte · niveau 1</option><option value="2">🔒 Passion · niveau 2</option><option value="3">🔒 Illimité · niveau 3</option></select></label>'
- +'<div class="am-actions"><button type="button" class="am-save">Enregistrer le cadenas</button><button type="button" class="am-hide">'+(rule.hidden?'Réafficher':'Masquer')+'</button><button type="button" class="am-delete">'+(rule.deleted?'Restaurer':'Supprimer du catalogue')+'</button></div></div>';
+ +'<div class="am-book-body"><p class="am-source">'+safe(b.source)+'</p><h2>'+safe(b.title)+'</h2><p>'+safe(b.author)+'</p><p class="am-current">'+(rule.deleted?'Retiré du catalogue':rule.hidden?'Masqué':rule.access_level?'🔒 '+(['Libre','Orange · Découverte','Jaune · Passion','Rouge · Illimité'][rule.access_level]):'Visible · gratuit')+'</p>'
+ +'<label>Accès<select class="am-tier"><option value="0">Libre / gratuit</option><option value="1">🟠 Orange · Découverte · niveau 1</option><option value="2">🟡 Jaune · Passion · niveau 2</option><option value="3">🔴 Rouge · Illimité · niveau 3</option></select></label>'
+ +'<div class="am-actions"><button type="button" class="am-save">Enregistrer le cadenas</button><button type="button" class="am-hide">'+(rule.hidden?'Réafficher':'Masquer')+'</button><button type="button" class="am-delete">'+(rule.deleted?'Restaurer':'Supprimer du catalogue')+'</button></div>'
+ +'<section class="am-private-upload"><p><strong>PDF privé :</strong> '+(privateFiles.get(b.id)?.rights_attested?'Fichier enregistré avec déclaration de droits':'Non disponible dans le stockage privé')+'</p>'
+ +'<label>Fichier PDF autorisé <input type="file" class="am-pdf-file" accept="application/pdf,.pdf"></label>'
+ +'<label><input type="checkbox" class="am-pdf-license"> Je confirme détenir les droits permettant de diffuser ce PDF aux abonnés.</label>'
+ +'<button type="button" class="am-pdf-upload">Déposer dans le stockage privé</button><p class="am-pdf-status" role="status"></p></section></div>';
  const tier=c.querySelector('.am-tier');tier.value=String(rule.access_level||0);
  const act=async (button,patch)=>{button.disabled=true;try{await change(b,patch);}catch(e){$('am-status').textContent='Échec : '+e.message;button.disabled=false;}};
  c.querySelector('.am-save').onclick=e=>act(e.currentTarget,{access_level:Number(tier.value)});
@@ -52,6 +58,24 @@ function card(b){
  c.querySelector('.am-delete').onclick=e=>{
   if(!rule.deleted&&!confirm('Attention : supprimer « '+b.title+' » du catalogue le rendra invisible aux lecteurs. Les PDF et fichiers hébergés ne seront pas effacés. Confirmer ?'))return;
   act(e.currentTarget,{deleted:!rule.deleted});
+ };
+ const uploadButton=c.querySelector('.am-pdf-upload');
+ uploadButton.onclick=async()=>{
+  const file=c.querySelector('.am-pdf-file').files?.[0],consent=c.querySelector('.am-pdf-license').checked,feedback=c.querySelector('.am-pdf-status');
+  if(!file||!file.name.toLowerCase().endsWith('.pdf')||file.size<5||file.size>20*1024*1024){feedback.textContent='Choisis un PDF valide de 20 Mo maximum.';return;}
+  if(!consent){feedback.textContent='Attestation des droits de diffusion obligatoire.';return;}
+  const head=new Uint8Array(await file.slice(0,5).arrayBuffer());
+  if(String.fromCharCode(...head)!=='%PDF-'){feedback.textContent='Ce fichier ne commence pas par une signature PDF valide.';return;}
+  uploadButton.disabled=true;feedback.textContent='Transfert du PDF vers le stockage privé…';
+  try{
+   const {path,token}=await api('catalogue-pdf-upload',{bookId:b.id});
+   const {error}=await supabase.storage.from('book-pdfs').uploadToSignedUrl(path,token,file,{contentType:'application/pdf'});
+   if(error)throw error;
+   await api('catalogue-pdf-activate',{bookId:b.id,path,rightsAttested:true});
+   privateFiles.set(b.id,{book_id:b.id,rights_attested:true});
+   feedback.textContent='PDF déposé et enregistré. Attention : toute copie déjà publiée sur GitHub reste accessible tant qu’elle n’a pas été retirée.';
+  }catch(e){feedback.textContent='Échec du transfert : '+(e.message||String(e));}
+  finally{uploadButton.disabled=false;}
  };
  return c;
 }
