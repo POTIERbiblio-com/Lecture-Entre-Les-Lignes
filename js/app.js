@@ -1261,6 +1261,50 @@ function renderBooks() {
 }
 function selects(){if($('book-select')){$('book-select').innerHTML=state.books.map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');if(!state.books.length){$('book-select').innerHTML='<option value="">Ajoute un livre avant de commencer</option>';}}}
 function subOptions(){if($('sub'))$('sub').innerHTML=GENRES[$('genre').value][1].map((s,i)=>'<option value="'+i+'">'+esc(s)+'</option>').join('');}
+function bindReadingSearch(){
+ const form=$('reading-search-form');
+ if(!form)return;
+ const output=$('reading-search-results'), summary=$('reading-search-status');
+ if(!carnetLoaded){summary.textContent='Ton carnet n’a pas pu être chargé. Actualise la page pour réessayer.';return;}
+ const books=new Map(state.books.map(book=>[book.id,book]));
+ const findBook=id=>books.get(id)||books.get(catalogueAliases.get(id));
+ const entries=[
+  ...state.notes.map(note=>({book:findBook(note.book),title:note.title,body:note.body,page:note.page,type:note.kind==='fiches'?'Fiche de lecture':note.kind==='journaux'?'Journal':'Note'})),
+  ...state.highlights.flatMap(mark=>[
+   {book:findBook(mark.book),body:mark.quote,page:mark.pageNumber||mark.page,type:'Surlignage',mark},
+   {book:findBook(mark.book),body:mark.annotation,page:mark.pageNumber||mark.page,type:'Annotation',mark}
+  ])
+ ].filter(item=>item.book&&(item.title||item.body)).map(item=>({...item,words:searchTerms([item.title,item.body,item.book.title,item.book.author].filter(Boolean).join(' ')).join(' ')}));
+ function search(){
+  if(ellFirebaseAuth?.currentUser?.uid!==ellUser?.id){output.replaceChildren();return;}
+  const terms=searchTerms($('reading-search-query').value);
+  const type=$('reading-search-type').value;
+  if(!terms.length){
+   output.replaceChildren();
+   summary.textContent='Saisis un mot ou une expression pour chercher dans ton carnet.';
+   return;
+  }
+  const matches=entries.filter(item=>(!type||item.type===type)&&terms.every(term=>item.words.includes(term)));
+  summary.textContent=matches.length?matches.length+' résultat'+(matches.length>1?'s':'')+(matches.length>50?' · 50 affichés. Affine la recherche pour voir les autres.':''):'Aucun résultat pour cette recherche.';
+  output.innerHTML=matches.slice(0,50).map(item=>{
+   const page=String(item.page??'').trim(), pageNumber=page.match(/^(?:page\\s+)?([1-9]\\d*)$/i)?.[1];
+   const href=item.mark?jumpToHighlight(item.book,item.mark):pageNumber?siteHref('lire.html?id='+encodeURIComponent(item.book.id)+'&pdfpage='+pageNumber):bookLink(item.book);
+   const excerpt=String(item.body??'').trim();
+   const position=excerpt.search(/[^\\s]/);
+   const words=searchTerms(excerpt);
+   let offset=0;
+   const rawWords=[...excerpt.matchAll(/[\\p{L}\\p{N}]+/gu)];
+   const match=words.findIndex(word=>terms.some(term=>word.includes(term)));
+   if(match>=0)offset=Math.max(0,(rawWords[match]?.index??0)-65);
+   const snippet=(offset?'…':'')+excerpt.slice(offset,offset+250)+(excerpt.length>offset+250?'…':'');
+   return '<article class="saved-fragment"><p class="artist-kicker">'+esc(item.type)+(page?' · '+esc(pageNumber?'Page '+pageNumber:page):'')+'</p><h3>'+esc(item.title||item.book.title)+'</h3>'+(item.title?'<p>'+esc(item.book.title)+'</p>':'')+(snippet?'<blockquote>'+esc(snippet)+'</blockquote>':'')+'<a class="btn secondary" href="'+esc(href)+'">'+(item.mark?'Revenir au passage':pageNumber?'Ouvrir à cette page':'Voir le livre')+'</a></article>';
+  }).join('');
+ }
+ form.hidden=false;
+ form.onsubmit=event=>{event.preventDefault();search();};
+ $('reading-search-type').onchange=search;
+ search();
+}
 function renderHighlights(){let el=$('highlights');if(!el)return;let items=state.highlights.filter(h=>el.dataset.mode!=='annotations'||h.annotation);el.innerHTML=items.map(h=>{let b=state.books.find(b=>b.id===h.book);return '<article class="panel"><a href="'+bookLink(b||{id:h.book})+'">'+esc(b?.title||'Livre supprimé')+'</a><p>'+esc(h.page)+'</p><blockquote style="border-left:6px solid '+esc(h.color)+';padding:12px">'+esc(h.quote)+'</blockquote><p>'+esc(h.annotation)+'</p><button data-remove-highlight="'+esc(h.id)+'">Supprimer</button></article>';}).join('')||'<p class="empty">Aucun passage enregistré pour le moment.</p>';el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{if(!confirm('Supprimer ce passage ?'))return;state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
 function renderNotes(){let el=$('notes');if(!el)return;el.innerHTML=state.notes.filter(n=>n.kind===el.dataset.kind).map(n=>{let b=state.books.find(b=>b.id===n.book);return '<article class="panel"><h2>'+esc(n.title)+'</h2><a href="'+bookLink(b||{id:n.book})+'">'+esc(b?.title||'Livre')+'</a> · '+esc(n.page)+'<p style="white-space:pre-wrap">'+esc(n.body)+'</p><button data-edit-note="'+esc(n.id)+'">Modifier</button><button data-delete-note="'+esc(n.id)+'">Supprimer</button></article>';}).join('')||'<p class="empty">Ton carnet est prêt pour ta première note.</p>';el.querySelectorAll('[data-edit-note]').forEach(btn=>btn.onclick=()=>{let n=state.notes.find(n=>n.id===btn.dataset.editNote);$('note-form').dataset.edit=n.id;$('book-select').value=n.book;$('note-title').value=n.title;$('note-page').value=n.page;$('note-body').value=n.body;$('note-title').focus();});el.querySelectorAll('[data-delete-note]').forEach(btn=>btn.onclick=async()=>{if(!confirm('Supprimer cette note ?'))return;state.notes=state.notes.filter(n=>n.id!==btn.dataset.deleteNote);await save();renderNotes();});}
 function renderQuestions(){if(!$('questions'))return;$('questions').innerHTML=state.questions.map(q=>'<article class="panel"><p>'+esc(state.books.find(b=>b.id===q.book)?.title)+'</p><h2>'+esc(q.question)+'</h2><label>Ma réponse</label><textarea aria-label="Ma réponse à la question"></textarea><details><summary>Comparer avec ma réponse attendue</summary><p>'+esc(q.answer)+'</p></details><button data-remove-question="'+esc(q.id)+'">Supprimer la question</button></article>').join('');$('questions').querySelectorAll('[data-remove-question]').forEach(btn=>btn.onclick=async()=>{if(!confirm('Supprimer cette question ?'))return;state.questions=state.questions.filter(q=>q.id!==btn.dataset.removeQuestion);await save();renderQuestions();});}
@@ -3536,7 +3580,7 @@ async function connectService(){
   editorialAdmin=account?.emailVerified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(account.email?.toLowerCase());
   catalogueManager=account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
   service={user:ellUser?.id||null,admin:false};
-  if(account&&($('reader-content')||$('highlights')||$('book-detail'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
+  if(account&&($('reader-content')||$('highlights')||$('book-detail')||$('reading-search'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
   return service;
  }catch(error){console.error('Connexion indisponible',error);return null;}
 }
@@ -4349,11 +4393,16 @@ async function loadEditorialCatalogue(){
 }
 
 async function start(){try{await connectService();
-const privatePages=new Set(['mon-espace.html','surlignages.html','annotations.html','fiches.html','journaux.html','profil.html','sauvegardes.html','tests.html']);
+const privatePages=new Set(['mon-espace.html','recherche-lectures.html','surlignages.html','annotations.html','fiches.html','journaux.html','profil.html','sauvegardes.html','tests.html']);
 const currentPage=location.pathname.split('/').pop().toLowerCase();
 if(privatePages.has(currentPage)&&!ellUser){
  const main=$('contenu')||document.querySelector('main');
  if(main){main.innerHTML='<section class="account-login-gate" style="max-width:800px;margin:3rem auto;padding:2rem;text-align:center"><img src="images/carnet-illustre/carnet-studieux.jpg" alt="Carnet de lecture illustré" style="width:100%;max-height:250px;object-fit:cover;border-radius:22px"><h1>Bienvenue dans ton carnet ♡</h1><p>Un espace rien qu’à toi pour tes lectures, annotations, fiches et journaux. Connecte-toi pour retrouver tes souvenirs de lecture.</p><div id="account-status" style="text-align:left"></div></section>';showAccount();}
+ return;
+}
+if($('reading-search')&&readerLevel<2){
+ $('reading-search-status').textContent='Recherche dans tout le carnet réservée à Passion et Illimité.';
+ $('reading-search-offer').hidden=false;
  return;
 }
 try{db=await openDB();state=await load();}catch(storageError){state=blank();db=null;let warning=document.createElement('p');warning.className='note';warning.textContent='Le catalogue et ses PDF restent consultables. Le stockage de ce navigateur est indisponible : les nouveaux avis et notes ne pourront pas être conservés.';$('contenu').prepend(warning);}
@@ -4386,6 +4435,7 @@ if(!document.querySelector('link[href*="plan-locks.css"]')){
 if($('reader-content')||$('highlights')){const css=document.createElement('link');css.rel='stylesheet';css.href=siteHref('css/reader-interactions.css');document.head.append(css);}
 addGenreCounts();
 if(remoteCarnet&&ellUser)restoreCarnet(remoteCarnet);
+bindReadingSearch();
 if(db)await writeLocalState(null);
 if(!document.body.isConnected)return;
 applyDesign();
