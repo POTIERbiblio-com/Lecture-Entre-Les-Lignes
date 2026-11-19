@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Publier un livre · Entre les lignes</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/admin-editorial.css"></head>
+<body class="atelier-page">
+<header class="site-header"><a class="brand" href="index.html">Entre les lignes<span>.</span></a><nav class="site-nav"><a href="mes-livres.html">Chercher un livre</a><a href="admin-catalogue.html#catalogue-access-admin">Gérer les livres</a><a href="connexion-firebase.html">Mon compte</a></nav></header>
+<main class="ae-shell">
+<div class="ae-heading"><div><h1>Publier un livre</h1><p>La fiche, la couverture et le PDF apparaîtront dans le rayon choisi et dans « Chercher un livre ».</p></div><img src="images/carnet-illustre/carnet-studieux.jpg" alt=""></div>
+<p id="publication-message" role="status" class="ae-status">Vérification du compte…</p>
+<form id="publication-form" hidden>
+<fieldset class="panel"><legend>Identité du livre</legend>
+<label>Titre <input name="title" required maxlength="180"></label>
+<label>Auteur <input name="author" required maxlength="150"></label>
+<label>Genre <select name="genre" required></select></label>
+<label>Sous-genre <select name="sub" required></select></label>
+<label>Éditeur <input name="edition-publisher" maxlength="250"></label>
+<label>Année de cette édition <input name="edition-year" maxlength="250"></label>
+<label>Titre original <input name="edition-original" maxlength="250"></label>
+<label>ISBN <input name="edition-isbn" maxlength="250"></label>
+<label>Type d’ouvrage <input name="edition-kind" maxlength="250"></label>
+<label>Langue <input name="edition-language" maxlength="250"></label>
+<label>Collection <input name="edition-collection" maxlength="250"></label>
+<label>Nombre de pages <input name="edition-pages" maxlength="250"></label>
+<label>Autres contributeurs <input name="edition-contributors" maxlength="250"></label>
+<label>Note sur l’édition <input name="edition-note" maxlength="250"></label>
+<label>Présentation <textarea name="presentation" maxlength="5000" rows="4"></textarea></label>
+<label>Résumé du livre <textarea name="summary" maxlength="10000" rows="6"></textarea></label>
+</fieldset>
+<fieldset class="panel"><legend>Résumé chapitre par chapitre</legend><div id="publication-chapters"></div><button type="button" id="add-chapter" class="btn secondary">Ajouter un chapitre</button></fieldset>
+<fieldset class="panel"><legend>Avis externes</legend>
+<label>Lien vers la source <input name="reviewUrl" type="url" maxlength="2000" placeholder="https://"></label>
+<label>Note sur 5 <input name="rating" type="number" min="0" max="5" step="0.01"></label>
+<label>Nombre d’évaluations <input name="ratingCount" type="number" min="1" step="1"></label>
+<label>Nombre de commentaires <input name="comments" type="number" min="0" step="1"></label>
+</fieldset>
+<fieldset class="panel"><legend>Fichiers et accès</legend>
+<label>Couverture <input name="cover" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+<label>Livre au format PDF <input name="pdf" type="file" accept="application/pdf,.pdf" required></label>
+<label>Accès <select name="level"><option value="0">Gratuit · compte connecté</option><option value="1">Jaune · Découverte</option><option value="2">Orange · Passion</option><option value="3">Rouge · Illimité</option></select></label>
+<label><input name="rights" type="checkbox" required> J’ai les droits nécessaires pour diffuser le PDF et la couverture.</label>
+</fieldset>
+<button type="submit" class="btn">Publier dans le catalogue</button>
+</form>
+<template id="chapter-template"><fieldset><legend>Chapitre</legend><label>Titre <input name="chapter-title" required maxlength="180"></label><label>Page PDF <input name="chapter-page" type="number" min="1" step="1"></label><label>Résumé <textarea name="chapter-summary" required maxlength="5000" rows="4"></textarea></label><button type="button" class="btn secondary">Retirer le chapitre</button></fieldset></template>
+</main><script type="module" src="js/publication-livre.js"></script></body></html>

@@ -1,4 +1,4 @@
-const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null,ellFirebaseAuth=null;
+const ELL_URL='https://cezgcoaokwuobipwfffa.supabase.co',ELL_KEY='sb_publishable_rT-YdocnvHDGqRpwF1Zvkg_EGs_bjj3';let ell=null,ellUser=null,ellFirebaseAuth=null,editorialAdmin=false;
 async function ellConnect(){if(!ell){const m=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');ell=m.createClient(ELL_URL,ELL_KEY);}return ell;}
 async function ellPrivate(action,data){if(!ellFirebaseAuth?.currentUser)throw Error('Connexion Firebase requise.');const response=await fetch('https://cezgcoa nkoka.supabase.co/functions/v1/secure-account'.replace('cezgcoa nkoka','cezgcoaokwuobipwfffa'),{method:'POST',headers:{Authorization:'Bearer '+await ellFirebaseAuth.currentUser.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({action,kind:'carnet',data})});const result=await response.json();if(!response.ok)throw Error(result.error||'Sauvegarde impossible');return result}
 function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};state.design={};state.legend={};for(const b of state.books){b.position='';b.pdfPage=1;}}
@@ -1139,7 +1139,8 @@ function horrorMark(book) {
 const accessLabels=['','Jaune · Découverte','Orange · Passion','Rouge · Illimité'];
 const accessColors=['','#fbec9a','#ffcc9f','#f4a7b0'];
 function lockBadge(book){const level=book.accessLevel;return level?'<span class="book-access" style="background:'+accessColors[level]+';color:#412b35;border-radius:1em;padding:.2em .6em">🔒 '+accessLabels[level]+'</span>':'';}
-function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+lockBadge(b)+''+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
+function editorialControl(book){return siteHref('admin-catalogue.html?livre='+encodeURIComponent(book.accessBookId||book.id)+'#catalogue-access-admin');}
+function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+lockBadge(b)+''+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.privatePdf?'<p class="book-pdf-label">PDF disponible</p>':b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(editorialAdmin?'<a class="btn secondary" href="'+editorialControl(b)+'">Gérer ce livre</a>':'')+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
 function searchTerms(value) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/œ/g, 'oe').replace(/æ/g, 'ae').match(/[\p{L}\p{N}]+/gu) || [];
@@ -3203,7 +3204,7 @@ function bookGuideMarkup(book, guide) {
         <summary><span class="book-chapter-index">${String(index + 1).padStart(2,'0')}</span>
           <strong>${esc(title)}</strong>${page ? `<span class="book-chapter-page">PDF p. ${page}</span>` : ''}</summary>
         <div class="book-chapter-text"><p>${esc(summary)}</p>
-        ${page && book.pdfPath ? `<a href="${esc(siteHref('lire.html?id=' + encodeURIComponent(book.id) + '&pdfpage=' + page + '#reader-content'))}">Lire à cette page ↗</a>` : ''}</div>
+        ${page && (book.pdfPath||book.privatePdf) ? `<a href="${esc(siteHref('lire.html?id=' + encodeURIComponent(book.id) + '&pdfpage=' + page + '#reader-content'))}">Lire à cette page ↗</a>` : ''}</div>
       </details>
     </li>`).join('');
   return `<section class="book-guides" aria-label="Résumés du livre">
@@ -3233,7 +3234,7 @@ function detailMarkup(b){const meta={...b};const guide=Object.hasOwn(READING_GUI
 return '<div class="book-dossier album-book"><header class="album-opening"><div class="album-heading"><p class="album-rayon"><a href="'+siteHref('livres-'+b.genre+'-'+b.sub+'.html')+'">'+esc(GENRES[b.genre]?.[1][b.sub])+' ↗</a></p><h1>'+esc(b.title)+'</h1><p class="album-author">'+esc(b.author)+'</p></div><figure class="album-montage"><img class="album-landscape" src="'+esc(assetHref('images/atelier/'+art[0]))+'" alt=""><img class="album-endpaper" src="'+esc(assetHref('images/collage/papier-fleuri.jpg'))+'" alt=""><div class="album-cover-polaroid">'+smallCover({...b,cover:b.cover||meta.cover})+'<img class="album-cover-flower" src="'+esc(assetHref('images/carnet-illustre/sticker-fleur.svg'))+'" alt=""></div></figure>'+bookFileActions(b,meta)+'</header>'+
 bookPassport(b,meta,guide)+bookGuideMarkup(b,guide)+
 (meta.reviewLinks?.length?'<section class="book-guides"><h2>Critiques et avis externes</h2><ul>'+meta.reviewLinks.filter(url=>typeof url==='string'&&/^https:\/\//.test(url)).map((url,i)=>'<li><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Consulter la source externe '+(i+1)+'</a></li>').join('')+'</ul></section>':'')+
-(adminEnabled?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
+(editorialAdmin?'<p><a class="btn secondary" href="'+editorialControl(b)+'">Gérer ce livre</a></p>':'')+(adminEnabled?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
 (tags.length?'<section class="album-threads"><h2>Les fils du livre</h2><div>'+tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div><img src="'+esc(assetHref('images/objets/annotation.svg'))+'" alt=""></section>':'')+
 '<div class="book-reception-pair">'+externalReception(meta)+localReception(b)+'</div><details class="book-sources"><summary>Les sources et références ↘</summary><ul>'+sources.map(s=>'<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' ↗</a></li>').join('')+(meta.pdfPath?'<li><a data-pdf-link="'+esc(meta.pdfPath)+'" href="'+esc(meta.pdfPath)+'" target="_blank" rel="noopener">PDF fourni · contenu et mentions éditoriales ↗</a></li>':'')+(meta.external?.url?'<li><a href="'+esc(meta.external.url)+'" target="_blank" rel="noopener">Source de la note extérieure ↗</a> · '+esc(meta.external.scope)+'</li>':'')+'</ul></details><nav class="book-dossier-bottom" aria-label="Garder une trace"><a href="'+siteHref('fiches.html?livre='+encodeURIComponent(b.id))+'">'+smallCover(b)+'Ma fiche de lecture ↗</a><a href="'+siteHref('journaux.html?livre='+encodeURIComponent(b.id))+'"><img src="'+esc(assetHref('images/objets/journal.svg'))+'" alt="">Mon journal ↗</a>'+'<a class="book-review-link" href="'+bookLink(b,'avis')+'"><img src="'+esc(assetHref('images/objets/avis.svg'))+'" alt="">Ma critique sur ce livre ↗</a>'+(adminEnabled?'<a href="'+bookLink(b,'ajouter-livre')+'">Modifier la fiche du catalogue ↗</a>':'')+'</nav></div>';
 }
@@ -3380,6 +3381,7 @@ async function connectService(){
   await auth.authStateReady();
   const account=auth.currentUser;
   ellUser=account?{id:account.uid,email:account.email}:null;
+  editorialAdmin=account?.emailVerified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(account.email?.toLowerCase());
   service={user:ellUser?.id||null,admin:false};
   return service;
  }catch(error){console.error('Connexion indisponible',error);return null;}
@@ -3434,6 +3436,7 @@ async function loadServiceState(){
  }
 }
 function lockCatalog(){
+ if($('editorial-publish-link'))$('editorial-publish-link').hidden=!editorialAdmin;
  document.querySelectorAll('a[href*="ajouter-livre.html"],[data-admin-only]').forEach(x=>x.hidden=!adminEnabled);
  if($('book-form')){$('book-form').hidden=!adminEnabled;if($('book-access'))$('book-access').hidden=adminEnabled;}
  if($('admin-access'))$('admin-access').innerHTML=adminEnabled?'<a class="btn" href="admin-catalogue.html">Gérer le catalogue</a>':'<p>Réservé au compte administrateur. <a href="mon-espace.html">Se connecter</a></p>';
@@ -4021,6 +4024,18 @@ async function loadPublicCatalogue(){
  }catch(err){console.warn('Catalogue Firebase indisponible (vérifier les règles Firestore)',err);}
 }
 
+async function loadEditorialCatalogue(){
+ try{
+  const response=await fetch(ELL_URL+'/rest/v1/catalogue_editorial_books?select=id,ficha',{headers:{apikey:ELL_KEY},cache:'no-store'});
+  if(!response.ok)throw Error('Catalogue éditorial indisponible.');
+  const books=await response.json();
+  for(const {id,ficha} of books){
+   if(!GENRES[ficha.genre]?.[1][ficha.sub])continue;
+   state.books.push({...ficha,id,catalogueSource:'editorial'});
+  }
+ }catch(error){console.warn(error);}
+}
+
 async function start(){try{await connectService();
 const privatePages=new Set(['mon-espace.html','surlignages.html','annotations.html','fiches.html','journaux.html','profil.html','sauvegardes.html','tests.html']);
 const currentPage=location.pathname.split('/').pop().toLowerCase();
@@ -4053,7 +4068,7 @@ if(ellUser){
     if(account?.uid!==owner){unsubscribe();ellUser=null;ellClear();document.body.hidden=true;location.reload();}
   });
 }
-await loadPublicCatalogue();
+await Promise.all([loadPublicCatalogue(),loadEditorialCatalogue()]);
 await applyCatalogueSuppressions();
 await applyCatalogueAccess();
 if(remoteCarnet&&ellUser)restoreCarnet(remoteCarnet);

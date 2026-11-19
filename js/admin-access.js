@@ -30,8 +30,15 @@ onAccount(async account=>{
       })()
     ]);
     if(auth.currentUser?.uid!==account.uid)return;
-    rules=access;privateBooks=new Set(index.files.filter(file=>file.rights_attested).map(file=>file.book_id));
-    form.hidden=false;status.textContent='Choisis un identifiant de livre.';
+    rules=access;
+    const select=form.querySelector('datalist');
+    const indexed=new Set(Array.from(select.options,option=>option.value));
+    for(const id of access.keys())if(!indexed.has(id))select.append(new Option(id,id));
+    privateBooks=new Set(index.files.filter(file=>file.rights_attested).map(file=>file.book_id));
+    form.hidden=false;
+    const selected=new URLSearchParams(location.search).get('livre');
+    if(selected&&/^[a-zA-Z0-9_-]{1,120}$/.test(selected)){fields.bookId.value=selected;selectBook();}
+    else status.textContent='Choisis un identifiant de livre.';
   }catch(error){if(auth.currentUser?.uid===account.uid)status.textContent=error.message;}
 });
 form.onsubmit=async event=>{
@@ -48,7 +55,7 @@ form.onsubmit=async event=>{
       await uploadCataloguePdf(bookId,file);
       privateBooks.add(bookId);
     }
-    if(level&&!privateBooks.has(bookId))throw Error('Importe le PDF privé avant d’activer le cadenas.');
+    if(level&&!hidden&&!deleted&&!privateBooks.has(bookId)&&level!==rules.get(bookId)?.access_level)throw Error('Importe le PDF privé avant d’activer le cadenas.');
     await requestService('catalogue-moderate',{bookId,level,hidden,deleted},account);
     rules.set(bookId,{book_id:bookId,access_level:level,hidden,deleted});
     fields.pdf.value='';

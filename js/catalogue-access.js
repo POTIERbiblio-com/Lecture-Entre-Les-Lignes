@@ -14,9 +14,8 @@ export async function cataloguePdf(bookId,{download=false}={}){
   if(signed.origin!==project||!signed.pathname.startsWith('/storage/v1/object/sign/book-pdfs/'))throw Error('Lien de lecture invalide.');
   return signed.href;
 }
-export async function uploadCataloguePdf(bookId,file){
+export async function uploadCataloguePdf(bookId,file,account=auth.currentUser){
   if(!file?.size||await file.slice(0,5).text()!=='%PDF-')throw Error('Sélectionne un PDF valide.');
-  const account=auth.currentUser;
   const {path,token}=await requestService('catalogue-pdf-upload',{bookId},account);
   const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
   const client=createClient(project,publicKey,{auth:{persistSession:false}});
