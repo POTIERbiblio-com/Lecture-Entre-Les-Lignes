@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Accueil · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Entre les lignes · Bibliothèque PDF et carnet de lecture</title>
+<meta name="description" content="Découvre des livres en PDF gratuits. Surligne tes passages préférés, annote tes lectures et retrouve tes fiches dans ton carnet.">
+<meta property="og:type" content="website"><meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Entre les lignes · Bibliothèque PDF et carnet de lecture"><meta property="og:description" content="Découvre des livres en PDF gratuits. Surligne tes passages préférés, annote tes lectures et retrouve tes fiches dans ton carnet.">
+<meta property="og:url" content="https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/index.html"><meta property="og:image" content="https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/images/atelier/livre-paysage.jpg">
+<meta property="og:image:alt" content="Un livre ouvert dans un décor pastel"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
 <link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/carnet-video.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ba7897"><link rel="icon" href="images/niveau-1-accueil/logo/carnet.png" type="image/png"><link rel="stylesheet" href="css/titre-dynapuff.css?v=20261117b"><link rel="stylesheet" href="css/cercle-banners.css"></head>
 <body class="page-accueil atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -34,6 +39,8 @@
     <div class="edition-cover-actions">
       <a class="edition-button" href="mes-livres.html">Chercher un livre <span aria-hidden="true">↗</span></a>
       <a class="edition-text-link" href="genres.html">Parcourir les genres <span aria-hidden="true">↗</span></a>
+      <button type="button" class="btn secondary" id="share-library">Partager la bibliothèque</button>
+      <span id="share-library-status" role="status"></span>
     </div>
   </div>
 </section>
@@ -139,5 +146,15 @@
 <a href="admin.html">Atelier admin</a></div>
 <script type="text/javascript" src="js/app.js?v=ergonomie-20261119">
 </script>
-<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script></body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script>
+const shareLibrary=document.getElementById('share-library');
+shareLibrary?.addEventListener('click',async()=>{
+ const url="https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/index.html";
+ const feedback=document.getElementById('share-library-status');
+ try{
+  if(navigator.share)await navigator.share({title:'Entre les lignes',text:'Des livres en PDF gratuits et ton carnet de lecture.',url});
+  else{await navigator.clipboard.writeText(url);feedback.textContent='Lien copié.';}
+ }catch(error){if(error.name!=='AbortError')feedback.textContent='Copie le lien dans ta barre d’adresse.';}
+});
+</script></body>
 </html>
