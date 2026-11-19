@@ -1143,7 +1143,11 @@ function horrorMark(book) {
 }
 const accessLabels=['','Jaune · Découverte','Orange · Passion','Rouge · Illimité'];
 const accessColors=['','#fbec9a','#ffcc9f','#f4a7b0'];
-function lockBadge(book){const level=book.accessLevel;return level?'<span class="book-access" style="background:'+accessColors[level]+';color:#412b35;border-radius:1em;padding:.2em .6em">🔒 '+accessLabels[level]+'</span>':'';}
+function planLock(level){
+ const plan=['','Découverte','Passion','Illimité'][Number(level)];
+ return plan?'<span class="plan-lock plan-lock-'+Number(level)+'" aria-label="À partir de '+plan+'"><span class="plan-lock-icon" aria-hidden="true"></span>'+plan+'</span>':'';
+}
+function lockBadge(book){return planLock(book.accessLevel);}
 function bookSubscriptionOffer(book){
  const level=Number(book.accessLevel);
  const plans=['','Découverte','Passion','Illimité'];
@@ -1151,7 +1155,7 @@ function bookSubscriptionOffer(book){
  if(!document.querySelector('link[href*="livres-cercle.css"]')){
   const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=siteHref('css/livres-cercle.css');document.head.append(sheet);
  }
- return '<aside class="cercle-book-offer cercle-book-offer-'+level+'"><img src="'+esc(assetHref('images/atelier/revue-ouverte.jpg'))+'" alt=""><div><span class="cercle-book-tier">🔒 '+plans[level]+'</span><h2>Ce livre fait partie du Cercle</h2><p>Retrouve cette lecture dans la formule <strong>'+plans[level]+'</strong>'+(level<3?' et les formules supérieures':'')+'.</p><a class="btn" href="'+siteHref('le-cercle.html#comparatif')+'">Découvrir les formules ↗</a></div></aside>';
+ return '<aside class="cercle-book-offer cercle-book-offer-'+level+'"><img src="'+esc(assetHref('images/atelier/revue-ouverte.jpg'))+'" alt=""><div>'+planLock(level)+'<h2>Ce livre fait partie du Cercle</h2><p>Retrouve cette lecture dans la formule <strong>'+plans[level]+'</strong>'+(level<3?' et les formules supérieures':'')+'.</p><a class="btn" href="'+siteHref('le-cercle.html#comparatif')+'">Découvrir les formules ↗</a></div></aside>';
 }
 function editorialControl(book){return siteHref('admin-catalogue.html?livre='+encodeURIComponent(book.accessBookId||book.id)+'#catalogue-access-admin');}
 function catalogueControls(book){
@@ -3352,8 +3356,8 @@ function renderHighlights(){
  el.innerHTML=items.map(traceMarkup).join('')||'<p class="empty">Aucun passage pour ces filtres.</p>';if($('highlight-count'))$('highlight-count').textContent=items.length+' passage'+(items.length>1?'s':'');el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
 function renderNotes(){const el=$('notes');if(!el)return;const term=searchTerms($('notes-search')?.value||'');let notes=state.notes.filter(n=>n.kind===el.dataset.kind&&term.every(t=>searchTerms((state.books.find(b=>b.id===n.book)?.title||'')+' '+n.title).join(' ').includes(t)));el.innerHTML=notes.map(n=>{const b=state.books.find(b=>b.id===n.book);if(!b)return '';const traces=n.auto?state.highlights.filter(h=>h.book===b.id):[];return '<article class="reading-sheet"><header>'+smallCover(b)+'<div><p class="artist-kicker">'+(n.auto?'Fiche du livre':'Page du carnet')+'</p><h2>'+esc(n.title)+'</h2><a href="'+bookLink(b)+'">'+esc(b.title)+' ↗</a><p>'+esc(n.page?'Page / chapitre '+n.page:'')+'</p></div><img class="sheet-sticker" src="'+esc(assetHref('images/objets/fiches.svg'))+'" alt=""></header>'+(n.passage?'<blockquote class="sheet-quotation"><strong>Passage marquant</strong><p>'+esc(n.passage)+'</p></blockquote>':'')+(n.body?'<p class="pre-wrap">'+esc(n.body)+'</p>':'')+(traces.length?'<details><summary>'+traces.length+' passage'+(traces.length>1?'s':'')+' de ce livre ↘</summary>'+traces.map(traceMarkup).join('')+'</details>':'')+'<div class="trace-actions"><button type="button" data-edit-note="'+esc(n.id)+'">Continuer ma fiche</button>'+(n.auto?'':'<button type="button" class="text-button" data-delete-note="'+esc(n.id)+'">Retirer</button>')+'</div></article>';}).join('')||'<p class="empty">Les fiches créées pendant ta lecture se rangeront ici, avec la couverture du livre.</p>';el.querySelectorAll('[data-edit-note]').forEach(btn=>btn.onclick=()=>{const n=state.notes.find(n=>n.id===btn.dataset.editNote);chooseBook(n.book,n);$('note-body').focus();});el.querySelectorAll('[data-delete-note]').forEach(btn=>btn.onclick=async()=>{state.notes=state.notes.filter(n=>n.id!==btn.dataset.deleteNote);await save();renderNotes();});el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderNotes();});}
 function selects(){if(!$('book-select'))return;if($('book-title-search')){$('book-title-search').oninput=()=>{const terms=searchTerms($('book-title-search').value);$('book-select').value='';const found=terms.length?state.books.filter(b=>terms.every(t=>searchTerms(b.title+' '+b.author).join(' ').includes(t))):[];$('book-search-results').innerHTML=found.slice(0,8).map(b=>'<button type="button" data-choose-book="'+esc(b.id)+'">'+smallCover(b)+'<span>'+esc(b.title)+'<small>'+esc(b.author)+'</small></span></button>').join('')||(terms.length?'<p>Aucun livre trouvé.</p>':'');$('book-search-results').querySelectorAll('[data-choose-book]').forEach(btn=>btn.onclick=()=>chooseBook(btn.dataset.chooseBook));};const requested=currentParams().get('livre');if(requested)chooseBook(requested);}else{$('book-select').innerHTML=state.books.map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');}}
-function premiumPreview(title,plans){
- return '<details class="premium-preview"><summary>'+esc(title)+'</summary><p>Disponible avec '+esc(plans)+'.</p><a class="btn secondary" href="'+siteHref('le-cercle.html#comparatif')+'">Comparer les formules ↗</a></details>';
+function premiumPreview(title,level){
+ return '<details class="premium-preview"><summary>'+esc(title)+' '+planLock(level)+'</summary><a class="btn secondary" href="'+siteHref('le-cercle.html#comparatif')+'">Comparer les formules ↗</a></details>';
 }
 function bindTraceFilters(){
  const order=$('highlight-order');
@@ -3362,7 +3366,7 @@ function bindTraceFilters(){
  const enabled=[];
  for(const [id,level] of filters){
   const field=$(id);if(!field)continue;
-  if(readerLevel<level){field.disabled=true;field.parentElement.insertAdjacentHTML('beforeend',premiumPreview('🔒 '+field.labels[0].textContent,level===1?'Découverte, Passion et Illimité':level===2?'Passion et Illimité':'Illimité'));continue;}
+  if(readerLevel<level){field.disabled=true;field.parentElement.insertAdjacentHTML('beforeend',premiumPreview(field.labels[0].textContent,level));continue;}
   enabled.push(field);
   field.addEventListener('input',()=>{
    const limit=readerLevel===1?1:readerLevel===2?2:Infinity;
@@ -3379,7 +3383,12 @@ function bindTraceFilters(){
  fill('highlight-book',state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>[b.id,b.title]));
  fill('highlight-author',[...new Set(state.books.filter(b=>state.highlights.some(h=>h.book===b.id)).map(b=>b.author).filter(Boolean))].sort().map(author=>[author,author]));
  fill('highlight-color',Object.entries(legend()));
- for(const option of order.options)option.disabled=readerLevel<({book:1,author:2,color:2,page:3}[option.value]||1);
+ for(const option of order.options){
+  const level={book:1,author:2,color:2,page:3}[option.value]||1;
+  option.disabled=readerLevel<level;
+  if(option.disabled)option.textContent+=' · '+['','Découverte','Passion','Illimité'][level];
+ }
+ if(readerLevel<1)order.insertAdjacentHTML('afterend',planLock(1));
  order.disabled=readerLevel<1;
  order.onchange=renderHighlights;
  const feedback=document.createElement('p');feedback.id='highlight-filter-status';feedback.setAttribute('role','status');order.parentElement.append(feedback);
@@ -3637,15 +3646,15 @@ async function startBookReader(book) {
     <div class="reader-palette">
      <span class="palette-title">Couleur</span>
      <div class="reader-pencils" role="group" aria-label="Couleur du surligneur">${Object.entries(legend()).slice(0,readerLevel===0?6:readerLevel===1?8:readerLevel===2?10:Infinity).map(([color,label])=>`<button type="button" class="pencil" style="--pencil:${color}" data-pencil="${color}" title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${color===currentColor}"></button>`).join('')}</div>
-     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur ${readerLevel===3?'<input id="new-pencil" type="color" value="#ec849e">':'<select id="new-pencil"><option value="#ec849e">Rose framboise</option><option value="#8dc4ae">Vert menthe</option><option value="#a689c6">Violet</option><option value="#70b9d1">Bleu lagon</option><option value="#e2a56f">Abricot</option><option value="#d5ba69">Moutarde</option></select>'}</label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('🔒 Ajouter des couleurs','Découverte, Passion et Illimité')}
-     ${readerLevel<3?premiumPreview('🔒 Nuancier libre','Illimité'):''}
+     <span id="pencil-label">${esc(legend()[currentColor])}</span>${readerLevel?`<label>Nouvelle couleur ${readerLevel===3?'<input id="new-pencil" type="color" value="#ec849e">':'<select id="new-pencil"><option value="#ec849e">Rose framboise</option><option value="#8dc4ae">Vert menthe</option><option value="#a689c6">Violet</option><option value="#70b9d1">Bleu lagon</option><option value="#e2a56f">Abricot</option><option value="#d5ba69">Moutarde</option></select>'}</label><button type="button" id="add-pencil">Ajouter</button>`:premiumPreview('Ajouter des couleurs',1)}
+     ${readerLevel<3?premiumPreview('Nuancier libre',3):''}
     </div>
     <div class="reader-actions"><button type="button" id="save-selection" disabled>Surligner la sélection</button></div>
    </div>
   </div>
   <p class="reader-help" id="reader-help-extra"></p>
   <div class="pdf-scroll" id="pdf-scroll"><div class="pdf-paper" id="pdf-paper"><canvas id="pdf-canvas"></canvas><div class="pdf-ink" id="pdf-ink" aria-hidden="true"></div><div class="textLayer" id="pdf-text-layer"></div></div></div>
-  <div class="reader-exports">${readerLevel>=2?'<button class="btn secondary" type="button" data-annotated-export="pdf">Exporter le PDF annoté</button> <button class="btn secondary" type="button" data-annotated-export="docx">Exporter en Word</button>':premiumPreview('🔒 Exporter le livre avec tes surlignages','Passion et Illimité')}</div>
+  <div class="reader-exports">${readerLevel>=2?'<button class="btn secondary" type="button" data-annotated-export="pdf">Exporter le PDF annoté</button> <button class="btn secondary" type="button" data-annotated-export="docx">Exporter en Word</button>':premiumPreview('Exporter le livre avec tes surlignages',2)}</div>
   <div id="page-traces" class="page-traces"></div>
   <div class="reader-bottom">
    <section class="reader-sheet" id="reader-sheet"><div class="reader-note-heading"><img src="${esc(assetHref('images/objets/fiches.svg'))}" alt=""><h2>Ma fiche de lecture</h2></div>
@@ -3653,7 +3662,7 @@ async function startBookReader(book) {
     <label for="reader-sheet-passage">Passage marquant</label><textarea id="reader-sheet-passage" maxlength="10000" placeholder="Recopie le passage ou ajoute-le depuis un surlignage.">${esc(sheet.passage||'')}</textarea>
     <label for="reader-sheet-text">Mes notes</label><textarea id="reader-sheet-text" placeholder="Pourquoi ce passage compte pour moi…">${esc(sheet.body||'')}</textarea><button class="btn" id="save-reader-sheet" type="button">Enregistrer la fiche</button> <a href="${esc(siteHref('fiches.html?livre='+encodeURIComponent(book.id)))}">Retrouver mes fiches de lecture ↗</a></section>
    <section class="reader-comment"><div class="reader-note-heading"><img src="${esc(assetHref('images/objets/annotation.svg'))}" alt=""><h2>Mon passage choisi</h2></div><p class="reader-passage-book">${esc(book.title)}</p><p id="chosen-excerpt">Choisis un surlignage pour ajouter une note.</p><label for="reader-annotation">Mon annotation</label><textarea id="reader-annotation" disabled placeholder="Pourquoi ce passage compte pour moi…"></textarea><div class="reader-excerpt-actions"><button class="btn" id="save-reader-passage" type="button" disabled>Enregistrer le passage</button><button id="copy-to-sheet" type="button" hidden>Ajouter à ma fiche</button><button id="remove-current-highlight" class="text-button" type="button" hidden>Enlever le surlignage</button></div>
-    <details id="reader-legends"><summary>Légendes des couleurs ↘</summary>${readerLevel?'':premiumPreview('🔒 Modifier les légendes','Découverte, Passion et Illimité')}${Object.entries(legend()).map(([color,label],i)=>`<label class="legend-edit" style="--pencil:${color}" for="legend-${i}"><span class="legend-dot"></span><input id="legend-${i}" data-legend-color="${color}" ${readerLevel?'':'disabled'} value="${esc(label)}" maxlength="60" aria-label="Légende de couleur ${i+1}"></label>`).join('')}</details>
+    <details id="reader-legends"><summary>Légendes des couleurs ↘</summary>${readerLevel?'':premiumPreview('Modifier les légendes',1)}${Object.entries(legend()).map(([color,label],i)=>`<label class="legend-edit" style="--pencil:${color}" for="legend-${i}"><span class="legend-dot"></span><input id="legend-${i}" data-legend-color="${color}" ${readerLevel?'':'disabled'} value="${esc(label)}" maxlength="60" aria-label="Légende de couleur ${i+1}"></label>`).join('')}</details>
    </section>
   </div>
  </section>`;
@@ -4371,6 +4380,9 @@ if(ellUser){
 await Promise.all([loadPublicCatalogue(),loadEditorialCatalogue()]);
 await applyCatalogueSuppressions();
 await applyCatalogueAccess();
+if(!document.querySelector('link[href*="plan-locks.css"]')){
+ const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href=siteHref('css/plan-locks.css');document.head.append(stylesheet);
+}
 if($('reader-content')||$('highlights')){const css=document.createElement('link');css.rel='stylesheet';css.href=siteHref('css/reader-interactions.css');document.head.append(css);}
 addGenreCounts();
 if(remoteCarnet&&ellUser)restoreCarnet(remoteCarnet);

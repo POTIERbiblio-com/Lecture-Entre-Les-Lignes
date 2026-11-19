@@ -1,0 +1,10 @@
+.plan-lock{display:inline-flex;align-items:center;gap:.42em;padding:.25em .65em;border-radius:2rem;font-weight:800;font-size:.85em;line-height:1.3;vertical-align:middle;white-space:nowrap;border:1px solid currentColor}
+.plan-lock-1{color:#795400;background:#fff3c6}
+.plan-lock-2{color:#944207;background:#ffead9}
+.plan-lock-3{color:#a12843;background:#fde8ef}
+.plan-lock-icon{position:relative;display:inline-block;width:.73em;height:.57em;border-radius:.12em;background:currentColor;margin-top:.25em;flex:none}
+.plan-lock-icon::before{content:'';position:absolute;top:-.37em;left:.155em;width:.42em;height:.47em;border:.1em solid currentColor;border-radius:.3em .3em 0 0;box-sizing:border-box}
+.premium-preview summary .plan-lock{margin:.15em .1em}
+.premium-preview>a{margin-top:.55em}
+.circle-plan-decouverte strong{color:#795400}.circle-plan-passion strong{color:#944207}.circle-plan-illimite strong{color:#a12843}
+.feature.tier-one h3{color:#795400}.feature.tier-two h3{color:#944207}.feature.tier-three h3{color:#a12843}
