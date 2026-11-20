@@ -2,6 +2,8 @@ import {onAccount,requestService} from './request-service.js';
 
 const workspace=document.getElementById('quentin-workspace');
 const inbox=document.getElementById('review-inbox');
+const footerTemplate=document.getElementById('quentin-footer');
+let footer;
 let generation=0;
 let unread=0;
 
@@ -16,6 +18,8 @@ onAccount(async account=>{
   workspace.hidden=true;
   workspace.replaceChildren();
   inbox.hidden=true;
+  footer?.remove();
+  footer=null;
   if(account?.email?.toLowerCase()!=='quentinmorel1912@gmail.com')return;
   try{
     await account.getIdToken(account.emailVerified!==true);
@@ -44,6 +48,8 @@ onAccount(async account=>{
     workspace.append(heading,navigation);
     workspace.hidden=false;
     inbox.hidden=false;
+    footer=footerTemplate.content.firstElementChild.cloneNode(true);
+    footerTemplate.after(footer);
   }catch(error){
     if(request!==generation)return;
     const status=document.createElement('p');
