@@ -10,6 +10,7 @@ const addChapter=document.getElementById('add-chapter');
 const submit=form.querySelector('[type=submit]');
 let draft=null;
 const privateLevel='quentin-only';
+const privateRequested=new URLSearchParams(location.search).get('selection')==='privee';
 const isQuentin=account=>account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
 const coverLabel=fields.cover.closest('label');
 const audienceNote=document.getElementById('publication-private-note');
@@ -58,9 +59,14 @@ watchAdministration({status:message,onClosed(){
   if(Array.from(fields.sub.options).some(option=>option.value===query.get('sub')))fields.sub.value=query.get('sub');
   draft=null;
 },onReady(){
+  if(privateRequested&&!isQuentin(auth.currentUser)){
+    form.hidden=true;
+    message.textContent='La sélection privée est réservée au compte de Quentin.';
+    return;
+  }
   if(isQuentin(auth.currentUser)&&!fields.level.querySelector('option[value="quentin-only"]')){
     fields.level.add(new Option('Sélection privée de Quentin',privateLevel));
-    if(new URLSearchParams(location.search).get('selection')==='privee'){
+    if(privateRequested){
       fields.level.value=privateLevel;
       fields.level.closest('details').open=true;
     }
@@ -75,7 +81,11 @@ form.onsubmit=async event=>{
   const account=auth.currentUser;
   const values=new FormData(form);
   const privateSelection=values.get('level')===privateLevel;
-  if(privateSelection&&!isQuentin(account))return;
+  if((privateSelection||privateRequested)&&!isQuentin(account))return;
+  if(privateRequested&&!privateSelection){
+    message.textContent='Sélectionne l’accès privé pour ajouter ce livre à ta sélection.';
+    return;
+  }
   const cover=values.get('cover'),pdf=values.get('pdf');
   const coverType=cover?.type||'';
   if(cover?.size&&(!['image/jpeg','image/png','image/webp'].includes(coverType)||cover.size>8*1024*1024)){
