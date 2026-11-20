@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Bibliothèque privée · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/livres-documentes.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="manifest" href="manifest.webmanifest?v=livre-20261120"><meta name="theme-color" content="#ba7897"><link rel="stylesheet" href="css/favoris-listes.css?v=coeur-20261119-3"><link rel="stylesheet" href="css/catalogue-recherche.css"><link rel="stylesheet" href="css/plan-locks.css"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:title" content="Bibliothèque de livres PDF et fiches de lecture · Entre les lignes"><meta property="og:description" content="Explore le catalogue Entre les lignes par titre, auteur, genre et sous-genre. Découvre des fiches de lecture, des résumés et des liens vers les critiques."><meta property="og:url" content="https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/mes-livres.html"><meta property="og:image" content="https://potierbiblio-com.github.io/Lecture-Entre-Les-Lignes/images/atelier/livre-paysage.jpg"><meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="192x192" href="images/raccourci-192.png?v=livre-20261120"><link rel="apple-touch-icon" sizes="180x180" href="images/raccourci-apple.png?v=livre-20261120">
+</head>
+<body class="page-mes-livres atelier-page">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="site-header" role="banner">
+<a class="brand" href="index.html">Entre les lignes<span>.</span></a>
+<div class="site-nav" aria-label="Menu principal" role="navigation">
+<a href="index.html">Accueil</a>
+<a href="genres.html">Genres</a>
+<a href="lecture.html">Lecture</a>
+<a href="mes-livres.html" class="nav-search">Chercher un livre</a>
+<a href="critiques.html">Critiques</a>
+<a href="demander-un-livre.html">Proposer un livre</a>
+
+<a href="mon-espace.html">Mon espace</a>
+</div>
+</div>
+<div class="site-main" role="main" id="contenu">
+<div class="crumb"><a href="mon-espace.html">Mon espace</a> / Bibliothèque privée</div>
+<p id="private-library-status" role="status">Vérification de l’accès…</p>
+<section id="private-library" hidden>
+<div class="catalogue-slip">
+  <div class="slip-heading"><div><h1>Bibliothèque privée</h1></div><div class="slip-collage" aria-hidden="true"><img src="images/carnet-illustre/loupe.jpg" alt="" class="slip-photo"><img src="images/atelier/revue-ouverte.jpg" alt="" class="slip-book"></div></div>
+  <form id="catalogue-search" role="search">
+      <div class="catalogue-field catalogue-query"><label for="search">Titre, auteur, année, ISBN ou thème</label>
+      <input id="search" name="q" type="search" placeholder="Un titre, un auteur, un thème…" maxlength="160" autocomplete="off"><p class="catalogue-search-help">Utilise les filtres pour affiner ta recherche.</p>
+      </div>
+<div class="search-controls">
+        <button type="submit" class="cloud-link">Rechercher <span aria-hidden="true" class="artist-arrow-glyph">↗</span></button>
+        <button type="reset" class="reset-link">Effacer</button>
+      </div>
+<details class="catalogue-filter-panel"><summary>Filtres et tri</summary><div class="catalogue-filter-grid"><div class="catalogue-field"><label for="search-genre">Genre</label>
+      <select id="search-genre" name="genre">
+        <option value="">Tous les genres</option>
+        <option value="fiction">Romans et fiction</option>
+        <option value="savoirs">Sciences, idées et travail</option>
+        <option value="arts">Arts et culture</option>
+        <option value="vie-et-societe">Vie quotidienne et société</option>
+        <option value="spiritualites">Spiritualités et religions</option>
+        <option value="jeunesse">Jeunesse et pédagogie</option>
+      <option value="voyages">Voyages et nature</option><option value="creativite">Loisirs et activités créatives</option><option value="manga">Manga et BD</option><option value="magazine">Magazine</option><option value="a-classer">À classer</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
+      </div>
+<div class="catalogue-field"><label for="search-language">Langue du PDF</label><select id="search-language"><option value="">Toutes les langues</option></select></div>
+<div class="catalogue-field"><label for="search-year">Année de l’édition</label><select id="search-year"><option value="">Toutes les dates</option></select></div>
+<div class="catalogue-field"><label for="search-sort">Trier par</label><select id="search-sort"><option value="added-new">Derniers ajouts</option><option value="added-old">Premiers ajouts</option><option value="newest">Parutions récentes</option><option value="oldest">Parutions anciennes</option></select></div>
+
+<label class="catalogue-pdf-filter"><input type="checkbox" id="search-favorites"> Mes favoris</label></div></details>
+
+    </form>
+
+</div>
+<nav class="catalogue-shortcuts" aria-label="Accès rapide aux collections"><a href="favoris.html">♥ Mes favoris</a><a href="listes.html">✦ Mes listes</a><button type="button" class="ell-add-list" data-ell-new-list>Créer une liste</button></nav>
+<div class="search-results catalogue-shelf">
+  <div class="results-heading">
+    <h2>Mes livres privés</h2>
+    <p id="search-publication" role="status"></p><p id="search-count" aria-live="polite" aria-atomic="true"></p>
+  </div>
+  <p><a class="btn" href="publier-livre.html?selection=privee">Ajouter un livre</a></p><div id="books" class="catalogue-results"></div>
+  
+</div>
+</section>
+</div>
+<script src="js/app.js?v=bibliotheque-20261120"></script>
+<script src="js/collections-privees.js?v=coeur-20261119-3" defer></script><script src="js/favoris-catalogue.js?v=coeur-20261119-3" defer></script>
+</body></html>

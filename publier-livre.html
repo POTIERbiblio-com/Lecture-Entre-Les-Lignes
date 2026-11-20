@@ -4,19 +4,19 @@
 <body class="atelier-page">
 <header class="site-header"><a class="brand" href="index.html">Entre les lignes<span>.</span></a><nav class="site-nav"><a href="mes-livres.html">Chercher un livre</a><a href="admin-catalogue.html#catalogue-access-admin">Gérer les livres</a><a href="connexion-firebase.html">Mon compte</a></nav></header>
 <main class="ae-shell">
-<div class="ae-heading"><div><h1>Publier un livre</h1><p>Ajoute un titre, un auteur et le PDF. Tu peux compléter la fiche avec les informations que tu as.</p></div><img src="images/carnet-illustre/carnet-studieux.jpg" alt=""></div>
+<div class="ae-heading"><div><h1 id="publication-title">Publier un livre</h1><p id="publication-intro">Ajoute un titre, un auteur et le PDF. Tu peux compléter la fiche avec les informations que tu as.</p></div><img src="images/carnet-illustre/carnet-studieux.jpg" alt=""></div>
 <p id="publication-message" role="status" class="ae-status">Vérification du compte…</p>
 <form id="publication-form" hidden><p id="publication-private-note" hidden style="margin:0">La fiche, le PDF et la couverture seront visibles dans ta sélection privée.</p>
 <fieldset class="panel publication-basics"><legend>Prêt à publier</legend>
 <label>Titre <input name="title" required maxlength="180" placeholder="Titre du livre"></label>
 <label>Auteur <input name="author" required maxlength="150" placeholder="Prénom et nom"></label>
-<label class="publication-file">Fichier PDF <input name="pdf" type="file" accept="application/pdf,.pdf" required></label>
+<label class="publication-file"><span id="publication-pdf-label">Fichier PDF</span> <input name="pdf" type="file" accept="application/pdf,.pdf" required></label>
 <label class="publication-rights"><input name="rights" type="checkbox" required> J’ai le droit de diffuser le PDF et la couverture si j’en ajoute une.</label>
 </fieldset>
 <p id="proposal-prefill" hidden></p><h2>Compléter la fiche <small>Facultatif</small></h2>
 <details class="publication-option"><summary>Couverture, rayon et accès</summary><label>Genre <select name="genre" required></select></label>
 <label>Sous-genre <select name="sub" required></select></label>
-<label>Accès <select name="level"><option value="0">Gratuit · accès public</option><option value="1">Jaune · Découverte</option><option value="2">Orange · Passion</option><option value="3">Rouge · Illimité</option></select></label><label>Couverture <input name="cover" type="file" accept="image/jpeg,image/png,image/webp"></label></details>
+<label id="publication-audience">Accès <select name="level"><option value="0">Gratuit · accès public</option><option value="1">Jaune · Découverte</option><option value="2">Orange · Passion</option><option value="3">Rouge · Illimité</option></select></label><label>Couverture <input name="cover" type="file" accept="image/jpeg,image/png,image/webp"></label><label id="publication-remove-cover" hidden><input type="checkbox" name="removeCover"> Retirer la couverture actuelle</label></details>
 <details class="publication-option"><summary>Résumé et détails de l’édition</summary><label>Éditeur <input name="edition-publisher" maxlength="250"></label>
 <label>Année de cette édition <input name="edition-year" maxlength="250"></label>
 <label>Titre original <input name="edition-original" maxlength="250"></label>
@@ -33,7 +33,8 @@
 </details>
 <details class="publication-option"><summary>Résumés par chapitre</summary><div id="publication-chapters"></div><button type="button" id="add-chapter" class="btn secondary">Ajouter un chapitre</button></details>
 <details class="publication-option"><summary>Avis et critiques externes</summary>
-<label>Lien vers la source <input name="reviewUrl" type="url" maxlength="2000" placeholder="https://"></label>
+<label id="private-review-url" hidden>Lien vers une critique externe <input name="privateReviewUrl" type="url" maxlength="500" placeholder="https://"></label>
+<label>Source de la note <input name="reviewUrl" type="url" maxlength="2000" placeholder="https://"></label>
 <label>Note sur 5 <input name="rating" type="number" min="0" max="5" step="0.01"></label>
 <label>Nombre d’évaluations <input name="ratingCount" type="number" min="1" step="1"></label>
 <label>Nombre de commentaires <input name="comments" type="number" min="0" step="1"></label>
@@ -41,4 +42,4 @@
 
 <div class="publication-submit"><button type="submit" class="btn">Publier dans le catalogue ↗</button></div></form>
 <template id="chapter-template"><fieldset><legend>Chapitre</legend><label>Titre <input name="chapter-title" required maxlength="180"></label><label>Page PDF <input name="chapter-page" type="number" min="1" step="1"></label><label>Résumé <textarea name="chapter-summary" required maxlength="5000" rows="4"></textarea></label><button type="button" class="btn secondary">Retirer le chapitre</button></fieldset></template>
-</main><script type="module" src="js/publication-livre.js?v=couverture-privee-20261120"></script></body></html>
+</main><script type="module" src="js/publication-livre.js?v=bibliotheque-20261120"></script></body></html>

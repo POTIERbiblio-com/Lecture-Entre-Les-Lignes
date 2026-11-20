@@ -3,6 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mon espace · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
 <link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/comptes.css"><link rel="stylesheet" href="css/mon-espace-refonte.css"><link rel="manifest" href="manifest.webmanifest?v=livre-20261120"><meta name="theme-color" content="#ba7897"><link rel="stylesheet" href="css/cercle-banners.css"><link rel="stylesheet" href="css/favoris-listes.css?v=coeur-20261119-3"><link rel="stylesheet" href="css/propositions-suivi.css"><link rel="stylesheet" href="css/plan-locks.css">
 <link rel="icon" type="image/png" sizes="192x192" href="images/raccourci-192.png?v=livre-20261120"><link rel="apple-touch-icon" sizes="180x180" href="images/raccourci-apple.png?v=livre-20261120">
+<link rel="stylesheet" href="css/catalogue-recherche.css">
 </head>
 <body class="page-mon-espace atelier-page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -45,7 +46,18 @@
  <p style="max-width:1100px;margin:12px auto;padding:0 18px"><a id="premium-staff-link" href="premium.html" hidden style="display:none;background:#8b466e;color:white;padding:14px 22px;border-radius:30px;text-decoration:none;font-weight:700">✦ Ouvrir mon atelier Premium ↗</a></p><p style="max-width:1100px;margin:12px auto;padding:0 18px"><a href="demander-un-livre.html" style="display:inline-block;background:#f4c3d8;border:2px solid #ae6487;color:#753c5b;padding:14px 22px;border-radius:30px;text-decoration:none;font-weight:700">♡ Proposer un livre · Suivre mes demandes ↗</a></p><section class="trace-filters" aria-label="Recherche dans tes lectures">
 <div><h2 class="carnet-filter-title"><img src="images/objets/loupe.svg" alt="">Rechercher dans mes lectures</h2><p>Retrouve tes notes, tes fiches et tes surlignages dans tous tes livres.</p></div>
 <div><span class="plan-lock plan-lock-2">Passion</span> <span class="plan-lock plan-lock-3">Illimité</span><p><a class="btn secondary" href="recherche-lectures.html">Ouvrir la recherche</a></p></div>
-</section><div class="tool-groups desk-index" id="mes-traces" tabindex="-1"><section class="tool-group"><h2>Mes traces</h2><ul><li><a class="object-link" href="surlignages.html"><img class="object-folder" src="images/objets/surligneur.svg" alt=""><span class="object-label">Surlignages</span></a></li><li><a class="object-link" href="annotations.html"><img class="object-folder" src="images/objets/annotation.svg" alt=""><span class="object-label">Annotations</span></a></li><li><a class="object-link" href="fiches.html"><img class="object-folder" src="images/objets/fiches.svg" alt=""><span class="object-label">Fiches</span></a></li><li><a class="object-link" href="journaux.html"><img class="object-folder" src="images/objets/journal.svg" alt=""><span class="object-label">Journaux</span></a></li></ul></section><section class="tool-group"><h2>Mon compte et mes lectures</h2><ul><li><a class="object-link" href="profil.html"><img class="object-folder" src="images/objets/medaillon.svg" alt=""><span class="object-label">Profil</span></a></li><li><a class="object-link" href="mes-livres.html"><img class="object-pile" src="images/collage/livres-herbier.png" alt=""><span class="object-label">Livres</span></a></li><li><a class="object-link" href="critiques.html"><img class="object-folder" src="images/objets/avis.svg" alt=""><span class="object-label">Critiques</span></a></li><li><a class="object-link" href="sauvegardes.html"><img class="object-folder" src="images/objets/archives.svg" alt=""><span class="object-label">Sauvegardes</span></a></li></ul></section></div></section></div>
+</section><p id="quentin-selection" hidden><a class="btn" href="bibliotheque-privee.html">Bibliothèque privée</a></p>
+<section id="critiques-recentes" class="tool-group" hidden><h2>Critiques récentes</h2><p><a href="critiques.html">Écrire une critique</a></p>
+<form id="recent-review-filters" class="trace-filters"><div class="catalogue-filter-grid">
+<label>Livre <select name="book"><option value="">Tous les livres</option></select></label>
+<label>Genre <select name="genre"><option value="">Tous les genres</option></select></label>
+<label>Sous-genre <select name="sub"><option value="">Tous les sous-genres</option></select></label>
+<label>Auteur <select name="author"><option value="">Tous les auteurs</option></select></label>
+<label>Compte <select name="account"><option value="">Tous les comptes</option></select></label>
+<label>Note <select name="rating"><option value="">Toutes les notes</option></select></label>
+<label>Trier <select name="order"><option value="">Plus récentes</option><option value="old">Plus anciennes</option></select></label>
+</div><button class="btn secondary" type="reset">Effacer les filtres</button></form><p id="recent-reviews-status" role="status"></p><div id="recent-reviews-list"></div><button type="button" class="btn secondary" id="recent-reviews-more" hidden>Afficher plus</button></section>
+<div class="tool-groups desk-index" id="mes-traces" tabindex="-1"><section class="tool-group"><h2>Mes traces</h2><ul><li><a class="object-link" href="surlignages.html"><img class="object-folder" src="images/objets/surligneur.svg" alt=""><span class="object-label">Surlignages</span></a></li><li><a class="object-link" href="annotations.html"><img class="object-folder" src="images/objets/annotation.svg" alt=""><span class="object-label">Annotations</span></a></li><li><a class="object-link" href="fiches.html"><img class="object-folder" src="images/objets/fiches.svg" alt=""><span class="object-label">Fiches</span></a></li><li><a class="object-link" href="journaux.html"><img class="object-folder" src="images/objets/journal.svg" alt=""><span class="object-label">Journaux</span></a></li></ul></section><section class="tool-group"><h2>Mon compte et mes lectures</h2><ul><li><a class="object-link" href="profil.html"><img class="object-folder" src="images/objets/medaillon.svg" alt=""><span class="object-label">Profil</span></a></li><li><a class="object-link" href="mes-livres.html"><img class="object-pile" src="images/collage/livres-herbier.png" alt=""><span class="object-label">Livres</span></a></li><li><a class="object-link" id="account-critiques-link" href="critiques.html"><img class="object-folder" src="images/objets/avis.svg" alt=""><span class="object-label">Critiques</span></a></li><li><a class="object-link" href="sauvegardes.html"><img class="object-folder" src="images/objets/archives.svg" alt=""><span class="object-label">Sauvegardes</span></a></li></ul></section></div></section></div>
 <div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
@@ -58,44 +70,5 @@ onAuthStateChanged(auth,async user=>{const link=$f('firebase-admin-link'),premiu
 $f('firebase-logout').onclick=async()=>{try{await signOut(auth);location.assign('connexion-firebase.html');}catch(e){$f('firebase-status').textContent='Déconnexion impossible : '+(e.code||'erreur inconnue');}};
 </script>
 
-<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script type="module" src="js/propositions-compte.js?v=decisions-20261119"></script><section id="quentin-selection" class="trace-filters" hidden style="display:none;max-width:1100px;margin:18px auto;padding:18px">
-<h2>Sélection privée de Quentin</h2><a class="btn secondary" href="publier-livre.html?selection=privee">Ajouter un livre privé</a><p id="quentin-selection-status" role="status"></p><ul id="quentin-selection-books"></ul>
-</section>
-<script type="module">
-import {auth,requestService} from './js/request-service.js';
-await auth.authStateReady();
-const panel=document.getElementById('quentin-selection');
-const status=document.getElementById('quentin-selection-status');
-const list=document.getElementById('quentin-selection-books');
-const account=auth.currentUser;
-const isOwner=user=>user?.uid===account?.uid&&user?.emailVerified===true&&user.email?.toLowerCase()==='quentinmorel1912@gmail.com';
-auth.onAuthStateChanged(user=>{if(!isOwner(user)){panel.hidden=true;panel.style.display='none';list.replaceChildren();}});
-if(isOwner(account)){
- try{
-  const {books}=await requestService('quentin-private-selection',{},account);
-  if(isOwner(auth.currentUser)){
-   status.textContent=books.length?'':'Aucun livre dans cette sélection.';
-   for(const book of books){
-    const item=document.createElement('li');
-    const link=document.createElement('a');
-    link.className='btn secondary';
-    link.href='livre.html?id='+encodeURIComponent(book.id);
-    link.textContent=[book.title,book.author].filter(Boolean).join(' — ');
-    const cover=book.ficha?.cover;
-    if(typeof cover==='string'&&cover.startsWith('data:image/jpeg;base64,')){
-      const img=document.createElement('img');
-      img.src=cover;img.alt='';img.loading='lazy';img.width=48;
-      img.style.cssText='vertical-align:middle;margin-inline-end:.5rem;border-radius:.25rem';
-      link.prepend(img);
-    }
-    item.append(link);list.append(item);
-   }
-   panel.hidden=false;panel.style.display='block';
-  }
- }catch(error){
-  if(isOwner(auth.currentUser)){status.textContent=error.message;panel.hidden=false;panel.style.display='block';}
- }
-}
-</script>
-</body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script type="module" src="js/propositions-compte.js?v=decisions-20261119"></script></body>
 </html>

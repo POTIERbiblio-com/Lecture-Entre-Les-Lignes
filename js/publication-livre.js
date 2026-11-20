@@ -11,14 +11,27 @@ const addChapter=document.getElementById('add-chapter');
 const submit=form.querySelector('[type=submit]');
 let draft=null;
 const privateLevel='quentin-only';
-const privateRequested=new URLSearchParams(location.search).get('selection')==='privee';
+const params=new URLSearchParams(location.search);
+const editId=params.get('modifier');
+const privateRequested=Boolean(editId)||params.get('selection')==='privee';
+if(privateRequested){
+  $('publication-title').textContent=editId?'Modifier un livre privé':'Ajouter un livre privé';
+  $('publication-intro').textContent=editId?'Modifie la fiche ou remplace les fichiers.':'Ajoute le PDF, la couverture et ta fiche à la bibliothèque privée.';
+  $('publication-audience').hidden=true;
+}
+if(editId){
+  $('publication-pdf-label').textContent='Nouveau PDF (facultatif)';
+  fields.pdf.required=false;
+  fields.rights.required=false;
+}
 const isQuentin=account=>account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
 const proposalId=new URLSearchParams(location.search).get('proposition');
 const audienceNote=document.getElementById('publication-private-note');
 function updateAudience(){
   const privateSelection=fields.level.value===privateLevel;
   audienceNote.hidden=!privateSelection;
-  submit.textContent=privateSelection?'Ajouter à ma sélection privée':'Publier le livre';
+  $('private-review-url').hidden=!privateSelection;
+  submit.textContent=editId?'Enregistrer les modifications':privateSelection?'Ajouter à ma bibliothèque':'Publier le livre';
 }
 fields.level.addEventListener('change',updateAudience);
 
@@ -34,13 +47,15 @@ fields.reviewUrl.oninput=()=>{
   fields.rating.required=required;
   fields.ratingCount.required=required;
 };
-addChapter.onclick=()=>{
+function appendChapter(values={}){
   const field=document.getElementById('chapter-template').content.firstElementChild.cloneNode(true);
   field.querySelector('button').onclick=()=>{field.remove();addChapter.disabled=false;};
   chapters.append(field);
   addChapter.disabled=chapters.childElementCount>=100;
-  field.querySelector('input').focus();
-};
+  for(const key of ['title','page','summary'])field.querySelector('[name=chapter-'+key+']').value=values[key]??'';
+  return field;
+}
+addChapter.onclick=()=>appendChapter().querySelector('input').focus();
 watchAdministration({status:message,onClosed(){
   form.hidden=true;
   fields.level.querySelector('option[value="quentin-only"]')?.remove();
@@ -72,6 +87,36 @@ watchAdministration({status:message,onClosed(){
     }
   }
   updateAudience();
+  if(editId){
+    const {books}=await requestService('quentin-private-selection',{bookId:editId},account);
+    if(!isCurrent())return;
+    const ficha=books[0]?.ficha;
+    if(!ficha){message.textContent='Livre privé introuvable.';return;}
+    if(changed||form.hidden){
+      for(const name of ['title','author','genre','summary','presentation'])fields[name].value=ficha[name]||'';
+      if(!fields.genre.value)fields.genre.value='a-classer';
+      subgenres();
+      fields.sub.value=String(ficha.sub??0);
+      for(const [name,value] of Object.entries(ficha.edition||{})){
+        if(fields['edition-'+name])fields['edition-'+name].value=value??'';
+      }
+      fields.referenceUrl.value=ficha.sources?.find(source=>source.url)?.url||'';
+      fields.privateReviewUrl.value=ficha.reviewLinks?.[0]||'';
+      fields.reviewUrl.value=ficha.external?.url||'';
+      fields.rating.value=ficha.external?.rating??'';
+      fields.ratingCount.value=ficha.external?.count??'';
+      fields.comments.value=ficha.external?.comments??'';
+      fields.reviewUrl.oninput();
+      chapters.replaceChildren();
+      (ficha.chapters||[]).forEach(appendChapter);
+      $('publication-remove-cover').hidden=!ficha.cover;
+      fields.pdf.onchange=()=>{fields.rights.required=fields.pdf.files.length>0||fields.cover.files.length>0;};
+      fields.cover.onchange=()=>{fields.rights.required=fields.pdf.files.length>0||fields.cover.files.length>0;};
+    }
+    form.hidden=false;
+    message.textContent='Livre privé chargé.';
+    return;
+  }
   if(proposalId){
     form.hidden=true;
     message.textContent='Chargement de la proposition et contrôle des pièces jointes…';
@@ -137,15 +182,17 @@ form.onsubmit=async event=>{
     message.textContent='Choisis une couverture JPEG, PNG ou WebP de 8 Mo maximum.';
     return;
   }
-  if(!pdf.size||pdf.size>100*1024*1024||await pdf.slice(0,5).text()!=='%PDF-'){
+  if((!editId&&!pdf?.size)||(pdf?.size&&(pdf.size>100*1024*1024||await pdf.slice(0,5).text()!=='%PDF-'))){
     message.textContent='Choisis un fichier PDF valide de 100 Mo maximum.';
     return;
   }
-  if(!values.get('rights')||!account||auth.currentUser?.uid!==account.uid)return;
-  if(!draft||draft.privateSelection!==privateSelection)draft={id:'edition-'+crypto.randomUUID(),pdf:null,cover:null,privateSelection};
+  if((!editId||pdf?.size||cover?.size)&&!values.get('rights')){message.textContent='Confirme les droits pour les fichiers ajoutés.';return;}
+  if(!account||auth.currentUser?.uid!==account.uid)return;
+  if(!draft||draft.privateSelection!==privateSelection)draft={id:editId||'edition-'+crypto.randomUUID(),pdf:null,cover:null,privateSelection};
   const publication=draft;
   submit.disabled=true;
   const payload=Object.fromEntries([...values].filter(([name,value])=>typeof value==='string'&&!/^(chapter-|edition-)/.test(name)));
+  payload.removeCover=values.has('removeCover');
   payload.edition=Object.fromEntries([...values].filter(([name])=>name.startsWith('edition-')).map(([name,value])=>[name.slice(8),value]));
   payload.chapters=Array.from(chapters.children,field=>Object.fromEntries(['title','page','summary'].map(name=>[name,field.querySelector('[name=chapter-'+name+']').value])));
   try{
@@ -171,15 +218,22 @@ form.onsubmit=async event=>{
       publication.cover=cover.name+'|'+cover.size+'|'+cover.lastModified;
     }
     const fileKey=pdf.name+'|'+pdf.size+'|'+pdf.lastModified;
-    if(publication.pdf!==fileKey){
+    if(pdf?.size&&publication.pdf!==fileKey&&!editId){
       message.textContent='Envoi du PDF vers le stockage privé…';
       await uploadCataloguePdf(publication.id,pdf,account);
       publication.pdf=fileKey;
     }
-    message.textContent=privateSelection?'Ajout à ta sélection privée…':'Publication dans le catalogue…';
-    const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType:!privateSelection&&cover?.size?coverType:''},account);
+    message.textContent=editId?'Enregistrement de la fiche…':privateSelection?'Ajout à ta sélection privée…':'Publication dans le catalogue…';
+    const {id}=await requestService(editId?'quentin-private-update':'editorial-publish',{...payload,bookId:publication.id,coverType:!privateSelection&&cover?.size?coverType:''},account);
+    if(editId&&pdf?.size&&publication.pdf!==fileKey){
+      try{
+        message.textContent='Remplacement du PDF privé…';
+        await uploadCataloguePdf(id,pdf,account);
+        publication.pdf=fileKey;
+      }catch(error){throw Error('Fiche enregistrée. Le PDF précédent est encore disponible. '+error.message);}
+    }
     if(auth.currentUser?.uid!==account.uid)return;
-    if(privateSelection){location.assign('mon-espace.html#quentin-selection');return;}
+    if(privateSelection){location.assign('livre.html?id='+encodeURIComponent(id));return;}
     const filters=new URLSearchParams({genre:payload.genre,sub:payload.sub,publie:id});
     const destination='mes-livres.html?'+filters+'#books';
     const proposal=new URLSearchParams(location.search).get('proposition');

@@ -1206,7 +1206,28 @@ function bindCatalogueControls(){
   finally{buttons.forEach(item=>item.disabled=false);}
  });
 }
-function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+lockBadge(b)+''+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.privatePdf?'<p class="book-pdf-label">PDF disponible</p>':b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+catalogueControls(b)+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
+function privateBookControls(book) {
+ const id=encodeURIComponent(book.id);
+ return '<div class="book-file-actions"><a class="btn secondary" href="publier-livre.html?selection=privee&amp;modifier='+id+'">Modifier</a> <button class="btn secondary" type="button" data-private-remove="'+id+'">Supprimer</button></div>';
+}
+function bindPrivateBookControls(){
+ document.addEventListener('click',async event=>{
+  const button=event.target.closest('[data-private-remove]');
+  if(!button||button.disabled)return;
+  const book=state.books.find(item=>item.quentinOnly&&item.id===button.dataset.privateRemove);
+  if(!book||!confirm('Supprimer « '+book.title+' » de ta bibliothèque privée ?'))return;
+  button.disabled=true;
+  try{
+   const {requestService}=await import('./request-service.js');
+   await requestService('quentin-private-delete',{bookId:book.id});
+   if($('book-detail')){location.replace('bibliotheque-privee.html');return;}
+   state.books=state.books.filter(item=>item.id!==book.id);
+   renderBooks();
+  }catch(error){alert(error.message);}
+  finally{button.disabled=false;}
+ });
+}
+function card(b,admin=false,dest='livre'){return '<article data-ell-book-id="'+esc(b.id)+'" class="panel book'+(isHorror(b)?' horror-book':'')+'">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="Couverture de '+esc(b.title)+'">':'<div class="cover">'+esc(b.title)+'</div>')+'<div><h2>'+esc(b.title)+'</h2>'+lockBadge(b)+''+horrorMark(b)+'<p>'+esc(b.author)+'</p>'+(bookYear(b)?'<p class="book-meta-line">'+esc(bookYear(b))+' · '+esc(b.edition?.publisher ?? b.publisher ?? '')+'</p>':'')+(b.privatePdf?'<p class="book-pdf-label">PDF disponible</p>':b.pdfPath?'<p class="book-pdf-label">PDF inclus · '+b.pdfPages+' pages</p>':'')+'<a class="btn" href="'+bookLink(b,dest)+'">'+(dest==='avis'?'Ma critique':'Présentation du livre')+'</a><a class="btn secondary" href="'+bookLink(b,'lire')+'">Lire</a>'+(b.quentinOnly?privateBookControls(b):catalogueControls(b))+(admin?'<a class="btn secondary" href="'+bookLink(b,'ajouter-livre')+'">Modifier</a><button class="danger" data-delete-book="'+esc(b.id)+'">Supprimer</button>':'')+'</div></article>';}
 function searchTerms(value) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/œ/g, 'oe').replace(/æ/g, 'ae').match(/[\p{L}\p{N}]+/gu) || [];
@@ -1225,6 +1246,54 @@ function fillLanguageOptions(select,books,first='Toutes les langues'){
  if(labels.includes(current))select.value=current;
 }
 function bookYear(book){return String(book.edition?.year ?? book.year ?? READING_GUIDES[book.id]?.edition.year ?? '').match(/\b\d{4}\b/)?.[0] || ''; }
+const catalogueStats={};
+const parseCatalogueDate=value=>{
+ if(value?.toMillis instanceof Function)return value.toMillis();
+ const date=typeof value==='number'?value:Date.parse(value);
+ return Number.isFinite(date)?date:0;
+};
+function publicationDate(book) {
+ const value=String(book.edition?.year || book.year || '');
+ const exact=value.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0];
+ return exact?parseCatalogueDate(exact):parseCatalogueDate(bookYear(book));
+}
+function bookSort(items,order,books,favorites) {
+ const alphabet=(a,b)=>String(a.title).localeCompare(String(b.title),'fr');
+ if(order==='recommended'&&window.ELLRecommendations){
+  const scores=new Map(window.ELLRecommendations.rank(books,favorites,catalogueStats).map(({book,score})=>[book.id,score]));
+  return items.sort((a,b)=>(scores.get(b.id)??-1)-(scores.get(a.id)??-1)||alphabet(a,b));
+ }
+ if(order==='downloads')return items.sort((a,b)=>(catalogueStats[b.id]?.downloads||0)-(catalogueStats[a.id]?.downloads||0)||alphabet(a,b));
+ const added=order==='added-new'||order==='added-old';
+ const date=added?book=>parseCatalogueDate(book.addedAt):publicationDate;
+ const direction=order==='added-old'||order==='oldest'?1:-1;
+ return items.sort((a,b)=>{
+  const x=date(a),y=date(b);
+  return Number(Boolean(y))-Number(Boolean(x)) || direction*(x-y) || alphabet(a,b);
+ });
+}
+async function loadCatalogueSortData(){
+ const [dates,stats]=await Promise.allSettled([
+  fetch('dates-ajout-catalogue.json').then(response=>{if(!response.ok)throw Error('Dates indisponibles');return response.json();}),
+  fetch(ELL_URL+'/rest/v1/catalogue_download_totals?select=book_id,downloads',{headers:{apikey:ELL_KEY},cache:'no-store'})
+   .then(response=>{if(!response.ok)throw Error('Téléchargements indisponibles');return response.json();})
+ ]);
+ if(dates.status==='fulfilled'){
+  for(const book of state.books)book.addedAt=Object.hasOwn(dates.value,book.id)?dates.value[book.id]:book.addedAt;
+ }
+ if(stats.status==='fulfilled'){
+  const totals=new Map(stats.value.map(stat=>[stat.book_id,Number(stat.downloads)||0]));
+  for(const book of state.books)catalogueStats[book.id]={downloads:0};
+  for(const [id,total] of totals){
+   const target=catalogueAliases.get(id)||state.books.find(book=>book.accessBookId===id)?.id||id;
+   if(Object.hasOwn(catalogueStats,target))catalogueStats[target].downloads+=total;
+  }
+ }else{
+  const sort=$('search-sort');
+  sort?.querySelector('option[value=downloads]')?.setAttribute('disabled','');
+  if(sort?.value==='downloads')sort.value='added-new';
+ }
+}
 function renderBooks() {
   const el = $('books');
   if (!el) return;
@@ -1233,7 +1302,9 @@ function renderBooks() {
   const subgenre = $('search-subgenre')?.value || el.dataset.sub;
   const terms = searchTerms($('search')?.value || '');
   const favorites=window.ELLCollections?.read().favorites||[];
-  const items = state.books.filter(book => {
+  const privateLibrary=Boolean($('private-library'));
+  const scopedBooks=state.books.filter(book=>Boolean(book.quentinOnly)===privateLibrary);
+  const items = scopedBooks.filter(book => {
     if (genre && book.genre !== genre) return false;
     if (subgenre && String(book.sub) !== subgenre) return false;
     if ($('search-favorites')?.checked && !favorites.some(favorite=>(catalogueAliases.get(favorite)||favorite)===book.id)) return false;
@@ -1247,18 +1318,14 @@ function renderBooks() {
     return terms.every(term => words.includes(term));
   });
   const order=$('search-sort')?.value;
-  if(order==='language') items.sort((a,b)=>(bookLanguage(a)||'~').localeCompare(bookLanguage(b)||'~','fr')||a.title.localeCompare(b.title,'fr'));
-  if(order==='author') items.sort((a,b)=>a.author.localeCompare(b.author,'fr'));
-  if(order==='title') items.sort((a,b)=>a.title.localeCompare(b.title,'fr'));
-  if(order==='newest') items.sort((a,b)=>Number(bookYear(b)||0)-Number(bookYear(a)||0));
-  if(order==='oldest') items.sort((a,b)=>Number(bookYear(a)||9999)-Number(bookYear(b)||9999));
+  if(order)bookSort(items,order,scopedBooks,favorites.map(id=>catalogueAliases.get(id)||id));
   const published=$('search-publication');
   if(published){const book=items.find(item=>item.id===new URLSearchParams(location.search).get('publie'));published.textContent=book?'« '+book.title+' » est publié dans '+GENRES[book.genre][0]+' · '+GENRES[book.genre][1][book.sub]+'.':'';}
   const count = $('search-count');
   const shelfCount = $('shelf-count');
   if (shelfCount) shelfCount.textContent = items.length + (items.length === 1 ? ' livre dans ce rayon' : ' livres dans ce rayon');
   if (count) count.textContent = items.length + (items.length === 1 ? ' livre trouvé' : ' livres trouvés');
-  const empty = count
+  const empty = privateLibrary&&!scopedBooks.length?'Ta bibliothèque privée est vide. Ajoute ton premier livre.':count
     ? 'Aucun livre pour cette recherche. Essaie un autre mot ou élargis le filtre.'
     : shelfCount
       ? (terms.length ? 'Aucun livre ne correspond à cette recherche dans ce rayon.'
@@ -1336,15 +1403,25 @@ function assetHref(path){return typeof previewAsset==='function'?previewAsset(pa
 function smallCover(b){return b?.cover?'<img class="trace-cover" src="'+esc(assetHref(b.cover))+'" alt="Couverture de '+esc(b.title)+'">':'<img class="trace-cover trace-cover-drawing" src="'+esc(assetHref('images/objets/livre-ouvert.svg'))+'" alt="">';}
 function wordsInPaper(text){return String(text).split(/\s+/).map((w,i)=>'<span class="cut-word cut-word-'+i%3+'">'+esc(w)+'</span>').join(' ');}
 function localReception(book){
- return '<section class="reader-reception scrapbook-rating" data-reader-reviews><h2>'+wordsInPaper('Mes étoiles')+'</h2><p data-reader-reviews-content role="status">Chargement des critiques…</p><a class="editorial-link" href="'+bookLink(book,'avis')+'">Écrire ou modifier ma critique ↗</a></section>';
+ return '<section id="critiques-du-livre" class="reader-reception scrapbook-rating" data-reader-reviews><h2>'+wordsInPaper(book.quentinOnly?'Ma critique privée':'Critiques des lecteurs')+'</h2><p data-reader-reviews-content role="status">Chargement des critiques…</p><a class="editorial-link" href="'+bookLink(book,'avis')+'">Écrire ou modifier ma critique ↗</a></section>';
 }
 async function refreshReaderReviews(book){
  const panels=Array.from(document.querySelectorAll('[data-reader-reviews-content]'));
  if(!panels.length)return;
  try{
-  const response=await fetch(ELL_URL+'/functions/v1/secure-account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'public-reader-reviews',bookId:book.id}),cache:'no-store'});
-  const data=await response.json();
-  if(!response.ok)throw Error(data.error||'Critiques indisponibles');
+  const requestedId=location.hash.match(/^#critique-([0-9a-f-]{36})$/)?.[1];
+  let data;
+  if(book.quentinOnly){
+   const {requestService}=await import('./request-service.js');
+   const {review}=await requestService('review-own',{bookId:book.id,private:true});
+   data={count:review?1:0,average:review?.rating,reviews:review?[review]:[]};
+  }else{
+   const lookup=currentParams().get('source');
+   const bookId=requestedId&&lookup&&catalogueAliases.get(lookup)===book.id?lookup:book.id;
+   const response=await fetch(ELL_URL+'/functions/v1/secure-account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'public-reader-reviews',bookId,reviewId:requestedId}),cache:'no-store'});
+   data=await response.json();
+   if(!response.ok)throw Error(data.error||'Critiques indisponibles');
+  }
   const {count,average,reviews}=data;
   for(const panel of panels){
    const list=document.createElement('div');
@@ -1352,6 +1429,7 @@ async function refreshReaderReviews(book){
    list.innerHTML=(count?'<p class="rating-value">'+formatNumber(Math.round(score*10)/10)+' / 5</p>'+starLine(score):'')+'<p>'+count+' critique'+(Number(count)===1?'':'s')+'</p>';
    for(const entry of reviews){
     const card=document.createElement(entry.spoiler?'details':'article');
+    if(entry.id)card.id='critique-'+entry.id;
     if(entry.spoiler){const summary=document.createElement('summary');summary.textContent='Lire la critique · contient des révélations';card.append(summary);}
     const text=document.createElement('p');text.className='pre-wrap';text.textContent=entry.review;
     const rating=document.createElement('strong');rating.textContent=formatNumber(Number(entry.rating))+' / 5';
@@ -1359,6 +1437,10 @@ async function refreshReaderReviews(book){
    }
    panel.replaceWith(list);list.dataset.readerReviewsContent='';
   }
+  if(requestedId)requestAnimationFrame(()=>{
+   const target=$('critique-'+requestedId)||$('critiques-du-livre');
+   target?.scrollIntoView({block:'start'});
+  });
  }catch(error){for(const panel of panels)panel.textContent=error.message;}
 }
 
@@ -3378,12 +3460,12 @@ ${unit === 'Repères d’après le sommaire' ? '<p class="book-chapter-context">
 }
 
 function detailMarkup(b){const meta={...b};const guide=Object.hasOwn(READING_GUIDES,b.id)?READING_GUIDES[b.id]:null;const sources=[...(guide?.edition.sources||[]),...(meta.sources||[])].filter((source,index,all)=>all.findIndex(item=>item.url===source.url)===index);const art=BOOK_ART[b.id]||({liv0015:['train-fleuri.jpg','Quel chemin prendre ?'],liv0016:['telephone-rose.jpg','Le premier appel'],liv0017:['lecteur-journal.jpg','Diriger une équipe'],liv0018:['chuchotement.jpg','Nos influences'],liv0019:['portrait-bulle.jpg','Prendre la parole'],liv0020:['telephone-pastel.jpg','Le téléphone côté atelier'],liv0021:['conversation-sur-canape.jpg','Le temps d’écouter'],liv0022:['televiseurs-roses.jpg','Derrière l’écran'],liv0023:['regard-curieux.jpg','De l’action à la pensée'],liv0024:['ampoule-etoiles.jpg','Ce que l’on croit possible']})[b.id]||['livre-paysage.jpg','Un monde entre les pages'];const tags=meta.themes||[];
-return '<div class="book-dossier album-book"><header class="album-opening"><div class="album-heading"><p class="album-rayon"><a href="'+siteHref(b.genre==='a-classer'?'mes-livres.html?genre=a-classer':'livres-'+b.genre+'-'+b.sub+'.html')+'">'+esc(GENRES[b.genre]?.[1][b.sub])+' ↗</a></p><h1>'+esc(b.title)+'</h1><p class="album-author">'+esc(b.author)+'</p></div><figure class="album-montage"><img class="album-landscape" src="'+esc(assetHref('images/atelier/'+art[0]))+'" alt=""><img class="album-endpaper" src="'+esc(assetHref('images/collage/papier-fleuri.jpg'))+'" alt=""><div class="album-cover-polaroid">'+smallCover({...b,cover:b.cover||meta.cover})+'<img class="album-cover-flower" src="'+esc(assetHref('images/carnet-illustre/sticker-fleur.svg'))+'" alt=""></div></figure>'+bookFileActions(b,meta)+'</header>'+
+return '<div class="book-dossier album-book"><header class="album-opening"><div class="album-heading"><p class="album-rayon"><a href="'+siteHref(b.quentinOnly?'bibliotheque-privee.html?genre='+encodeURIComponent(b.genre)+'&amp;sub='+encodeURIComponent(b.sub):b.genre==='a-classer'?'mes-livres.html?genre=a-classer':'livres-'+b.genre+'-'+b.sub+'.html')+'">'+esc(GENRES[b.genre]?.[1][b.sub])+' ↗</a></p><h1>'+esc(b.title)+'</h1><p class="album-author">'+esc(b.author)+'</p></div><figure class="album-montage"><img class="album-landscape" src="'+esc(assetHref('images/atelier/'+art[0]))+'" alt=""><img class="album-endpaper" src="'+esc(assetHref('images/collage/papier-fleuri.jpg'))+'" alt=""><div class="album-cover-polaroid">'+smallCover({...b,cover:b.cover||meta.cover})+'<img class="album-cover-flower" src="'+esc(assetHref('images/carnet-illustre/sticker-fleur.svg'))+'" alt=""></div></figure>'+bookFileActions(b,meta)+'</header>'+
 bookPassport(b,meta,guide)+bookGuideMarkup(b,guide)+
 (meta.reviewLinks?.length?'<section class="book-guides"><h2>Critiques et avis externes</h2><ul>'+meta.reviewLinks.filter(url=>typeof url==='string'&&/^https:\/\//.test(url)).map((url,i)=>'<li><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Consulter la source externe '+(i+1)+'</a></li>').join('')+'</ul></section>':'')+
-(b.quentinOnly?'':catalogueControls(b))+(adminEnabled&&!b.quentinOnly?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
+(b.quentinOnly?privateBookControls(b):catalogueControls(b))+(adminEnabled&&!b.quentinOnly?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
 (tags.length?'<section class="album-threads"><h2>Les fils du livre</h2><div>'+tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div><img src="'+esc(assetHref('images/objets/annotation.svg'))+'" alt=""></section>':'')+
-(b.quentinOnly?'':'<div class="book-reception-pair">'+externalReception(meta)+localReception(b)+'</div>')+'<details class="book-sources"><summary>Les sources et références ↘</summary><ul>'+sources.map(s=>'<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' ↗</a></li>').join('')+(meta.pdfPath?'<li><a data-pdf-link="'+esc(meta.pdfPath)+'" href="'+esc(meta.pdfPath)+'" target="_blank" rel="noopener">PDF fourni · contenu et mentions éditoriales ↗</a></li>':'')+(meta.external?.url?'<li><a href="'+esc(meta.external.url)+'" target="_blank" rel="noopener">Source de la note extérieure ↗</a> · '+esc(meta.external.scope)+'</li>':'')+'</ul></details><nav class="book-dossier-bottom" aria-label="Garder une trace"><a href="'+siteHref('fiches.html?livre='+encodeURIComponent(b.id))+'">'+smallCover(b)+'Ma fiche de lecture ↗</a><a href="'+siteHref('journaux.html?livre='+encodeURIComponent(b.id))+'"><img src="'+esc(assetHref('images/objets/journal.svg'))+'" alt="">Mon journal ↗</a>'+(b.quentinOnly?'':'<a class="book-review-link" href="'+bookLink(b,'avis')+'"><img src="'+esc(assetHref('images/objets/avis.svg'))+'" alt="">Ma critique sur ce livre ↗</a>')+(adminEnabled&&!b.quentinOnly?'<a href="'+bookLink(b,'ajouter-livre')+'">Modifier la fiche du catalogue ↗</a>':'')+'</nav></div>';
+'<div class="book-reception-pair">'+externalReception(meta)+localReception(b)+'</div>'+'<details class="book-sources"><summary>Les sources et références ↘</summary><ul>'+sources.map(s=>'<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' ↗</a></li>').join('')+(meta.pdfPath?'<li><a data-pdf-link="'+esc(meta.pdfPath)+'" href="'+esc(meta.pdfPath)+'" target="_blank" rel="noopener">PDF fourni · contenu et mentions éditoriales ↗</a></li>':'')+(meta.external?.url?'<li><a href="'+esc(meta.external.url)+'" target="_blank" rel="noopener">Source de la note extérieure ↗</a> · '+esc(meta.external.scope)+'</li>':'')+'</ul></details><nav class="book-dossier-bottom" aria-label="Garder une trace"><a href="'+siteHref('fiches.html?livre='+encodeURIComponent(b.id))+'">'+smallCover(b)+'Ma fiche de lecture ↗</a><a href="'+siteHref('journaux.html?livre='+encodeURIComponent(b.id))+'"><img src="'+esc(assetHref('images/objets/journal.svg'))+'" alt="">Mon journal ↗</a>'+(b.quentinOnly?'':'<a class="book-review-link" href="'+bookLink(b,'avis')+'"><img src="'+esc(assetHref('images/objets/avis.svg'))+'" alt="">Ma critique sur ce livre ↗</a>')+(adminEnabled&&!b.quentinOnly?'<a href="'+bookLink(b,'ajouter-livre')+'">Modifier la fiche du catalogue ↗</a>':'')+'</nav></div>';
 }
 function legend(){return {...LEGEND_DEFAULT,...state.legend};}
 function ensureBookSheet(b){let sheet=state.notes.find(n=>n.book===b.id&&n.kind==='fiches'&&n.auto);if(!sheet){sheet={id:uid(),book:b.id,kind:'fiches',title:b.title,body:'',page:'',auto:true,updated:new Date().toISOString()};state.notes.push(sheet);}return sheet;}
@@ -3633,11 +3715,12 @@ async function loadServiceState(){
    if(entry.isbn)found.isbn=entry.isbn;
    if(entry.publisher)found.publisher=entry.publisher;
    if(entry.publication_year)found.year=entry.publication_year;
+   if(entry.created_at)found.addedAt=entry.created_at;
    if(entry.cover_path)found.cover=entry.cover_path;
    if(original)found.pdfPath=original;
    found.reviewLinks=entry.review_links||[];
   }else{
-   state.books.push({id:'db-'+entry.id,externalCatalogId:entry.id,title:entry.title,author:entry.author||'',genre:'savoirs',sub:'0',presentation:entry.description||'',cover:entry.cover_path||entry.original_cover||'',pdfPath:original||'',year:entry.publication_year||'',isbn:entry.isbn||'',publisher:entry.publisher||'',reviewLinks:entry.review_links||[]});
+   state.books.push({id:'db-'+entry.id,externalCatalogId:entry.id,addedAt:entry.created_at,title:entry.title,author:entry.author||'',genre:'savoirs',sub:'0',presentation:entry.description||'',cover:entry.cover_path||entry.original_cover||'',pdfPath:original||'',year:entry.publication_year||'',isbn:entry.isbn||'',publisher:entry.publisher||'',reviewLinks:entry.review_links||[]});
   }
  }
 }
@@ -4320,7 +4403,7 @@ async function loadPublicCatalogue(){
    cover:safeCover,pdfPath:safePath,presentation:entry.description||entry.presentation||'',summary:entry.summary||entry.description||'',
    publisher:entry.publisher||'',pdfLanguage:entry.pdfLanguage||entry.language||entry.edition?.language||'',year:entry.publication_year||entry.year||'',isbn:entry.isbn||'',
    reviewLinks:Array.isArray(entry.review_links)?entry.review_links:[],chapters:Array.isArray(entry.chapters)?entry.chapters:[],
-   catalogueSource:source};
+   addedAt:entry.published_at||entry.publishedAt||entry.created_at||entry.createdAt,catalogueSource:source};
  };
  state.books=state.books.filter(b=>!b.catalogueSource);
  const add=(entry,source)=>{
@@ -4393,12 +4476,12 @@ function addGenreCounts(){
 }
 async function loadEditorialCatalogue(){
  try{
-  const response=await fetch(ELL_URL+'/rest/v1/catalogue_editorial_books?select=id,ficha',{headers:{apikey:ELL_KEY},cache:'no-store'});
+  const response=await fetch(ELL_URL+'/rest/v1/catalogue_editorial_books?select=id,ficha,published_at',{headers:{apikey:ELL_KEY},cache:'no-store'});
   if(!response.ok)throw Error('Catalogue éditorial indisponible.');
   const books=await response.json();
-  for(const {id,ficha} of books){
+  for(const {id,ficha,published_at:addedAt} of books){
    if(!GENRES[ficha.genre]?.[1][ficha.sub])continue;
-   state.books.push({...ficha,id,catalogueSource:'editorial'});
+   state.books.push({...ficha,id,addedAt,catalogueSource:'editorial'});
   }
  }catch(error){console.warn(error);}
 }
@@ -4454,18 +4537,47 @@ for(const book of state.books){
 }
 await applyCatalogueSuppressions();
 await applyCatalogueAccess();
-const privateCarnetPages=new Set(['fiches.html','annotations.html','surlignages.html','journaux.html','recherche-lectures.html']);
-if(catalogueManager&&(privateCarnetPages.has(currentPage)||(id&&($('reader-content')||$('book-detail'))&&!state.books.some(book=>book.id===id)))){
+const isPrivateLibrary=currentPage==='bibliotheque-privee.html';
+const privateStatus=$('private-library-status');
+if(isPrivateLibrary&&!catalogueManager){
+ privateStatus.textContent='Accès réservé à la bibliothèque privée.';
+ if(!ellUser){
+  const link=document.createElement('a');
+  link.href='connexion-firebase.html?retour=bibliotheque-privee.html';
+  link.textContent='Se connecter';
+  privateStatus.append(' ',link);
+ }
+ return;
+}
+const privateCarnetPages=new Set(['fiches.html','annotations.html','surlignages.html','journaux.html','recherche-lectures.html','mon-espace.html']);
+const privateDetails=id&&($('reader-content')||$('book-detail')||$('review-form'))&&!state.books.some(book=>book.id===id);
+if(catalogueManager&&(isPrivateLibrary||privateCarnetPages.has(currentPage)||privateDetails)){
  try{
   const {requestService}=await import('./request-service.js');
-  const {books}=await requestService('quentin-private-selection');
-  for(const {id:bookId,ficha} of books||[]){
+  const {books}=await requestService('quentin-private-selection',privateDetails?{bookId:id}:{});
+  for(const {id:bookId,ficha,published_at:addedAt} of books||[]){
    if(ficha&&GENRES[ficha.genre]?.[1][ficha.sub]){
-    state.books.push({...ficha,id:bookId,privatePdf:true,quentinOnly:true});
+    state.books.push({...ficha,id:bookId,addedAt,privatePdf:true,quentinOnly:true});
    }
   }
- }catch(error){console.warn('Sélection privée indisponible',error);}
+ }catch(error){
+  if(privateStatus){privateStatus.textContent=error.message;return;}
+  console.warn('Bibliothèque privée indisponible',error);
+ }
 }
+if(catalogueManager)bindPrivateBookControls();
+if(isPrivateLibrary){
+ $('private-library').hidden=false;
+ privateStatus.hidden=true;
+}
+if(catalogueManager&&$('quentin-selection')){
+ $('quentin-selection').hidden=false;
+ if(location.hash==='#quentin-selection')$('quentin-selection').scrollIntoView();
+ $('account-critiques-link').href='#critiques-recentes';
+ const {bindRecentReviews}=await import('./critiques-recentes.js');
+ bindRecentReviews({books:state.books,genres:GENRES,aliases:catalogueAliases});
+}
+if(currentPage==='mes-livres.html')await loadCatalogueSortData();
 if(!document.querySelector('link[href*="plan-locks.css"]')){
  const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href=siteHref('css/plan-locks.css');document.head.append(stylesheet);
 }
@@ -4473,11 +4585,12 @@ if($('reader-content')||$('highlights')){const css=document.createElement('link'
 addGenreCounts();
 if(remoteCarnet&&ellUser)restoreCarnet(remoteCarnet);
 bindReadingSearch();
-if(db)await writeLocalState(null);
+if(db&&!isPrivateLibrary)await writeLocalState(null);
 if(!document.body.isConnected)return;
 applyDesign();
-if($('search-language'))fillLanguageOptions($('search-language'),state.books);
-if($('search-year')){$('search-year').innerHTML='<option value="">Toutes les dates</option>'+[...new Set(state.books.map(b=>bookYear(b)).filter(Boolean))].sort((a,b)=>Number(b)-Number(a)).map(y=>'<option>'+esc(y)+'</option>').join('');}
+const searchBooks=isPrivateLibrary?state.books.filter(book=>book.quentinOnly):state.books.filter(book=>!book.quentinOnly);
+if($('search-language'))fillLanguageOptions($('search-language'),searchBooks);
+if($('search-year')){$('search-year').innerHTML='<option value="">Toutes les dates</option>'+[...new Set(searchBooks.map(b=>bookYear(b)).filter(Boolean))].sort((a,b)=>Number(b)-Number(a)).map(y=>'<option>'+esc(y)+'</option>').join('');}
 if($('review-search')){
  $('review-search').oninput=renderBooks;
  for(const field of ['review-sort','review-day','review-only']) $(field).onchange=renderBooks;
@@ -4508,7 +4621,7 @@ if($('search-subgenre')){
  $('catalogue-search')?.addEventListener('reset',()=>requestAnimationFrame(()=>{updateSubgenres();renderBooks();}));
 }
 bindCatalogueControls();
-renderBooks();renderRecommendations();if($('recommended-books'))addEventListener('ell-lists-change',renderRecommendations);if($('search-favorites'))addEventListener('ell-lists-change',()=>{if($('search-favorites').checked)renderBooks()});selects();bindTraceFilters();renderHighlights();renderNotes();renderQuestions();if ($('search')) $('search').oninput = renderBooks;
+renderBooks();renderRecommendations();if($('recommended-books'))addEventListener('ell-lists-change',renderRecommendations);if($('search-favorites'))addEventListener('ell-lists-change',()=>{if($('search-favorites').checked||$('search-sort')?.value==='recommended')renderBooks()});selects();bindTraceFilters();renderHighlights();renderNotes();renderQuestions();if ($('search')) $('search').oninput = renderBooks;
 if ($('search-genre')) $('search-genre').onchange = renderBooks;
 if ($('catalogue-search')) {
   $('catalogue-search').onsubmit = event => {
@@ -4645,7 +4758,19 @@ $('book-form').onsubmit = async event => {
 };
 }
 
-if($('book-detail')){$('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Choisis un livre dans Genres ou dans Mes lectures.</p>';wirePDFLinks();if(b&&!b.quentinOnly){showDownloadCount(b);void refreshReaderReviews(b);}}
+if($('book-detail')){
+ $('book-detail').innerHTML=b?detailMarkup(b):'<p class="empty">Ce livre est indisponible.</p>';
+ if(b?.quentinOnly){
+  document.title=b.title+' · Bibliothèque privée';
+  const link=document.createElement('a');
+  link.href='bibliotheque-privee.html';
+  link.textContent='Bibliothèque privée';
+  $('book-crumb')?.replaceChildren(link,' / Présentation du livre');
+ }
+ wirePDFLinks();
+ if(b&&!b.quentinOnly)showDownloadCount(b);
+ if(b)void refreshReaderReviews(b);
+}
 document.querySelectorAll('[data-count-download]').forEach(link=>link.addEventListener('click',async event=>{
  if(typeof previewAsset==='function')return;
  event.preventDefault();
@@ -4665,7 +4790,7 @@ document.querySelectorAll('[data-private-download]').forEach(button=>button.oncl
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
     location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true,publicAccess:false}));
-    if(b)void showDownloadCount(b);
+    if(b&&!b.quentinOnly)void showDownloadCount(b);
   }catch(error){alert(error.message);}
   finally{button.disabled=false;}
 });
@@ -4675,7 +4800,8 @@ if($('review-form')){
  if(!b){$('review-book').textContent='Choisis d’abord un livre dans Critiques.';form.hidden=true;}
  else{
   $('review-book').innerHTML='<a href="'+bookLink(b)+'">'+esc(b.title)+'</a>';
-  const visibility=document.createElement('p');visibility.className='note';visibility.textContent='La critique et la note publiées seront visibles sur la fiche du livre.';
+  const visibility=document.createElement('p');visibility.className='note';visibility.textContent=b.quentinOnly?'Ta critique est visible dans cette bibliothèque privée.':'La critique et la note publiées seront visibles sur la fiche du livre.';
+  const reviewTarget={bookId:b.id,private:b.quentinOnly===true};
   form.prepend(visibility);
   const paint=()=>document.querySelectorAll('[data-star]').forEach(button=>{
    const selected=Number(button.dataset.star)<=Number($('rating').value);
@@ -4687,7 +4813,7 @@ if($('review-form')){
   const {auth,requestService}=await import('./request-service.js');
   const account=auth.currentUser;
   if(account){
-   try{own=(await requestService('review-own',{bookId:b.id},account)).review;}
+   try{own=(await requestService('review-own',reviewTarget,account)).review;}
    catch(error){message(error.message,true);}
   }
   if(own){
@@ -4697,8 +4823,8 @@ if($('review-form')){
   }
   if(remove){
    remove.hidden=!own;remove.onclick=async()=>{
-    if(!confirm('Retirer ta critique publique ?'))return;
-    try{await requestService('review-delete',{bookId:b.id},account);form.reset();paint();remove.hidden=true;drawLocalReview(b);await refreshReaderReviews(b);}
+    if(!confirm('Retirer ta critique ?'))return;
+    try{await requestService('review-delete',reviewTarget,account);form.reset();paint();remove.hidden=true;drawLocalReview(b);await refreshReaderReviews(b);}
     catch(error){message(error.message,true);}
    };
   }
@@ -4709,9 +4835,9 @@ if($('review-form')){
    if(!account){message('Connecte-toi pour publier ta critique.',true);return;}
    if($('rating').value===''||!Number.isFinite(score)||score<0||score>5||!review){message('Choisis une note sur cinq et rédige ta critique.',true);return;}
    try{
-    await requestService('review-publish',{bookId:b.id,rating:score,review,spoiler:$('spoiler').checked},account);
+    await requestService('review-publish',{...reviewTarget,rating:score,review,spoiler:$('spoiler').checked},account);
     if(remove)remove.hidden=false;
-    message('Critique publiée sur la fiche du livre.');
+    message(b.quentinOnly?'Critique privée enregistrée.':'Critique publiée sur la fiche du livre.');
     drawLocalReview(b);await refreshReaderReviews(b);
    }catch(error){message(error.message,true);}
   };
