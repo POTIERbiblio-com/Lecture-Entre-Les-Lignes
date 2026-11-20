@@ -7,7 +7,7 @@ async function ellPrivate(action,data){
  return requestService(action,{kind:'carnet',data},account);
 }
 function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};state.design={};state.legend={};for(const b of state.books){b.position='';b.pdfPage=1;}}
-const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique"]],"a-classer":["À classer",["Sans sous-genre"]]};
+const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let db,state,objects=[];let id=new URLSearchParams(location.search).get('id')||$('book-detail')?.dataset.bookId||$('reader-content')?.dataset.bookId;
@@ -4374,7 +4374,7 @@ function addGenreCounts(){
   const badge=document.createElement('span');
   badge.className='genre-book-count';
   badge.textContent=count+(count===1?' livre':' livres');
-  badge.style.cssText='position:absolute;right:.55rem;bottom:.55rem;z-index:3;padding:.28rem .58rem;border-radius:2rem;background:#fff5fa;color:#64324e;font-size:.85rem;font-weight:700;box-shadow:0 1px 4px #63354c33';
+  badge.style.cssText='position:absolute;left:.5rem;top:.45rem;z-index:3;padding:.28rem .58rem;border-radius:2rem;background:#fff5fa;color:#64324e;font-size:clamp(.66rem,1.6vw,.82rem);line-height:1.1;font-weight:700;pointer-events:none;box-shadow:0 1px 4px #63354c33';
   if(getComputedStyle(link).position==='static')link.style.position='relative';
   link.append(badge);
  }
@@ -4426,6 +4426,14 @@ if(ellUser){
   });
 }
 await Promise.all([loadPublicCatalogue(),loadEditorialCatalogue()]);
+// The former combined Fiction shelf now lives in Manga et BD.
+for(const book of state.books){
+ if(book.genre==='fiction'&&String(book.sub)==='5'){
+  book.genre='manga';
+  book.sub='0';
+ }
+}
+
 await applyCatalogueSuppressions();
 await applyCatalogueAccess();
 if(!document.querySelector('link[href*="plan-locks.css"]')){

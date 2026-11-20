@@ -36,13 +36,13 @@
 <details class="catalogue-filter-panel"><summary>Filtres et tri</summary><div class="catalogue-filter-grid"><div class="catalogue-field"><label for="search-genre">Genre</label>
       <select id="search-genre" name="genre">
         <option value="">Tous les genres</option>
-        <option value="fiction">Romans, fiction et BD</option>
+        <option value="fiction">Romans et fiction</option>
         <option value="savoirs">Sciences, idées et travail</option>
         <option value="arts">Arts et culture</option>
         <option value="vie-et-societe">Vie quotidienne et société</option>
         <option value="spiritualites">Spiritualités et religions</option>
         <option value="jeunesse">Jeunesse et pédagogie</option>
-      <option value="voyages">Voyages et nature</option><option value="creativite">Loisirs et activités créatives</option><option value="magazine">Magazine</option><option value="a-classer">À classer</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
+      <option value="voyages">Voyages et nature</option><option value="creativite">Loisirs et activités créatives</option><option value="manga">Manga et BD</option><option value="magazine">Magazine</option><option value="a-classer">À classer</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
       </div>
 <div class="catalogue-field"><label for="search-year">Année de l’édition</label><select id="search-year"><option value="">Toutes les dates</option></select></div>
 <div class="catalogue-field"><label for="search-sort">Classer les résultats</label><select id="search-sort"><option value="title">Titre · A à Z</option><option value="author">Auteur · A à Z</option><option value="newest">Parution · récente d’abord</option><option value="oldest">Parution · ancienne d’abord</option></select></div>
@@ -53,9 +53,10 @@
   <div class="catalogue-tabs" id="catalogue-tabs" role="group" aria-label="Filtrer par rayon">
     <span class="catalogue-tabs-label">Les rayons</span>
     <button type="button" data-genre="" aria-pressed="true">Tout</button>
-    <button type="button" data-genre="fiction" aria-pressed="false">Romans, fiction et BD</button>
+    <button type="button" data-genre="fiction" aria-pressed="false">Romans et fiction</button>
     <button type="button" data-genre="savoirs" aria-pressed="false">Sciences, idées et travail</button>
     <button type="button" data-genre="arts" aria-pressed="false">Arts et culture</button>
+    <button type="button" data-genre="manga" aria-pressed="false">Manga et BD</button>
     <button type="button" data-genre="magazine" aria-pressed="false">Magazine</button>
     <button type="button" data-genre="vie-et-societe" aria-pressed="false">Vie quotidienne et société</button>
     <button type="button" data-genre="spiritualites" aria-pressed="false">Spiritualités</button>
@@ -77,7 +78,7 @@
 <section id="recommended-books" class="site-main catalogue-shelf" hidden><h2>À lire d’après tes favoris</h2><div class="catalogue-results"></div></section><script src="js/recommandations.js" defer></script><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
-<script type="text/javascript" src="js/app.js?v=magazine-20261120">
+<script type="text/javascript" src="js/app.js?v=manga-compteurs-20261120">
 </script>
 <script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/collections-privees.js?v=coeur-20261119-3" defer></script><script src="js/favoris-catalogue.js?v=coeur-20261119-3" defer></script></body>
 </html>
