@@ -14,12 +14,9 @@ const privateLevel='quentin-only';
 const privateRequested=new URLSearchParams(location.search).get('selection')==='privee';
 const isQuentin=account=>account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
 const proposalId=new URLSearchParams(location.search).get('proposition');
-const coverLabel=fields.cover.closest('label');
 const audienceNote=document.getElementById('publication-private-note');
 function updateAudience(){
   const privateSelection=fields.level.value===privateLevel;
-  fields.cover.disabled=privateSelection;
-  coverLabel.hidden=privateSelection;
   audienceNote.hidden=!privateSelection;
   submit.textContent=privateSelection?'Ajouter à ma sélection privée':'Publier le livre';
 }
@@ -152,7 +149,19 @@ form.onsubmit=async event=>{
   payload.edition=Object.fromEntries([...values].filter(([name])=>name.startsWith('edition-')).map(([name,value])=>[name.slice(8),value]));
   payload.chapters=Array.from(chapters.children,field=>Object.fromEntries(['title','page','summary'].map(name=>[name,field.querySelector('[name=chapter-'+name+']').value])));
   try{
-    if(cover?.size&&publication.cover!==cover.name+'|'+cover.size+'|'+cover.lastModified){
+    if(privateSelection&&cover?.size){
+      message.textContent='Préparation de la couverture privée…';
+      const bitmap=await createImageBitmap(cover);
+      try{
+        const scale=Math.min(1,400/bitmap.width,600/bitmap.height);
+        const canvas=document.createElement('canvas');
+        canvas.width=Math.max(1,Math.floor(bitmap.width*scale));
+        canvas.height=Math.max(1,Math.floor(bitmap.height*scale));
+        canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);
+        payload.privateCover=canvas.toDataURL('image/jpeg',.78);
+        if(payload.privateCover.length>240000)throw Error('Cette couverture compressée dépasse la limite.');
+      }finally{bitmap.close();}
+    }else if(cover?.size&&publication.cover!==cover.name+'|'+cover.size+'|'+cover.lastModified){
       message.textContent='Envoi de la couverture…';
       const {path,token}=await requestService('editorial-cover-upload',{bookId:publication.id,coverType},account);
       const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
@@ -168,7 +177,7 @@ form.onsubmit=async event=>{
       publication.pdf=fileKey;
     }
     message.textContent=privateSelection?'Ajout à ta sélection privée…':'Publication dans le catalogue…';
-    const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType:cover?.size?coverType:''},account);
+    const {id}=await requestService('editorial-publish',{...payload,bookId:publication.id,coverType:!privateSelection&&cover?.size?coverType:''},account);
     if(auth.currentUser?.uid!==account.uid)return;
     if(privateSelection){location.assign('mon-espace.html#quentin-selection');return;}
     const filters=new URLSearchParams({genre:payload.genre,sub:payload.sub,publie:id});

@@ -81,6 +81,13 @@ if(isOwner(account)){
     link.className='btn secondary';
     link.href='livre.html?id='+encodeURIComponent(book.id);
     link.textContent=[book.title,book.author].filter(Boolean).join(' — ');
+    const cover=book.ficha?.cover;
+    if(typeof cover==='string'&&cover.startsWith('data:image/jpeg;base64,')){
+      const img=document.createElement('img');
+      img.src=cover;img.alt='';img.loading='lazy';img.width=48;
+      img.style.cssText='vertical-align:middle;margin-inline-end:.5rem;border-radius:.25rem';
+      link.prepend(img);
+    }
     item.append(link);list.append(item);
    }
    panel.hidden=false;panel.style.display='block';

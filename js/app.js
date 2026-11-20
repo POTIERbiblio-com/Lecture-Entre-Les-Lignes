@@ -1239,7 +1239,8 @@ function renderBooks() {
     if ($('search-favorites')?.checked && !favorites.some(favorite=>(catalogueAliases.get(favorite)||favorite)===book.id)) return false;
     if ($('search-language')?.value && bookLanguage(book)!==$('search-language').value) return false;
     if ($('search-year')?.value && bookYear(book)!==$('search-year').value) return false;
-    if ($('pdf-only')?.checked && !book.pdfPath && !book.pdf && !book.privatePdf && !book.accessLevel) return false;
+    const access = $('search-access')?.value;
+    if (access && (!(book.pdfPath || book.pdf || book.privatePdf || book.accessLevel) || Number(book.accessLevel || 0)!==Number(access))) return false;
     if (!terms.length) return true;
     const edition = book.edition && typeof book.edition==='object' ? Object.values(book.edition) : [book.edition, ...Object.values(READING_GUIDES[book.id]?.edition || {}).filter(value=>typeof value==='string')];
     const words = searchTerms([book.title,book.author,book.year,book.publisher,book.isbn,...edition,...(book.themes||[])].join(' ')).join(' ');
@@ -1251,12 +1252,6 @@ function renderBooks() {
   if(order==='title') items.sort((a,b)=>a.title.localeCompare(b.title,'fr'));
   if(order==='newest') items.sort((a,b)=>Number(bookYear(b)||0)-Number(bookYear(a)||0));
   if(order==='oldest') items.sort((a,b)=>Number(bookYear(a)||9999)-Number(bookYear(b)||9999));
-  const tabs = $('catalogue-tabs');
-  if (tabs) {
-    tabs.querySelectorAll('[data-genre]').forEach(button => {
-      button.setAttribute('aria-pressed', String(button.dataset.genre === $('search-genre').value));
-    });
-  }
   const published=$('search-publication');
   if(published){const book=items.find(item=>item.id===new URLSearchParams(location.search).get('publie'));published.textContent=book?'« '+book.title+' » est publié dans '+GENRES[book.genre][0]+' · '+GENRES[book.genre][1][book.sub]+'.':'';}
   const count = $('search-count');
@@ -4489,7 +4484,7 @@ if($('review-search')){
  $('review-filters').onsubmit=event=>{event.preventDefault();renderBooks();};
  $('review-filters').onreset=()=>requestAnimationFrame(renderBooks);
 }
-for(const field of ['search-year','search-language','search-sort','pdf-only','search-favorites'])if($(field))$(field).onchange=renderBooks;
+for(const field of ['search-year','search-language','search-sort','search-access','search-favorites'])if($(field))$(field).onchange=renderBooks;
 if(($('books')||$('book-detail'))&&!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const hearts=document.createElement('script');hearts.src='js/favoris-catalogue.js?v=coeur-20261119-3';document.head.append(hearts);
 }
@@ -4501,6 +4496,8 @@ if($('search-subgenre')){
  };
  const query=new URLSearchParams(location.search);
  const legacyManga=query.get('genre')==='fiction'&&query.get('sub')==='5';
+ const access=$('search-access');
+ if(access&&['0','1','2','3'].includes(query.get('acces')))access.value=query.get('acces');
  const requestedGenre=legacyManga?'manga':query.get('genre');
  const requestedSub=legacyManga?'0':query.get('sub');
  if(Object.hasOwn(GENRES,requestedGenre))genre.value=requestedGenre;
@@ -4513,16 +4510,6 @@ if($('search-subgenre')){
 bindCatalogueControls();
 renderBooks();renderRecommendations();if($('recommended-books'))addEventListener('ell-lists-change',renderRecommendations);if($('search-favorites'))addEventListener('ell-lists-change',()=>{if($('search-favorites').checked)renderBooks()});selects();bindTraceFilters();renderHighlights();renderNotes();renderQuestions();if ($('search')) $('search').oninput = renderBooks;
 if ($('search-genre')) $('search-genre').onchange = renderBooks;
-if ($('catalogue-tabs')) {
-  $('catalogue-tabs').hidden = false;
-  $('catalogue-tabs').querySelectorAll('[data-genre]').forEach(button => {
-    button.onclick = () => {
-      $('search-genre').value = button.dataset.genre;
-      $('search-genre').dispatchEvent(new Event('change'));
-      renderBooks();
-    };
-  });
-}
 if ($('catalogue-search')) {
   $('catalogue-search').onsubmit = event => {
     event.preventDefault();

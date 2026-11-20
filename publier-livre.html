@@ -6,7 +6,7 @@
 <main class="ae-shell">
 <div class="ae-heading"><div><h1>Publier un livre</h1><p>Ajoute un titre, un auteur et le PDF. Tu peux compléter la fiche avec les informations que tu as.</p></div><img src="images/carnet-illustre/carnet-studieux.jpg" alt=""></div>
 <p id="publication-message" role="status" class="ae-status">Vérification du compte…</p>
-<form id="publication-form" hidden><p id="publication-private-note" hidden style="margin:0">Ce livre sera visible uniquement dans ta sélection privée, sans couverture publique.</p>
+<form id="publication-form" hidden><p id="publication-private-note" hidden style="margin:0">La fiche, le PDF et la couverture seront visibles dans ta sélection privée.</p>
 <fieldset class="panel publication-basics"><legend>Prêt à publier</legend>
 <label>Titre <input name="title" required maxlength="180" placeholder="Titre du livre"></label>
 <label>Auteur <input name="author" required maxlength="150" placeholder="Prénom et nom"></label>
@@ -41,4 +41,4 @@
 
 <div class="publication-submit"><button type="submit" class="btn">Publier dans le catalogue ↗</button></div></form>
 <template id="chapter-template"><fieldset><legend>Chapitre</legend><label>Titre <input name="chapter-title" required maxlength="180"></label><label>Page PDF <input name="chapter-page" type="number" min="1" step="1"></label><label>Résumé <textarea name="chapter-summary" required maxlength="5000" rows="4"></textarea></label><button type="button" class="btn secondary">Retirer le chapitre</button></fieldset></template>
-</main><script type="module" src="js/publication-livre.js?v=pieces-jointes-20261120"></script></body></html>
+</main><script type="module" src="js/publication-livre.js?v=couverture-privee-20261120"></script></body></html>
