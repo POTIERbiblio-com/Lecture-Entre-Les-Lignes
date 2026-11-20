@@ -15,3 +15,12 @@
 @media(prefers-reduced-motion:reduce){.tutorial-click .tutorial-pointer::after{animation:none}}
 
 .tutos-ecran>.tutorial-wide{grid-column:1/-1}
+.tutorial-play{position:absolute;inset:0;width:100%;height:100%;display:grid;place-items:center;border:0;background:transparent;color:#63334f;cursor:pointer}
+.tutorial-play-symbol{display:grid;place-items:center;width:3.1rem;height:3.1rem;border-radius:50%;background:#fff8fb;box-shadow:0 2px 12px #52213d40;font-size:1.3rem}
+.is-playing .tutorial-play-symbol{opacity:0}
+.is-playing .tutorial-play:focus-visible .tutorial-play-symbol{opacity:1}
+.tutorial-controls[hidden],.tutorial-caption[hidden]{display:none}
+.tutorial-controls{padding:.22rem .45rem;gap:.25rem}
+.tutorial-controls button{padding:.12rem .48rem;border:0;background:transparent}
+.tutorial-progress{flex:1;min-width:2rem;height:.18rem;accent-color:#984970}
+.tutorial-caption{min-height:0;font-size:clamp(.82rem,2vw,.95rem);padding:.55rem .7rem}

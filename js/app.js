@@ -1145,12 +1145,12 @@ const accessLabels=['','Jaune · Découverte','Orange · Passion','Rouge · Illi
 const accessColors=['','#fbec9a','#ffcc9f','#f4a7b0'];
 function planLock(level){
  const plan=['','Découverte','Passion','Illimité'][Number(level)];
- return plan?'<span class="plan-lock plan-lock-'+Number(level)+'" aria-label="À partir de '+plan+'"><span class="plan-lock-icon" aria-hidden="true"></span>'+plan+'</span>':'';
+ return plan?'<span class="plan-lock plan-lock-'+Number(level)+'" aria-label="Abonnement requis à partir de '+plan+'"><span class="plan-lock-icon" aria-hidden="true"></span>Abonnement '+plan+'</span>':'';
 }
 function lockBadge(book){
  if(book.accessLevel)return planLock(book.accessLevel);
- if(book.editorialBadge==='orange')return '<span class="plan-lock plan-lock-2">Mis en avant</span>';
- if(book.editorialBadge==='jaune')return '<span class="plan-lock plan-lock-1">À découvrir</span>';
+ if(book.editorialBadge==='orange')return '<span class="book-editorial-pick">✦ Sélection du site</span>';
+ if(book.editorialBadge==='jaune')return '<span class="book-editorial-pick">✦ À lire</span>';
  return '';
 }
 function bookSubscriptionOffer(book){

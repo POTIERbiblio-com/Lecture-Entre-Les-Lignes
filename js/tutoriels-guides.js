@@ -1,3 +1,5 @@
+import {narrationCues} from './tutoriels-audio.js?v=narration-1';
+
 const reader='lire.html?id=edition-6e9408ef-af2f-5583-949d-742806ca90ff&pdfpage=5';
 const proposal='demander-un-livre.html';
 const paths={
@@ -27,6 +29,16 @@ const paths={
   [proposal,'#request-pdf','Ma proposition','Ajoute ton PDF ou une couverture, si tu en as le droit. Ces pièces jointes sont facultatives.',true,'demo'],
   [proposal,'#send-request','Ma proposition','Relis les informations, puis clique sur « Envoyer ma proposition ».',true,'demo'],
   [proposal,'.request-history-card h2','Mes propositions','Dans « Mes propositions », retrouve ta demande et consulte son statut et les réponses.',false,'demo']
+ ],
+ abonnements:[
+  ['index.html','.ell-cercle-action','Accueil','Sur l’accueil, clique sur « Voir les trois formules » pour ouvrir Le Cercle.',true,'demo'],
+  ['le-cercle.html','.premium-link[href="#formules"]','Le Cercle','En haut du Cercle, clique sur « Explorer les formules ». Tu arrives aux trois abonnements.',true,'demo'],
+  ['le-cercle.html','.tier-one','Découverte','Découverte ouvre les cadenas jaunes. Tu peux personnaliser huit couleurs et mettre une proposition en avant chaque mois.',false,'demo'],
+  ['le-cercle.html','.tier-two','Passion','Passion ajoute les cadenas orange, la recherche dans le carnet, les journaux personnalisés et l’export annoté.',false,'demo'],
+  ['le-cercle.html','.tier-three','Illimité','Illimité ouvre aussi les cadenas rouges. Les téléchargements par livre et les exports annotés sont sans limite.',false,'demo'],
+  ['le-cercle.html','.tier-three a[href="#comparatif"]','Comparer les avantages','Clique sur « Comparer les avantages » pour voir aussi la colonne Gratuit.',true,'demo'],
+  ['le-cercle.html','.circle-table thead','Le tableau comparatif','Dans le tableau, compare les prix et les avantages. Sur téléphone, fais glisser le tableau pour voir toutes les colonnes.',false,'demo'],
+  ['le-cercle.html','[data-subscribe-plan="passion"]','Souscrire','Quand tu as choisi, clique sur « Souscrire » dans la formule correspondante. Vérifie le récapitulatif avant de payer.',true,'demo']
  ]
 };
 const frameWidth=760;
@@ -67,39 +79,68 @@ function showDemo(doc,path){
   doc.querySelector('#journal-collection-form [name="title"]').value='Mes passages préférés';
  }
 }
+let pauseActiveGuide=()=>{};
+
 function makeGuide(host,steps){
- const header=element(host,'p','tutorial-page','Démo du site');
+ const cues=narrationCues[host.dataset.tutorial];
+ const audio=element(host,'audio','');
+ audio.hidden=true;
+ audio.src='videos/narration/'+host.dataset.tutorial+'.mp3?v=1';
+ audio.preload='metadata';
  const view=element(host,'div','tutorial-view');
- view.hidden=true;
  const overlay=element(view,'div','tutorial-overlay');
  overlay.setAttribute('aria-hidden','true');
  const rect=element(overlay,'div','tutorial-focus');
  const pointer=element(overlay,'span','tutorial-pointer','➤');
- const caption=element(host,'p','tutorial-caption','Lance la démonstration pour voir les étapes.');
- caption.setAttribute('aria-live','polite');
+ const play=element(view,'button','tutorial-play');
+ play.type='button';
+ const symbol=element(play,'span','tutorial-play-symbol','▶');
+ symbol.setAttribute('aria-hidden','true');
+ const caption=element(host,'p','tutorial-caption');
+ caption.hidden=true;
  const bar=element(host,'div','tutorial-controls');
+ bar.hidden=true;
  const previous=element(bar,'button','','‹');
  previous.setAttribute('aria-label','Étape précédente');
- const play=element(bar,'button','','Lancer');
  const next=element(bar,'button','','›');
  next.setAttribute('aria-label','Étape suivante');
- const sound=element(bar,'button','','Écouter');
- const expand=element(bar,'button','','Agrandir');
- expand.setAttribute('aria-pressed','false');
- sound.setAttribute('aria-pressed','false');
+ const expand=element(bar,'button','','⛶');
+ expand.setAttribute('aria-label','Agrandir');
+ const progress=element(bar,'progress','tutorial-progress');
+ progress.max=steps.length;
+ progress.setAttribute('aria-label','Progression du tutoriel');
+ progress.value=0;
  for(const control of bar.querySelectorAll('button'))control.type='button';
- if(!('speechSynthesis' in window))sound.hidden=true;
- let stage=0, generation=0, playing=false, narrated=false, elapsed=null;
- let iframe, lastPath, ready, target, currentClick=false, speech, clickTimer, observer;
- previous.disabled=true;
- next.disabled=true;
- function stop(){
-  clearTimeout(elapsed);
-  elapsed=null;
-  const speaking=speech;
-  speech=null;
-  if(speaking)speechSynthesis.cancel();
+ let stage=0, generation=0, playing=false, completed=false, readyStage=false;
+ let iframe, lastPath, ready, target, clickTimer, observer;
+ function updatePlay(){
+  host.classList.toggle('is-playing',playing);
+  symbol.textContent=playing?'Ⅱ':'▶';
+  play.setAttribute('aria-label',playing?'Mettre en pause':completed?'Revoir le tutoriel':'Lire le tutoriel');
  }
+ function pause(){
+  playing=false;
+  audio.pause();
+  clearTimeout(clickTimer);
+  updatePlay();
+ }
+ function playCue(token){
+  if(!playing||token!==generation)return;
+  audio.muted=false;
+  audio.play().catch(()=>{
+   if(token!==generation||!playing)return;
+   pause();
+   caption.textContent='Touche le bouton de lecture pour relancer le son.';
+  });
+ }
+ function animateClick(enabled,token){
+  clearTimeout(clickTimer);
+  overlay.classList.remove('tutorial-click');
+  if(enabled)clickTimer=setTimeout(()=>{
+   if(token===generation&&playing)overlay.classList.add('tutorial-click');
+  },stage<2?900:1300);
+ }
+ updatePlay();
  function resize(){
   if(!iframe||!view.clientWidth)return;
   const scale=view.clientWidth/frameWidth;
@@ -118,7 +159,6 @@ function makeGuide(host,steps){
  }
  function preview(path,demo){
   if(iframe&&lastPath===path)return ready;
-  view.hidden=false;
   iframe?.remove();
   iframe=document.createElement('iframe');
   iframe.title='Aperçu du site pour la démonstration';
@@ -132,39 +172,32 @@ function makeGuide(host,steps){
   resize();
   return ready;
  }
- function proceed(token){
-  if(token!==generation||!playing)return;
+ function proceed(){
+  if(!playing||!readyStage)return;
+  audio.pause();
+  readyStage=false;
   if(stage<steps.length-1){stage++;void render();}
-  else {playing=false;play.textContent='Revoir';}
+  else{completed=true;pause();}
  }
- function narration(text,token,duration){
-  if(!playing)return;
-  elapsed=setTimeout(()=>proceed(token),duration);
-  if(!narrated||!('speechSynthesis' in window))return;
-  const voices=speechSynthesis.getVoices().filter(voice=>/^fr(?:-|$)/i.test(voice.lang));
-  const voice=voices.find(v=>/audrey|am[ée]lie|denise|hortense|virginie|[ée]lodie|vivienne|fran[çc]ais|julie|c[ée]line|sylvie|louise/i.test(v.name));
-  if(!voice){sound.textContent='Voix française indisponible';return;}
-  const request=new SpeechSynthesisUtterance(text);
-  request.lang=voice.lang;
-  request.voice=voice;
-  request.rate=.91;
-  request.onstart=()=>{if(speech===request)clearTimeout(elapsed);};
-  request.onend=()=>{if(speech===request)elapsed=setTimeout(()=>proceed(token),450);};
-  speech=request;
-  speechSynthesis.speak(request);
- }
- async function render(){
+ audio.addEventListener('timeupdate',()=>{
+  if(playing&&readyStage&&audio.currentTime>=cues[stage][1]-.05)proceed();
+ });
+ audio.addEventListener('ended',proceed);
+ async function render(warmingUp=false){
   const token=++generation;
-  stop();
+  readyStage=false;
+  if(!warmingUp)audio.pause();
   observer?.disconnect();
   clearTimeout(clickTimer);
   target=null;
   overlay.hidden=true;
   overlay.classList.remove('tutorial-click');
   const [path,selector,name,text,click,demo]=steps[stage];
-  currentClick=click;
-  header.textContent=name+' · '+(stage+1)+' / '+steps.length+(demo?' · Démonstration':'');
+  bar.hidden=false;
+  caption.hidden=false;
   caption.textContent='Chargement de l’écran…';
+  progress.value=stage+1;
+  view.setAttribute('aria-label',name);
   previous.disabled=stage===0;
   next.disabled=stage===steps.length-1;
   const doc=await preview(path,demo);
@@ -204,29 +237,38 @@ function makeGuide(host,steps){
    resize();
    observer=new ResizeObserver(resize);
    observer.observe(target);
-   if(currentClick)clickTimer=setTimeout(()=>{if(token===generation)overlay.classList.add('tutorial-click');},stage<2?900:1300);
+   animateClick(click,token);
+   if(name==='Le tableau comparatif'){
+    const table=doc.querySelector('.circle-table-scroll');
+    if(table&&table.scrollWidth>table.clientWidth)clickTimer=setTimeout(()=>{
+     if(token===generation&&playing)table.scrollTo({left:table.scrollWidth,behavior:'smooth'});
+    },1700);
+   }
   }
   caption.textContent=text;
-  narration(text,token,Math.max(4100,text.split(/\s+/).length*448));
+  readyStage=true;
+  audio.currentTime=cues[stage][0];
+  playCue(token);
  }
  previous.onclick=()=>{if(stage>0){stage--;void render();}};
  next.onclick=()=>{if(stage<steps.length-1){stage++;void render();}};
  play.onclick=()=>{
-  playing=!playing;
-  if(playing){if(play.textContent==='Revoir')stage=0;play.textContent='Pause';void render();}
-  else {stop();play.textContent='Reprendre';}
+  if(playing){pause();return;}
+  pauseActiveGuide();
+  pauseActiveGuide=pause;
+  playing=true;
+  if(completed){stage=0;completed=false;}
+  updatePlay();
+  if(readyStage){playCue(generation);return;}
+  // Start playback under the user gesture, then wait for the corresponding screen.
+  audio.muted=true;
+  audio.play().then(()=>{if(!readyStage)audio.pause();}).catch(()=>{});
+  void render(true);
  };
  expand.onclick=()=>{
   const wide=host.closest('article').classList.toggle('tutorial-wide');
   expand.setAttribute('aria-pressed',String(wide));
-  expand.textContent=wide?'Taille normale':'Agrandir';
- };
- sound.onclick=()=>{
-  narrated=!narrated;
-  sound.setAttribute('aria-pressed',String(narrated));
-  sound.textContent=narrated?'Couper la voix':'Écouter';
-  if(narrated&&!playing){playing=true;play.textContent='Pause';}
-  if(playing)void render();
+  expand.setAttribute('aria-label',wide?'Réduire':'Agrandir');
  };
  new ResizeObserver(resize).observe(view);
 }
