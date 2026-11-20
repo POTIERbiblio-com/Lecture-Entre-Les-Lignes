@@ -3,7 +3,6 @@ import {getAuth,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/13.
 const endpoint='https://cezgcoaokwuobipwfffa.supabase.co/functions/v1/secure-account';
 const app=getApps()[0]||initializeApp({apiKey:'AIzaSyCHrFPytJh3voKVEV1ZZdgcwTyOCl03dNY',authDomain:'lecture-entre-les-lignes.firebaseapp.com',projectId:'lecture-entre-les-lignes',appId:'1:876044393565:web:da359169bccbfc709081b4'});
 const auth=getAuth(app);
-const root=document.getElementById('ell-billing-actions');
 const status=document.getElementById('ell-subscription-status');
 const choices=[...document.querySelectorAll('[data-subscribe-plan]')];
 const names={decouverte:'Découverte',passion:'Passion',illimite:'Illimité',free:'Gratuit'};
@@ -19,13 +18,9 @@ async function request(user,action,extras={}){
 }
 let redirecting=false;
 function button(user,label,action,extras,allowedHosts,choice){
-  const b=choice||document.createElement('button');
-  if(!choice){
-    b.type='button';
-    b.textContent=label;
-    b.className='subscribe-button';
-    root.append(b);
-  }
+  if(!choice)return;
+  const b=choice;
+  b.textContent=label;
   b.onclick=async event=>{
     event.preventDefault();
     if(redirecting) return;
@@ -53,6 +48,7 @@ function button(user,label,action,extras,allowedHosts,choice){
 
 function showBlocked(message){
   status.textContent=message;
+  status.hidden=false;
   for(const choice of choices)choice.onclick=event=>{
     event.preventDefault();
     const feedback=choice.parentElement.querySelector('[data-subscribe-feedback]');
@@ -61,7 +57,8 @@ function showBlocked(message){
 }
 
 onAuthStateChanged(auth,async user=>{
-  root.replaceChildren();
+  status.hidden=true;
+  status.textContent='';
   choices.forEach(choice=>choice.textContent='Souscrire');
   for(const choice of choices){
     const feedback=choice.parentElement.querySelector('[data-subscribe-feedback]');
@@ -72,15 +69,7 @@ onAuthStateChanged(auth,async user=>{
     }:null;
     choice.href='connexion-firebase.html';
   }
-  if(!user){
-    status.textContent='Connecte-toi pour consulter et gérer ton abonnement.';
-    const link=document.createElement('a');
-    link.href='connexion-firebase.html';
-    link.textContent='Se connecter';
-    root.append(link);
-    return;
-  }
-  status.textContent='Vérification de ton compte…';
+  if(!user)return;
   try{
     const [{plans,liveCheckoutReady},initial]=await Promise.all([request(user,'pricing-list'),request(user,'status')]);
     let {subscription}=initial;
@@ -98,7 +87,6 @@ onAuthStateChanged(auth,async user=>{
         price.firstChild.textContent=euros.format(plan.monthly_eur_cents/100)+' ';
       }
     }
-    status.textContent='Formule active · '+(names[subscription.access_plan]||names.free);
     if(subscription.complimentary){
       status.textContent='Toutes les fonctionnalités sont activées directement pour ton compte.';
       choices.forEach(choice=>choice.textContent='Voir mes accès');
@@ -113,7 +101,7 @@ onAuthStateChanged(auth,async user=>{
       showBlocked('Confirmation Stripe en attente. Recharge la page pour vérifier l’activation.');
       return;
     }
-    if(returned==='cancel') status.textContent+=' · Souscription annulée.';
+    if(returned==='cancel'){status.textContent='Souscription annulée.';status.hidden=false;}
     if(subscription.access_level||['past_due','unpaid','incomplete','paused'].includes(subscription.status)){
       for(const choice of choices){
         choice.textContent='Gérer mon abonnement';

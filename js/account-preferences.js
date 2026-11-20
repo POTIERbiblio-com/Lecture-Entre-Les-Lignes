@@ -55,7 +55,7 @@ async function refresh(account,{loadSettings=false}={}){
   $('account-subscription-status').textContent=info.complimentary?'Toutes les fonctionnalités sont activées directement pour ton compte.':info.access_level?'Formule '+(plans[info.access_plan]||info.access_plan):'Aucun abonnement actif';
   link.hidden=info.complimentary;
   link.textContent=info.access_level?'Gérer mon abonnement ↗':'Voir les formules ↗';
-  link.href=info.access_level?'le-cercle.html#mon-abonnement':'le-cercle.html#comparatif';
+  link.href=info.access_level?'le-cercle.html#formules':'le-cercle.html#comparatif';
   if(!info.complimentary&&info.access_level){
    for(const [name,value] of [['Début de l’abonnement',info.subscription_started_at],[info.cancel_at_period_end?'Fin de l’accès':'Prochain renouvellement',info.current_period_end]]){
     const term=document.createElement('dt'),definition=document.createElement('dd');

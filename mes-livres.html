@@ -24,7 +24,7 @@
 <a href="index.html">Accueil</a> / <a href="lecture.html">Lecture</a> / <a href="mes-livres.html">Chercher un livre</a>
 <img class="journal-sticker margin-sticker" src="images/carnet-illustre/sticker-loupe.svg" alt="" aria-hidden="true"></div>
 <div class="catalogue-slip">
-  <div class="slip-heading"><div><h1>Chercher un livre</h1><p><a href="livres-pdf-gratuits.html">Voir la sélection de PDF gratuits</a></p></div><div class="slip-collage" aria-hidden="true"><img src="images/carnet-illustre/loupe.jpg" alt="" class="slip-photo"><img src="images/atelier/revue-ouverte.jpg" alt="" class="slip-book"></div></div>
+  <div class="slip-heading"><div><h1>Chercher un livre</h1></div><div class="slip-collage" aria-hidden="true"><img src="images/carnet-illustre/loupe.jpg" alt="" class="slip-photo"><img src="images/atelier/revue-ouverte.jpg" alt="" class="slip-book"></div></div>
   <form id="catalogue-search" role="search">
       <div class="catalogue-field catalogue-query"><label for="search">Titre, auteur, année, ISBN ou thème</label>
       <input id="search" name="q" type="search" placeholder="Un titre, un auteur, un thème…" maxlength="160" autocomplete="off"><p class="catalogue-search-help">Utilise les filtres pour affiner ta recherche.</p>
@@ -36,13 +36,13 @@
 <details class="catalogue-filter-panel"><summary>Filtres et tri</summary><div class="catalogue-filter-grid"><div class="catalogue-field"><label for="search-genre">Genre</label>
       <select id="search-genre" name="genre">
         <option value="">Tous les genres</option>
-        <option value="fiction">Fiction</option>
-        <option value="savoirs">Savoirs</option>
-        <option value="arts">Arts</option>
-        <option value="vie-et-societe">Vie et société</option>
+        <option value="fiction">Romans, fiction et BD</option>
+        <option value="savoirs">Sciences, idées et travail</option>
+        <option value="arts">Arts et culture</option>
+        <option value="vie-et-societe">Vie quotidienne et société</option>
         <option value="spiritualites">Spiritualités et religions</option>
         <option value="jeunesse">Jeunesse et pédagogie</option>
-      <option value="voyages">Voyages et nature</option><option value="creativite">Créativité et loisirs</option><option value="a-classer">À classer</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
+      <option value="voyages">Voyages et nature</option><option value="creativite">Loisirs et activités créatives</option><option value="magazine">Magazine</option><option value="a-classer">À classer</option></select></div><div class="catalogue-field"><label for="search-subgenre">Sous-genre</label><select id="search-subgenre" name="sub" disabled><option value="">Tous les sous-genres</option></select>
       </div>
 <div class="catalogue-field"><label for="search-year">Année de l’édition</label><select id="search-year"><option value="">Toutes les dates</option></select></div>
 <div class="catalogue-field"><label for="search-sort">Classer les résultats</label><select id="search-sort"><option value="title">Titre · A à Z</option><option value="author">Auteur · A à Z</option><option value="newest">Parution · récente d’abord</option><option value="oldest">Parution · ancienne d’abord</option></select></div>
@@ -53,13 +53,13 @@
   <div class="catalogue-tabs" id="catalogue-tabs" role="group" aria-label="Filtrer par rayon">
     <span class="catalogue-tabs-label">Les rayons</span>
     <button type="button" data-genre="" aria-pressed="true">Tout</button>
-    <button type="button" data-genre="fiction" aria-pressed="false">Fiction</button>
-    <button type="button" data-genre="savoirs" aria-pressed="false">Savoirs</button>
-    <button type="button" data-genre="arts" aria-pressed="false">Arts</button>
+    <button type="button" data-genre="fiction" aria-pressed="false">Romans, fiction et BD</button>
+    <button type="button" data-genre="savoirs" aria-pressed="false">Sciences, idées et travail</button>
+    <button type="button" data-genre="arts" aria-pressed="false">Arts et culture</button>
     <button type="button" data-genre="magazine" aria-pressed="false">Magazine</button>
-    <button type="button" data-genre="vie-et-societe" aria-pressed="false">Vie et société</button>
+    <button type="button" data-genre="vie-et-societe" aria-pressed="false">Vie quotidienne et société</button>
     <button type="button" data-genre="spiritualites" aria-pressed="false">Spiritualités</button>
-    <button type="button" data-genre="jeunesse" aria-pressed="false">Jeunesse</button><button type="button" data-genre="voyages" aria-pressed="false">Voyages et nature</button><button type="button" data-genre="creativite" aria-pressed="false">Créativité et loisirs</button>
+    <button type="button" data-genre="jeunesse" aria-pressed="false">Jeunesse</button><button type="button" data-genre="voyages" aria-pressed="false">Voyages et nature</button><button type="button" data-genre="creativite" aria-pressed="false">Loisirs et activités créatives</button>
   </div>
 </div>
 <nav class="catalogue-shortcuts" aria-label="Accès rapide aux collections"><a href="favoris.html">♥ Mes favoris</a><a href="listes.html">✦ Mes listes</a><button type="button" class="ell-add-list" data-ell-new-list>Créer une liste</button><a href="lecture.html">📖 Espace lecture</a></nav>
