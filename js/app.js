@@ -1147,7 +1147,12 @@ function planLock(level){
  const plan=['','Découverte','Passion','Illimité'][Number(level)];
  return plan?'<span class="plan-lock plan-lock-'+Number(level)+'" aria-label="À partir de '+plan+'"><span class="plan-lock-icon" aria-hidden="true"></span>'+plan+'</span>':'';
 }
-function lockBadge(book){return planLock(book.accessLevel);}
+function lockBadge(book){
+ if(book.accessLevel)return planLock(book.accessLevel);
+ if(book.editorialBadge==='orange')return '<span class="plan-lock plan-lock-2">Mis en avant</span>';
+ if(book.editorialBadge==='jaune')return '<span class="plan-lock plan-lock-1">À découvrir</span>';
+ return '';
+}
 function bookSubscriptionOffer(book){
  const level=Number(book.accessLevel);
  const plans=['','Découverte','Passion','Illimité'];
