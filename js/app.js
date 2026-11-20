@@ -7,7 +7,7 @@ async function ellPrivate(action,data){
  return requestService(action,{kind:'carnet',data},account);
 }
 function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};state.design={};state.legend={};for(const b of state.books){b.position='';b.pdfPage=1;}}
-const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique","BD et jeunesse"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
+const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie","Littérature et critique"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage","Magazines et BD jeunesse"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique","BD et jeunesse"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let db,state,objects=[];let id=new URLSearchParams(location.search).get('id')||$('book-detail')?.dataset.bookId||$('reader-content')?.dataset.bookId;
@@ -1294,6 +1294,36 @@ async function loadCatalogueSortData(){
   if(sort?.value==='downloads')sort.value='added-new';
  }
 }
+function bookShelves(book) {
+  return [{genre: book.genre, sub: book.sub}, ...(Array.isArray(book.shelves) ? book.shelves : [])];
+}
+function bookInShelf(book, genre, sub) {
+  return bookShelves(book).some(shelf =>
+    (!genre || shelf.genre === genre) && (!sub || String(shelf.sub) === String(sub)));
+}
+function legacyShelf(entry) {
+ const key = value => searchTerms(String(value || '')).join(' ');
+ const category = key(entry.category || entry.genre);
+ const subcategory = key(entry.subcategory);
+ const legacy = {
+  'savoirs/entreprise': ['savoirs','5'],
+  'savoirs/informatique': ['savoirs','6'],
+  'vie et societe/finances': ['vie-et-societe','4'],
+  'vie et societe/psychologie': ['savoirs','1'],
+  'vie et societe/orientation': ['jeunesse','3'],
+  'fiction/ecriture': ['creativite','0']
+ };
+ const old = legacy[category+'/'+subcategory];
+ if(old) return {genre:old[0],sub:old[1]};
+ const group = Object.entries(GENRES).find(([slug,[name]]) => key(slug) === category || key(name) === category ||
+   (slug === 'spiritualites' && ['spiritualite','spiritualites'].includes(category)));
+ if(group){
+  const [genre,[,shelves]] = group;
+  const sub = /^\d+$/.test(String(entry.sub)) ? Number(entry.sub) : shelves.findIndex(label => key(label) === subcategory);
+  if(shelves[sub]) return {genre,sub:String(sub)};
+ }
+ return {genre:'a-classer',sub:'0'};
+}
 function renderBooks() {
   const el = $('books');
   if (!el) return;
@@ -1305,8 +1335,7 @@ function renderBooks() {
   const privateLibrary=Boolean($('private-library'));
   const scopedBooks=state.books.filter(book=>Boolean(book.quentinOnly)===privateLibrary);
   const items = scopedBooks.filter(book => {
-    if (genre && book.genre !== genre) return false;
-    if (subgenre && String(book.sub) !== subgenre) return false;
+    if (!bookInShelf(book,genre,subgenre)) return false;
     if ($('search-favorites')?.checked && !favorites.some(favorite=>(catalogueAliases.get(favorite)||favorite)===book.id)) return false;
     if ($('search-language')?.value && bookLanguage(book)!==$('search-language').value) return false;
     if ($('search-year')?.value && bookYear(book)!==$('search-year').value) return false;
@@ -3424,6 +3453,7 @@ function bookPassport(book, meta, guide) {
     ['Auteur', book.edition && typeof book.edition==='object' ? book.author : edition.author || book.author, 'auteur'],
     ['Genre', GENRES[book.genre]?.[0], 'genre'],
     ['Sous-genre', GENRES[book.genre]?.[1][book.sub], 'rayon'],
+    ['Aussi dans', bookShelves(book).slice(1).map(shelf => GENRES[shelf.genre]?.[1][shelf.sub]).filter(Boolean).join(' · '), 'rayon'],
     ['Éditeur', (edition.publisher ?? meta.publisher) || 'Non renseigné', 'maison'],
     ['Parution de l’édition', (edition.year ?? meta.year) || 'Non établie', 'date'],
     ['Première parution', edition.original, 'originale'],
@@ -3731,7 +3761,7 @@ async function loadServiceState(){
  if(catalogError){console.warn('Catalogue en ligne indisponible',catalogError);return;}
  for(const entry of catalog||[]){
   const original=(entry.original_pdf||entry.pdf_path||'').replace(/^\/+/,''),page=entry.original_page||'';
-  const found=state.books.find(b=>(original&&(b.pdfPath===original))||(page&&(b.detailPath===page))||(b.externalCatalogId===entry.id));
+  const found=state.books.find(b=>(original&&(b.pdfPath===original))||(page&&(b.detailPath===page))||(b.externalCatalogId===entry.id)||(entry.author&&catalogueIdentity(b)===catalogueIdentity(entry)));
   if(found){
    found.externalCatalogId=entry.id;
    if(entry.title)found.title=entry.title;
@@ -3743,9 +3773,9 @@ async function loadServiceState(){
    if(entry.created_at)found.addedAt=entry.created_at;
    if(entry.cover_path)found.cover=entry.cover_path;
    if(original)found.pdfPath=original;
-   found.reviewLinks=entry.review_links||[];
+   if(entry.review_links?.length)found.reviewLinks=entry.review_links;
   }else{
-   state.books.push({id:'db-'+entry.id,externalCatalogId:entry.id,addedAt:entry.created_at,title:entry.title,author:entry.author||'',genre:'savoirs',sub:'0',presentation:entry.description||'',cover:entry.cover_path||entry.original_cover||'',pdfPath:original||'',year:entry.publication_year||'',isbn:entry.isbn||'',publisher:entry.publisher||'',reviewLinks:entry.review_links||[]});
+   state.books.push({id:'db-'+entry.id,externalCatalogId:entry.id,addedAt:entry.created_at,title:entry.title,author:entry.author||'',...legacyShelf(entry),presentation:entry.description||'',cover:entry.cover_path||entry.original_cover||'',pdfPath:original||'',year:entry.publication_year||'',isbn:entry.isbn||'',publisher:entry.publisher||'',reviewLinks:entry.review_links||[]});
   }
  }
 }
@@ -4373,6 +4403,10 @@ function mergeCatalogueDuplicates(rules){
    ||Number(Boolean(b.book.pdfPath||b.book.pdf))-Number(Boolean(a.book.pdfPath||a.book.pdf)));
   const {book,rule}=rows[0];
   for(const {book:other} of rows.slice(1)){
+   book.shelves=[...bookShelves(book).slice(1),...bookShelves(other).slice(1)].filter((shelf,index,shelves)=>
+    GENRES[shelf.genre]?.[1][shelf.sub] &&
+    !(book.genre===shelf.genre && String(book.sub)===String(shelf.sub)) &&
+    shelves.findIndex(candidate=>candidate.genre===shelf.genre && String(candidate.sub)===String(shelf.sub))===index);
    catalogueAliases.set(other.id,book.id);
    for(const field of ['cover','presentation','summary','external','edition'])if(!book[field]&&other[field])book[field]=other[field];
    for(const field of ['chapters','reviewLinks','sources'])if(!book[field]?.length&&other[field]?.length)book[field]=other[field];
@@ -4490,8 +4524,8 @@ function addGenreCounts(){
   const rayon=file.match(/^livres-(.+)-(\d+)\.html$/);
   const genre=rayon?.[1]||file.replace(/\.html$/,'');
   if(!Object.hasOwn(GENRES,genre))continue;
-  const count=state.books.filter(book=>book.genre===genre&&(!rayon||String(book.sub)===rayon[2])).length;
-  const badge=document.createElement('span');
+  const count=state.books.filter(book=>!book.quentinOnly&&bookInShelf(book,genre,rayon?.[2])).length;
+  const badge=link.querySelector('.genre-book-count')||document.createElement('span');
   badge.className='genre-book-count';
   badge.textContent=count+(count===1?' livre':' livres');
   badge.style.cssText='position:absolute;left:.5rem;top:.45rem;z-index:3;padding:.28rem .58rem;border-radius:2rem;background:#fff5fa;color:#64324e;font-size:clamp(.66rem,1.6vw,.82rem);line-height:1.1;font-weight:700;pointer-events:none;box-shadow:0 1px 4px #63354c33';
@@ -4557,8 +4591,8 @@ for(const book of state.books){
 // Apply editorial corrections to older catalogue entries retained by a browser.
 const updatedShelves=new Map(LIVRES_INITIAUX.map(book=>[book.id,book]));
 for(const book of state.books){
- const updated=updatedShelves.get(book.id);
- if(updated){book.genre=updated.genre;book.sub=updated.sub;}
+ const updated=updatedShelves.get(book.id)||LIVRES_INITIAUX.find(item=>catalogueIdentity(item)===catalogueIdentity(book));
+ if(updated&&book.catalogueSource!=='editorial'){book.genre=updated.genre;book.sub=updated.sub;}
 }
 await applyCatalogueSuppressions();
 await applyCatalogueAccess();
