@@ -1,0 +1,12 @@
+.review-discussion{margin-block:1rem;padding:.8rem;border-top:1px solid #e3bfd5}
+.review-discussion form{display:grid;gap:.45rem;margin-block-start:.6rem}
+.review-discussion form button{justify-self:start}
+.review-discussion textarea{display:block;width:100%;margin-block-start:.35rem}
+.review-discussion details{margin-block:.7rem}
+.review-comment{padding:.65rem .75rem;margin-block:.4rem;border-radius:.7rem;background:#f8eef7}
+.review-comment p{margin-block:.35rem 0}
+#review-inbox{padding:1rem;border-radius:1.1rem;background:#f5eaf9}
+#review-inbox[hidden],#critiques-recentes[hidden]{display:none}
+#recent-reviews-list{display:grid;gap:1rem}
+.recent-review-heading{display:flex;gap:1rem;align-items:center}
+.recent-review-heading img{max-width:4.5rem;height:auto;border-radius:.25rem}

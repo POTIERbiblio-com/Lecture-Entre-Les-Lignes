@@ -31,6 +31,7 @@
  <div><label for="review-day">Jour de la critique</label><input id="review-day" type="date"></div>
  <div><label for="review-sort">Trier par</label><select id="review-sort"><option value="newest">Critiques les plus récentes</option><option value="oldest">Critiques les plus anciennes</option><option value="title">Titre du livre · A à Z</option><option value="author">Auteur · A à Z</option></select></div>
  <label class="review-only"><input id="review-only" type="checkbox"> Mes critiques écrites</label>
+ <label id="review-interaction-field" hidden>Mes réactions <select id="review-interaction"><option value="">Toutes</option><option value="liked">Critiques que j’ai aimées</option></select></label>
  <p class="review-count" id="review-count" role="status"></p>
  <button type="reset" class="text-button">Réinitialiser les filtres</button>
 </form>
@@ -41,7 +42,7 @@
 <div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
-<script type="text/javascript" src="js/app.js?v=critiques-et-suivi-20261119">
+<script type="text/javascript" src="js/app.js?v=critiques-discussions">
 </script>
 <script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script><script src="js/favoris-catalogue.js?v=photo-coeurs-20261118" defer></script></body>
 </html>

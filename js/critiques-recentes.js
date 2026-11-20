@@ -1,3 +1,4 @@
+import {reviewThreads,discussion} from './review-discussions.js';
 import {auth,requestService} from './request-service.js';
 
 export function bindRecentReviews({books,genres,aliases}) {
@@ -13,7 +14,8 @@ export function bindRecentReviews({books,genres,aliases}) {
   const titleOrder=new Intl.Collator('fr',{sensitivity:'base',numeric:true});
   const dates=new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeStyle:'short'});
   const numbers=new Intl.NumberFormat('fr-FR');
-  let rows=[],limit=24,loading=false,stale=true;
+  let rows=[],limit=24,loading=false,stale=true,seen=null,latest=null,display=0;
+  const badge=document.getElementById('review-unread');
   function setOptions(select,entries) {
     const value=select.value;
     const distinct=new Map(entries.filter(([id])=>id));
@@ -27,8 +29,11 @@ export function bindRecentReviews({books,genres,aliases}) {
       const value=fields[key].value;
       return !value||value===String(({book:row.book.id,genre:row.genre,author:row.book.author,account:row.firebase_uid,rating:row.rating,sub:row.subkey})[key]);
     }));
-    if(fields.order.value==='old')filtered.reverse();
-    list.replaceChildren(...filtered.slice(0,limit).map(row=>{
+    const kind=fields.interaction.value;
+    const matching=filtered.filter(row=>!kind||(kind==='unread'?row.firebase_uid!==account.uid&&(!seen||Date.parse(row.updated_at)>Date.parse(seen)):row.thread?.[kind]));
+    if(fields.order.value==='old')matching.reverse();
+    const turn=++display;
+    list.replaceChildren(...matching.slice(0,limit).map(row=>{
       const entry=document.createElement('article');
       entry.className='panel';
       const heading=document.createElement('h3');
@@ -47,11 +52,52 @@ export function bindRecentReviews({books,genres,aliases}) {
       meta.append(score,' · '+row.accountLabel+' · ',date);
       const shelves=document.createElement('p');
       shelves.textContent=[row.book.author,genres[row.genre]?.[0],row.sub].filter(Boolean).join(' · ');
-      entry.append(heading,meta,shelves);
+      const top=document.createElement('div');top.className='recent-review-heading';
+      if(row.book.cover){
+        const cover=document.createElement('img');cover.src=row.book.cover;cover.alt='';cover.loading='lazy';top.append(cover);
+      }
+      top.append(heading);
+      const text=document.createElement('p');text.className='pre-wrap';text.textContent=row.review;
+      entry.append(top,meta,shelves);
+      if(row.spoiler){
+        const spoiler=document.createElement('details');const summary=document.createElement('summary');
+        summary.textContent='Lire la critique · contient des révélations';spoiler.append(summary,text);entry.append(spoiler);
+      }else entry.append(text);
+      const controls=document.createElement('div');controls.dataset.discussionId=row.id;entry.append(controls);
+      if(row.thread)controls.append(discussion(row.id,row.thread,3,next=>{row.thread=next;}));
       return entry;
     }));
-    status.textContent=filtered.length?filtered.length+(filtered.length===1?' critique':' critiques'):'Aucune critique pour ces filtres.';
-    more.hidden=filtered.length<=limit;
+    status.textContent=matching.length?matching.length+(matching.length===1?' critique':' critiques'):'Aucune critique pour ces filtres.';
+    more.hidden=matching.length<=limit;
+    const unloaded=matching.slice(0,limit).filter(row=>!row.thread);
+    if(unloaded.length)void getThreads(unloaded).then(()=>{
+      if(current()&&display===turn)render();
+    }).catch(error=>{if(current()&&display===turn)status.textContent=error.message;});
+  }
+  async function getThreads(entries){
+    for(let i=0;i<entries.length;i+=50){
+      const page=entries.slice(i,i+50);
+      const {threads}=await reviewThreads(page.map(row=>row.id));
+      if(!current())return;
+      for(const row of page)row.thread=threads[row.id]||{likes:0,liked:false,commented:false,totalComments:0,comments:[]};
+    }
+  }
+  async function updateNotifications(){
+    if(!current()||document.visibilityState==='hidden')return;
+    try{
+      const notification=await requestService('review-notifications',{},account);
+      if(!current())return;
+      const changed=notification.latest&&notification.latest!==latest;
+      latest=notification.latest;seen=notification.seen;
+      badge.textContent=notification.count?'('+notification.count+' nouvelles)':'';
+      const mark=document.getElementById('mark-review-notifications');
+      mark.hidden=!notification.count;
+      mark.onclick=async()=>{
+        try{await requestService('review-notifications-mark',{seen:latest},account);await updateNotifications();render();}
+        catch(error){status.textContent=error.message;}
+      };
+      if(changed&&!section.hidden&&!list.contains(document.activeElement))void refresh();
+    }catch(error){if(current())badge.textContent='';}
   }
   async function refresh() {
     if(!current()||loading)return;
@@ -78,13 +124,21 @@ export function bindRecentReviews({books,genres,aliases}) {
       setOptions(fields.author,rows.map(row=>[row.book.author,row.book.author]));
       setOptions(fields.account,rows.map(row=>[row.firebase_uid,row.accountLabel+' · '+row.firebase_uid.slice(-6)]));
       setOptions(fields.rating,rows.map(row=>[String(row.rating),numbers.format(row.rating)+' / 5']));
+      if(['liked','commented'].includes(fields.interaction.value))await getThreads(rows);
       stale=false;
       render();
     } catch(error) {
       if(current())status.textContent=error.message;
     } finally {loading=false;}
   }
-  form.addEventListener('change',()=>{limit=24;render();});
+  form.addEventListener('change',async()=>{
+    limit=24;
+    if(['liked','commented'].includes(fields.interaction.value)){
+      status.textContent='Recherche de tes réactions…';
+      try{await getThreads(rows);}catch(error){status.textContent=error.message;return;}
+    }
+    render();
+  });
   form.addEventListener('reset',()=>requestAnimationFrame(()=>{limit=24;render();}));
   more.onclick=()=>{limit+=24;render();};
   function show() {
@@ -95,6 +149,9 @@ export function bindRecentReviews({books,genres,aliases}) {
     }
   }
   addEventListener('hashchange',show);
-  addEventListener('focus',()=>{stale=true;if(!section.hidden)void refresh();});
+  addEventListener('focus',()=>{stale=true;void updateNotifications();if(!section.hidden)void refresh();});
+  const clock=setInterval(()=>void updateNotifications(),15000);
+  addEventListener('pagehide',()=>clearInterval(clock),{once:true});
+  void updateNotifications();
   show();
 }

@@ -7,7 +7,7 @@ async function ellPrivate(action,data){
  return requestService(action,{kind:'carnet',data},account);
 }
 function ellClear(){state.notes=[];state.highlights=[];state.questions=[];state.reviews={};state.profile={};state.design={};state.legend={};for(const b of state.books){b.position='';b.pdfPage=1;}}
-const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
+const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique","BD et jeunesse"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let db,state,objects=[];let id=new URLSearchParams(location.search).get('id')||$('book-detail')?.dataset.bookId||$('reader-content')?.dataset.bookId;
@@ -1423,6 +1423,9 @@ async function refreshReaderReviews(book){
    if(!response.ok)throw Error(data.error||'Critiques indisponibles');
   }
   const {count,average,reviews}=data;
+  const discussionModule=book.quentinOnly?null:await import('./review-discussions.js');
+  let reactions={threads:{},level:0};
+  if(discussionModule){try{reactions=await discussionModule.reviewThreads(reviews.map(review=>review.id).filter(Boolean));}catch(error){console.warn(error);}}
   for(const panel of panels){
    const list=document.createElement('div');
    const score=count?Number(average):0;
@@ -1433,7 +1436,9 @@ async function refreshReaderReviews(book){
     if(entry.spoiler){const summary=document.createElement('summary');summary.textContent='Lire la critique · contient des révélations';card.append(summary);}
     const text=document.createElement('p');text.className='pre-wrap';text.textContent=entry.review;
     const rating=document.createElement('strong');rating.textContent=formatNumber(Number(entry.rating))+' / 5';
-    card.append(rating,text);list.append(card);
+    card.append(rating,text);
+    if(reactions.threads[entry.id])card.append(discussionModule.discussion(entry.id,reactions.threads[entry.id],reactions.level));
+    list.append(card);
    }
    panel.replaceWith(list);list.dataset.readerReviewsContent='';
   }
@@ -1474,12 +1479,32 @@ function reviewDay(timestamp) {
   const date = new Date(timestamp);
   return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
 }
+let interactedReviews=[],reviewInteractionRequest=0;
 function renderReviewBooks(el) {
   const terms = searchTerms($('review-search').value);
   const day = $('review-day').value;
   const onlyReviewed = $('review-only').checked;
   const order = $('review-sort').value;
   const compareTitle = (a,b) => a.title.localeCompare(b.title,'fr');
+  if($('review-interaction')?.value){
+    const books=new Map(state.books.filter(book=>!book.quentinOnly).map(book=>[book.id,book]));
+    const rows=interactedReviews.flatMap(review=>{
+      const book=books.get(catalogueAliases.get(review.book_id)||review.book_id);
+      if(!book||(onlyReviewed&&!state.reviews[book.id])||(day&&reviewDay(Date.parse(review.updated_at))!==day))return [];
+      if(!terms.every(term=>searchTerms(book.title+' '+book.author).join(' ').includes(term)))return [];
+      return [{review,book}];
+    });
+    rows.sort((a,b)=>order==='title'?compareTitle(a.book,b.book):order==='author'?a.book.author.localeCompare(b.book.author,'fr')||compareTitle(a.book,b.book):(order==='oldest'?1:-1)*(Date.parse(a.review.updated_at)-Date.parse(b.review.updated_at)));
+    $('review-count').textContent=rows.length+' critique'+(rows.length===1?'':'s');
+    el.innerHTML=rows.map(({review,book})=>{
+      const query=new URLSearchParams({id:book.id});
+      if(review.book_id!==book.id)query.set('source',review.book_id);
+      return '<article class="book review-book-card">'+smallCover(book)+'<div><h2>'+esc(book.title)+'</h2><p>★ '+esc(review.rating)+' / 5</p>'+
+        (review.spoiler?'<p>Cette critique contient des révélations.</p>':'<p>'+esc(review.review)+'</p>')+
+        '<a class="btn" href="livre.html?'+esc(query)+'#critique-'+esc(review.id)+'">Lire la critique</a></div></article>';
+    }).join('')||'<p class="empty">Aucune critique pour ces filtres.</p>';
+    return;
+  }
   const rows = state.books.filter(book => {
     if (onlyReviewed && !state.reviews[book.id]) return false;
     if (day && reviewDay(reviewTimestamp(book)) !== day) return false;
@@ -4540,7 +4565,7 @@ await applyCatalogueAccess();
 const isPrivateLibrary=currentPage==='bibliotheque-privee.html';
 const privateStatus=$('private-library-status');
 if(isPrivateLibrary&&!catalogueManager){
- privateStatus.textContent='Accès réservé à la bibliothèque privée.';
+ privateStatus.textContent='Cette page est indisponible.';
  if(!ellUser){
   const link=document.createElement('a');
   link.href='connexion-firebase.html?retour=bibliotheque-privee.html';
@@ -4567,14 +4592,17 @@ if(catalogueManager&&(isPrivateLibrary||privateCarnetPages.has(currentPage)||pri
 }
 if(catalogueManager)bindPrivateBookControls();
 if(isPrivateLibrary){
+ document.title='Bibliothèque privée · Entre les lignes';
  $('private-library').hidden=false;
  privateStatus.hidden=true;
 }
 if(catalogueManager&&$('quentin-selection')){
+ const notificationHost=$('review-inbox');
+ if(notificationHost)notificationHost.hidden=false;
  $('quentin-selection').hidden=false;
  if(location.hash==='#quentin-selection')$('quentin-selection').scrollIntoView();
  $('account-critiques-link').href='#critiques-recentes';
- const {bindRecentReviews}=await import('./critiques-recentes.js');
+ const {bindRecentReviews}=await import('./critiques-recentes.js?v=discussions');
  bindRecentReviews({books:state.books,genres:GENRES,aliases:catalogueAliases});
 }
 if(currentPage==='mes-livres.html')await loadCatalogueSortData();
@@ -4592,10 +4620,30 @@ const searchBooks=isPrivateLibrary?state.books.filter(book=>book.quentinOnly):st
 if($('search-language'))fillLanguageOptions($('search-language'),searchBooks);
 if($('search-year')){$('search-year').innerHTML='<option value="">Toutes les dates</option>'+[...new Set(searchBooks.map(b=>bookYear(b)).filter(Boolean))].sort((a,b)=>Number(b)-Number(a)).map(y=>'<option>'+esc(y)+'</option>').join('');}
 if($('review-search')){
+ const filter=$('review-interaction');
+ if(ellUser&&filter){
+  const {requestService}=await import('./request-service.js');
+  try{
+   const {level}=await requestService('review-threads',{ids:[]});
+   if(level>=2)$('review-interaction-field').hidden=false;
+   if(level>=3)filter.add(new Option('Critiques que j’ai commentées','commented'));
+  }catch(error){console.warn(error);}
+  filter.onchange=async()=>{
+   const marker=++reviewInteractionRequest;
+   interactedReviews=[];
+   if(!filter.value){renderBooks();return;}
+   $('books').textContent='Chargement des critiques…';
+   try{
+    const {reviews}=await requestService('review-my-interactions',{kind:filter.value});
+    if(marker!==reviewInteractionRequest)return;
+    interactedReviews=reviews;renderBooks();
+   }catch(error){if(marker===reviewInteractionRequest)$('books').textContent=error.message;}
+  };
+ }
  $('review-search').oninput=renderBooks;
  for(const field of ['review-sort','review-day','review-only']) $(field).onchange=renderBooks;
  $('review-filters').onsubmit=event=>{event.preventDefault();renderBooks();};
- $('review-filters').onreset=()=>requestAnimationFrame(renderBooks);
+ $('review-filters').onreset=()=>{reviewInteractionRequest++;requestAnimationFrame(renderBooks);};
 }
 for(const field of ['search-year','search-language','search-sort','search-access','search-favorites'])if($(field))$(field).onchange=renderBooks;
 if(($('books')||$('book-detail'))&&!document.querySelector('script[src*="favoris-catalogue.js"]')){
