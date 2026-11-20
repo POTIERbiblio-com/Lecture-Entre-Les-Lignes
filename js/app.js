@@ -1260,7 +1260,7 @@ function renderBooks() {
   el.querySelectorAll('[data-delete-book]').forEach(btn=>btn.onclick=async()=>{if(!adminEnabled||!service)return;if(!confirm('Retirer ce livre du catalogue ?'))return;const response=await fetch('/api/catalogue/'+encodeURIComponent(btn.dataset.deleteBook),{method:'DELETE'});if(!response.ok){message('Le catalogue n’a pas été modifié.',true);return;}state.books=state.books.filter(b=>b.id!==btn.dataset.deleteBook);renderBooks();});
 }
 function selects(){if($('book-select')){$('book-select').innerHTML=state.books.map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');if(!state.books.length){$('book-select').innerHTML='<option value="">Ajoute un livre avant de commencer</option>';}}}
-function subOptions(){if($('sub'))$('sub').innerHTML=GENRES[$('genre').value][1].map((s,i)=>'<option value="'+i+'">'+esc(s)+'</option>').join('');}
+function subOptions(){if($('sub'))$('sub').innerHTML=GENRES[$('genre').value][1].map((s,i)=>$('genre').value==='fiction'&&i===5?'':'<option value="'+i+'">'+esc(s)+'</option>').join('');}
 function bindReadingSearch(){
  const form=$('reading-search-form');
  if(!form)return;
@@ -4460,13 +4460,16 @@ if(($('books')||$('book-detail'))&&!document.querySelector('script[src*="favoris
 if($('search-subgenre')){
  const genre=$('search-genre'),sub=$('search-subgenre');
  const updateSubgenres=()=>{
-  sub.replaceChildren(new Option('Tous les sous-genres',''),...(GENRES[genre.value]?.[1]||[]).map((name,index)=>new Option(name,String(index))));
+  sub.replaceChildren(new Option('Tous les sous-genres',''),...(GENRES[genre.value]?.[1]||[]).map((name,index)=>new Option(name,String(index))).filter(option=>genre.value!=='fiction'||option.value!=='5'));
   sub.disabled=!genre.value;
  };
  const query=new URLSearchParams(location.search);
- if(Object.hasOwn(GENRES,query.get('genre')))genre.value=query.get('genre');
+ const legacyManga=query.get('genre')==='fiction'&&query.get('sub')==='5';
+ const requestedGenre=legacyManga?'manga':query.get('genre');
+ const requestedSub=legacyManga?'0':query.get('sub');
+ if(Object.hasOwn(GENRES,requestedGenre))genre.value=requestedGenre;
  updateSubgenres();
- if(Array.from(sub.options).some(option=>option.value===query.get('sub')))sub.value=query.get('sub');
+ if(Array.from(sub.options).some(option=>option.value===requestedSub))sub.value=requestedSub;
  genre.addEventListener('change',()=>{updateSubgenres();renderBooks();});
  sub.addEventListener('change',renderBooks);
  $('catalogue-search')?.addEventListener('reset',()=>requestAnimationFrame(()=>{updateSubgenres();renderBooks();}));
