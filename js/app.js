@@ -1212,6 +1212,18 @@ function searchTerms(value) {
     .replace(/œ/g, 'oe').replace(/æ/g, 'ae').match(/[\p{L}\p{N}]+/gu) || [];
 }
 
+const verifiedFrenchPdfIds=new Set(["liv0137", "liv0138", "liv0139", "liv0140", "liv0141", "liv0142", "liv0121", "liv0122", "liv0123", "liv0124", "liv0125", "liv0126", "liv0127", "liv0128", "liv0129", "liv0130", "liv0120", "liv0119", "liv0118", "liv0117", "liv0116", "liv0115", "liv0114", "liv0113", "liv0112", "liv0111", "liv0110", "liv0101", "liv0102", "liv0103", "liv0104", "liv0105", "liv0106", "liv0003", "liv0006", "liv0007", "liv0008", "liv0009", "liv0010", "liv0011", "liv0012", "liv0013", "liv0014", "liv0015", "liv0016", "liv0017", "liv0018", "liv0019", "liv0020", "liv0021", "liv0022", "liv0023", "liv0024"]);
+function bookLanguage(book){
+ const value=String(book.pdfLanguage||book.edition?.language||book.language||'').trim();
+ if(value)return ({french:'Français',fr:'Français',english:'Anglais',en:'Anglais'}[value.toLowerCase()]||value);
+ return verifiedFrenchPdfIds.has(book.id)?'Français':'';
+}
+function fillLanguageOptions(select,books,first='Toutes les langues'){
+ const current=select.value;
+ const labels=[...new Set(books.map(bookLanguage).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'));
+ select.replaceChildren(new Option(first,''),...labels.map(label=>new Option(label,label)));
+ if(labels.includes(current))select.value=current;
+}
 function bookYear(book){return String(book.edition?.year ?? book.year ?? READING_GUIDES[book.id]?.edition.year ?? '').match(/\b\d{4}\b/)?.[0] || ''; }
 function renderBooks() {
   const el = $('books');
@@ -1225,6 +1237,7 @@ function renderBooks() {
     if (genre && book.genre !== genre) return false;
     if (subgenre && String(book.sub) !== subgenre) return false;
     if ($('search-favorites')?.checked && !favorites.some(favorite=>(catalogueAliases.get(favorite)||favorite)===book.id)) return false;
+    if ($('search-language')?.value && bookLanguage(book)!==$('search-language').value) return false;
     if ($('search-year')?.value && bookYear(book)!==$('search-year').value) return false;
     if ($('pdf-only')?.checked && !book.pdfPath && !book.pdf && !book.privatePdf && !book.accessLevel) return false;
     if (!terms.length) return true;
@@ -1233,6 +1246,7 @@ function renderBooks() {
     return terms.every(term => words.includes(term));
   });
   const order=$('search-sort')?.value;
+  if(order==='language') items.sort((a,b)=>(bookLanguage(a)||'~').localeCompare(bookLanguage(b)||'~','fr')||a.title.localeCompare(b.title,'fr'));
   if(order==='author') items.sort((a,b)=>a.author.localeCompare(b.author,'fr'));
   if(order==='title') items.sort((a,b)=>a.title.localeCompare(b.title,'fr'));
   if(order==='newest') items.sort((a,b)=>Number(bookYear(b)||0)-Number(bookYear(a)||0));
@@ -3314,7 +3328,7 @@ function bookPassport(book, meta, guide) {
     [edition.kind || 'ISBN', isbn || 'Non confirmé', 'isbn'],
     ['Autres ISBN', edition.otherIsbn, 'autre-isbn'],
     ['ISSN', edition.issn, 'issn'],
-    ['Langue de l’édition', edition.language ?? (guide ? 'Français' : ''), 'langue'],
+    ['Langue du PDF', bookLanguage(book)||(book.privatePdf||book.pdf||book.pdfPath||book.accessLevel?'À confirmer':''), 'langue'],
     ['Collection', edition.collection, 'collection'],
     ['Pagination imprimée', edition.pages && edition.pages + ' pages', 'pagination'],
     ['Fichier du site', meta.pdfPages ? (book.id === 'liv0019' ? 'Extrait PDF · ' : 'PDF · ') + meta.pdfPages + ' pages' : book.text ? 'Texte en ligne' : 'Notice du catalogue', 'pages']
@@ -3397,7 +3411,7 @@ function renderHighlights(){
  const pageOf=mark=>Number(mark.pageNumber||1);
  items.sort((a,b)=>order==='page'?pageOf(a)-pageOf(b):key(a).localeCompare(key(b),'fr')||pageOf(a)-pageOf(b));
  el.innerHTML=items.map(traceMarkup).join('')||'<p class="empty">Aucun passage pour ces filtres.</p>';if($('highlight-count'))$('highlight-count').textContent=items.length+' passage'+(items.length>1?'s':'');el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderHighlights();});}
-function renderNotes(){const el=$('notes');if(!el)return;const term=searchTerms($('notes-search')?.value||'');let notes=state.notes.filter(n=>n.kind===el.dataset.kind&&term.every(t=>searchTerms((state.books.find(b=>b.id===n.book)?.title||'')+' '+n.title).join(' ').includes(t)));el.innerHTML=notes.map(n=>{const b=state.books.find(b=>b.id===n.book);if(!b)return '';const traces=n.auto?state.highlights.filter(h=>h.book===b.id):[];return '<article class="reading-sheet"><header>'+smallCover(b)+'<div><p class="artist-kicker">'+(n.auto?'Fiche du livre':'Page du carnet')+'</p><h2>'+esc(n.title)+'</h2><a href="'+bookLink(b)+'">'+esc(b.title)+' ↗</a><p>'+esc(n.page?'Page / chapitre '+n.page:'')+'</p></div><img class="sheet-sticker" src="'+esc(assetHref('images/objets/fiches.svg'))+'" alt=""></header>'+(n.passage?'<blockquote class="sheet-quotation"><strong>Passage marquant</strong><p>'+esc(n.passage)+'</p></blockquote>':'')+(n.body?'<p class="pre-wrap">'+esc(n.body)+'</p>':'')+(traces.length?'<details><summary>'+traces.length+' passage'+(traces.length>1?'s':'')+' de ce livre ↘</summary>'+traces.map(traceMarkup).join('')+'</details>':'')+'<div class="trace-actions"><button type="button" data-edit-note="'+esc(n.id)+'">Continuer ma fiche</button>'+(n.auto?'':'<button type="button" class="text-button" data-delete-note="'+esc(n.id)+'">Retirer</button>')+'</div></article>';}).join('')||'<p class="empty">Les fiches créées pendant ta lecture se rangeront ici, avec la couverture du livre.</p>';el.querySelectorAll('[data-edit-note]').forEach(btn=>btn.onclick=()=>{const n=state.notes.find(n=>n.id===btn.dataset.editNote);chooseBook(n.book,n);$('note-body').focus();});el.querySelectorAll('[data-delete-note]').forEach(btn=>btn.onclick=async()=>{state.notes=state.notes.filter(n=>n.id!==btn.dataset.deleteNote);await save();renderNotes();});el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderNotes();});}
+function renderNotes(){const el=$('notes');if(!el)return;const term=searchTerms($('notes-search')?.value||'');const language=$('journal-list-language')?.value;let notes=state.notes.filter(n=>n.kind===el.dataset.kind&&(!language||bookLanguage(state.books.find(b=>b.id===n.book)||{})===language)&&term.every(t=>searchTerms((state.books.find(b=>b.id===n.book)?.title||'')+' '+n.title).join(' ').includes(t)));el.innerHTML=notes.map(n=>{const b=state.books.find(b=>b.id===n.book);if(!b)return '';const traces=n.auto?state.highlights.filter(h=>h.book===b.id):[];return '<article class="reading-sheet"><header>'+smallCover(b)+'<div><p class="artist-kicker">'+(n.auto?'Fiche du livre':'Page du carnet')+'</p><h2>'+esc(n.title)+'</h2><a href="'+bookLink(b)+'">'+esc(b.title)+' ↗</a><p>'+esc(n.page?'Page / chapitre '+n.page:'')+'</p></div><img class="sheet-sticker" src="'+esc(assetHref('images/objets/fiches.svg'))+'" alt=""></header>'+(n.passage?'<blockquote class="sheet-quotation"><strong>Passage marquant</strong><p>'+esc(n.passage)+'</p></blockquote>':'')+(n.body?'<p class="pre-wrap">'+esc(n.body)+'</p>':'')+(traces.length?'<details><summary>'+traces.length+' passage'+(traces.length>1?'s':'')+' de ce livre ↘</summary>'+traces.map(traceMarkup).join('')+'</details>':'')+'<div class="trace-actions"><button type="button" data-edit-note="'+esc(n.id)+'">Continuer ma fiche</button>'+(n.auto?'':'<button type="button" class="text-button" data-delete-note="'+esc(n.id)+'">Retirer</button>')+'</div></article>';}).join('')||'<p class="empty">Les fiches créées pendant ta lecture se rangeront ici, avec la couverture du livre.</p>';el.querySelectorAll('[data-edit-note]').forEach(btn=>btn.onclick=()=>{const n=state.notes.find(n=>n.id===btn.dataset.editNote);chooseBook(n.book,n);$('note-body').focus();});el.querySelectorAll('[data-delete-note]').forEach(btn=>btn.onclick=async()=>{state.notes=state.notes.filter(n=>n.id!==btn.dataset.deleteNote);await save();renderNotes();});el.querySelectorAll('[data-remove-highlight]').forEach(btn=>btn.onclick=async()=>{state.highlights=state.highlights.filter(h=>h.id!==btn.dataset.removeHighlight);await save();renderNotes();});}
 function selects(){if(!$('book-select'))return;if($('book-title-search')){$('book-title-search').oninput=()=>{const terms=searchTerms($('book-title-search').value);$('book-select').value='';const found=terms.length?state.books.filter(b=>terms.every(t=>searchTerms(b.title+' '+b.author).join(' ').includes(t))):[];$('book-search-results').innerHTML=found.slice(0,8).map(b=>'<button type="button" data-choose-book="'+esc(b.id)+'">'+smallCover(b)+'<span>'+esc(b.title)+'<small>'+esc(b.author)+'</small></span></button>').join('')||(terms.length?'<p>Aucun livre trouvé.</p>':'');$('book-search-results').querySelectorAll('[data-choose-book]').forEach(btn=>btn.onclick=()=>chooseBook(btn.dataset.chooseBook));};const requested=currentParams().get('livre');if(requested)chooseBook(requested);}else{$('book-select').innerHTML=state.books.map(b=>'<option value="'+esc(b.id)+'">'+esc(b.title)+'</option>').join('');}}
 function premiumPreview(title,level){
  return '<details class="premium-preview"><summary>'+esc(title)+' '+planLock(level)+'</summary><a class="btn secondary" href="'+siteHref('le-cercle.html#comparatif')+'">Comparer les formules ↗</a></details>';
@@ -3579,7 +3593,7 @@ async function connectService(){
   editorialAdmin=account?.emailVerified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(account.email?.toLowerCase());
   catalogueManager=account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
   service={user:ellUser?.id||null,admin:false};
-  if(account&&($('reader-content')||$('highlights')||$('book-detail')||$('reading-search'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
+  if(account&&($('reader-content')||$('highlights')||$('book-detail')||$('reading-search')||$('journal-builder'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
   return service;
  }catch(error){console.error('Connexion indisponible',error);return null;}
 }
@@ -4309,7 +4323,7 @@ async function loadPublicCatalogue(){
   const safeCover=/^(?:images\/|livres\/)[^?#]+\.(?:png|jpe?g|webp)$/i.test(cover)?cover:(/^https:\/\/potierbiblio-com\.github\.io\/Lecture-Entre-Les-Lignes\/(?:images|livres)\/[^?#]+\.(?:png|jpe?g|webp)$/i.test(cover)?cover:'');
   return {id:source+'-'+entry.id,title:entry.title,author:entry.author||'',genre:genreSlug,sub:String(subIndex),
    cover:safeCover,pdfPath:safePath,presentation:entry.description||entry.presentation||'',summary:entry.summary||entry.description||'',
-   publisher:entry.publisher||'',year:entry.publication_year||entry.year||'',isbn:entry.isbn||'',
+   publisher:entry.publisher||'',pdfLanguage:entry.pdfLanguage||entry.language||entry.edition?.language||'',year:entry.publication_year||entry.year||'',isbn:entry.isbn||'',
    reviewLinks:Array.isArray(entry.review_links)?entry.review_links:[],chapters:Array.isArray(entry.chapters)?entry.chapters:[],
    catalogueSource:source};
  };
@@ -4467,6 +4481,7 @@ bindReadingSearch();
 if(db)await writeLocalState(null);
 if(!document.body.isConnected)return;
 applyDesign();
+if($('search-language'))fillLanguageOptions($('search-language'),state.books);
 if($('search-year')){$('search-year').innerHTML='<option value="">Toutes les dates</option>'+[...new Set(state.books.map(b=>bookYear(b)).filter(Boolean))].sort((a,b)=>Number(b)-Number(a)).map(y=>'<option>'+esc(y)+'</option>').join('');}
 if($('review-search')){
  $('review-search').oninput=renderBooks;
@@ -4474,7 +4489,7 @@ if($('review-search')){
  $('review-filters').onsubmit=event=>{event.preventDefault();renderBooks();};
  $('review-filters').onreset=()=>requestAnimationFrame(renderBooks);
 }
-for(const field of ['search-year','search-sort','pdf-only','search-favorites'])if($(field))$(field).onchange=renderBooks;
+for(const field of ['search-year','search-language','search-sort','pdf-only','search-favorites'])if($(field))$(field).onchange=renderBooks;
 if(($('books')||$('book-detail'))&&!document.querySelector('script[src*="favoris-catalogue.js"]')){
  const hearts=document.createElement('script');hearts.src='js/favoris-catalogue.js?v=coeur-20261119-3';document.head.append(hearts);
 }
@@ -4717,6 +4732,10 @@ if($('review-form')){
 }
 if($('profile-form')){$('name').value=state.profile.name||'';$('bio').value=state.profile.bio||'';$('profile-form').onsubmit=async e=>{e.preventDefault();state.profile={name:$('name').value,bio:$('bio').value};await save();};}
 bindNoteForm();
+if($('journal-builder')){
+ const {bindJournalBuilder}=await import('./journal-collections.js?v=1');
+ bindJournalBuilder({state,readerLevel,genres:GENRES,bookLanguage,fillLanguageOptions,save,uid,renderNotes,bookLink});
+}
 lockCatalog();showAccount();
 if (service?.user) document.body.addEventListener('click', async event => {
   if (!pendingWrites || event.defaultPrevented || event.button!==0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;

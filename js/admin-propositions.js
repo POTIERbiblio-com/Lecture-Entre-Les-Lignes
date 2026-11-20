@@ -1,8 +1,8 @@
 import {watchAdministration} from './admin-session.js';
-import {auth,requestService,requestCard,labels} from './request-service.js?v=decisions-20261119';
+import {auth,requestService,requestCard,labels} from './request-service.js?v=pieces-jointes-20261120';
 
 const $=id=>document.getElementById(id), workspace=$('admin-workspace'), status=$('admin-access');
-const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]]};
+const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
 const decisions={pending:'À étudier',more_info:'Demander un complément',accepted:'Acceptée',queued:'En attente de mise en ligne',rejected:'Refusée',published:'Publiée'};
 const decisionOf=record=>record.review_workflow?.decision||({validated:'accepted',unresolved:'rejected'}[record.status]||'pending');
 let records=[], refresh;
@@ -19,15 +19,15 @@ function render(account=auth.currentUser){
  for(const record of matches){
   const card=requestCard(record,{admin:true,account}), workflow=record.review_workflow||{};
   if(record.boosted){const badge=document.createElement('p');badge.className='status decision-queued';badge.textContent='↑ Proposition prioritaire';card.prepend(badge);}
-  if(['accepted','queued'].includes(workflow.decision)){
+  if(['accepted','queued'].includes(decisionOf(record))){
    const publish=document.createElement('a');
-   publish.className='btn';publish.textContent='Préparer la publication ↗';
-   publish.href='publier-livre.html?'+new URLSearchParams({proposition:record.id,title:workflow.title,author:workflow.author,genre:workflow.genre,sub:workflow.sub});
+   publish.className='btn';publish.textContent=record.pdf_path?'Préparer la publication avec le PDF ↗':'Préparer la publication ↗';
+   publish.href='publier-livre.html?'+new URLSearchParams({proposition:record.id});
    card.append(publish);
   }
   const form=document.createElement('form');
   form.className='proposal-decision-form';
-  form.innerHTML='<label>Décision<select name="decision"></select></label><fieldset class="proposal-classification"><legend>Classement du livre</legend><label>Titre<input name="title" maxlength="180"></label><label>Auteur<input name="author" maxlength="150"></label><label>Genre<select name="genre"></select></label><label>Sous-genre<select name="sub"></select></label></fieldset><label class="proposal-message">Message au lecteur<textarea name="message" maxlength="3000" rows="3"></textarea></label><div class="proposal-send"><button class="btn" type="submit">Envoyer la décision</button><p role="status"></p></div>';
+  form.innerHTML='<label>Décision<select name="decision"></select></label><fieldset class="proposal-classification"><legend>Classement du livre · facultatif</legend><label>Titre<input name="title" maxlength="180"></label><label>Auteur<input name="author" maxlength="150"></label><label>Genre<select name="genre"></select></label><label>Sous-genre<select name="sub"></select></label></fieldset><label class="proposal-message">Message au lecteur<textarea name="message" maxlength="3000" rows="3"></textarea></label><div class="proposal-send"><button class="btn" type="submit">Envoyer la décision</button><p role="status"></p></div>';
   const fields=form.elements;
   for(const [key,label] of Object.entries(decisions))if(key!=='published')fields.decision.add(new Option(label,key));
   fields.decision.value=workflow.decision==='published'?'accepted':decisionOf(record);
@@ -41,7 +41,6 @@ function render(account=auth.currentUser){
   function updateRequirements(){
    const accepted=['accepted','queued'].includes(fields.decision.value);
    form.querySelector('fieldset').hidden=!accepted;
-   for(const name of ['title','author','genre','sub'])fields[name].required=accepted;
    fields.message.required=['rejected','more_info'].includes(fields.decision.value);
   }
   fields.decision.onchange=updateRequirements;updateRequirements();

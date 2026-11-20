@@ -32,6 +32,7 @@
 <label>Genre <select name="genre"><option value="">Choisir un genre (facultatif)</option><option value="fiction">Fiction</option><option value="savoirs">Savoirs</option><option value="arts">Arts</option><option value="vie-et-societe">Vie et société</option><option value="spiritualites">Spiritualités et religions</option><option value="jeunesse">Jeunesse et pédagogie</option></select></label>
 <label>Sous-genre <input name="subgenre" maxlength="100" placeholder="Ex. Psychologie, philosophie…"></label>
 <label>Éditeur / édition <input name="edition" maxlength="160" placeholder="Ex. Éditions Gallimard"></label>
+<label>Langue du PDF <input name="language" maxlength="80" placeholder="Ex. Français"></label>
 <label>Date de parution <input name="publicationDate" placeholder="Ex. 2020" maxlength="50"></label>
 <label>Prix indicatif <input name="price" placeholder="Ex. 12,90 €" maxlength="50"></label>
 <label>ISBN <input name="isbn" maxlength="30" placeholder="ISBN-10 ou ISBN-13"></label>
@@ -52,6 +53,6 @@
 <section class="request-card request-history-card"><h2>Mes propositions</h2><p>Tu retrouveras ici les réponses de l'équipe, visibles uniquement depuis ton compte.</p><label class="proposal-history-sort">Trier mes propositions <select id="request-history-sort"><option value="recent">Plus récentes</option><option value="oldest">Plus anciennes</option><option value="title">Titre du livre</option></select></label><div id="my-requests"></div></section>
 </section>
 <p id="request-login" hidden class="request-login"><a href="connexion-firebase.html">Connecte-toi ou crée ton compte pour proposer un livre et suivre sa réponse ♡</a></p>
-</main></div><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a><a href="plan.html">Plan du site</a><a href="mon-espace.html">Mon espace</a></div><script type="module" src="js/book-requests.js?v=priorite-visuelle-20261119"></script>
+</main></div><div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a><a href="plan.html">Plan du site</a><a href="mon-espace.html">Mon espace</a></div><script type="module" src="js/book-requests.js?v=pieces-jointes-20261120"></script>
 <script>const pdfInput=document.getElementById('request-pdf'),pdfLabel=document.getElementById('request-pdf-label');pdfInput.addEventListener('change',()=>{const f=pdfInput.files?.[0];pdfLabel.textContent=f?'PDF sélectionné : '+f.name+' ('+(f.size/1048576).toFixed(1)+' Mo)':'Aucun PDF sélectionné.';});const cover=document.getElementById('request-cover'),preview=document.getElementById('request-preview'),lbl=document.getElementById('request-preview-label');let previewUrl='';cover.addEventListener('change',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);const file=cover.files&&cover.files[0];if(file&&file.type.startsWith('image/')){previewUrl=URL.createObjectURL(file);preview.src=previewUrl;lbl.textContent='Ta couverture sélectionnée ♡';}else{preview.src='images/atelier/revue-ouverte.jpg';lbl.textContent='Ta couverture apparaîtra ici ♡';}});</script>
 </body></html>

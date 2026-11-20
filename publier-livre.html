@@ -13,7 +13,7 @@
 <label class="publication-file">Fichier PDF <input name="pdf" type="file" accept="application/pdf,.pdf" required></label>
 <label class="publication-rights"><input name="rights" type="checkbox" required> J’ai le droit de diffuser le PDF et la couverture si j’en ajoute une.</label>
 </fieldset>
-<h2>Compléter la fiche <small>Facultatif</small></h2>
+<p id="proposal-prefill" hidden></p><h2>Compléter la fiche <small>Facultatif</small></h2>
 <details class="publication-option"><summary>Couverture, rayon et accès</summary><label>Genre <select name="genre" required></select></label>
 <label>Sous-genre <select name="sub" required></select></label>
 <label>Accès <select name="level"><option value="0">Gratuit · accès public</option><option value="1">Jaune · Découverte</option><option value="2">Orange · Passion</option><option value="3">Rouge · Illimité</option></select></label><label>Couverture <input name="cover" type="file" accept="image/jpeg,image/png,image/webp"></label></details>
@@ -22,12 +22,13 @@
 <label>Titre original <input name="edition-original" maxlength="250"></label>
 <label>ISBN <input name="edition-isbn" maxlength="250"></label>
 <label>Type d’ouvrage <input name="edition-kind" maxlength="250"></label>
-<label>Langue <input name="edition-language" maxlength="250"></label>
+<label>Langue du PDF <input name="edition-language" maxlength="250"></label>
 <label>Collection <input name="edition-collection" maxlength="250"></label>
 <label>Nombre de pages <input name="edition-pages" maxlength="250"></label>
 <label>Autres contributeurs <input name="edition-contributors" maxlength="250"></label>
 <label>Note sur l’édition <input name="edition-note" maxlength="250"></label>
 <label>Présentation <textarea name="presentation" maxlength="5000" rows="4"></textarea></label>
+<label>Référence du livre <input type="url" name="referenceUrl" maxlength="500"></label>
 <label>Résumé du livre <textarea name="summary" maxlength="10000" rows="6"></textarea></label>
 </details>
 <details class="publication-option"><summary>Résumés par chapitre</summary><div id="publication-chapters"></div><button type="button" id="add-chapter" class="btn secondary">Ajouter un chapitre</button></details>
@@ -40,4 +41,4 @@
 
 <div class="publication-submit"><button type="submit" class="btn">Publier dans le catalogue ↗</button></div></form>
 <template id="chapter-template"><fieldset><legend>Chapitre</legend><label>Titre <input name="chapter-title" required maxlength="180"></label><label>Page PDF <input name="chapter-page" type="number" min="1" step="1"></label><label>Résumé <textarea name="chapter-summary" required maxlength="5000" rows="4"></textarea></label><button type="button" class="btn secondary">Retirer le chapitre</button></fieldset></template>
-</main><script type="module" src="js/publication-livre.js?v=lectures-privees-20261120-2"></script></body></html>
+</main><script type="module" src="js/publication-livre.js?v=pieces-jointes-20261120"></script></body></html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mes journaux de livres · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mes journaux de livres · Entre les lignes</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/publication-simple.css"><link rel="stylesheet" href="css/carnet-pastel.css"><link rel="stylesheet" href="css/collage.css"><link rel="stylesheet" href="css/reliure.css"><link rel="stylesheet" href="css/carnet-illustre.css">
 <link rel="stylesheet" href="css/atelier.css"><link rel="stylesheet" href="css/objets.css"><link rel="stylesheet" href="css/lecture-atelier.css"><link rel="stylesheet" href="css/roses-carnet.css"><link rel="stylesheet" href="css/edition.css"><link rel="stylesheet" href="css/outils-lecture.css"><link rel="stylesheet" href="css/graphisme.css"><link rel="stylesheet" href="css/carnet-pages.css"><link rel="manifest" href="manifest.webmanifest?v=livre-20261120"><meta name="theme-color" content="#ba7897"><link rel="icon" type="image/png" sizes="192x192" href="images/raccourci-192.png?v=livre-20261120"><link rel="apple-touch-icon" sizes="180x180" href="images/raccourci-apple.png?v=livre-20261120">
 </head>
 <body class="atelier-page">
@@ -31,11 +31,40 @@
     </div>
   </div>
   <img class="carnet-affiche-sticker" src="images/objets/journal.svg" alt="">
-</header><form id="note-form" data-kind="journaux"><div class="book-picker"><h2 class="carnet-filter-title"><img src="images/objets/loupe.svg" alt="">Choisir le livre</h2><label for="book-title-search">Recherche par titre ou auteur</label><input id="book-title-search" type="search" autocomplete="off" placeholder="Ex. Sapiens…"><input id="book-select" type="hidden"><div id="book-search-results" class="book-search-results" aria-live="polite"></div><div id="selected-note-book" class="selected-note-book"></div></div><label for="note-title">Titre</label><input id="note-title" placeholder="Le titre du livre sera repris si tu laisses ce champ vide"><label for="note-page">Page / chapitre</label><input id="note-page"><label for="note-body">Mon texte</label><textarea id="note-body" required placeholder="Ce que j’ai lu aujourd’hui, les idées qui me restent…"></textarea><p class="automatic-note">Tes lignes sont enregistrées automatiquement.</p><button>Enregistrer maintenant</button><button type="button" id="note-new" class="text-button">Nouvelle page de journal</button>
+</header>
+<section class="trace-filters" id="journal-builder" hidden aria-labelledby="journal-builder-title">
+ <h2 id="journal-builder-title">Composer un journal de lecture</h2>
+ <p id="journal-plan-offer" hidden>Les journaux personnalisés sont inclus dans <a href="le-cercle.html#comparatif">Passion et Illimité</a>.</p>
+ <form id="journal-collection-form" hidden>
+  <label>Titre du journal <input name="title" required maxlength="150"></label>
+  <label>Mon texte <textarea name="body" rows="4" maxlength="12000"></textarea></label>
+  <fieldset>
+   <legend>Retrouver les livres et leurs contenus</legend>
+   <label>Titre du livre <input type="search" name="titleFilter"></label>
+   <label>Auteur <select name="author"><option value="">Tous les auteurs</option></select></label>
+   <label>Genre <select name="genre"><option value="">Tous les genres</option></select></label>
+   <label>Sous-genre <select name="sub"><option value="">Tous les sous-genres</option></select></label>
+   <label>Langue du PDF <select name="language"><option value="">Toutes les langues</option></select></label>
+  </fieldset>
+  <div class="trace-actions">
+   <button type="button" class="secondary" data-journal-all="book">Tous les livres affichés</button>
+   <button type="button" class="secondary" data-journal-all="highlight">Tous les surlignages affichés</button>
+   <button type="button" class="secondary" data-journal-all="sheet">Toutes les fiches affichées</button>
+   <button type="button" class="secondary" data-journal-none>Tout désélectionner</button>
+  </div>
+  <div id="journal-candidates"></div>
+  <p id="journal-selection-count" role="status"></p>
+  <button type="submit">Enregistrer le journal</button>
+  <button type="button" class="secondary" id="journal-new">Nouveau journal</button>
+ </form>
+ <p id="journal-collection-status" role="status"></p>
+ <div id="journal-collections"></div>
+</section>
+<form id="note-form" data-kind="journaux"><div class="book-picker"><h2 class="carnet-filter-title"><img src="images/objets/loupe.svg" alt="">Choisir le livre</h2><label for="book-title-search">Recherche par titre ou auteur</label><input id="book-title-search" type="search" autocomplete="off" placeholder="Ex. Sapiens…"><input id="book-select" type="hidden"><div id="book-search-results" class="book-search-results" aria-live="polite"></div><div id="selected-note-book" class="selected-note-book"></div></div><label for="note-title">Titre</label><input id="note-title" placeholder="Le titre du livre sera repris si tu laisses ce champ vide"><label for="note-page">Page / chapitre</label><input id="note-page"><label for="note-body">Mon texte</label><textarea id="note-body" required placeholder="Ce que j’ai lu aujourd’hui, les idées qui me restent…"></textarea><p class="automatic-note">Tes lignes sont enregistrées automatiquement.</p><button>Enregistrer maintenant</button><button type="button" id="note-new" class="text-button">Nouvelle page de journal</button>
 <p id="status" class="status" role="status">
 </p>
 </form>
-<section class="notes-results" id="notes-results" tabindex="-1"><label for="notes-search">Retrouver une entrée par titre de livre</label><input id="notes-search" type="search" placeholder="Titre du livre ou de l’entrée…"><div id="notes" data-kind="journaux">
+<section class="notes-results" id="notes-results" tabindex="-1"><label for="journal-list-language">Filtrer les journaux par langue du PDF</label><select id="journal-list-language"><option value="">Toutes les langues</option></select><label for="notes-search">Retrouver une entrée par titre de livre</label><input id="notes-search" type="search" placeholder="Titre du livre ou de l’entrée…"><div id="notes" data-kind="journaux">
 </div></section>
 <nav class="carnet-onglets" aria-labelledby="carnet-onglets-title">
   <h2 id="carnet-onglets-title">Continuer dans le carnet</h2>
@@ -49,7 +78,7 @@
 <div class="site-footer" role="contentinfo"><a href="aide.html">Mode d’emploi</a>
 <a href="plan.html">Plan du site</a>
 <a href="admin.html">Atelier admin</a></div>
-<script type="text/javascript" src="js/app.js?v=rayons-prives-20261120">
+<script type="text/javascript" src="js/app.js?v=langues-journaux-20261120">
 </script>
 <script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script></body>
 </html>

@@ -14,6 +14,7 @@ export async function requestService(action, fields={}, account){
     method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},
     body:JSON.stringify({action,...fields})
   });
+  if(action==='requests-file'&&response.ok)return response.blob();
   const data=await response.json();
   if(!response.ok)throw Error(data.error||'Service temporairement indisponible.');
   return data;
@@ -40,22 +41,27 @@ export function requestCard(record,{admin=false,account}={}){
   else add('p',labels[record.status]||labels.pending).className='status '+(labels[record.status]?record.status:'pending');
   if(record.author)add('p',record.author);
   if(admin&&record.requester_email)add('p',record.requester_email);
-  const detailLabels={genre:'Genre',subgenre:'Sous-genre',edition:'Édition',publicationDate:'Parution',price:'Prix',isbn:'ISBN',referenceUrl:'Référence',summary:'Résumé',details:'Informations complémentaires'};
+  const detailLabels={genre:'Genre',subgenre:'Sous-genre',edition:'Édition',publicationDate:'Parution',language:'Langue du PDF',price:'Prix',isbn:'ISBN',referenceUrl:'Référence',summary:'Résumé',details:'Informations complémentaires'};
   for(const [key,label] of Object.entries(detailLabels)){
     if(record.details?.[key])add('p',label+' · '+record.details[key]);
   }
-  for(const [field,fileType,label] of [['cover_path','cover','Voir la couverture'],['pdf_path','pdf','Ouvrir le PDF joint']]){
+  for(const [field,fileType,label] of [['cover_path','cover','Télécharger la couverture'],['pdf_path','pdf','Télécharger le PDF']]){
     if(!record[field])continue;
     const button=add('button',label);
     button.type='button';
     button.onclick=async()=>{
       button.disabled=true;
       try{
-        const {url}=await requestService('requests-file',{id:record.id,fileType},account);
+        const file=await requestService('requests-file',{id:record.id,fileType},account);
+        if(auth.currentUser?.uid!==account?.uid)return;
+        const url=URL.createObjectURL(file);
         const link=document.createElement('a');
-        link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=label;
-        button.replaceWith(link);
-      }catch(error){add('p',error.message);button.disabled=false;}
+        link.href=url;
+        link.download=fileType==='pdf'?'proposition.pdf':'couverture.'+({'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type]||'image');
+        link.click();
+        setTimeout(()=>URL.revokeObjectURL(url),30000);
+      }catch(error){add('p',error.message).setAttribute('role','status');}
+      finally{button.disabled=false;}
     };
   }
   if(workflow.genreLabel)add('p',[workflow.title,workflow.author,workflow.genreLabel,workflow.subLabel].filter(Boolean).join(' · '));

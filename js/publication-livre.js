@@ -1,7 +1,8 @@
 import {watchAdministration} from './admin-session.js';
-import {auth,requestService} from './request-service.js?v=decisions-20261119';
+import {auth,requestService} from './request-service.js?v=pieces-jointes-20261120';
 import {uploadCataloguePdf} from './catalogue-access.js';
 const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
+const $=id=>document.getElementById(id);
 const form=document.getElementById('publication-form');
 const message=document.getElementById('publication-message');
 const chapters=document.getElementById('publication-chapters');
@@ -12,6 +13,7 @@ let draft=null;
 const privateLevel='quentin-only';
 const privateRequested=new URLSearchParams(location.search).get('selection')==='privee';
 const isQuentin=account=>account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
+const proposalId=new URLSearchParams(location.search).get('proposition');
 const coverLabel=fields.cover.closest('label');
 const audienceNote=document.getElementById('publication-private-note');
 function updateAudience(){
@@ -58,7 +60,8 @@ watchAdministration({status:message,onClosed(){
   subgenres();
   if(Array.from(fields.sub.options).some(option=>option.value===query.get('sub')))fields.sub.value=query.get('sub');
   draft=null;
-},onReady(){
+  $('proposal-prefill').hidden=true;
+},async onReady(account,changed,isCurrent){
   if(privateRequested&&!isQuentin(auth.currentUser)){
     form.hidden=true;
     message.textContent='La sélection privée est réservée au compte de Quentin.';
@@ -72,6 +75,51 @@ watchAdministration({status:message,onClosed(){
     }
   }
   updateAudience();
+  if(proposalId){
+    form.hidden=true;
+    message.textContent='Chargement de la proposition et contrôle des pièces jointes…';
+    const {draft:proposal}=await requestService('requests-publication-draft',{id:proposalId},account);
+    if(!isCurrent())return;
+    const details=proposal.details||{}, workflow=proposal.workflow||{};
+    fields.title.value=(workflow.title||proposal.title||'').slice(0,180);
+    fields.author.value=(workflow.author||proposal.author||'').slice(0,150);
+    const normalize=value=>String(value||'').normalize('NFD').replace(/\p{M}/gu,'').trim().toLowerCase();
+    const category=Object.entries(GENRES).find(([slug,[label]])=>[slug,label].some(name=>normalize(name)===normalize(details.genre)));
+    fields.genre.value=workflow.genre&&Object.hasOwn(GENRES,workflow.genre)?workflow.genre:category?.[0]||'a-classer';
+    subgenres();
+    const guessed=GENRES[fields.genre.value][1].findIndex(label=>normalize(label)===normalize(details.subgenre));
+    const sub=workflow.sub!==''&&workflow.sub!=null?String(workflow.sub):String(guessed);
+    if(Array.from(fields.sub.options).some(option=>option.value===sub))fields.sub.value=sub;
+    fields.summary.value=details.summary||'';
+    fields['edition-year'].value=details.publicationDate||'';
+    fields['edition-isbn'].value=details.isbn||'';
+    fields['edition-language'].value=details.language||'';
+    const note=[details.edition,details.price&&'Prix indiqué : '+details.price,details.details].filter(Boolean).join(' · ');
+    fields['edition-note'].value=note.slice(0,250);
+    fields.referenceUrl.value=details.referenceUrl||'';
+    const report=$('proposal-prefill');
+    report.hidden=false;
+    report.textContent=note;
+    const files=[['pdf',proposal.hasPdf],['cover',proposal.hasCover]].filter(([,present])=>present);
+    const loaded=await Promise.allSettled(files.map(async ([type])=>{
+      const blob=await requestService('requests-file',{id:proposalId,fileType:type},account);
+      return [type,blob];
+    }));
+    if(!isCurrent())return;
+    const warnings=[];
+    for(const [index,result] of loaded.entries()){
+      if(result.status==='rejected'){warnings.push(files[index][0]==='pdf'?'PDF : '+result.reason.message:'Couverture : '+result.reason.message);continue;}
+      const [type,blob]=result.value;
+      const extension=({'application/pdf':'pdf','image/jpeg':'jpg','image/png':'png','image/webp':'webp'})[blob.type];
+      if(!extension){warnings.push('Format de pièce jointe inattendu.');continue;}
+      const transfer=new DataTransfer();
+      transfer.items.add(new File([blob],(type==='pdf'?'proposition':'couverture')+'.'+extension,{type:blob.type}));
+      fields[type].files=transfer.files;
+    }
+    form.hidden=false;
+    message.textContent=warnings.length?warnings.join(' · '):'Proposition reprise. Vérifie la fiche avant de publier.';
+    return;
+  }
   form.hidden=false;
   message.textContent='Compte administrateur vérifié. Tu peux publier le livre.';
 }});
