@@ -13,3 +13,5 @@
 .tutorial-controls button:disabled{opacity:.6;cursor:default}
 .tutorial-controls button:focus-visible{outline:2px solid #7b133e;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.tutorial-click .tutorial-pointer::after{animation:none}}
+
+.tutos-ecran>.tutorial-wide{grid-column:1/-1}

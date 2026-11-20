@@ -84,6 +84,8 @@ function makeGuide(host,steps){
  const next=element(bar,'button','','›');
  next.setAttribute('aria-label','Étape suivante');
  const sound=element(bar,'button','','Écouter');
+ const expand=element(bar,'button','','Agrandir');
+ expand.setAttribute('aria-pressed','false');
  sound.setAttribute('aria-pressed','false');
  for(const control of bar.querySelectorAll('button'))control.type='button';
  if(!('speechSynthesis' in window))sound.hidden=true;
@@ -171,9 +173,11 @@ function makeGuide(host,steps){
   target=await waitForTarget(doc,selector);
   if(token!==generation)return;
   if(target){
+   const sample=path===reader?[...doc.querySelectorAll('#pdf-text-layer span[role="presentation"]')]
+     .reduce((line,span)=>(span.textContent.trim().length>(line?.textContent.trim().length||0)?span:line),null):null;
+   if(sample&&stage===2)target=sample;
    target.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
    if(path===reader){
-    const sample=doc.querySelector('#pdf-text-layer span[role="presentation"]');
     const selection=doc.defaultView.getSelection();
     selection?.removeAllRanges();
     if(sample&&[2,3].includes(stage)&&selection){
@@ -211,6 +215,11 @@ function makeGuide(host,steps){
   playing=!playing;
   if(playing){if(play.textContent==='Revoir')stage=0;play.textContent='Pause';void render();}
   else {stop();play.textContent='Reprendre';}
+ };
+ expand.onclick=()=>{
+  const wide=host.closest('article').classList.toggle('tutorial-wide');
+  expand.setAttribute('aria-pressed',String(wide));
+  expand.textContent=wide?'Taille normale':'Agrandir';
  };
  sound.onclick=()=>{
   narrated=!narrated;
