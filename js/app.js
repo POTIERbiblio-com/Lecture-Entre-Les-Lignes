@@ -3518,13 +3518,13 @@ ${unit === 'Repères d’après le sommaire' ? '<p class="book-chapter-context">
   </section>`;
 }
 
-function detailMarkup(b){const meta={...b};const guide=Object.hasOwn(READING_GUIDES,b.id)?READING_GUIDES[b.id]:null;const sources=[...(guide?.edition.sources||[]),...(meta.sources||[])].filter((source,index,all)=>all.findIndex(item=>item.url===source.url)===index);const art=BOOK_ART[b.id]||({liv0015:['train-fleuri.jpg','Quel chemin prendre ?'],liv0016:['telephone-rose.jpg','Le premier appel'],liv0017:['lecteur-journal.jpg','Diriger une équipe'],liv0018:['chuchotement.jpg','Nos influences'],liv0019:['portrait-bulle.jpg','Prendre la parole'],liv0020:['telephone-pastel.jpg','Le téléphone côté atelier'],liv0021:['conversation-sur-canape.jpg','Le temps d’écouter'],liv0022:['televiseurs-roses.jpg','Derrière l’écran'],liv0023:['regard-curieux.jpg','De l’action à la pensée'],liv0024:['ampoule-etoiles.jpg','Ce que l’on croit possible']})[b.id]||['livre-paysage.jpg','Un monde entre les pages'];const tags=meta.themes||[];
+function detailMarkup(b){const meta={...b};const guide=Object.hasOwn(READING_GUIDES,b.id)?READING_GUIDES[b.id]:null;const art=BOOK_ART[b.id]||({liv0015:['train-fleuri.jpg','Quel chemin prendre ?'],liv0016:['telephone-rose.jpg','Le premier appel'],liv0017:['lecteur-journal.jpg','Diriger une équipe'],liv0018:['chuchotement.jpg','Nos influences'],liv0019:['portrait-bulle.jpg','Prendre la parole'],liv0020:['telephone-pastel.jpg','Le téléphone côté atelier'],liv0021:['conversation-sur-canape.jpg','Le temps d’écouter'],liv0022:['televiseurs-roses.jpg','Derrière l’écran'],liv0023:['regard-curieux.jpg','De l’action à la pensée'],liv0024:['ampoule-etoiles.jpg','Ce que l’on croit possible']})[b.id]||['livre-paysage.jpg','Un monde entre les pages'];const tags=meta.themes||[];
 return '<div class="book-dossier album-book"><header class="album-opening"><div class="album-heading"><p class="album-rayon"><a href="'+siteHref(b.quentinOnly?'bibliotheque-privee.html?genre='+encodeURIComponent(b.genre)+'&amp;sub='+encodeURIComponent(b.sub):b.genre==='a-classer'?'mes-livres.html?genre=a-classer':'livres-'+b.genre+'-'+b.sub+'.html')+'">'+esc(GENRES[b.genre]?.[1][b.sub])+' ↗</a></p><h1>'+esc(b.title)+'</h1><p class="album-author">'+esc(b.author)+'</p></div><figure class="album-montage"><img class="album-landscape" src="'+esc(assetHref('images/atelier/'+art[0]))+'" alt=""><img class="album-endpaper" src="'+esc(assetHref('images/collage/papier-fleuri.jpg'))+'" alt=""><div class="album-cover-polaroid">'+smallCover({...b,cover:b.cover||meta.cover})+'<img class="album-cover-flower" src="'+esc(assetHref('images/carnet-illustre/sticker-fleur.svg'))+'" alt=""></div></figure>'+bookFileActions(b,meta)+'</header>'+
 bookPassport(b,meta,guide)+bookGuideMarkup(b,guide)+
 (meta.reviewLinks?.length?'<section class="book-guides"><h2>Critiques et avis externes</h2><ul>'+meta.reviewLinks.filter(url=>typeof url==='string'&&/^https:\/\//.test(url)).map((url,i)=>'<li><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Consulter la source externe '+(i+1)+'</a></li>').join('')+'</ul></section>':'')+
 (b.quentinOnly?privateBookControls(b):catalogueControls(b))+(adminEnabled&&!b.quentinOnly?'<p><a class="btn secondary" href="'+esc(siteHref('ajouter-livre.html?id='+encodeURIComponent(b.id)))+'">Modifier cette fiche</a></p>':'')+
 (tags.length?'<section class="album-threads"><h2>Les fils du livre</h2><div>'+tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div><img src="'+esc(assetHref('images/objets/annotation.svg'))+'" alt=""></section>':'')+
-'<div class="book-reception-pair">'+externalReception(meta)+localReception(b)+'</div>'+'<details class="book-sources"><summary>Les sources et références ↘</summary><ul>'+sources.map(s=>s.url?'<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' ↗</a></li>':'<li>'+esc(s.label)+'</li>').join('')+(meta.pdfPath?'<li><a data-pdf-link="'+esc(meta.pdfPath)+'" href="'+esc(meta.pdfPath)+'" target="_blank" rel="noopener">PDF fourni · contenu et mentions éditoriales ↗</a></li>':'')+(meta.external?.url?'<li><a href="'+esc(meta.external.url)+'" target="_blank" rel="noopener">Source de la note extérieure ↗</a> · '+esc(meta.external.scope)+'</li>':'')+'</ul></details><nav class="book-dossier-bottom" aria-label="Garder une trace"><a href="'+siteHref('fiches.html?livre='+encodeURIComponent(b.id))+'">'+smallCover(b)+'Ma fiche de lecture ↗</a><a href="'+siteHref('journaux.html?livre='+encodeURIComponent(b.id))+'"><img src="'+esc(assetHref('images/objets/journal.svg'))+'" alt="">Mon journal ↗</a>'+(b.quentinOnly?'':'<a class="book-review-link" href="'+bookLink(b,'avis')+'"><img src="'+esc(assetHref('images/objets/avis.svg'))+'" alt="">Ma critique sur ce livre ↗</a>')+(adminEnabled&&!b.quentinOnly?'<a href="'+bookLink(b,'ajouter-livre')+'">Modifier la fiche du catalogue ↗</a>':'')+'</nav></div>';
+'<div class="book-reception-pair">'+externalReception(meta)+localReception(b)+'</div>'+'<nav class="book-dossier-bottom" aria-label="Garder une trace"><a href="'+siteHref('fiches.html?livre='+encodeURIComponent(b.id))+'">'+smallCover(b)+'Ma fiche de lecture ↗</a><a href="'+siteHref('journaux.html?livre='+encodeURIComponent(b.id))+'"><img src="'+esc(assetHref('images/objets/journal.svg'))+'" alt="">Mon journal ↗</a>'+(b.quentinOnly?'':'<a class="book-review-link" href="'+bookLink(b,'avis')+'"><img src="'+esc(assetHref('images/objets/avis.svg'))+'" alt="">Ma critique sur ce livre ↗</a>')+(adminEnabled&&!b.quentinOnly?'<a href="'+bookLink(b,'ajouter-livre')+'">Modifier la fiche du catalogue ↗</a>':'')+'</nav></div>';
 }
 function legend(){return {...LEGEND_DEFAULT,...state.legend};}
 function ensureBookSheet(b){let sheet=state.notes.find(n=>n.book===b.id&&n.kind==='fiches'&&n.auto);if(!sheet){sheet={id:uid(),book:b.id,kind:'fiches',title:b.title,body:'',page:'',auto:true,updated:new Date().toISOString()};state.notes.push(sheet);}return sheet;}
@@ -3727,7 +3727,13 @@ async function connectService(){
   const account=auth.currentUser;
   ellUser=account?{id:account.uid,email:account.email}:null;
   editorialAdmin=account?.emailVerified===true&&['quentinmorel1912@gmail.com','juliepotier2006@gmail.com'].includes(account.email?.toLowerCase());
-  catalogueManager=account?.emailVerified===true&&account.email?.toLowerCase()==='quentinmorel1912@gmail.com';
+  if(account?.email?.toLowerCase()==='quentinmorel1912@gmail.com'){
+   try{
+    await account.getIdToken(account.emailVerified!==true);
+    ({quentin:catalogueManager}=await requestService('quentin-workspace',{},account));
+    editorialAdmin=editorialAdmin||catalogueManager;
+   }catch(error){console.warn('Vérification de l’accès privé indisponible',error);}
+  }
   service={user:ellUser?.id||null,admin:false};
   if(account&&($('reader-content')||$('highlights')||$('book-detail')||$('reading-search')||$('journal-builder'))){try{readerLevel=(await requestService('status',{},account)).subscription.access_level||0;}catch(error){console.warn(error);}}
   return service;
@@ -4612,7 +4618,7 @@ if(isPrivateLibrary&&!catalogueManager){
  }
  return;
 }
-const privateCarnetPages=new Set(['fiches.html','annotations.html','surlignages.html','journaux.html','recherche-lectures.html','mon-espace.html']);
+const privateCarnetPages=new Set(['fiches.html','annotations.html','surlignages.html','journaux.html','recherche-lectures.html']);
 const privateDetails=id&&($('reader-content')||$('book-detail')||$('review-form'))&&!state.books.some(book=>book.id===id);
 if(catalogueManager&&(isPrivateLibrary||privateCarnetPages.has(currentPage)||privateDetails)){
  try{
@@ -4634,14 +4640,9 @@ if(isPrivateLibrary){
  $('private-library').hidden=false;
  privateStatus.hidden=true;
 }
-if(catalogueManager&&$('quentin-selection')){
- const notificationHost=$('review-inbox');
- if(notificationHost)notificationHost.hidden=false;
- $('quentin-selection').hidden=false;
- if(location.hash==='#quentin-selection')$('quentin-selection').scrollIntoView();
- $('account-critiques-link').href='#critiques-recentes';
- const {bindRecentReviews}=await import('./critiques-recentes.js?v=discussions');
- bindRecentReviews({books:state.books,genres:GENRES,aliases:catalogueAliases});
+if(catalogueManager&&$('quentin-workspace')){
+ const {bindRecentReviews}=await import('./critiques-recentes.js?v=compte-20261120');
+ bindRecentReviews({books:state.books.filter(book=>!book.quentinOnly),genres:GENRES,aliases:catalogueAliases});
 }
 if(currentPage==='mes-livres.html')await loadCatalogueSortData();
 if(!document.querySelector('link[href*="plan-locks.css"]')){

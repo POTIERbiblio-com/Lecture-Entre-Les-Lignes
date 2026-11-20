@@ -15,7 +15,7 @@ export function bindRecentReviews({books,genres,aliases}) {
   const dates=new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeStyle:'short'});
   const numbers=new Intl.NumberFormat('fr-FR');
   let rows=[],limit=24,loading=false,stale=true,seen=null,latest=null,display=0;
-  const badge=document.getElementById('review-unread');
+  const normalize=value=>String(value||'').normalize('NFD').replace(/\p{M}/gu,'').toLocaleLowerCase('fr').trim().replace(/\s+/g,' ');
   function setOptions(select,entries) {
     const value=select.value;
     const distinct=new Map(entries.filter(([id])=>id));
@@ -25,9 +25,10 @@ export function bindRecentReviews({books,genres,aliases}) {
   function render() {
     if(!current())return;
     setOptions(fields.sub,rows.filter(row=>!fields.genre.value||row.genre===fields.genre.value).map(row=>[row.subkey,row.sub]));
-    const filtered=rows.filter(row=>['book','genre','author','account','rating','sub'].every(key=>{
+    const terms=normalize(fields.account.value).split(' ').filter(Boolean);
+    const filtered=rows.filter(row=>terms.every(term=>normalize(row.accountLabel).includes(term))&&['book','genre','author','rating','sub'].every(key=>{
       const value=fields[key].value;
-      return !value||value===String(({book:row.book.id,genre:row.genre,author:row.book.author,account:row.firebase_uid,rating:row.rating,sub:row.subkey})[key]);
+      return !value||value===String(({book:row.book.id,genre:row.genre,author:row.book.author,rating:row.rating,sub:row.subkey})[key]);
     }));
     const kind=fields.interaction.value;
     const matching=filtered.filter(row=>!kind||(kind==='unread'?row.firebase_uid!==account.uid&&(!seen||Date.parse(row.updated_at)>Date.parse(seen)):row.thread?.[kind]));
@@ -89,7 +90,7 @@ export function bindRecentReviews({books,genres,aliases}) {
       if(!current())return;
       const changed=notification.latest&&notification.latest!==latest;
       latest=notification.latest;seen=notification.seen;
-      badge.textContent=notification.count?'('+notification.count+' nouvelles)':'';
+      document.dispatchEvent(new CustomEvent('ell-review-count',{detail:notification.count}));
       const mark=document.getElementById('mark-review-notifications');
       mark.hidden=!notification.count;
       mark.onclick=async()=>{
@@ -97,7 +98,7 @@ export function bindRecentReviews({books,genres,aliases}) {
         catch(error){status.textContent=error.message;}
       };
       if(changed&&!section.hidden&&!list.contains(document.activeElement))void refresh();
-    }catch(error){if(current())badge.textContent='';}
+    }catch(error){if(current())document.dispatchEvent(new CustomEvent('ell-review-count',{detail:0}));}
   }
   async function refresh() {
     if(!current()||loading)return;
@@ -122,7 +123,6 @@ export function bindRecentReviews({books,genres,aliases}) {
       setOptions(fields.book,rows.map(row=>[row.book.id,row.book.title]));
       setOptions(fields.genre,rows.map(row=>[row.genre,genres[row.genre]?.[0]||row.genre]));
       setOptions(fields.author,rows.map(row=>[row.book.author,row.book.author]));
-      setOptions(fields.account,rows.map(row=>[row.firebase_uid,row.accountLabel+' · '+row.firebase_uid.slice(-6)]));
       setOptions(fields.rating,rows.map(row=>[String(row.rating),numbers.format(row.rating)+' / 5']));
       if(['liked','commented'].includes(fields.interaction.value))await getThreads(rows);
       stale=false;
@@ -131,6 +131,7 @@ export function bindRecentReviews({books,genres,aliases}) {
       if(current())status.textContent=error.message;
     } finally {loading=false;}
   }
+  fields.account.addEventListener('input',()=>{limit=24;render();});
   form.addEventListener('change',async()=>{
     limit=24;
     if(['liked','commented'].includes(fields.interaction.value)){
