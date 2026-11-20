@@ -1,4 +1,4 @@
-import {narrationCues} from './tutoriels-audio.js?v=lecture-2';
+import {narrationCues} from './tutoriels-audio.js?v=voix-3';
 
 const reader='lire.html?id=edition-6e9408ef-af2f-5583-949d-742806ca90ff&pdfpage=5';
 const proposal='demander-un-livre.html';
@@ -85,7 +85,7 @@ function makeGuide(host,steps){
  const cues=narrationCues[host.dataset.tutorial];
  const audio=element(host,'audio','');
  audio.hidden=true;
- audio.src='videos/narration/'+host.dataset.tutorial+'.mp3?v=2';
+ audio.src='videos/narration/'+host.dataset.tutorial+'.mp3?v=3';
  audio.preload='metadata';
  const duration=cues.at(-1)[1];
  const view=element(host,'div','tutorial-view');
