@@ -4238,7 +4238,7 @@ function pdfAddress(b){if(b.pdf)return b.pdf;if(location.protocol==='file:'&&typ
 const catalogueAliases=new Map();
 function catalogueIdentity(book){
  const title=searchTerms(String(book.title||'').split(/[:：]/)[0]).join(' ');
- const author=searchTerms(String(book.author||'')).join(' ');
+ const author=searchTerms(String(book.author||'').replace(/^(?:dr|docteur)\.?\s+/i,'')).join(' ');
  return title&&author?title+'|'+author:book.id;
 }
 function mergeCatalogueDuplicates(rules){
@@ -4290,6 +4290,9 @@ async function applyCatalogueSuppressions(){
 async function loadPublicCatalogue(){
  const mapping=Object.fromEntries(Object.entries(GENRES).map(([slug,[name,subs]])=>[name,{slug,subs}]));
  const normalize=(entry,source)=>{
+  if(source==='firebase'&&catalogueIdentity(entry)==='comment retrouver toute son energie|maurice tran dinh can et juliette jarre'){
+   entry={...entry,category:'Vie et société',subcategory:'Vie pratique',sub:'2'};
+  }
   const categoryName=String(entry.category||entry.genre||'').trim();
   const aliases={'Savoir':'Savoirs','Savoirs':'Savoirs','Développement personnel':'Vie et société','Spiritualité':'Spiritualités et religions'};
   const resolvedCategory=aliases[categoryName]||categoryName;
