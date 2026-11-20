@@ -1493,7 +1493,7 @@ function bookFileActions(book, meta) {
   if(book.accessLevel>readerLevel)return bookSubscriptionOffer(book);
   if(book.accessLevel||book.privatePdf){
     const read='lire.html?id='+encodeURIComponent(book.id)+'#reader-content';
-    return '<div class="book-file-actions">'+lockBadge(book)+' <a class="btn" href="'+read+'">Ouvrir le lecteur</a> <button class="btn" type="button" data-private-download="'+esc(book.accessBookId||book.id)+'" data-public-download="'+String(!book.accessLevel)+'">Télécharger le PDF</button></div>';
+    return '<div class="book-file-actions">'+lockBadge(book)+' <a class="btn" href="'+read+'">Ouvrir le lecteur</a> <button class="btn" type="button" data-private-download="'+esc(book.accessBookId||book.id)+'" data-public-download="'+String(!book.accessLevel && !book.quentinOnly && book.guestDownloads===true)+'">Télécharger le PDF</button></div>';
   }
   const pdf = meta.pdf || meta.pdfPath;
   const readLabel = pdf ? 'Lire le PDF ici' : 'Ouvrir le texte';
@@ -4881,7 +4881,7 @@ document.querySelectorAll('[data-private-download]').forEach(button=>button.oncl
   button.disabled=true;
   try{
     const {cataloguePdf}=await import('./catalogue-access.js');
-    location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true,publicAccess:false}));
+    location.assign(await cataloguePdf(button.dataset.privateDownload,{download:true,publicAccess:button.dataset.publicDownload==='true'}));
     if(b&&!b.quentinOnly)void showDownloadCount(b);
   }catch(error){alert(error.message);}
   finally{button.disabled=false;}
