@@ -12,7 +12,7 @@ const paths={
  carnet:[
   ['livre.html?id=edition-6e9408ef-af2f-5583-949d-742806ca90ff','.book-file-actions a[href^="lire.html"]','Présentation du livre','Dans la fiche du livre, clique sur « Lire » ou « Ouvrir le lecteur ». Connecte-toi pour enregistrer tes traces.',true],
   [reader,'.reader-pencils .pencil','Le lecteur PDF','Les couleurs sont au-dessus de la page. Clique sur le crayon de la couleur que tu veux utiliser.',true],
-  [reader,'#pdf-text-layer','Le lecteur PDF','Sélectionne les mots qui t’intéressent. Sur un PDF scanné, utilise « Zone » si l’outil apparaît.'],
+  [reader,'#pdf-text-layer span[role="presentation"]','Le lecteur PDF','Sélectionne les mots qui t’intéressent. Sur un PDF scanné, utilise « Zone » si l’outil apparaît.'],
   [reader,'#save-selection','Le lecteur PDF','Reviens à la barre d’outils et clique sur « Surligner la sélection ».',true],
   [reader,'#reader-annotation','Mon passage choisi','Clique sur ton passage surligné, puis saisis ta note dans « Mon annotation ». Enregistre le passage.',true],
   [reader,'#save-reader-sheet','Ma fiche de lecture','Sous le PDF, renseigne la page, le passage et tes notes dans « Ma fiche de lecture ». Clique sur « Enregistrer la fiche ». ',true],
@@ -171,14 +171,36 @@ function makeGuide(host,steps){
   target=await waitForTarget(doc,selector);
   if(token!==generation)return;
   if(target){
-   target.scrollIntoView({block:'center',inline:'nearest'});
+   target.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
+   if(path===reader){
+    const sample=doc.querySelector('#pdf-text-layer span[role="presentation"]');
+    const selection=doc.defaultView.getSelection();
+    selection?.removeAllRanges();
+    if(sample&&[2,3].includes(stage)&&selection){
+     const range=doc.createRange();
+     range.selectNodeContents(sample);
+     selection.addRange(range);
+    }
+    if(stage===4){
+     const note=doc.getElementById('reader-annotation');
+     note.disabled=false;
+     note.value='Ce passage présente les animaux de la ferme.';
+     doc.getElementById('save-reader-passage').disabled=false;
+     if(sample?.textContent)doc.getElementById('chosen-excerpt').textContent=sample.textContent;
+    }
+    if(stage===5){
+     doc.getElementById('reader-sheet-page').value='5';
+     doc.getElementById('reader-sheet-passage').value=sample?.textContent||'Le début du chapitre';
+     doc.getElementById('reader-sheet-text').value='Observer comment l’auteur installe le récit.';
+    }
+   }
    // Allow one frame for the real page to settle before placing the callout.
    await new Promise(resolve=>requestAnimationFrame(resolve));
    if(token!==generation)return;
    resize();
    observer=new ResizeObserver(resize);
    observer.observe(target);
-   if(currentClick)clickTimer=setTimeout(()=>{if(token===generation)overlay.classList.add('tutorial-click');},850);
+   if(currentClick)clickTimer=setTimeout(()=>{if(token===generation)overlay.classList.add('tutorial-click');},stage<2?900:1300);
   }
   caption.textContent=text;
   narration(text,token,Math.max(4100,text.split(/\s+/).length*448));
