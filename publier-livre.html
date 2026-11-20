@@ -16,6 +16,8 @@
 <p id="proposal-prefill" hidden></p><h2>Compléter la fiche <small>Facultatif</small></h2>
 <details class="publication-option"><summary>Couverture, rayon et accès</summary><label>Genre <select name="genre" required></select></label>
 <label>Sous-genre <select name="sub" required></select></label>
+<label>Autre genre (facultatif) <select name="secondaryGenre"><option value="">Aucun</option></select></label>
+<label id="publication-secondary-sub" hidden>Autre sous-genre <select name="secondarySub" disabled></select></label>
 <label id="publication-audience">Accès <select name="level"><option value="0">Gratuit · accès public</option><option value="1">Jaune · Découverte</option><option value="2">Orange · Passion</option><option value="3">Rouge · Illimité</option></select></label><label>Couverture <input name="cover" type="file" accept="image/jpeg,image/png,image/webp"></label><label id="publication-remove-cover" hidden><input type="checkbox" name="removeCover"> Retirer la couverture actuelle</label></details>
 <details class="publication-option"><summary>Résumé et détails de l’édition</summary><label>Éditeur <input name="edition-publisher" maxlength="250"></label>
 <label>Année de cette édition <input name="edition-year" maxlength="250"></label>
@@ -42,4 +44,4 @@
 
 <div class="publication-submit"><button type="submit" class="btn">Publier dans le catalogue ↗</button></div></form>
 <template id="chapter-template"><fieldset><legend>Chapitre</legend><label>Titre <input name="chapter-title" required maxlength="180"></label><label>Page PDF <input name="chapter-page" type="number" min="1" step="1"></label><label>Résumé <textarea name="chapter-summary" required maxlength="5000" rows="4"></textarea></label><button type="button" class="btn secondary">Retirer le chapitre</button></fieldset></template>
-</main><script type="module" src="js/publication-livre.js?v=bibliotheque-20261120"></script></body></html>
+</main><script type="module" src="js/publication-livre.js?v=rayons-croises-20261120"></script></body></html>

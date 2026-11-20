@@ -11,7 +11,7 @@ GENRES = {
  "Arts": ["Musique","Cinéma","Architecture","Peinture et photographie"],
  "Vie et société": ["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"],
  "Spiritualités et religions": ["Religions","Spiritualités","Mythes","Ésotérisme"],
- "Jeunesse et pédagogie": ["Albums","Romans jeunesse","Documentaires","Apprentissage"]
+ "Jeunesse et pédagogie": ["Albums","Romans jeunesse","Documentaires","Apprentissage","BD et presse jeunesse"]
 }
 entries=[]
 for folder in sorted(BOOKS.iterdir()):

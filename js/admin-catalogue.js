@@ -9,11 +9,12 @@ const $=id=>document.getElementById(id);
 const msg=t=>{$('admin-msg').textContent=t;};
 const GENRES={
  'Fiction':['Roman contemporain','Imaginaire','Suspense','Amour et relations','Histoire et aventure','BD et manga','Poésie et théâtre','Contes et nouvelles','Horreur'],
- 'Savoirs':['Sciences','Psychologie','Philosophie','Histoire','Économie et politique','Management et entrepreneuriat','Informatique et numérique'],
+ 'Savoirs':['Sciences','Psychologie','Philosophie','Histoire','Économie et politique','Management et entrepreneuriat','Informatique et numérique','Langues et apprentissage','Marketing et vente'],
  'Arts':['Musique','Cinéma','Architecture','Peinture et photographie'],
  'Vie et société':['Biographies','Témoignages','Vie pratique','Sociologie','Finances personnelles','Développement personnel'],
  'Spiritualités et religions':['Religions','Spiritualités','Mythes','Ésotérisme'],
- 'Jeunesse et pédagogie':['Albums','Romans jeunesse','Documentaires','Apprentissage']
+ 'Jeunesse et pédagogie':['Albums','Romans jeunesse','Documentaires','Apprentissage','BD et presse jeunesse'],
+ 'Magazine':['Culture, arts et littérature','Mode et design','Sciences et découvertes','Actualité et société','Voyages et nature','Bien-être et vie pratique','BD et jeunesse']
 };
 const genreSelect=$('category-select'),subSelect=$('subcategory-select');
 for(const name of Object.keys(GENRES))genreSelect.add(new Option(name,name));

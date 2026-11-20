@@ -1,7 +1,7 @@
 import {watchAdministration} from './admin-session.js';
 import {auth,requestService} from './request-service.js?v=pieces-jointes-20261120';
 import {uploadCataloguePdf} from './catalogue-access.js';
-const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique","BD et jeunesse"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
+const GENRES={"fiction":["Fiction",["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"]],"savoirs":["Savoirs",["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique","Langues et apprentissage","Marketing et vente"]],"arts":["Arts",["Musique","Cinéma","Architecture","Peinture et photographie"]],"vie-et-societe":["Vie et société",["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel","Relations et communication"]],"spiritualites":["Spiritualités et religions",["Religions","Spiritualités","Mythes","Ésotérisme"]],"jeunesse":["Jeunesse et pédagogie",["Albums","Romans jeunesse","Documentaires","Apprentissage","BD et presse jeunesse"]],"voyages":["Voyages et nature",["Récits de voyage","Nature et écologie","Aventure et plein air"]],"creativite":["Créativité et loisirs",["Écriture et carnets","Arts manuels","Mode et design"]],"magazine":["Magazine",["Culture, arts et littérature","Mode et design","Sciences et découvertes","Actualité et société","Voyages et nature","Bien-être et vie pratique","BD et jeunesse"]],"manga":["Manga et BD",["Mangas, BD et romans graphiques"]],"a-classer":["À classer",["Sans sous-genre"]]};
 const $=id=>document.getElementById(id);
 const form=document.getElementById('publication-form');
 const message=document.getElementById('publication-message');
@@ -35,12 +35,22 @@ function updateAudience(){
 }
 fields.level.addEventListener('change',updateAudience);
 
-for(const [slug,[label]] of Object.entries(GENRES))fields.genre.add(new Option(label,slug));
+for(const [slug,[label]] of Object.entries(GENRES)){
+  fields.genre.add(new Option(label,slug));
+  if(slug!=='a-classer')fields.secondaryGenre.add(new Option(label,slug));
+}
 fields.genre.value='a-classer';
 function subgenres(){
   fields.sub.replaceChildren(...GENRES[fields.genre.value][1].map((label,index)=>new Option(label,index)));
 }
 fields.genre.onchange=subgenres;
+function secondarySubgenres(){
+  const secondary=GENRES[fields.secondaryGenre.value];
+  $('publication-secondary-sub').hidden=!secondary;
+  fields.secondarySub.disabled=!secondary;
+  fields.secondarySub.replaceChildren(...(secondary?.[1]||[]).map((label,index)=>new Option(label,index)));
+}
+fields.secondaryGenre.onchange=secondarySubgenres;
 subgenres();
 fields.reviewUrl.oninput=()=>{
   const required=!!fields.reviewUrl.value.trim();
@@ -60,6 +70,7 @@ watchAdministration({status:message,onClosed(){
   form.hidden=true;
   fields.level.querySelector('option[value="quentin-only"]')?.remove();
   form.reset();
+  secondarySubgenres();
   updateAudience();
   fields.genre.value='a-classer';
   chapters.replaceChildren();
@@ -97,6 +108,9 @@ watchAdministration({status:message,onClosed(){
       if(!fields.genre.value)fields.genre.value='a-classer';
       subgenres();
       fields.sub.value=String(ficha.sub??0);
+      fields.secondaryGenre.value=ficha.shelves?.[0]?.genre||'';
+      secondarySubgenres();
+      if(fields.secondaryGenre.value)fields.secondarySub.value=String(ficha.shelves[0].sub);
       for(const [name,value] of Object.entries(ficha.edition||{})){
         if(fields['edition-'+name])fields['edition-'+name].value=value??'';
       }
