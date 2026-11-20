@@ -1,0 +1,15 @@
+.tutorial-guide{background:#fef9fc;color:#38223c;font:inherit;text-align:left}
+.tutorial-page{margin:0;padding:.5rem .8rem;font-weight:750;color:#603750;background:#f9edf4}
+.tutorial-view{position:relative;width:100%;aspect-ratio:760/486;overflow:hidden;background:linear-gradient(150deg,#f5e6ef,#eee8f9)}
+.tutorial-view iframe{display:block;position:absolute;inset:0;border:0;width:760px;height:486px;transform-origin:top left;pointer-events:none;background:#fff9fc}
+.tutorial-overlay{position:absolute;inset:0;pointer-events:none}
+.tutorial-focus{position:absolute;border:3px solid #b61956;border-radius:7px;outline:2px solid white;box-shadow:0 0 0 4px #4c1a3b3b}
+.tutorial-pointer{position:absolute;display:block;transform:rotate(-123deg);font-size:clamp(1.05rem,4vw,2rem);line-height:1;color:#7b133e;text-shadow:1px 1px #fff,-1px -1px #fff}
+.tutorial-click .tutorial-pointer::after{content:"";position:absolute;inset:-.2rem;border:3px solid #b61956;border-radius:50%;animation:tutorial-ripple .68s ease-out both}
+@keyframes tutorial-ripple{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(1.85)}}
+.tutorial-caption{margin:0;min-height:4.5em;padding:.75rem .85rem;line-height:1.45;font-size:clamp(.85rem,2vw,1rem)}
+.tutorial-controls{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;padding:.45rem .65rem .65rem;background:#f9edf4}
+.tutorial-controls button{padding:.35rem .68rem;border:1px solid #a47192;border-radius:8px;background:#fff;color:#572849;font:inherit;cursor:pointer}
+.tutorial-controls button:disabled{opacity:.6;cursor:default}
+.tutorial-controls button:focus-visible{outline:2px solid #7b133e;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.tutorial-click .tutorial-pointer::after{animation:none}}
