@@ -8,10 +8,10 @@ BOOKS = ROOT / "livres"
 GENRES = {
  "Fiction": ["Roman contemporain","Imaginaire","Suspense","Amour et relations","Histoire et aventure","BD et manga","Poésie et théâtre","Contes et nouvelles","Horreur"],
  "Savoirs": ["Sciences","Psychologie","Philosophie","Histoire","Économie et politique","Management et entrepreneuriat","Informatique et numérique"],
- "Arts": ["Musique","Cinéma","Architecture","Peinture et photographie"],
+ "Arts": ["Musique","Cinéma","Architecture","Peinture et photographie","Littérature et critique"],
  "Vie et société": ["Biographies","Témoignages","Vie pratique","Sociologie","Finances personnelles","Développement personnel"],
  "Spiritualités et religions": ["Religions","Spiritualités","Mythes","Ésotérisme"],
- "Jeunesse et pédagogie": ["Albums","Romans jeunesse","Documentaires","Apprentissage"]
+ "Jeunesse et pédagogie": ["Albums","Romans jeunesse","Documentaires","Apprentissage","Magazines et BD jeunesse"]
 }
 entries=[]
 for folder in sorted(BOOKS.iterdir()):
